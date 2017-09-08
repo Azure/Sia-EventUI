@@ -10,6 +10,7 @@ It is configured for Wepback's hot module reloading, so as things change they sh
 
 # To start
 + Have Node.js installed (the latest LTS release is preferred)
++ Create a localhost.const.js file inside the cfg folder. Use the example.const.js file as a template.
 + Navigate to the directory this file is in
 + run `npm install`
 + run `npm run serve`
