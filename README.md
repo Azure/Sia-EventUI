@@ -8,6 +8,9 @@ It is built using:
 
 It is configured for Wepback's hot module reloading, so as things change they should automatically appear in your browser.
 
+# Before You Start
+You will need to add const files in config for each environment you want to use; these are not tracked in git. See cfg.constExample.js for more details. Const files follow the naming convention $env.const.js (localhost.const.js is the const file loaded by localhost.js, for example)
+
 # To start
 + Have Node.js installed (the latest LTS release is preferred)
 + Create a localhost.const.js file inside the cfg folder. Use the example.const.js file as a template.
