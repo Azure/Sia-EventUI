@@ -1,14 +1,30 @@
+# This is the user interface for SRE Incident Assistant
+See the [Root repository](https://github.com/azure/Sia-Root) for full project information.
 
-# Contributing
+It is built using:
++ [ReactJs](https://facebook.github.io/react/)
++ [Webpack 2](https://webpack.js.org/)
++ [Material UI](http://www.material-ui.com/#/)
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+It is configured for Wepback's hot module reloading, so as things change they should automatically appear in your browser.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+# To start
++ Have Node.js installed (the latest LTS release is preferred)
++ Navigate to the directory this file is in
++ run `npm install`
++ run `npm run serve`
++ navigate to http://localhost:3000
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+# To start pointing at local API
++ Have Node.js installed (the latest LTS release is preferred)
++ Navigate to the directory this file is in
++ Start the gateway project and all dependencies
++ run `npm install`
++ run `npm start`
++ navigate to http://localhost:3000
+
+# To Test
++ run `npm test`
+
+# To create dist bundle, no server
+webpack --env=dist
