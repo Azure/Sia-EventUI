@@ -12,7 +12,7 @@ export const mergeOneToManyMaps = (map1, map2) => {
     return mergedMap
 }
 
-const mergeWithOverwrite = (arr1, arr2) => {
+export const mergeWithOverwrite = (arr1, arr2) => {
     return arr1.filter(entry => arr2.contains(entry)).concat(arr2)
 }
 
