@@ -25,4 +25,6 @@ export const list = (state = defaultEventCollection, action) => {
     }
 }
 
-export const events = paginated(list, eventA)
+export const events = paginated(list, eventActions.pagination.types)
+
+export default events
