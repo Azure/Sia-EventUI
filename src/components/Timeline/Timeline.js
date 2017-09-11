@@ -11,7 +11,7 @@ import * as eventActions from '../../actions/eventActions'
 
 class Timeline extends Component {
   static propTypes = {
-    events: PropTypes.array.isRequired,
+    events: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
@@ -21,12 +21,12 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events } = this.props
+    const { events, dispatch } = this.props
     return (
       <div>
-        <Filter/>
-        {Events(events)}
-        <Footer/>
+        <Filter pagination={events} dispatch={dispatch}/>
+        {Events(events.pageList)}
+        <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )
   }
@@ -69,7 +69,7 @@ const mapStateToProps = (state, ownProps) => {
   const sortedEvents = Array.from(unsortedEvents).sort(chronologically)*/
   return {
     ...ownProps,
-    events: events.pageList
+    events: events
   }
 }
 

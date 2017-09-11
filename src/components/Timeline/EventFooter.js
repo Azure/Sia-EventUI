@@ -1,19 +1,34 @@
 import React from 'react'
 import RaisedButtonStyled from '../elements/RaisedButtonStyled'
+import * as eventActions from '../../actions/eventActions'
 
-const EventFooter = () => {
+const EventFooter = ({pagination, dispatch}) => {
+    const linkRange = 2
+    const maxPagesToLinkTo = 2 * linkRange + 1
+    const pagesForDirectLink = []
+    for( var i = 0; i < maxPagesToLinkTo; i++) {
+        pagesForDirectLink.push(pagination.page - linkRange + i)
+    }
+    const existingPagesForDirectLink = pagesForDirectLink.filter((page) => page > 1 && page < pagination.total)
+    const needsLeadingDots = !pagesForDirectLink.includes(1)
+    const needsFollowingDots = !pagesForDirectLink.includes(pagination.total)
   return (
       <div className="incident-EventFooter">
-          <RaisedButtonStyled label="Prev" />&nbsp;
-          <RaisedButtonStyled label="1" primary={true} />&nbsp;
-          <RaisedButtonStyled label="2" />&nbsp;
-          <RaisedButtonStyled label="3" />&nbsp;
-          <RaisedButtonStyled label="4" />&nbsp;
-          &nbsp; . . . &nbsp;&nbsp;
-          <RaisedButtonStyled label="10" />&nbsp;
-          <RaisedButtonStyled label="next" />
+        {<RaisedButtonStyled label="1" primary={pagination.page === 1} onTouchTap={() => dispatch(eventActions.pagination.goToPage(1))} />}  
+        {needsLeadingDots ? <span>. . .</span> : null}
+        {
+            existingPagesForDirectLink.map(pageNumber => 
+                <RaisedButtonStyled
+                    label={pageNumber.toString()}
+                    primary={pageNumber === pagination.page }
+                    onTouchTap={() => dispatch(eventActions.pagination.goToPage(pageNumber))}
+                />)
+        }
+        {needsFollowingDots ? <span>. . .</span> : null}
+        <RaisedButtonStyled label={pagination.total} primary={pagination.page === pagination.total} onTouchTap={() => dispatch(eventActions.pagination.goToPage(pagination.total))} />
       </div>
   )
 }
+
 
 export default EventFooter

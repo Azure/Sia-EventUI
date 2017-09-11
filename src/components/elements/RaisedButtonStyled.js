@@ -6,7 +6,8 @@ const styles = {
         fontSize: 12,
         minWidth: '10%',
         height: 28,
-        textTransform: 'lowercase'
+        textTransform: 'lowercase',
+        padding: '1px'
     }
 }
 
