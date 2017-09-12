@@ -8,7 +8,7 @@ export const reduxBackedPromise = (promiseGenerator, promiseArgs, actionSet) => 
     dispatch(actionSet.try())
 
     return promiseGenerator(dispatch, ...promiseArgs)
-        .then(success => dispatch(actionSet.succeed(success)),
+        .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))
 }
 
@@ -46,3 +46,12 @@ export const paginationActions = (BASE_NAME) => ({
         filter
     })
 })
+
+/*Update pagination does nothing on its own, but activates
+the default case of pagination reducers created by paginated-redux,
+which forces re-evaluation of the current page; simply adding
+items to the list array won't cause the contents of the current page
+to change.
+*/
+export const UPDATE_PAGINATION = 'UPDATE_PAGINATION'
+export const updatePagination = () => ({type:UPDATE_PAGINATION})
