@@ -11,7 +11,7 @@ const addEventsToState = (state, Events) => {
 export const list = (state = defaultEventCollection, action) => {
     switch(action.type){
         case eventActions.RECEIVE_EVENT:
-            return addEventsToState(state, action.event)
+            return addEventsToState(state, [action.event])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
         default:

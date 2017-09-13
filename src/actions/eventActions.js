@@ -53,14 +53,32 @@ export const getEventsActionSet = (incidentId) => ({
         incidentId
     }),
 
-    succeed: (events) => (dispatch) => {
+    succeed: (events, response) => (dispatch) => {
+        let paginationHeader
+        for (let header of response.headers){
+            if(header[0] === 'x-pagination'){
+                paginationHeader = JSON.parse(header[1])
+            }
+        }
+
         dispatch({
             type: RECEIVE_EVENTS,
             events: events.map(event => makeSearchable(event)),
-            incidentId
+            incidentId,
+            pagination: paginationHeader
         })
 
-        dispatch(updatePagination())
+
+        if(paginationHeader.NextPageLink){
+            dispatch(reduxBackedPromise(
+                authenticatedFetch,
+                [paginationHeader.NextPageLink],
+                getEventsActionSet(incidentId)
+            ))
+        }
+        else{
+            dispatch(updatePagination())
+        }
     },
 
     fail: (failureReason) => ({
