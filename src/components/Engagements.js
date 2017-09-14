@@ -17,7 +17,6 @@ export const mapStateToPropsEngagements = (state, ownProps) => {
 
 export const Engagements = ({incidentId, engagements, user}) => {
     return (
-<<<<<<< HEAD
         <List>
             {Array
                 .from(engagements.filter(engagement => !engagement.timeDisengaged))
@@ -30,49 +29,17 @@ export const Engagements = ({incidentId, engagements, user}) => {
             }
             <Engage incidentId={incidentId} user={user}/>
         </List>
-=======
-        <div>
-            <span>
-                <IconButtonStyled tooltip="Engagment">
-                    <PeopleIcon />
-                </IconButtonStyled>
-                &nbsp;
-                {Array
-                    .from(engagements.filter(engagement => !engagement.timeDisengaged))
-                    .map(engagement =>
-                        <Engagement
-                            dispatch={dispatch}
-                            engagement={engagement}
-                            user={user}
-                            key={'engagement' + engagement.id}
-                        />)
-                }
-            </span>
-            <Engage dispatch={dispatch} incidentId={incidentId} user={user}/>
-        </div>
->>>>>>> 39eae44... Fix Refresh and Disengage buttons from Search
     )
 }
 
 export const Engagement = ({engagement, user}) => {
     return(<ListItem>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
-<<<<<<< HEAD
             <FlatButtonStyled
                 label='Disengage'
                 dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
             />
         </ListItem>
-=======
-            <IconButtonStyled
-                tooltip='Disengage'
-                //dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
-                onTouchTap={() => dispatch(engagementActions.disengage(user, engagement))}
-            >
-                <RemoveCircleOutlineIcon />
-            </IconButtonStyled>
-        </span>
->>>>>>> 39eae44... Fix Refresh and Disengage buttons from Search
     )
 }
 
