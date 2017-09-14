@@ -3,16 +3,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Event from './Event'
 import moment from 'moment'
-import Filter from './EventFilter'
-import Footer from './EventFooter'
 import { red50, purple50, indigo50, teal50, lime50, deepOrange50, blueGrey50 } from 'material-ui/styles/colors'
-
-
 
 const Timeline = ({ events }) => {
   return (
   <div>
-    <Filter/>
     {Array.from(events)
       .sort(chronologically)
       .map(event =>
@@ -25,7 +20,6 @@ const Timeline = ({ events }) => {
           backgroundColor = {event.backgroundColor}
         />
     )}
-    <Footer/>
    </div>)
 }
 

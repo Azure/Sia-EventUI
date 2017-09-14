@@ -3,7 +3,7 @@ import IconButtonStyled from '../elements/IconButtonStyled'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import Dialog from 'material-ui/Dialog'
 import AddEvent from '../Timeline/AddEvent'
-import LibraryAdd from 'material-ui/svg-icons/av/library-add'
+import OpenInNewIcon from 'material-ui/svg-icons/action/open-in-new'
 
 class EventDialogControl extends Component {
     constructor(props) {
@@ -51,12 +51,14 @@ class EventDialogControl extends Component {
         ]
         
         return (
-            <div>
-                <strong>Incoming Event:</strong> [hide]<br/>
+            <strong>
+                Incident Event:
+                &nbsp;
                 <IconButtonStyled
+                    tooltip="Enter new event"
                     onTouchTap={this.handleOpenAddEvent}
                 >
-                    <LibraryAdd />
+                    <OpenInNewIcon />
                 </IconButtonStyled>
                 <Dialog
                     title='Please enter a custom event:'
@@ -74,7 +76,7 @@ class EventDialogControl extends Component {
                         updateSelectedIncidentId={this.handleUpdateEvent('selectedIncidentId')}
                     />
                 </Dialog>
-            </div>
+            </strong>
         )
     }
 }

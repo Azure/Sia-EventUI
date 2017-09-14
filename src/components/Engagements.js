@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import FlatButtonStyled from './elements/FlatButtonStyled'
-import { List, ListItem } from 'material-ui'
+import IconButtonStyled from './elements/IconButtonStyled'
+import PeopleIcon from 'material-ui/svg-icons/social/people'
+import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline'
+import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
 import * as engagementActions from '../actions/engagementActions'
 
 export const mapStateToPropsEngagements = (state, ownProps) => {
@@ -15,31 +17,42 @@ export const mapStateToPropsEngagements = (state, ownProps) => {
     }
 }
 
-export const Engagements = ({incidentId, engagements, user}) => {
+export const Engagements = ({dispatch, incidentId, engagements, user}) => {
     return (
-        <List>
-            {Array
-                .from(engagements.filter(engagement => !engagement.timeDisengaged))
-                .map(engagement =>
-                    <Engagement
-                        key={'engagement' + engagement.id}
-                        engagement={engagement}
-                        user={user}
-                    />)
-            }
-            <Engage incidentId={incidentId} user={user}/>
-        </List>
+        <div>
+            <span>
+                <IconButtonStyled tooltip="Engagment">
+                    <PeopleIcon />
+                </IconButtonStyled>
+                &nbsp;
+                {Array
+                    .from(engagements.filter(engagement => !engagement.timeDisengaged))
+                    .map(engagement =>
+                        <Engagement
+                            dispatch={dispatch}
+                            engagement={engagement}
+                            user={user}
+                            key={'engagement' + engagement.id}
+                        />)
+                }
+            </span>
+            <Engage dispatch={dispatch} incidentId={incidentId} user={user}/>
+        </div>
     )
 }
 
-export const Engagement = ({engagement, user}) => {
-    return(<ListItem>
+export const Engagement = ({dispatch, engagement, user}) => {
+    return (
+        <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
-            <FlatButtonStyled
-                label='Disengage'
-                dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
-            />
-        </ListItem>
+            <IconButtonStyled
+                tooltip='Disengage'
+                //dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
+                onTouchTap={() => dispatch(engagementActions.disengage(user, engagement))}
+            >
+                <RemoveCircleOutlineIcon />
+            </IconButtonStyled>
+        </span>
     )
 }
 
@@ -54,11 +67,15 @@ export const mapStateToPropsEngage = (state, ownProps) => {
     }
 }
 
-export const Engage = ({incidentId, user}) => {
-    return(<FlatButtonStyled
-                label='Engage On This Issue'
-                dispatchOnTouchTap={engagementActions.engage(incidentId, user)}
-            />
+export const Engage = ({dispatch, incidentId, user}) => {
+    return (
+        <IconButtonStyled
+            tooltip='Engage'
+            //dispatchOnTouchTap={engagementActions.engage(incidentId, user)}
+            onTouchTap={() => dispatch(engagementActions.engage(incidentId, user))}
+        >
+            <AddCircleOutlineIcon />
+        </IconButtonStyled>
     )
 }
 
