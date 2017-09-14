@@ -29,9 +29,10 @@ export const Engagements = ({dispatch, incidentId, engagements, user}) => {
                     .from(engagements.filter(engagement => !engagement.timeDisengaged))
                     .map(engagement =>
                         <Engagement
-                            key={'engagement' + engagement.id}
+                            dispatch={dispatch}
                             engagement={engagement}
                             user={user}
+                            key={'engagement' + engagement.id}
                         />)
                 }
             </span>
@@ -45,7 +46,7 @@ export const Engagement = ({dispatch, engagement, user}) => {
         <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
             <IconButtonStyled
-                label='Disengage'
+                tooltip='Disengage'
                 //dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
                 onTouchTap={() => dispatch(engagementActions.disengage(user, engagement))}
             >
