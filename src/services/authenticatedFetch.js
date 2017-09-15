@@ -11,8 +11,7 @@ const defaultOptions = {
 }
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
-    return tokenPromise(dispatch)
-        .then(token => fetch(baseUrl + relativeUrl, initWithAuth(init, token)))
+    return fetch(baseUrl + relativeUrl, init)
         .then(response => {
             dispatch(rawHttpResponse(response))
             if(httpResponseNeedsRetry(response)) {
@@ -32,11 +31,22 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         }, err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
+const tryGetToken = (dispatch) => (retry, number) => {
+    return tokenPromise(dispatch)
+        .catch(err => retry(`Error during fetch: ${err} (retry ${number})`))
+}
+
 export const authenticatedFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
     return PromiseRetry(
-        tryFetch(dispatch, relativeUrl, init, returnJson, baseUrl),
+        tryGetToken(dispatch),
         defaultOptions
-    )
+    ).then(token => {
+        const authenticatedInit = initWithAuth(init, token)
+        return PromiseRetry(
+            tryFetch(dispatch, relativeUrl, authenticatedInit, returnJson, baseUrl),
+            defaultOptions
+        )
+    })
 }
 
 export const authenticatedPost = (dispatch, relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
