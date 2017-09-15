@@ -25,7 +25,7 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
                         .then(json => {
                             dispatch(jsonResult(json))
                             return Promise.resolve({json, response})
-                        })
+                        }, err => Promise.reject(`Error parsing json: ${err}`))
                 }
                 return Promise.resolve(response)
             }
