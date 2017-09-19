@@ -13,7 +13,8 @@ export const ADD_EVENT = 'ADD_EVENT'
 
 export const pagination = paginationActions(EVENTS)
 
-const makeSearchable = (event) => Object.assign({}, event, {
+const makeSearchable = (event) => ({
+    ...event,
     filterableIncidentId: event.incidentId.toString()
 })
 
