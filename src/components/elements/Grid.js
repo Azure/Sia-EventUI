@@ -16,12 +16,7 @@ export const Grid = (rowClass, columnClass, children, key = 0) => {
         <Paper zDepth={2} key={key}>
             {
                 children.map(child => {
-                    if(Array.isArray(child)){
-                        return GridRow(rowClass, columnClass, child, rowKey++)
-                    }
-                    else {
-                        return child
-                    }
+                    return Array.isArray(child)? GridRow(rowClass, columnClass, child, rowKey++) : child
                 }
             )}
         </Paper>
@@ -33,11 +28,10 @@ export const GridRow = (rowClass, columnClass, children, rowKey = 0) => {
     return (
         <div className={rowClass} key={rowKey}>
             {children.map(child => {
-                let childArray = Array.isArray(child)
                 let localkey = 0
                 return (
                     <div className={columnClass} key={columnKey++}>
-                        {childArray? child.map(grandchild => grandchild(localkey++)) : child}
+                        {Array.isArray(child)? child.map(grandchild => grandchild(localkey++)) : child}
                     </div>
                 )
             })}
