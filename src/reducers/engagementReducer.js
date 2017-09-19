@@ -1,29 +1,20 @@
+import paginated from 'paginated-redux'
 import * as engagementActions from '../actions/engagementActions'
 import * as incidentActions from '../actions/incidentActions'
-import { oneToManyMap, mergeOneToManyMaps } from './reducerHelpers'
+import { mergeWithOverwrite } from './reducerHelpers'
 
-const defaultEngagementCollections = {
-    engagementIdToEngagement: {},
-    incidentIdToEngagements: {}
-}
+const defaultEngagementCollection = []
+
 
 const addEngagementToState = (state, engagement) => {
     return addEngagementsToState(state, [engagement])
 }
 
 const addEngagementsToState = (state, engagements) => {
-    var originalIncidentIdToEngagements = { ...state.incidentIdToEngagements }
-    var newIncidentIdToEngagements = oneToManyMap(engagements, (engagement) => engagement.incidentId)
-    
-    var engagementIdToEngagement = {...state.engagementIdToEngagement}
-    engagements.forEach(engagement => engagementIdToEngagement[engagement.id] = engagement)
-    return {
-        engagementIdToEngagement,
-        incidentIdToEngagements: mergeOneToManyMaps(originalIncidentIdToEngagements, newIncidentIdToEngagements)
-    }
+    return mergeWithOverwrite(state, engagements)
 }
 
-export const maps = (state = defaultEngagementCollections, action) => {
+export const list = (state = defaultEngagementCollection, action) => {
     switch(action.type){
         case incidentActions.RECEIVE_INCIDENT:
             return addEngagementsToState(state, action.incident.engagements)
@@ -41,3 +32,7 @@ export const maps = (state = defaultEngagementCollections, action) => {
             return state
     }
 }
+
+export const engagements = paginated(list, engagementActions.pagination.types)
+
+export default engagements

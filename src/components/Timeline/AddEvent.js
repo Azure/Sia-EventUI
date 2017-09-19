@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addEvent } from '../../actions/incidentActions'
+import { addEvent } from '../../actions/eventActions'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
 
 

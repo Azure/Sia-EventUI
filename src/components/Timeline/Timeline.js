@@ -1,65 +1,45 @@
 import { connect } from 'react-redux'
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Event from './Event'
+import Events from './Events'
 import moment from 'moment'
 import Filter from './EventFilter'
 import Footer from './EventFooter'
 import { red50, purple50, indigo50, teal50, lime50, deepOrange50, blueGrey50 } from 'material-ui/styles/colors'
+import * as eventActions from '../../actions/eventActions'
 
 
+class Timeline extends Component {
+  static propTypes = {
+    events: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired
+  }
 
-const Timeline = ({ events }) => {
-  return (
-  <div>
-    <Filter/>
-    {Array.from(events)
-      .sort(chronologically)
-      .map(event =>
-        <Event
-          key = {`${event.id} ${event.incidentId}`}
-          ticketId = {event.ticketId}
-          dismissed = {event.dismissed}
-          text = {GenerateTextFromEventType(event.eventTypeId) }
-          time = {moment(event.occurred ? event.occurred : event.Occurred)}
-          backgroundColor = {event.backgroundColor}
-        />
-    )}
-    <Footer/>
-   </div>)
-}
+  componentDidMount() {
+    updatePagination(this.props.dispatch, this.props.incidentIds)
+  }
 
-
-const GenerateTextFromEventType = (eventType) => {
-  switch(eventType){
-    case 1:
-      return 'Impact Detected'
-    case 2:
-      return 'Impact Start'
-    case 3:
-      return 'Impact Mitigated'
-    case 4:
-      return 'Incident Resolved'
-    case 5:
-      return 'Incident Acknowledged'
-    default:
-      return 'This Event has no text'
+  render() {
+    const { events, dispatch } = this.props
+    return (
+      <div>
+        <Filter pagination={events} dispatch={dispatch}/>
+        {Events(events.pageList)}
+        <Footer pagination={events} dispatch={dispatch}/>
+      </div>
+    )
   }
 }
 
-Timeline.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isReqired,
-    dismissed: PropTypes.bool,
-    text: PropTypes.string
-  }).isRequired).isRequired
+const updatePagination = (dispatch, incidentIds) => {
+    dispatch(eventActions.pagination.filter(incidentIds[0].toString()))
+    dispatch(eventActions.pagination.sort('occurred'))
 }
 
-
 const mapStateToProps = (state, ownProps) => {
-  const { incidents } = state
+  const { events } = state
   const { incidentIds } = ownProps
-  let colorCoding = 0
+  /*let colorCoding = 0
   const incidentIdArray = Array.from(incidentIds)
   const unsortedEvents = incidentIdArray.map(incidentId => {
     const thisIncident = incidents.map[incidentId]
@@ -81,10 +61,10 @@ const mapStateToProps = (state, ownProps) => {
     colorCoding++
     return colorCodedEvents
   }).reduce( (a, b) => a.concat(b), [] )
-  const sortedEvents = Array.from(unsortedEvents).sort(chronologically)
+  const sortedEvents = Array.from(unsortedEvents).sort(chronologically)*/
   return {
     ...ownProps,
-    events: sortedEvents
+    events: events
   }
 }
 
