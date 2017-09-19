@@ -1,18 +1,34 @@
 import { connect } from 'react-redux'
-import React from 'react'
+import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import * as incidentActions from '../../actions/incidentActions'
 
-const IncidentRedirect = ({ticketId}) => {
-    if(ticketId)
-    {
-        return (<Redirect to={`/tickets/${ticketId}`}/>)
+class IncidentRedirect  extends Component {
+    constructor(props){
+        super(props)
     }
-    return (<div>Incident not yet loaded</div>)
+
+    componentDidMount() {
+        const {ticketId, incidentId, dispatch} = this.props
+        if(!ticketId){
+            dispatch(incidentActions.fetchIncident(incidentId))
+        }
+    }
+
+    render() {
+        const {incidentId, ticketId} = this.props
+        if(ticketId){
+            return (<Redirect to={`/tickets/${ticketId}`}/>)
+        }
+        return (<div>Incident not yet loaded</div>)
+    }
 }
 
 const mapStateToProps = (state, ownProps) => {
+    const incident = state.incidents.map[ownProps.match.params.incidentId]
     return {
-        ticketId: state.incidents.map[ownProps.match.params.incidentId].primaryTicket.originId
+        incidentId: ownProps.match.params.incidentId,
+        ticketId: (incident ? (incident.primaryTicket ? incident.primaryTicket.originId : null) : null)
     }
 }
 

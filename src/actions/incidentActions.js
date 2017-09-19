@@ -2,6 +2,7 @@ import moment from 'moment'
 import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 import { reduxBackedPromise } from './actionHelpers'
 import * as ticketActions from './ticketActions'
+import * as eventActions from './eventActions'
 
 export const REQUEST_INCIDENT = 'REQUEST_INCIDENT'
 export const RECEIVE_INCIDENT = 'RECEIVE_INCIDENT'
@@ -9,7 +10,6 @@ export const RECEIVE_INCIDENT_FAILURE = 'RECEIVE_INCIDENT_FAILURE'
 export const REQUEST_INCIDENTS = 'REQUEST_INCIDENTS'
 export const RECEIVE_INCIDENTS = 'RECEIVE_INCIDENTS'
 export const RECEIVE_INCIDENTS_FAILURE = 'RECEIVE_INCIDENTS_FAILURE'
-export const ADD_EVENT = 'ADD_EVENT'
 export const UPDATE_INCIDENT_CREATION_INPUT = 'UPDATE_INCIDENT_CREATION_INPUT'
 export const TRY_CREATE_INCIDENT = 'TRY_CREATE_INCIDENT'
 export const CREATE_INCIDENT_SUCCESS = 'CREATE_INCIDENT_SUCCESS'
@@ -24,10 +24,14 @@ export const getIncidentActionSet = (incidentId) => ({
         incidentId
     }),
 
-    succeed: (incident) => ({
-        type: RECEIVE_INCIDENT,
-        incident
-    }),
+    succeed: (incident) => (dispatch) => {
+        dispatch({
+            type: RECEIVE_INCIDENT,
+            incident
+        })
+
+        dispatch(eventActions.fetchEvents(incidentId))
+    },
 
     fail: (failureReason) => ({
         type: RECEIVE_INCIDENT_FAILURE,
@@ -39,7 +43,7 @@ export const getIncidentActionSet = (incidentId) => ({
 export const fetchIncident = incidentId => reduxBackedPromise(
     authenticatedFetch,
     ['incidents/' + incidentId],
-    getIncidentActionSet(incidentId),
+    getIncidentActionSet(incidentId)
 )
 
 export const getIncidentsByTicketIdActionSet = (ticketId) => ({
@@ -48,11 +52,15 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
         ticketId
     }),
     
-    succeed: (incidents) => ({
-        type: FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
-        ticketId,
-        incidents
-    }),
+    succeed: (incidents) => (dispatch) => {
+        dispatch({
+            type: FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
+            ticketId,
+            incidents
+        })
+
+        incidents.map(incident => dispatch(eventActions.fetchEvents(incident.id)))
+    } ,
 
     fail: (error) => ({
         type: FETCH_INCIDENTS_BY_TICKET_ID_FAILURE,
@@ -99,11 +107,15 @@ export const getIncidentsActionSet = ({
         type: REQUEST_INCIDENTS
     }),
 
-    succeed: (json) => ({
-        type: RECEIVE_INCIDENTS,
-        incidents: json,
-        receivedAt: moment()
-    }),
+    succeed: (incidents) => (dispatch) => {
+        dispatch({
+            type: RECEIVE_INCIDENTS,
+            incidents,
+            receivedAt: moment()
+        })
+
+        incidents.map(incident => dispatch(eventActions.fetchEvents(incident.id)))
+    },
 
     fail:  (error) => ({
         type: RECEIVE_INCIDENTS_FAILURE,
@@ -120,10 +132,14 @@ export const createIncidentActionSet = (ticketId, ticketSystem) => ({
         ticketSystem
     }),
 
-    succeed: (incident) => ({
-        type: CREATE_INCIDENT_SUCCESS,
-        incident
-    }),
+    succeed: (incident) => (dispatch) => {
+        dispatch({
+            type: CREATE_INCIDENT_SUCCESS,
+            incident
+        })
+
+        dispatch(eventActions.getEventsActionSet(incident.id).succeed(incident.events))
+    },
 
     fail: (reason) => ({
         type: CREATE_INCIDENT_FAILURE,
@@ -148,11 +164,6 @@ export const postIncident = (ticketId, ticketSystem) =>
         createIncidentActionSet(ticketId, ticketSystem)
     )
 
-export const addEvent = (event, incidentId) => ({
-    type: ADD_EVENT,
-    incidentId,
-    event
-})
 
 export const updateIncidentCreationInput = (input) => ({
     type: UPDATE_INCIDENT_CREATION_INPUT,

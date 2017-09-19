@@ -2,11 +2,15 @@ import { combineReducers } from 'redux'
 import tickets from './ticketReducers'
 import auth from './authReducer'
 import incidents from './incidentReducers'
+import engagements from './engagementReducer'
+import events from './eventReducer'
 
 const rootReducer = combineReducers({
     incidents,
     auth,
-    tickets
+    tickets,
+    engagements,
+    events
 })
 
 export default rootReducer
