@@ -12,6 +12,8 @@ import Engagements from '../Engagements'
 import { GridSet } from '../elements/Grid'
 import { fetchIncident } from '../../actions/incidentActions'
 import { buttonFontEnlarge } from '../../actions/styleActions'
+import { connect } from 'react-redux'
+import * as expandSectionActions from '../../actions/expandSectionActions'
 
 export const DisplayIncident = (incident, ticket, ticketSystem, dispatch) => {
     return GridSet('incident-container', 'incident-row', 'incident-col', [
@@ -54,7 +56,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, dispatch) => {
 }
 
 export const IncidentProgress = (ticketId) => {
-    return [
+    let incidentProgressArray = [
                 [<div>
                     <strong>Incident Progress{ticketId ? ` for ${ticketId}`:''}:</strong> [hide]
                     <br/>
@@ -66,6 +68,9 @@ export const IncidentProgress = (ticketId) => {
                 </div>],
                 [Checkpoint()]
             ]
+
+    //return this.props.expandIncidentProgress? incidentProgressArray : incidentProgressArray.slice(0,1)
+    return incidentProgressArray
 }
 
 export const IncidentEvents = (ticketToIncidentIdMap) => {
@@ -78,6 +83,17 @@ export const IncidentEvents = (ticketToIncidentIdMap) => {
 const ExtractIncidentIdsFromMap = (ticketToIncidentIdMap) => {
     return ticketToIncidentIdMap.map(ticketIdIncidentIdPair => ticketIdIncidentIdPair[1])
 }
+
+export const mapStateToProps = (state, ownProps) => {
+	return {
+		...ownProps,
+		expandIncidentSummary: state.expandIncidentSummary,
+		expandIncidentProgress: state.expandIncidentProgress,
+		expandIncidentEvent: state.expandIncidentEvent
+	}
+}
+
+export const connectedDisplayIncident = connect(mapStateToProps)(DisplayIncident)
 
 export default DisplayIncident
 
