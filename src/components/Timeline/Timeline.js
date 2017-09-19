@@ -3,11 +3,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Events from './Events'
 import moment from 'moment'
-import Filter from './EventFilter'
-import Footer from './EventFooter'
 import { red50, purple50, indigo50, teal50, lime50, deepOrange50, blueGrey50 } from 'material-ui/styles/colors'
 import * as eventActions from '../../actions/eventActions'
-
 
 class Timeline extends Component {
   static propTypes = {
