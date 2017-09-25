@@ -31,7 +31,7 @@ class Ticket extends Component {
         }
         if(!incident || incident.IsFetching)
         {
-            return CurrentlyLoadingIncident()
+            return CurrentlyLoadingIncident(dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {

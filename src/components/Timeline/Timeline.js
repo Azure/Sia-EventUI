@@ -1,5 +1,7 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import Filter from './EventFilter'
+import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
 import moment from 'moment'

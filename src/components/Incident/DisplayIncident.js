@@ -104,7 +104,6 @@ export const IncidentProgress = (ticketId) => {
 
 export const IncidentEvents = (ticketToIncidentIdMap) => {
     return [
-        [<EventFilter />],
         [
             [
                 (key) =>
@@ -115,8 +114,7 @@ export const IncidentEvents = (ticketToIncidentIdMap) => {
                     </IconButtonStyled>
             ]
         ],
-        [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>],
-        [<EventFooter />]
+        [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>]
     ]
 }
 
