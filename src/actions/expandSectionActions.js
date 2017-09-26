@@ -1,3 +1,6 @@
+export const TOGGLE_COLLAPSE = 'TOGGLE_COLLAPSE'
+
+
 export const expandIncidentSummary = () => {
     return {
         type: 'EXPAND_INCIDENT_SUMMARY'
@@ -14,3 +17,8 @@ export const expandIncidentEvent = () => {
         type: 'EXPAND_INCIDENT_EVENT'
     }
 }
+
+export const toggleCollapse = (elementName) => ({
+    type: TOGGLE_COLLAPSE,
+    elementName
+})

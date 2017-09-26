@@ -1,10 +1,7 @@
-var initialState = {
-    expandIncidentSummary: true,
-    expandIncidentProgress: true,
-    expandIncidentEvent: true
-}
+import { TOGGLE_COLLAPSE } from '../actions/expandSectionActions'
 
-export default function expandSectionReducer(state = initialState, action) {
+
+export default function expandSectionReducer(state = {}, action) {
     switch (action.type) {
         case 'EXPAND_INCIDENT_SUMMARY':
             return Object.assign({}, state, {
@@ -18,6 +15,11 @@ export default function expandSectionReducer(state = initialState, action) {
             return Object.assign({}, state, {
                 expandIncidentEvent: !state.expandIncidentEvent
         })
+        case TOGGLE_COLLAPSE:
+            return {
+                ...state,
+                [action.elementName]: !state[action.elementName]
+            }
         default:
             return state
     }

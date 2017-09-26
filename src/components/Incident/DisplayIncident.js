@@ -16,9 +16,9 @@ import * as expandSectionActions from '../../actions/expandSectionActions'
 
 export const DisplayIncident = ({incident, ticket, ticketSystem, dispatch, expandSection}) => {
     return GridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(expandSection.expandIncidentSummary, incident, ticket, ticketSystem, dispatch),
-        IncidentProgress(expandSection.expandIncidentProgress, null, dispatch),
-        IncidentEvents(expandSection.expandIncidentEvent, [[ticket.originId, incident.id]], dispatch)
+        IncidentSummary(expandSection['IncidentSummary'], incident, ticket, ticketSystem, dispatch),
+        IncidentProgress(expandSection['IncidentProgress'], null, dispatch),
+        IncidentEvents(expandSection['IncidentEvent'], [[ticket.originId, incident.id]], dispatch)
     ])
 }
 
@@ -80,7 +80,7 @@ export const IncidentSummary = (expandIncidentSummaryState, incident, ticket, ti
         ],
         [<ComparisonLinks ticketId={ticket.originId} />]
     ]
-    return expandIncidentSummaryState? incidentSummaryArray : incidentSummaryArray.slice(0,1)
+    return !expandIncidentSummaryState? incidentSummaryArray : incidentSummaryArray.slice(0,1)
 }
 
 export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch) => {
@@ -100,7 +100,7 @@ export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch
                 (key) =>
                     <IconButtonStyled
                         tooltip="Collapse/expand section"
-                        onTouchTap={() => dispatch(expandSectionActions.expandIncidentProgress())}
+                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse('IncidentProgress'))}
                         key={key}
                     >
                         <CodeIcon />
@@ -109,7 +109,7 @@ export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch
         ],
         [Checkpoint()]
     ]
-    return expandIncidentProgressState? incidentProgressArray : incidentProgressArray.slice(0,1)
+    return !expandIncidentProgressState? incidentProgressArray : incidentProgressArray.slice(0,1)
 }
 
 export const IncidentEvents = (expandIncidentEventsState, ticketToIncidentIdMap, dispatch) => {
@@ -129,7 +129,7 @@ export const IncidentEvents = (expandIncidentEventsState, ticketToIncidentIdMap,
         ],
         [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>]
     ]
-    return expandIncidentEventsState? incidentEventsArray : incidentEventsArray.slice(0,1)
+    return !expandIncidentEventsState? incidentEventsArray : incidentEventsArray.slice(0,1)
 }
 
 const ExtractIncidentIdsFromMap = (ticketToIncidentIdMap) => {
