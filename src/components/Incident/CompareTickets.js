@@ -37,7 +37,7 @@ class CompareTickets extends Component {
     }
 
     render() {
-        const { firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, dispatch } = this.props
+        const { firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch } = this.props
 
         if(firstIncident && firstIncident.error)
         {
@@ -53,7 +53,7 @@ class CompareTickets extends Component {
         }
         if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
         {
-            return (CompareIncidents(firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, dispatch))
+            return (CompareIncidents(firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch))
         }
         return (
             <Redirect to={`/tickets/${firstIncident.primaryTicket.originId}/compare/${secondIncident.primaryTicket.originId}`}>
@@ -64,7 +64,7 @@ class CompareTickets extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { incidents, tickets } = state
+    const { incidents, tickets, expandSection } = state
     const { match } = ownProps
     const firstTicketId = parseInt(match.params.firstTicketId)
     const firstTicket = tickets.map[firstTicketId]
@@ -79,7 +79,8 @@ const mapStateToProps = (state, ownProps) => {
         secondTicket,
         secondTicketId,
         secondTicketSystem: tickets.systems[getTicketSystemId(secondTicket)],
-        preferences: tickets.preferences
+        preferences: tickets.preferences,
+        expandSection
     }
 }
 

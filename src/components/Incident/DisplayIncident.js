@@ -8,27 +8,44 @@ import IconButtonStyled from '../elements/IconButtonStyled'
 import BadgeStyled from '../elements/BadgeStyled'
 import Timeline from '../Timeline/Timeline'
 import Engagements from '../Engagements'
-import { GridSet } from '../elements/Grid'
+import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
 import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import { connect } from 'react-redux'
 import * as expandSectionActions from '../../actions/expandSectionActions'
 
-export const DisplayIncident = ({incident, ticket, ticketSystem, dispatch, expandSection}) => {
-    return GridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(expandSection['IncidentSummary'], incident, ticket, ticketSystem, dispatch),
-        IncidentProgress(expandSection['IncidentProgress'], null, dispatch),
-        IncidentEvents(expandSection['IncidentEvent'], [[ticket.originId, incident.id]], dispatch)
+export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
+    return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
+        IncidentSummary(incident, ticket, ticketSystem, null, dispatch),
+        IncidentProgress(null, dispatch),
+        IncidentEvents([[ticket.originId, incident.id]], dispatch)
+    ],
+    [
+        expandSection[IncidentSummaryName()],
+        expandSection[IncidentProgressName()],
+        expandSection[IncidentEventsName()]
     ])
 }
 
-export const IncidentSummary = (expandIncidentSummaryState, incident, ticket, ticketSystem, dispatch) => {
+export const IncidentSummaryName = (ticketId) => {
+    return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
+}
+
+export const IncidentProgressName = (ticketId) => {
+    return 'IncidentProgress' + (ticketId ? '_' + ticketId : '')
+}
+
+export const IncidentEventsName = () => {
+    return 'IncidentEvents'
+}
+
+export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispatch) => {
     let incidentSummaryArray = [
         [
             [
                 (key) =>
                     <strong key={key}>
-                        Incident Summary:
+                        Incident Summary{ticketId ? ` for ${ticketId}`:''}:
                         &nbsp;
                         <IconButtonStyled tooltip="Refresh">
                             <SyncIcon />
@@ -37,7 +54,7 @@ export const IncidentSummary = (expandIncidentSummaryState, incident, ticket, ti
                 (key) =>
                     <IconButtonStyled
                         tooltip="Collapse/expand section"
-                        onTouchTap={() => dispatch(expandSectionActions.expandIncidentSummary())}
+                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentSummaryName(ticketId)))}
                         key={key}
                     >
                         <CodeIcon />
@@ -80,10 +97,10 @@ export const IncidentSummary = (expandIncidentSummaryState, incident, ticket, ti
         ],
         [<ComparisonLinks ticketId={ticket.originId} />]
     ]
-    return !expandIncidentSummaryState? incidentSummaryArray : incidentSummaryArray.slice(0,1)
+    return incidentSummaryArray
 }
 
-export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch) => {
+export const IncidentProgress = (ticketId, dispatch) => {
     let incidentProgressArray = [
         [
             [
@@ -100,7 +117,7 @@ export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch
                 (key) =>
                     <IconButtonStyled
                         tooltip="Collapse/expand section"
-                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse('IncidentProgress'))}
+                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentProgressName(ticketId)))}
                         key={key}
                     >
                         <CodeIcon />
@@ -109,10 +126,10 @@ export const IncidentProgress = (expandIncidentProgressState, ticketId, dispatch
         ],
         [Checkpoint()]
     ]
-    return !expandIncidentProgressState? incidentProgressArray : incidentProgressArray.slice(0,1)
+    return incidentProgressArray
 }
 
-export const IncidentEvents = (expandIncidentEventsState, ticketToIncidentIdMap, dispatch) => {
+export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
     let incidentEventsArray = [
         [
             [
@@ -120,7 +137,7 @@ export const IncidentEvents = (expandIncidentEventsState, ticketToIncidentIdMap,
                     <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key}/>,
                 (key) =>
                     <IconButtonStyled
-                        onTouchTap={() => dispatch(expandSectionActions.expandIncidentEvent())}
+                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentEventsName()))}
                         key={key}
                     >
                         <CodeIcon />
@@ -129,7 +146,7 @@ export const IncidentEvents = (expandIncidentEventsState, ticketToIncidentIdMap,
         ],
         [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>]
     ]
-    return !expandIncidentEventsState? incidentEventsArray : incidentEventsArray.slice(0,1)
+    return incidentEventsArray
 }
 
 const ExtractIncidentIdsFromMap = (ticketToIncidentIdMap) => {
