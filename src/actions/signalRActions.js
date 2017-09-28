@@ -14,9 +14,10 @@ export const succeedEstablishConnection = () => ({
     type: ESTABLISH_CONNECTION_SUCCEED
 })
 
-export const failEstablishConnection = (error) => ({
+export const failEstablishConnection = (error, stack) => ({
     type: ESTABLISH_CONNECTION_FAIL,
-    error
+    error,
+    stack
 })
 
 export const receiveMessage = () => ({
@@ -27,7 +28,8 @@ export const acknowledgeMessages = () => ({
     type: ACKNOWLEDGE_MESSAGES
 })
 
-export const connectionClosed = (error) => ({
+export const connectionClosed = (error, stack) => ({
     type: CONNECTION_CLOSED,
-    error
+    error,
+    stack
 })

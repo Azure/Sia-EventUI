@@ -4,7 +4,20 @@ import * as signalRActions from '../actions/signalRActions'
 
 const defaultBasePath = BASE_URL
 
-export const signalReduxConnection = (dispatch) => {
+let signalRConnectionSingleton
+
+export const getSignalRConnection = (dispatch) => {
+    if(!signalRConnectionSingleton) {
+        resetSignalRConnection(dispatch)
+    }
+    return signalRConnectionSingleton
+}
+
+export const resetSignalRConnection = (dispatch) => {
+    signalRConnectionSingleton = signalReduxConnection(dispatch)
+}
+
+const signalReduxConnection = (dispatch) => {
     let connection = configureConnection(dispatch)
 
     startConnection(connection, dispatch)
@@ -21,7 +34,7 @@ const configureConnection = (dispatch) => {
         dispatch(getEventActionSet(event.incidentId, event.id).succeed(eventObject))
     })
 
-    connection.onclose((error) => dispatch(signalRActions.connectionClosed(error)))
+    connection.onclose((error) => dispatch(signalRActions.connectionClosed(error.message, error.stack)))
     
     return connection
 }
@@ -30,7 +43,7 @@ const startConnection = (connection, dispatch) => {
     dispatch(signalRActions.tryEstablishConnection())
     connection.start()
         .then(() => dispatch(signalRActions.succeedEstablishConnection()),
-            (error) => dispatch(signalRActions.failEstablishConnection(error)))
+            (error) => dispatch(signalRActions.failEstablishConnection(error.message, error.stack)))
 }
 
-export default signalReduxConnection
+export default getSignalRConnection

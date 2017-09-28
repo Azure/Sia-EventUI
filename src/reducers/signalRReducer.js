@@ -1,6 +1,6 @@
 import * as signalRActions from '../actions/signalRActions'
 
-const connectionStatuses = {
+export const connectionStatuses = {
     notEstablished: 'notEstablished',
     connecting: 'connecting',
     disconnected: 'disconnected',
@@ -42,12 +42,18 @@ const signalRReducer = (state = defaultState, action) => {
         case signalRActions.RECEIVE_MESSAGE:
             return {
                 ...state,
-                pendingMessages: pendingMessages ? pendingMessages + 1 : 1
+                pendingMessages: state.pendingMessages ? state.pendingMessages + 1 : 1
             }
         case signalRActions.ACKNOWLEDGE_MESSAGES:
             return {
                 ...state,
                 pendingMessages: 0
             }
+        default:
+            return {
+                ...state
+            }
     }
 }
+
+export default signalRReducer
