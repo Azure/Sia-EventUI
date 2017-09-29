@@ -21,10 +21,11 @@ export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, 
         IncidentEvents([[ticket.originId, incident.id]], dispatch)
     ],
     [
-        expandSection[IncidentSummaryName()],
-        expandSection[IncidentProgressName()],
-        expandSection[IncidentEventsName()]
-    ])
+        IncidentSummaryName(),
+        IncidentProgressName(),
+        IncidentEventsName()
+    ],
+    expandSection, dispatch)
 }
 
 export const IncidentSummaryName = (ticketId) => {
@@ -50,15 +51,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
                         <IconButtonStyled tooltip="Refresh">
                             <SyncIcon />
                         </IconButtonStyled>
-                    </strong>,
-                (key) =>
-                    <IconButtonStyled
-                        tooltip="Collapse/expand section"
-                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentSummaryName(ticketId)))}
-                        key={key}
-                    >
-                        <CodeIcon />
-                    </IconButtonStyled>
+                    </strong>
             ]
         ],
         [
@@ -113,15 +106,7 @@ export const IncidentProgress = (ticketId, dispatch) => {
                                 <NotificationsIcon />
                             </IconButtonStyled>
                         </BadgeStyled>
-                    </strong>,
-                (key) =>
-                    <IconButtonStyled
-                        tooltip="Collapse/expand section"
-                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentProgressName(ticketId)))}
-                        key={key}
-                    >
-                        <CodeIcon />
-                    </IconButtonStyled>
+                    </strong>
             ]
         ],
         [Checkpoint()]
@@ -134,14 +119,7 @@ export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
         [
             [
                 (key) =>
-                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key}/>,
-                (key) =>
-                    <IconButtonStyled
-                        onTouchTap={() => dispatch(expandSectionActions.toggleCollapse(IncidentEventsName()))}
-                        key={key}
-                    >
-                        <CodeIcon />
-                    </IconButtonStyled>
+                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key}/>
             ]
         ],
         [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>]
