@@ -9,7 +9,7 @@ import FlatButtonStyled from '../elements/FlatButtonStyled'
 
 export const Search = ({dispatch, queryString, dataSource, filteredDataSource}) => {
     return <div>
-                <CreateIncident/>
+                <CreateIncident />
                 <FlatButtonStyled
                     label='Refresh'
                     primary={true}
@@ -23,10 +23,10 @@ export const Search = ({dispatch, queryString, dataSource, filteredDataSource}) 
                     onUpdateInput = {(input) => dispatch(ticketActions.updateTicketQuery(input))}
                     floatingLabelText = 'Incident Search'
                     fullWidth = {true}
-                    />
+                />
                 <br />
                 <p />
-                <SearchResults query={filteredDataSource}/>
+                <SearchResults query={filteredDataSource} />
             </div>
 }
 
