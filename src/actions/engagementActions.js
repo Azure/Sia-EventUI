@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { authenticatedPost, authenticatedPut } from '../services/authenticatedFetch'
-import { reduxBackedPromise } from './actionHelpers'
+import { reduxBackedPromise, paginationActions } from './actionHelpers'
 
 export const TRY_ENGAGE = 'TRY_ENGAGE'
 export const ENGAGE_SUCCESS = 'ENGAGE_SUCCESS'
@@ -8,7 +8,7 @@ export const ENGAGE_FAILURE = 'ENGAGE_FAILURE'
 export const TRY_DISENGAGE = 'TRY_DISENGAGE'
 export const DISENGAGE_SUCCESS = 'DISENGAGE_SUCCESS'
 export const DISENGAGE_FAILURE = 'DISENGAGE_FAILURE'
-
+export const ENGAGEMENTS = 'ENGAGEMENTS'
 
 const engageActionSet = (incidentId, participant, timeEngaged) => ({
     try: () => ({
@@ -75,3 +75,5 @@ export const disengage = (participant, engagement, timeDisengaged = moment()) =>
         ],
         disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged)
     )
+
+export const pagination = paginationActions(ENGAGEMENTS)

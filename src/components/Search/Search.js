@@ -13,7 +13,6 @@ export const Search = ({dispatch, queryString, dataSource, filteredDataSource}) 
                 <FlatButtonStyled
                     label='Refresh'
                     primary={true}
-                    //dispatchOnTouchTap={incidentActions.fetchIncidents()}
                     onTouchTap={() => dispatch(incidentActions.fetchIncidents())}
                 />
                 <br />

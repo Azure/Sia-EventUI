@@ -9,7 +9,7 @@ const JSON_RESULT = 'DEBUG_JSON_RESULT'
 //response is not serializable
 export const rawHttpResponse = (response) => ({
     type: RAW_HTTP_RESPONSE,
-    response:{
+    response: response ? {
                 bodyUsed: response.bodyUsed,
                 ok: response.ok,
                 redirected: response.redirected,
@@ -17,7 +17,7 @@ export const rawHttpResponse = (response) => ({
                 statusText: response.statusText,
                 type: response.type,
                 url: response.url
-            }
+            } : null
 })
 
 export const jsonResult = (json) => ({
