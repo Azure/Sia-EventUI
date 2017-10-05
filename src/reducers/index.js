@@ -4,13 +4,15 @@ import auth from './authReducer'
 import incidents from './incidentReducers'
 import engagements from './engagementReducer'
 import events from './eventReducer'
+import signalR from './signalRReducer'
 
 const rootReducer = combineReducers({
     incidents,
     auth,
     tickets,
     engagements,
-    events
+    events,
+    signalR
 })
 
 export default rootReducer

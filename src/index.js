@@ -24,17 +24,16 @@ import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { ADAL } from './services/adalService'
+import signalR from './services/signalRService'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 export const store = createStore(incidentApp, composeEnhancers(applyMiddleware(thunk)))
 
+const signalRConnection = signalR(store.dispatch)
 const ADALInstance = ADAL(store.dispatch)
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
-
-
-
 
 
 class MainComponent extends React.Component {
