@@ -16,9 +16,8 @@ class IncidentRedirect  extends Component {
     }
 
     render() {
-        const {incidentId, ticketId} = this.props
-        if(ticketId){
-            return (<Redirect to={`/tickets/${ticketId}`}/>)
+        if(this.props.ticketId){
+            return (<Redirect to={`/tickets/${this.props.ticketId}`}/>)
         }
         return (<div>Incident not yet loaded</div>)
     }

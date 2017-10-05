@@ -11,8 +11,6 @@ import Engagements from '../Engagements'
 import { GridSet } from '../elements/Grid'
 import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
-import EventFilter from '../timeline/EventFilter'
-import EventFooter from '../timeline/EventFooter'
 
 export const DisplayIncident = (incident, ticket, ticketSystem, dispatch) => {
     return GridSet('incident-container', 'incident-row', 'incident-col', [

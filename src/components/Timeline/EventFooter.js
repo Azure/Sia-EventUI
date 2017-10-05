@@ -15,10 +15,10 @@ const EventFooter = ({pagination, dispatch}) => {
     let localKey = 0
   return (
       <div className="incident-EventFooter">
-        {<RaisedButtonStyled key={localKey++} label="1" primary={pagination.page === 1} onTouchTap={() => dispatch(eventActions.pagination.goToPage(1)) } />}  
+        {<RaisedButtonStyled key={localKey++} label="1" primary={pagination.page === 1} onTouchTap={() => dispatch(eventActions.pagination.goToPage(1)) } />}
         {needsLeadingDots ? <span key={localKey++}>. . .</span> : null}
         {
-            existingPagesForDirectLink.map(pageNumber => 
+            existingPagesForDirectLink.map(pageNumber =>
                 <RaisedButtonStyled
                     key={localKey++}
                     label={pageNumber.toString()}

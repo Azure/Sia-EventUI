@@ -1,6 +1,6 @@
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
+import { authenticatedFetch } from '../services/authenticatedFetch'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
