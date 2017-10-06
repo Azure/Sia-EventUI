@@ -100,10 +100,10 @@ describe('incidentReducer', function test () {
             this.sampleNewIncidentsId = 9
             this.createdIncidentId = 10
 
-            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null).succeed(newIncident))
-            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, incidentActions.getIncidentsActionSet.succeed(Object.values(replacementIncidents)))
-            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, incidentActions.createIncidentActionSet(null, null).succeed(createdIncident))
-            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null).succeed(replacingIncident))
+            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null, null).succeed(newIncident))
+            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, incidentActions.getIncidentsActionSet(null).succeed(Object.values(replacementIncidents)))
+            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, incidentActions.createIncidentActionSet(null, null, null).succeed(createdIncident))
+            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null, null).succeed(replacingIncident))
         })
 
         it('Should add incident to map on receive incident or create incident', () => {

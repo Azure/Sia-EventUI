@@ -1,11 +1,10 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_LOGIN_ERROR, LOGIN_IN_PROGRESS } from '../actions/authActions.js'
-import { authContext, clientId } from '../services/adalService'
 
 const extractAliasFromUserName = (userName) => {
     return userName.slice(0, userName.indexOf('@'))
 }
 
-const getDefaultState = () => {
+const getDefaultState = (authContext, clientId) => {
     const token = authContext.getCachedToken(clientId)
     const user = authContext.getCachedUser()
     return {
@@ -18,7 +17,7 @@ const getDefaultState = () => {
     }
 }
 
-const authReducer = (state = getDefaultState(), action) => {
+const authReducer = (authContext, clientId) => (state = getDefaultState(authContext, clientId), action) => {
     switch (action.type) {
         case LOGIN_IN_PROGRESS:
             return {

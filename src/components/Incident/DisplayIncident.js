@@ -12,15 +12,15 @@ import { GridSet } from '../elements/Grid'
 import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
 
-export const DisplayIncident = (incident, ticket, ticketSystem, dispatch) => {
+export const DisplayIncident = (engagementActions, incident, ticket, ticketSystem, dispatch) => {
     return GridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(incident, ticket, ticketSystem, dispatch),
+        IncidentSummary(engagementActions, incident, ticket, ticketSystem, dispatch),
         IncidentProgress(),
         IncidentEvents([[ticket.originId, incident.id]])
     ])
 }
 
-export const IncidentSummary = (incident, ticket, ticketSystem, dispatch) => {
+export const IncidentSummary = (engagementActions, incident, ticket, ticketSystem, dispatch) => {
     return [
                 [
                     [
@@ -70,6 +70,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, dispatch) => {
                         incidentId={incident.id}
                         engagements={incident.engagements}
                         dispatch={dispatch}
+                        engagementActions={engagementActions}
                     />
                 ],
                 [<ComparisonLinks ticketId={ticket.originId} />]

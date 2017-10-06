@@ -4,7 +4,6 @@ import IconButtonStyled from './elements/IconButtonStyled'
 import PeopleIcon from 'material-ui/svg-icons/social/people'
 import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline'
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
-import * as engagementActions from '../actions/engagementActions'
 
 export const mapStateToPropsEngagements = (state, ownProps) => {
     return {
@@ -17,7 +16,7 @@ export const mapStateToPropsEngagements = (state, ownProps) => {
     }
 }
 
-export const Engagements = ({dispatch, incidentId, engagements, user}) => {
+export const Engagements = ({dispatch, incidentId, engagements, user, engagementActions}) => {
     return (
         <div>
             <span>
@@ -32,21 +31,21 @@ export const Engagements = ({dispatch, incidentId, engagements, user}) => {
                             key={'engagement' + engagement.id}
                             engagement={engagement}
                             user={user}
+                            engagementActions={engagementActions}
                         />)
                 }
             </span>
-            <Engage dispatch={dispatch} incidentId={incidentId} user={user}/>
+            <Engage dispatch={dispatch} incidentId={incidentId} user={user} engagementActions={engagementActions}/>
         </div>
     )
 }
 
-export const Engagement = ({dispatch, engagement, user}) => {
+export const Engagement = ({dispatch, engagement, user, engagementActions}) => {
     return (
         <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
             <IconButtonStyled
                 label='Disengage'
-                //dispatchOnTouchTap={engagementActions.disengage(user, engagement)}
                 onTouchTap={() => dispatch(engagementActions.disengage(user, engagement))}
             >
                 <RemoveCircleOutlineIcon />
@@ -66,11 +65,10 @@ export const mapStateToPropsEngage = (state, ownProps) => {
     }
 }
 
-export const Engage = ({dispatch, incidentId, user}) => {
+export const Engage = ({dispatch, incidentId, user, engagementActions}) => {
     return (
         <IconButtonStyled
             tooltip='Engage'
-            //dispatchOnTouchTap={engagementActions.engage(incidentId, user)}
             onTouchTap={() => dispatch(engagementActions.engage(incidentId, user))}
         >
             <AddCircleOutlineIcon />

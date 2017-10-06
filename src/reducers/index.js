@@ -6,9 +6,9 @@ import engagements from './engagementReducer'
 import events from './eventReducer'
 import signalR from './signalRReducer'
 
-const rootReducer = combineReducers({
+const rootReducer = (authContext, clientId) => combineReducers({
     incidents,
-    auth,
+    auth: auth(authContext, clientId),
     tickets,
     engagements,
     events,

@@ -1,4 +1,3 @@
-import { tokenPromise } from './adalService'
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
 
@@ -36,30 +35,30 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         }, err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
-const tryGetToken = (dispatch) => (retry, number) => {
-    return tokenPromise(dispatch)
+const tryGetToken = (siaContext) => (retry, number) => {
+    return tokenPromise(siaContext)
         .catch(err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
-export const authenticatedFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
+export const authenticatedFetch = (siaContext) => (relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
     return PromiseRetry(
-        tryGetToken(dispatch),
+        tryGetToken(siaContext),
         defaultOptions
     ).then(token => {
         const authenticatedInit = initWithAuth(init, token)
         return PromiseRetry(
-            tryFetch(dispatch, relativeUrl, authenticatedInit, returnJson, baseUrl),
+            tryFetch(siaContext.dispatch, relativeUrl, authenticatedInit, returnJson, baseUrl),
             defaultOptions
         )
     })
 }
 
-export const authenticatedPost = (dispatch, relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
-    return authenticatedFetch(dispatch, relativeUrl, initWithContent(init, body), returnJson, baseUrl)
+export const authenticatedPost = (siaContext) => (relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
+    return authenticatedFetch(siaContext)(relativeUrl, initWithContent(init, body), returnJson, baseUrl)
 }
 
-export const authenticatedPut = (dispatch, relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
-    return authenticatedFetch(dispatch, relativeUrl, initWithContent(init, body, 'PUT'), returnJson, baseUrl)
+export const authenticatedPut = (siaContext) => (relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
+    return authenticatedFetch(siaContext)(relativeUrl, initWithContent(init, body, 'PUT'), returnJson, baseUrl)
 }
 
 const initWithAuth = (init, token) => {
@@ -84,6 +83,18 @@ const initWithContent = (init, unserializedBody, method = 'POST')  => {
         headers
     }
 }
+
+const tokenPromise = (siaContext) => new Promise((resolve, reject) => {
+    siaContext.authContext.acquireToken(clientId, callbackBridge(resolve, reject))
+  }).catch((reason)=> {
+    if(reason && reason === 'User login is required'){
+      return new Promise((innerResolve, innerReject) => {
+        siaContext.dispatch(authActions.loginInProgress())
+        siaContext.authContext.callback = callbackBridge(dispatchOnResolve(innerResolve, dispatch, authActions.userLoggedIn()), innerReject)
+        siaContext.authContext.login()
+      })
+    }
+  })
 
 const httpResponseNeedsRetry = (response) => response.status >= 400
 

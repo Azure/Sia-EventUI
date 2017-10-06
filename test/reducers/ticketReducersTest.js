@@ -60,8 +60,8 @@ const defaultQueryString = 'default'
 describe('Ticket Reducers', function test () {
     describe('maps reducer', function mapsTest () {
         beforeEach( () => {
-            this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, incidentActions.getIncidentsActionSet.succeed(replacementIncidentsList))
-            this.OnReceiveIncidentsFromPopulated  = map(populatedTicketList, incidentActions.getIncidentsActionSet.succeed(replacementIncidentsList))
+            this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, incidentActions.getIncidentsActionSet().succeed(replacementIncidentsList))
+            this.OnReceiveIncidentsFromPopulated  = map(populatedTicketList, incidentActions.getIncidentsActionSet().succeed(replacementIncidentsList))
             this.OnCreateIncidentFromEmpty = map(emptyTicketList, incidentActions.createIncidentActionSet().succeed(replacementIncidentsList[0]))
             this.OnCreateIncidentFromPopulated = map(populatedTicketList, incidentActions.createIncidentActionSet().succeed(replacementIncidentsList[0]))
             this.OnReceiveIncidentFromEmpty = map(emptyTicketList, incidentActions.getIncidentActionSet().succeed(replacementIncidentsList[0]))

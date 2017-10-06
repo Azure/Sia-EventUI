@@ -18,7 +18,7 @@ export function setLensColor(severity, status) {
     return color
 }
 
-export const SearchResult = ({ticket, incident, dispatch}) => {
+export const SearchResult = ({ticket, incident, dispatch, engagementActions}) => {
         return (
         <ListItem
             leftIcon={
@@ -38,6 +38,7 @@ export const SearchResult = ({ticket, incident, dispatch}) => {
                 incidentId={ticket.incidentId}
                 engagements={incident.engagements}
                 dispatch={dispatch}
+                engagementActions={engagementActions}
             />
         </ListItem>
     )

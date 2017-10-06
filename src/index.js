@@ -15,6 +15,9 @@ import {
   Route
 } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
+import eventActionInitializer from './actions/eventActions'
+import incidentActionInitializer from './actions/incidentActions'
+import engagementActionInitializer from './actions/engagementActions'
 import Search from './components/Search/Search'
 import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
@@ -23,14 +26,18 @@ import incidentRedirect from './components/Incident/incidentRedirect'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
-import { ADAL } from './services/adalService'
+import { authContext, clientId, siaContext } from './services/adalService'
 import signalR from './services/signalRService'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-export const store = createStore(incidentApp, composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(authContext, clientId), composeEnhancers(applyMiddleware(thunk)))
 
 const signalRConnection = signalR(store.dispatch)
-const ADALInstance = ADAL(store.dispatch)
+const siaContext = siaContext(store.dispatch)
+
+const eventActions = eventActionInitializer(siaContext)
+const incidentActions = incidentActionInitializer(context, eventActions)
+const engagementActions = engagementActionInitializer(siaContext)
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
@@ -42,15 +49,15 @@ class MainComponent extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <Provider store={store}>
           <div>
-            <EnsureLoggedInContainer ADAL={ADALInstance}>
+            <EnsureLoggedInContainer ADAL={siaContext.authContext}>
               <Router history={history} >
                 <div>
                   <TopNav />
-                  <Route exact path="/" component={Search} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket} />
-                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
-                  <Route path="/incidents/:incidentId" component={incidentRedirect} />
-                  <Route path="/debug" render={() => <Debug authContext={ADALInstance}/>}/>
+                  <Route exact path="/" component={Search(incidentActions, engagementActions)} />
+                  <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
+                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />
+                  <Route path="/incidents/:incidentId" component={incidentRedirect(incidentActions)} />
+                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext}/>}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>

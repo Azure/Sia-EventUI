@@ -4,12 +4,11 @@ import AutoComplete from 'material-ui/AutoComplete'
 import CreateIncident from './CreateIncident'
 import SearchResults from './SearchResults'
 import * as ticketActions from '../../actions/ticketActions'
-import * as incidentActions from '../../actions/incidentActions'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 
-export const Search = ({dispatch, queryString, dataSource, filteredDataSource}) => {
+export const Search = ({dispatch, queryString, dataSource, filteredDataSource, incidentActions, engagementActions}) => {
     return <div>
-                <CreateIncident/>
+                <CreateIncident incidentActions={incidentActions}/>
                 <FlatButtonStyled
                     label='Refresh'
                     primary={true}
@@ -26,11 +25,11 @@ export const Search = ({dispatch, queryString, dataSource, filteredDataSource}) 
                     />
                 <br />
                 <p />
-                <SearchResults query={filteredDataSource}/>
+                <SearchResults query={filteredDataSource} engagementActions={engagementActions}/>
             </div>
 }
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (incidentActions, engagementActions) => (state) => {
     const dataSource = Object.values(state.tickets.map)
     const filteredDataSource = (state.tickets.query && state.tickets.query.length > 0)
             ? dataSource.filter(ticket =>
@@ -47,4 +46,4 @@ export const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Search)
+export default (incidentActions, engagementActions) => connect(mapStateToProps(incidentActions, engagementActions))(Search)
