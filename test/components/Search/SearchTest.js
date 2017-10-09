@@ -14,7 +14,9 @@ const input = (mockStore) => ({
     dispatch: mockStore.dispatch,
     queryString: 'TestQueryString',
     dataSource: [],
-    filteredDataSource: []
+    filteredDataSource: [],
+    incidentActions: testIncidentActions,
+    engagementActions: testEngagementActions
 })
 
 describe('Search', function test () {
@@ -34,6 +36,7 @@ describe('Search', function test () {
         expect(this.output.props.children[4].type).to.equal('br')
         expect(this.output.props.children[5].type).to.equal('p')
         expect(this.output.props.children[6].type).to.equal(SearchResults)
+        expect(this.output.props.children[6].props.engagementActions.testKey).to.equal(testEngagementActions.testKey)
     })
 })
 
@@ -50,6 +53,14 @@ const testTicketList = {
         originId: 3,
         title: 'Third test ticket z'
     }
+}
+
+const testIncidentActions = {
+    testKey: 'incidentActionsTestValue'
+}
+
+const testEngagementActions = {
+    testKey: 'engagementActionsTestValue'
 }
 
 const noFilterState = {
@@ -70,8 +81,8 @@ const withFilterState = {
 
 describe('Search mapStateToProps', function test () {
     beforeEach( () => {
-        this.noFilterResult = mapStateToProps(noFilterState)
-        this.withFilterResult = mapStateToProps(withFilterState)
+        this.noFilterResult = mapStateToProps(noFilterState)(testIncidentActions, testEngagementActions)
+        this.withFilterResult = mapStateToProps(withFilterState)(testIncidentActions, testEngagementActions)
     })
 
     it('Should return the full list when no filter is applied', () => {

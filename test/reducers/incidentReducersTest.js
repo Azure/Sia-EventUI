@@ -3,6 +3,18 @@ import { expect } from 'chai';
 import * as incidentActions from '../../src/actions/incidentActions.js'
 import { map, creation } from '../../src/reducers/incidentReducers.js'
 
+const dummyEventActions = {
+    fetchEvents: (incidentId) => ({
+        type: 'DUMMY_FETCH_EVENTS'
+    }),
+
+    getEventsActionSet: (incidentId) => ({
+        succeed: (events) => ({
+            type: 'DUMMY_FETCH_EVENTS'
+        })
+    })
+}
+
 const defaultStateIncidents = {
     1: {
         id: 1,
@@ -41,6 +53,8 @@ const newIncident =  {
 
 const createdIncident = {
     id: 10,
+    ticketSystemId: 1,
+    ticketId: 1111,
     events: []
 }
 
@@ -100,10 +114,10 @@ describe('incidentReducer', function test () {
             this.sampleNewIncidentsId = 9
             this.createdIncidentId = 10
 
-            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null, null).succeed(newIncident))
-            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, incidentActions.getIncidentsActionSet(null).succeed(Object.values(replacementIncidents)))
-            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, incidentActions.createIncidentActionSet(null, null, null).succeed(createdIncident))
-            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, incidentActions.getIncidentActionSet(null, null).succeed(replacingIncident))
+            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, incidentActions.getIncidentActionSet(newIncident.id, dummyEventActions).succeed(newIncident))
+            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, incidentActions.getIncidentsActionSet(dummyEventActions).succeed(Object.values(replacementIncidents)))
+            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, incidentActions.createIncidentActionSet(createdIncident.ticketId, createdIncident.ticketSystemId, dummyEventActions).succeed(createdIncident))
+            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, incidentActions.getIncidentActionSet(replacingIncident.id, dummyEventActions).succeed(replacingIncident))
         })
 
         it('Should add incident to map on receive incident or create incident', () => {
