@@ -4,7 +4,6 @@ import React from 'react'
 import CreateComponent from '../../helpers/shallowRenderHelper'
 import { Search, mapStateToProps } from '../../../src/components/Search/Search'
 import GetMockStore from '../../helpers/mockReduxStore'
-
 import CreateIncident from '../../../src/components/Search/CreateIncident'
 import SearchResults from '../../../src/components/Search/SearchResults'
 import FlatButtonStyled from '../../../src/components/elements/FlatButtonStyled'

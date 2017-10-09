@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import { NavNotifs } from '../../../src/components/TopNav/NavNotifs'
 import { connectionStatuses } from '../../../src/reducers/signalRReducer'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
@@ -24,18 +24,12 @@ const testSignalRConnectedNoMessages = {
 }
 
 const testSignalR = (status) => ({
-    connectionStatus: status,
+    connectionStatus: status
 })
 
 
 
-function setup(testSignalR, mockDispatch) {
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<NavNotifs signalR={testSignalR} dispatch={mockDispatch}/>)
-    let output = renderer.getRenderOutput()
-    return output
-}
-
+const setup = (signalR, dispatch) => createComponent(NavNotifs, {signalR, dispatch})
 
 
 describe('NavNotifs', function test () {

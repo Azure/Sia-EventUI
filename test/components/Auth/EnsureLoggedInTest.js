@@ -1,18 +1,16 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import CreateComponent from '../../helpers/shallowRenderHelper'
+import createComponent from '../../helpers/shallowRenderHelper'
 import GetMockADAL from '../../helpers/mockAdal'
 import GetMockStore from '../../helpers/mockReduxStore'
 import { EnsureLoggedInContainer, mapStateToProps } from '../../../src/components/Auth/EnsureLoggedIn'
 import Login from '../../../src/components/Auth/Login'
 import LoginError from '../../../src/components/Auth/LoginError'
 
-function setup(props, children) {
-    return CreateComponent(EnsureLoggedInContainer, props, ...children)
-}
+const setup = (props, children) => createComponent(EnsureLoggedInContainer, props, children)
 
-const children = [<div></div>]
+const children = <div></div>
 
 const errorState = {
     error: 'Test Error',
@@ -32,6 +30,8 @@ const loggedInState = {
     ADAL: GetMockADAL(null),
     store: GetMockStore({auth:{error:'Test Error'}})
 }
+
+
 
 describe('EnsureLoggedIn', function test () {
     beforeEach( () => {

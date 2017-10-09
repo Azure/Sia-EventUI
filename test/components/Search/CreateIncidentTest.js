@@ -3,27 +3,19 @@ import { expect } from 'chai'
 import { CreateIncident, mapStateToProps } from '../../../src/components/Search/CreateIncident'
 import FlatButtonStyled from '../../../src/components/elements/FlatButtonStyled'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
 import createComponent from '../../helpers/shallowRenderHelper'
 import { TextField } from 'material-ui'
 
 function mockDispatch (object) { }
 
-function setup (input, creationError) {
+const setup = (input, creationError) => {
     let props = {
         dispatch: mockDispatch,
         input,
         creationError
     }
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<CreateIncident {...props}/>)
-    let output = renderer.getRenderOutput()
 
-    return {
-        props,
-        output,
-        renderer
-    }
+    return createComponent(CreateIncident, props)
 }
 
 describe('CreateIncident', function testCreateIncident () {
@@ -31,9 +23,9 @@ describe('CreateIncident', function testCreateIncident () {
         this.testError = 'Test Error'
         this.testInput = '10'
 
-        this.defaultCase = setup('','').output
-        this.withError = setup('',this.testError).output
-        this.withInput = setup(this.testInput, '').output
+        this.defaultCase = setup('','')
+        this.withError = setup('',this.testError)
+        this.withInput = setup(this.testInput, '')
     })
 
     it('Should render a div with text field and FlatButtonStyled', function createIncidentRenderDiv () {

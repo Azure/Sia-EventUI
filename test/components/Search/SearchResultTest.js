@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai';
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import { SearchResult, setLensColor } from '../../../src/components/Search/SearchResult'
 import Engagements from '../../../src/components/Engagements'
 import { Link } from 'react-router-dom'
@@ -28,24 +28,13 @@ const inputIncident = {
 
 }
 
-function setup(incident, ticket, dispatch) {
+const setup = (incident, ticket, dispatch) => createComponent(SearchResult, {incident, ticket, dispatch})
 
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<SearchResult incident={incident} ticket={ticket} dispatch={dispatch}/>)
-    let output = renderer.getRenderOutput()
-
-    return {
-        output,
-        renderer
-    }
-}
 
 describe('Search Result', function test () {
     beforeEach( () => {
-        const outputWithInfo = setup(inputIncident, inputTicketWithInfo).output
-        this.outputWithInfo = outputWithInfo
-        const outputEmpty = setup(inputIncident, inputTicketEmpty).output
-        this.outputEmpty = outputEmpty
+        this.outputWithInfo = setup(inputIncident, inputTicketWithInfo)
+        this.outputEmpty = setup(inputIncident, inputTicketEmpty)
     })
 
     it('Should render a ListItem', () => {
