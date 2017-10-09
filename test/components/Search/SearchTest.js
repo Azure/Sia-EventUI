@@ -81,8 +81,8 @@ const withFilterState = {
 
 describe('Search mapStateToProps', function test () {
     beforeEach( () => {
-        this.noFilterResult = mapStateToProps(noFilterState)(testIncidentActions, testEngagementActions)
-        this.withFilterResult = mapStateToProps(withFilterState)(testIncidentActions, testEngagementActions)
+        this.noFilterResult = mapStateToProps(testIncidentActions, testEngagementActions)(noFilterState)
+        this.withFilterResult = mapStateToProps(testIncidentActions, testEngagementActions)(withFilterState)
     })
 
     it('Should return the full list when no filter is applied', () => {

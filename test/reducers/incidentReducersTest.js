@@ -1,5 +1,6 @@
 'use strict'
-import { expect } from 'chai';
+import moment from 'moment'
+import { expect } from 'chai'
 import * as incidentActions from '../../src/actions/incidentActions.js'
 import { map, creation } from '../../src/reducers/incidentReducers.js'
 
@@ -106,6 +107,33 @@ const creationWithErrorState = {
     error: 'test value'
 }
 
+const receiveIncident = incident => ({
+    type: incidentActions.RECEIVE_INCIDENT,
+    incident
+})
+
+const receiveIncidents = incidents => ({
+    type: incidentActions.RECEIVE_INCIDENTS,
+    incidents,
+    receivedAt: moment()
+})
+
+const createIncident = incident => ({
+    type: incidentActions.CREATE_INCIDENT_SUCCESS,
+    incident
+})
+
+const tryCreateIncident = (ticketId, ticketSystem) => ({
+    type: incidentActions.TRY_CREATE_INCIDENT,
+    ticketId,
+    ticketSystem
+})
+
+const failCreateIncident = reason => ({
+    type: incidentActions.CREATE_INCIDENT_FAILURE,
+    reason
+})
+
 describe('incidentReducer', function test () {
     describe('map',  function mapTest () {
         beforeEach( () => {
@@ -114,10 +142,10 @@ describe('incidentReducer', function test () {
             this.sampleNewIncidentsId = 9
             this.createdIncidentId = 10
 
-            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, incidentActions.getIncidentActionSet(newIncident.id, dummyEventActions).succeed(newIncident))
-            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, incidentActions.getIncidentsActionSet(dummyEventActions).succeed(Object.values(replacementIncidents)))
-            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, incidentActions.createIncidentActionSet(createdIncident.ticketId, createdIncident.ticketSystemId, dummyEventActions).succeed(createdIncident))
-            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, incidentActions.getIncidentActionSet(replacingIncident.id, dummyEventActions).succeed(replacingIncident))
+            this.OnReceiveIncidentFromDefault = map(defaultStateIncidents, receiveIncident(newIncident))
+            this.OnReceiveIncidentsFromDefault = map(defaultStateIncidents, receiveIncidents(Object.values(replacementIncidents)))
+            this.OnCreateIncidentSuccessFromDefault = map(defaultStateIncidents, createIncident(createdIncident))
+            this.OnReceiveIncidentFromDefaultWithOverwrite = map(defaultStateIncidents, receiveIncident(replacingIncident))
         })
 
         it('Should add incident to map on receive incident or create incident', () => {
@@ -149,12 +177,12 @@ describe('incidentReducer', function test () {
 
             this.OnUpdateInputFromDefault = creation(creationDefaultState, incidentActions.updateIncidentCreationInput(this.newInput))
             this.OnUpdateInputFromError = creation(creationWithErrorState, incidentActions.updateIncidentCreationInput(this.newInput))
-            this.OnTryCreateIncidentFromDefault = creation(creationDefaultState, incidentActions.createIncidentActionSet('', {}).try())
-            this.OnTryCreateIncidentFromError = creation(creationWithErrorState, incidentActions.createIncidentActionSet('', {}).try())
-            this.OnFailureFromDefault = creation(creationDefaultState, incidentActions.createIncidentActionSet(null, null).fail(this.failureError))
-            this.OnFailureFromError = creation(creationWithErrorState, incidentActions.createIncidentActionSet(null, null).fail(this.failureError))
-            this.OnSuccessFromDefault = creation(creationDefaultState, incidentActions.createIncidentActionSet(null, null).succeed(createdIncident))
-            this.OnSuccessFromError = creation(creationWithErrorState, incidentActions.createIncidentActionSet(null, null).succeed(createdIncident))
+            this.OnTryCreateIncidentFromDefault = creation(creationDefaultState,tryCreateIncident('', {}))
+            this.OnTryCreateIncidentFromError = creation(creationWithErrorState, tryCreateIncident('', {}))
+            this.OnFailureFromDefault = creation(creationDefaultState, failCreateIncident(this.failureError))
+            this.OnFailureFromError = creation(creationWithErrorState, failCreateIncident(this.failureError))
+            this.OnSuccessFromDefault = creation(creationDefaultState, createIncident(createdIncident))
+            this.OnSuccessFromError = creation(creationWithErrorState, createIncident(createdIncident))
         })
 
         it('Should retain the value of error on update', () => {

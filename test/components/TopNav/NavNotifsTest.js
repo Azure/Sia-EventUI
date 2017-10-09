@@ -15,12 +15,12 @@ function mockDispatch (object) { }
 
 const testSignalRConnectedWithMessages = {
     connectionStatus: connectionStatuses.connected,
-    pendingMEssages: [{}]
+    pendingMessages: [{}]
 }
 
 const testSignalRConnectedNoMessages = {
     connectionStatus: connectionStatuses.connected,
-    pendingMEssages: []
+    pendingMessages: null
 }
 
 const testSignalR = (status) => ({
@@ -43,24 +43,24 @@ describe('NavNotifs', function test () {
         this.testSignalRConnectedWithMessages = setup(testSignalRConnectedWithMessages)
         this.testSignalRConnectedNoMessages = setup(testSignalRConnectedNoMessages)
         this.testSignalRNotEstablished = setup(testSignalR(connectionStatuses.notEstablished))
-        this.testSignalRDisconnecteds = setup(connectionStatuses.disconnected)
-        this.testSignalRError = setup(connectionStatuses.error)
+        this.testSignalRDisconnecteds = setup(testSignalR(connectionStatuses.disconnected))
+        this.testSignalRError = setup(testSignalR(connectionStatuses.error))
     })
 
     it('Should render an IconButton with correct child icon', () => {
         expect(this.testSignalRConnectedWithMessages.type).to.equal(IconButton)
-        expect(this.testSignalRConnectedWithMessages.children.type).to.equal(Notifications)
+        expect(this.testSignalRConnectedWithMessages.props.children.type).to.equal(Notifications)
 
         expect(this.testSignalRConnectedNoMessages.type).to.equal(IconButton)
-        expect(this.testSignalRConnectedNoMessages.children.type).to.equal(NotificationsNone)
+        expect(this.testSignalRConnectedNoMessages.props.children.type).to.equal(NotificationsNone)
 
         expect(this.testSignalRNotEstablished.type).to.equal(IconButton)
-        expect(this.testSignalRNotEstablished.children.type).to.equal(Sync)
+        expect(this.testSignalRNotEstablished.props.children.type).to.equal(Sync)
 
         expect(this.testSignalRDisconnecteds.type).to.equal(IconButton)
-        expect(this.testSignalRDisconnecteds.children.type).to.equal(SyncDisabled)
+        expect(this.testSignalRDisconnecteds.props.children.type).to.equal(SyncDisabled)
 
         expect(this.testSignalRError.type).to.equal(IconButton)
-        expect(this.testSignalRError.children.type).to.equal(SyncProblem)
+        expect(this.testSignalRError.props.children.type).to.equal(SyncProblem)
     })
 })
