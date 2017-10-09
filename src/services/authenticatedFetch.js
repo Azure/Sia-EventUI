@@ -1,7 +1,9 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
-import { clientId } from './adalService'
 import PromiseRetry from 'promise-retry'
 import * as authActions from '../actions/authActions'
+
+// eslint-disable-next-line no-undef
+export const clientId = CLIENT_ID //From config
 
 // eslint-disable-next-line no-undef
 const defaultBasePath = BASE_URL
