@@ -7,7 +7,6 @@
  */
 const React = require('react')
 const TestUtils = require('react-dom/test-utils')
-
 /**
  * Get the shallow rendered component
  *
@@ -17,7 +16,7 @@ const TestUtils = require('react-dom/test-utils')
  * @return {Object} Shallow rendered output
  */
 export default function createComponent(component, props = {}, ...children) {
-  const shallowRenderer = TestUtils.createRenderer()
+  //const shallowRenderer = TestUtils.createRenderer()
   shallowRenderer.render(React.createElement(component, props, children.length > 1 ? children : children[0]))
   return shallowRenderer.getRenderOutput()
 }

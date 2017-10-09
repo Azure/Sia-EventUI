@@ -34,4 +34,3 @@ export const userSignedIn =
     }
     setTimeout(siaContext.dispatch, null, authActions.onLoginActions(siaContext.authContext))
   }
-
