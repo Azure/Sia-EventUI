@@ -18,6 +18,7 @@ export const onLogoutActions = (authContext) => (dispatch) => {
 
 export const startLogin = (authContext) => (dispatch) => {
     dispatch(loginInProgress())
+    debugger
     authContext.login()
 }
 

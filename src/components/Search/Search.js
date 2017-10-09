@@ -42,7 +42,9 @@ export const mapStateToProps = (incidentActions, engagementActions) => (state) =
         dataSource,
         filteredDataSource,
         queryString: state.tickets.query,
-        ticketSystem: state.tickets.systems[1]
+        ticketSystem: state.tickets.systems[1],
+        incidentActions,
+        engagementActions
     }
 }
 

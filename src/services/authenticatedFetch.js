@@ -1,5 +1,7 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
+import { clientId } from './adalService'
 import PromiseRetry from 'promise-retry'
+import * as authActions from '../actions/authActions'
 
 // eslint-disable-next-line no-undef
 const defaultBasePath = BASE_URL
@@ -84,17 +86,32 @@ const initWithContent = (init, unserializedBody, method = 'POST')  => {
     }
 }
 
-const tokenPromise = (siaContext) => new Promise((resolve, reject) => {
-    siaContext.authContext.acquireToken(clientId, callbackBridge(resolve, reject))
-  }).catch((reason)=> {
-    if(reason && reason === 'User login is required'){
-      return new Promise((innerResolve, innerReject) => {
-        siaContext.dispatch(authActions.loginInProgress())
-        siaContext.authContext.callback = callbackBridge(dispatchOnResolve(innerResolve, dispatch, authActions.userLoggedIn()), innerReject)
-        siaContext.authContext.login()
-      })
+const tokenPromise = (siaContext) => new Promise(
+    (resolve, reject) => {
+        siaContext.authContext.acquireToken(clientId, callbackBridge(resolve, reject))
+    }).catch((reason)=> {
+        if(reason && reason === 'User login is required'){
+        return new Promise((innerResolve, innerReject) => {
+            siaContext.dispatch(authActions.loginInProgress())
+            siaContext.authContext.callback = callbackBridge(dispatchOnResolve(innerResolve, siaContext.dispatch, authActions.userLoggedIn()), innerReject)
+            siaContext.authContext.login()
+        })
+        }
     }
-  })
+)
+
+const dispatchOnResolve = (resolve, dispatch, action) => (reason) => {
+    dispatch(action)
+    resolve(reason)
+}
+
+const callbackBridge = (resolve, reject) => (errDesc, token) => {
+    if(errDesc){
+        reject(errDesc)
+        return
+    }
+    resolve(token)
+}
 
 const httpResponseNeedsRetry = (response) => response.status >= 400
 

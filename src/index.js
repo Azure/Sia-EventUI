@@ -26,17 +26,19 @@ import incidentRedirect from './components/Incident/incidentRedirect'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
-import { authContext, clientId, siaContext } from './services/adalService'
-import signalR from './services/signalRService'
+import { authContext, clientId, generateSiaContext } from './services/adalService'
+import establishSignalRConnection from './services/signalRService'
+
+const authenticationContext = authContext
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 export const store = createStore(incidentApp(authContext, clientId), composeEnhancers(applyMiddleware(thunk)))
 
-const signalRConnection = signalR(store.dispatch)
-const siaContext = siaContext(store.dispatch)
+establishSignalRConnection(store.dispatch)
+const siaContext = generateSiaContext(authenticationContext, store.dispatch)
 
 const eventActions = eventActionInitializer(siaContext)
-const incidentActions = incidentActionInitializer(context, eventActions)
+const incidentActions = incidentActionInitializer(siaContext, eventActions)
 const engagementActions = engagementActionInitializer(siaContext)
 
 ListenForScreenSize(window, store)

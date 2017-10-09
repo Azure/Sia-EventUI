@@ -83,7 +83,7 @@ export const getEventsActionSet = (siaContext) => (incidentId) => ({
             dispatch(reduxBackedPromise(
                 authenticatedFetch(siaContext),
                 [linksHeader.NextPageLink],
-                getEventsActionSet(incidentId)
+                getEventsActionSet(siaContext)(incidentId)
             ))
         }
         else{

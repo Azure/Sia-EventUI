@@ -15,7 +15,7 @@ export const authContext = new AuthenticationContext({
       popUp: true
   })
 
-export const siaContext = (authContext, dispatch) => {
+export const generateSiaContext = (authContext, dispatch) => {
   const context = ({
     authContext,
     dispatch
@@ -23,9 +23,9 @@ export const siaContext = (authContext, dispatch) => {
 
   context.authContext.callback = userSignedIn(context)
   return context
-} 
+}
 
-export const userSignedIn = 
+export const userSignedIn =
   (siaContext) =>
   (err) => {
     if (err) {
@@ -35,16 +35,3 @@ export const userSignedIn =
     setTimeout(siaContext.dispatch, null, authActions.onLoginActions(siaContext.authContext))
   }
 
-
-const callbackBridge = (resolve, reject) => (errDesc, token) => {
-  if(errDesc){
-    reject(errDesc)
-    return
-  }
-  resolve(token)
-}
-
-const dispatchOnResolve = (resolve, dispatch, action) => (reason) => {
-  dispatch(action)
-  resolve(reason)
-}

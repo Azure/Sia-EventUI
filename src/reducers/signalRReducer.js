@@ -18,7 +18,7 @@ const signalRReducer = (state = defaultState, action) => {
         case signalRActions.ESTABLISH_CONNECTION_TRY:
             return {
                 ...state,
-                connectionStatus: connectionStatuses.connecting,
+                connectionStatus: connectionStatuses.connecting
             }
         case signalRActions.ESTABLISH_CONNECTION_FAIL:
             return {

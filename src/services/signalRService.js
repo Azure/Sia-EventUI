@@ -2,11 +2,12 @@ import * as signalR from '@aspnet/signalr-client'
 import { getEventActionSet } from '../actions/eventActions'
 import * as signalRActions from '../actions/signalRActions'
 
+// eslint-disable-next-line no-undef
 const defaultBasePath = BASE_URL
 
 let signalRConnectionSingleton
 
-export const getSignalRConnection = (dispatch) => {
+export const establishSignalRConnection = (dispatch) => {
     if(!signalRConnectionSingleton) {
         resetSignalRConnection(dispatch)
     }
@@ -46,4 +47,4 @@ const startConnection = (connection, dispatch) => {
             (error) => dispatch(signalRActions.failEstablishConnection(error.message, error.stack)))
 }
 
-export default getSignalRConnection
+export default establishSignalRConnection
