@@ -6,6 +6,7 @@ let webpack = require('webpack')
 let baseConfig = require('./base')
 let defaultSettings = require('./defaults')
 let constants = require('./dist.const');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 // Add needed plugins here
 let BowerWebpackPlugin = require('bower-webpack-plugin')
@@ -31,7 +32,12 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    new UglifyJSPlugin({
+      parallel: {
+          cache: true,
+          workers: 2
+      }
+  }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.NoErrorsPlugin()

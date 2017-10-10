@@ -5,6 +5,7 @@ import incidents from './incidentReducers'
 import engagements from './engagementReducer'
 import events from './eventReducer'
 import expandSection from './expandSectionReducer'
+import signalR from './signalRReducer'
 
 const rootReducer = combineReducers({
     incidents,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     tickets,
     engagements,
     events,
-    expandSection
+    expandSection,
+    signalR
 })
 
 export default rootReducer

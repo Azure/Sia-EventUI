@@ -74,6 +74,7 @@ export const systems = (state = defaultSystems, action) => {
 }
 
 const defaultPreferences = {
+    // eslint-disable-next-line no-undef
     refreshIntervalInSeconds: TICKET_REFRESH_INTERVAL
 }
 

@@ -2,11 +2,16 @@ import { tokenPromise } from './adalService'
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
 
+// eslint-disable-next-line no-undef
 const defaultBasePath = BASE_URL
 const defaultOptions = {
+    // eslint-disable-next-line no-undef
     retries: RETRIES,
+    // eslint-disable-next-line no-undef
     factor: RETRY_EXPONENTIAL_BACKOFF_FACTOR,
+    // eslint-disable-next-line no-undef
     minTimeout: RETRY_MIN_TIMEOUT,
+    // eslint-disable-next-line no-undef
     maxTimeout: RETRY_MAX_TIMEOUT
 }
 

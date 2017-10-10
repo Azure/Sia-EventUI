@@ -27,7 +27,7 @@ const EventFilter = ({pagination, dispatch}) =>  {
               ? <ArrowDown/>
               : <ArrowUp/>
             }
-          </IconButtonStyled>        
+          </IconButtonStyled>
         </div>
 
 }

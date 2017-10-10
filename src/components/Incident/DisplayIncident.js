@@ -11,6 +11,8 @@ import Engagements from '../Engagements'
 import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
 import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
+import EventFilter from '../timeline/EventFilter'
+import EventFooter from '../timeline/EventFooter'
 import { connect } from 'react-redux'
 import * as expandSectionActions from '../../actions/expandSectionActions'
 

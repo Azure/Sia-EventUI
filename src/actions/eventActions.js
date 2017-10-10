@@ -1,6 +1,6 @@
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
+import { authenticatedFetch } from '../services/authenticatedFetch'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -12,6 +12,7 @@ export const RECEIVE_EVENTS_FAILURE = 'RECEIVE_EVENTS_FAILURE'
 export const ADD_EVENT = 'ADD_EVENT'
 
 export const pagination = paginationActions(EVENTS)
+export const linksHeaderName = 'links'
 
 const makeSearchable = (event) => ({
     ...event,
@@ -55,10 +56,10 @@ export const getEventsActionSet = (incidentId) => ({
     }),
 
     succeed: (events, response) => (dispatch) => {
-        let paginationHeader
+        let linksHeader
         for (let header of response.headers){
-            if(header[0] === 'x-pagination'){
-                paginationHeader = JSON.parse(header[1])
+            if(header[0] === linksHeaderName){
+                linksHeader = JSON.parse(header[1])
             }
         }
 
@@ -66,14 +67,14 @@ export const getEventsActionSet = (incidentId) => ({
             type: RECEIVE_EVENTS,
             events: events.map(event => makeSearchable(event)),
             incidentId,
-            pagination: paginationHeader
+            pagination: linksHeader
         })
 
 
-        if(paginationHeader.NextPageLink){
+        if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
                 authenticatedFetch,
-                [paginationHeader.NextPageLink],
+                [linksHeader.NextPageLink],
                 getEventsActionSet(incidentId)
             ))
         }
