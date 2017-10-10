@@ -1,6 +1,6 @@
 module.exports = {
 
-    baseUrl: JSON.stringify("http://localhost:50000"),
+    baseUrl: JSON.stringify("http://localhost:50000/"),
 
     authRedirectUri: JSON.stringify("http://localhost:3000"),
 
