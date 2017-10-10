@@ -13,7 +13,7 @@ const handleUpdateEvent = (dispatch, key) => (value) => event => {
 
 export const addEventDialog = ({dispatch, form, args}) => <Dialog
         title='Please enter a custom event:'
-        actions={addEventDialogOptions(dispatch, form[selectedIncidentIdKey])}
+        actions={addEventDialogOptions(dispatch)}
         open={true}
         modal={false}
         onRequestClose={() => dispatch(popupActions.hidePopup())}
@@ -29,7 +29,7 @@ export const addEventDialog = ({dispatch, form, args}) => <Dialog
     </Dialog>
 
 
-export const addEventDialogOptions = (dispatch, selectedIncidentId) => [
+export const addEventDialogOptions = (dispatch) => [
     <FlatButtonStyled
         label='Cancel'
         onTouchTap={() => dispatch(popupActions.hidePopup())}

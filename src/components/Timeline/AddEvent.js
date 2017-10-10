@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addEvent } from '../../actions/eventActions'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
 import * as formActions from '../../actions/formActions'
 import * as popupActions from '../../actions/popupActions'
@@ -20,7 +19,7 @@ let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateS
           )
         }
         {EventLabel(eventInput, updateEventInput)}
-        <RaisedButtonStyled 
+        <RaisedButtonStyled
           onTouchTap={() => {
             dispatch(popupActions.hidePopup())
             dispatch(postEvent(selectedIncidentId))
@@ -31,15 +30,6 @@ let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateS
         </RaisedButtonStyled>
     </div>
   )
-}
-
-const OnFormSubmit = (eventInput, selectedIncidentId, updateEventInput, dispatch) => (event) => {
-    event.preventDefault()
-    if (!eventInput.value.trim()) {
-      return
-    }
-    dispatch(addEvent(eventInput, selectedIncidentId))
-    updateEventInput('')
 }
 
 const IncidentIdLabel = (ticketId, incidentId, selectedIncidentId, updateSelectedIncidentId) => {
