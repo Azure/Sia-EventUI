@@ -8,7 +8,7 @@ export const CompareIncidents = (firstIncident, firstTicket, firstTicketSystem, 
         IncidentSummary(secondIncident, secondTicket, secondTicketSystem, dispatch),
         IncidentProgress(firstTicket.originId),
         IncidentProgress(secondTicket.originId),
-        IncidentEvents(ticketIdToIncidentIdMap)
+        IncidentEvents(ticketIdToIncidentIdMap, dispatch)
     ])
 }
 

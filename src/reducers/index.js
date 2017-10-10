@@ -5,6 +5,8 @@ import incidents from './incidentReducers'
 import engagements from './engagementReducer'
 import events from './eventReducer'
 import signalR from './signalRReducer'
+import popup from './popupReducer'
+import forms from './formReducer'
 
 const rootReducer = combineReducers({
     incidents,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     tickets,
     engagements,
     events,
-    signalR
+    signalR,
+    popup,
+    forms
 })
 
 export default rootReducer

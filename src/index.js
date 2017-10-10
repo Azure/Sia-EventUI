@@ -25,6 +25,7 @@ import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { ADAL } from './services/adalService'
 import signalR from './services/signalRService'
+import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 export const store = createStore(incidentApp, composeEnhancers(applyMiddleware(thunk)))
@@ -45,7 +46,8 @@ class MainComponent extends React.Component {
             <EnsureLoggedInContainer ADAL={ADALInstance}>
               <Router history={history} >
                 <div>
-                  <TopNav />
+                  <Popups/>
+                  <TopNav/>
                   <Route exact path="/" component={Search} />
                   <Route exact path="/tickets/:ticketId" component={Ticket} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />

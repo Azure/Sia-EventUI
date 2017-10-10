@@ -16,7 +16,7 @@ export const DisplayIncident = (incident, ticket, ticketSystem, dispatch) => {
     return GridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(incident, ticket, ticketSystem, dispatch),
         IncidentProgress(),
-        IncidentEvents([[ticket.originId, incident.id]])
+        IncidentEvents([[ticket.originId, incident.id]], dispatch)
     ])
 }
 
@@ -100,12 +100,12 @@ export const IncidentProgress = (ticketId) => {
             ]
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap) => {
+export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
     return [
         [
             [
                 (key) =>
-                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key}/>,
+                    <EventDialogControl incidentIds={ticketToIncidentIdMap} dispatch={dispatch} key={key}/>,
                 (key) =>
                     <IconButtonStyled tooltip="Collapse/expand section" key={key}>
                         <CodeIcon />
