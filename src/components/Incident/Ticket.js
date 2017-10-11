@@ -44,7 +44,7 @@ class Ticket extends Component {
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
-            return (DisplayIncident(engagementActions, incident, ticket, ticketSystem, dispatch))
+            return <DisplayIncident engagementActions={engagementActions} incident={incident} ticket={ticket} ticketSystem={ticketSystem} />
         }
         return (
             <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>

@@ -4,6 +4,7 @@ import auth from './authReducer'
 import incidents from './incidentReducers'
 import engagements from './engagementReducer'
 import events from './eventReducer'
+import expandSection from './expandSectionReducer'
 import signalR from './signalRReducer'
 
 const rootReducer = (authContext, clientId) => combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = (authContext, clientId) => combineReducers({
     tickets,
     engagements,
     events,
+    expandSection,
     signalR
 })
 

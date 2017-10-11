@@ -1,13 +1,14 @@
 const express = require('express');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const webpack = require('webpack');
-const webpackConfig = require('./webpack.config');
 const path = require('path');
 const app = express();
 
-const compiler = webpack(webpackConfig);
+
 if (process.env.NODE_ENV != 'dist') {
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpack = require('webpack');
+    const webpackConfig = require('./webpack.config');
+    const compiler = webpack(webpackConfig);
     app.use(webpackDevMiddleware(compiler, {
         hot: true,
         filename: 'app.js',
