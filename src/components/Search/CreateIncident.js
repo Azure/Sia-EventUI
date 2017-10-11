@@ -13,6 +13,7 @@ const onSubmit = (ticketLookup, input, dispatch, ticketSystem) => () => {
     {
         dispatch(incidentActions.postIncident(input, ticketSystem))
     }
+    window.location.replace(window.location + 'tickets/' + input)
 }
 
 export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, dispatch}) => {
@@ -39,6 +40,5 @@ export function mapStateToProps(state){
         creationError: state.incidents.creation.error ? state.incidents.creation.error.message : ''
     }
 }
-
 
 export default connect(mapStateToProps)(CreateIncident)
