@@ -4,6 +4,7 @@ import auth from './authReducer'
 import incidents from './incidentReducers'
 import engagements from './engagementReducer'
 import events from './eventReducer'
+import expandSection from './expandSectionReducer'
 import signalR from './signalRReducer'
 import popup from './popupReducer'
 import forms from './formReducer'
@@ -14,9 +15,10 @@ const rootReducer = combineReducers({
     tickets,
     engagements,
     events,
-    signalR,
     popup,
     forms
+    expandSection,
+    signalR
 })
 
 export default rootReducer
