@@ -4,7 +4,7 @@ import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import * as incidentActions from '../../actions/incidentActions.js'
 
-const onSubmit = (ticketLookup, input, dispatch, ticketSystem) => () => {
+const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history) => () => {
     if(ticketLookup[input])
     {
         dispatch(incidentActions.duplicateIncident(input))
@@ -13,9 +13,10 @@ const onSubmit = (ticketLookup, input, dispatch, ticketSystem) => () => {
     {
         dispatch(incidentActions.postIncident(input, ticketSystem))
     }
+    history.push(/tickets/ + input)
 }
 
-export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, dispatch}) => {
+export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, history, dispatch}) => {
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
@@ -26,7 +27,7 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
         />
         <FlatButtonStyled
             label='Submit'
-            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem)}
+            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem, history)}
         />
     </div>
 }
@@ -39,6 +40,5 @@ export function mapStateToProps(state){
         creationError: state.incidents.creation.error ? state.incidents.creation.error.message : ''
     }
 }
-
 
 export default connect(mapStateToProps)(CreateIncident)
