@@ -18,17 +18,24 @@ const defaultSystems = {
 
 const parseTicketsFromIncident = (incident) => {
     var associatedTickets = incident.tickets ? [...incident.tickets] : []
-    associatedTickets.push(incident.primaryTicket)
-    associatedTickets.map(parseTicketFromIncident(incident))
+    if(incident.primaryTicket) {
+        associatedTickets.push(incident.primaryTicket)
+    }
+    if(associatedTickets.length) {
+        associatedTickets.map(parseTicketFromIncident(incident))
+    }
+    
     return associatedTickets
 }
 
 const parseTicketFromIncident = (incident) => (ticket) => {
-    ticket.incidentId = incident.id,
-    ticket.status = 'Active',
-    ticket.title = incident.title,
-    ticket.primaryTicketId = incident.primaryTicket.id
-    ticket.lastRefresh = moment()
+    if(ticket) {
+        ticket.incidentId = incident.id,
+        ticket.status = 'Active',
+        ticket.title = incident.title,
+        ticket.primaryTicketId = incident.primaryTicket.id
+        ticket.lastRefresh = moment()
+    }
 }
 
 const addIncidentToState = (state, incident) => {
@@ -60,7 +67,10 @@ export const query = (state = defaultQueryString, action) => {
         case UPDATE_TICKET_QUERY:
             return action.ticketQuery
         case CREATE_INCIDENT_SUCCESS:
-            return action.incident.primaryTicket.originId.toString()
+            if(action && action.incident && action.incident.primaryTicket && action.incident.primaryTicket.originId) {
+                return action.incident.primaryTicket.originId.toString()
+            } 
+            else return state
         default:
             return state
     }

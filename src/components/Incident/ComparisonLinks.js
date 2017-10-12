@@ -28,6 +28,7 @@ export const mapStateToProps = (state, ownProps) => {
     const { ticketId } = ownProps
     const thisIncidentId = state.tickets.map[ticketId].incidentId
     const otherIncidentTicketIds = Object.values(state.incidents.map)
+        .filter(incident => incident && incident.primaryTicket && incident.primaryTicket.originId)
         .filter(incident => incident.id !== thisIncidentId)
         .map(incident => incident.primaryTicket.originId)
     return {
