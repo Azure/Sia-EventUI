@@ -152,7 +152,7 @@ const postIncidentFetchArgs = (ticketId, ticketSystem) => [
             {
                 title: 'placeholder',
                 primaryTicket: {
-                    originId: Number.parseInt(ticketId),
+                    originId: ticketId,
                     ticketingSystemId: ticketSystem.id
                 }
             }
