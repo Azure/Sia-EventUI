@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { addEvent } from '../../actions/eventActions'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
-
+import * as formActions from '../../actions/formActions'
+import * as popupActions from '../../actions/popupActions'
+import { postEvent } from '../../actions/eventActions'
+import { addEventFormName } from '../Incident/EventDialogControl'
 
 let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateSelectedIncidentId, updateEventInput }) => {
   return (
     <div>
-      <form onSubmit={OnFormSubmit(eventInput, selectedIncidentId, updateEventInput, dispatch)}>
         <span> Associated Ticket:</span>
         {incidentIds.map(ticketIdToIncidentIdMap =>
           IncidentIdLabel(
@@ -18,35 +19,34 @@ let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateS
           )
         }
         {EventLabel(eventInput, updateEventInput)}
-        <RaisedButtonStyled type="submit" primary={false}>
+        <RaisedButtonStyled
+          onTouchTap={() => {
+            dispatch(popupActions.hidePopup())
+            dispatch(postEvent(selectedIncidentId))
+            dispatch(formActions.clearForm(addEventFormName))
+          }}
+        >
           Add Event
         </RaisedButtonStyled>
-      </form>
     </div>
   )
 }
 
-const OnFormSubmit = (eventInput, selectedIncidentId, updateEventInput, dispatch) => (event) => {
-    event.preventDefault()
-    if (!eventInput.value.trim()) {
-      return
-    }
-    dispatch(addEvent(eventInput, selectedIncidentId))
-    updateEventInput('')
-}
+const IncidentIdLabel = (ticketId, incidentId, selectedIncidentId, updateSelectedIncidentId) => {
 
-const IncidentIdLabel = (ticketId, incidentId, selectedIncidentId, updateSelectedIncidentId) => <label key={ticketId}>
+  return <label key={ticketId}>
               {ticketId}
               <input
                 name="incidentId"
                 id={`incidentIdFor${ticketId}`}
                 type="radio"
                 style={{width: '74%'}}
-                onChange={(e) => updateSelectedIncidentId(e)}
+                onChange={updateSelectedIncidentId(incidentId)}
                 value={incidentId}
                 checked={incidentId === selectedIncidentId}
               />
             </label>
+}
 
 const EventLabel = (eventInput, updateEventInput) => <label>
           Event:
@@ -54,7 +54,7 @@ const EventLabel = (eventInput, updateEventInput) => <label>
             name="event"
             type="text"
             style={{width: '74%'}}
-            onChange={(e) => updateEventInput(e)}
+            onChange={updateEventInput()}
             value={eventInput}
           />
         </label>

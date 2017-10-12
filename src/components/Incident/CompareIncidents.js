@@ -11,12 +11,14 @@ export const CompareIncidents = (firstIncident, firstTicket, firstTicketSystem, 
         IncidentEvents(ticketIdToIncidentIdMap, dispatch)
     ],
     [
-        expandSection[IncidentSummaryName(firstTicket.originId)],
-        expandSection[IncidentSummaryName(secondTicket.originId)],
-        expandSection[IncidentProgressName(firstTicket.originId)],
-        expandSection[IncidentProgressName(secondTicket.originId)],
-        expandSection[IncidentEventsName()]
-    ])
+        IncidentSummaryName(firstTicket.originId),
+        IncidentSummaryName(secondTicket.originId),
+        IncidentProgressName(firstTicket.originId),
+        IncidentProgressName(secondTicket.originId),
+        IncidentEventsName()
+    ],
+    expandSection,
+    dispatch)
 }
 
 export default CompareIncidents

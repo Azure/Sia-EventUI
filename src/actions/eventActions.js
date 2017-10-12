@@ -1,6 +1,7 @@
+import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch } from '../services/authenticatedFetch'
+import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -9,15 +10,15 @@ export const RECEIVE_EVENT_FAILURE = 'RECEIVE_EVENT_FAILURE'
 export const REQUEST_EVENTS = 'REQUEST_EVENTS'
 export const RECEIVE_EVENTS = 'RECEIVE_EVENTS'
 export const RECEIVE_EVENTS_FAILURE = 'RECEIVE_EVENTS_FAILURE'
+export const POST_EVENT_TRY = 'POST_EVENT_TRY'
+export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
+export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
 
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
-const makeSearchable = (event) => ({
-    ...event,
-    filterableIncidentId: event.incidentId.toString()
-})
+
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -29,7 +30,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
     succeed: (event) => (dispatch) => {
         dispatch({
             type: RECEIVE_EVENT,
-            event: makeSearchable(event)
+            event
         })
         
         dispatch(updatePagination())
@@ -65,7 +66,7 @@ export const getEventsActionSet = (incidentId) => ({
 
         dispatch({
             type: RECEIVE_EVENTS,
-            events: events.map(event => makeSearchable(event)),
+            events,
             incidentId,
             pagination: linksHeader
         })
@@ -101,3 +102,40 @@ export const addEvent = (event, incidentId) => ({
     incidentId,
     event
 })
+
+export const postEventActionSet = (incidentId) => ({
+    try: () => ({
+        type: POST_EVENT_TRY,
+        incidentId
+    }),
+
+    succeed: (event) => dispatch => {
+        dispatch({
+            type: POST_EVENT_SUCCEED,
+            incidentId,
+            event
+        })
+
+        dispatch(updatePagination())
+    },
+
+    fail: (failureReason) => ({
+        type: POST_EVENT_FAIL,
+        incidentId,
+        failureReason
+    })
+})
+
+
+export const postEvent = (incidentId, eventTypeId = 0, occurrenceTime = moment()) => reduxBackedPromise(
+    authenticatedPost,
+    [
+        (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
+        {
+            eventTypeId,
+            occurred: occurrenceTime,
+            eventFired: occurrenceTime
+        }
+    ],
+    postEventActionSet(incidentId)
+)
