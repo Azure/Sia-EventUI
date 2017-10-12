@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
     engagements,
     events,
     popup,
-    forms
+    forms,
     expandSection,
     signalR
 })
