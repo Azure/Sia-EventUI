@@ -121,7 +121,7 @@ export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
         [
             [
                 (key) =>
-                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key}/>
+                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key} dispatch={dispatch}/>
             ]
         ],
         [<Timeline incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}/>]
