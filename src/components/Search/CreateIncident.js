@@ -3,9 +3,8 @@ import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import * as incidentActions from '../../actions/incidentActions.js'
-import { Router, Route, Redirect} from 'react-router-dom'
 
-const onSubmit = (ticketLookup, input, dispatch, ticketSystem) => () => {
+const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history) => () => {
     if(ticketLookup[input])
     {
         dispatch(incidentActions.duplicateIncident(input))
@@ -14,29 +13,10 @@ const onSubmit = (ticketLookup, input, dispatch, ticketSystem) => () => {
     {
         dispatch(incidentActions.postIncident(input, ticketSystem))
     }
-    //window.location.replace(window.location + 'tickets/' + input)
-    /* 
-    <Router>
-        <Route path={/tickets/ + input} />
-        <Redirect push to={/tickets/ + input} />
-    </Router>
-     */
-    //dispatch(<Redirect to={/tickets/ + input} push={true} />)
-    //<Redirect to="/tickets/38502026" push={true} />
+    history.push(/tickets/ + input)
 }
 
-  const RedirectButton = () => (
-    <Route render={({ history}) => (
-      <button
-        type='button'
-        onClick={() => { history.push('/tickets/38502026') }}
-      >
-        Click Me!
-      </button>
-    )} />
-  )
-
-export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, dispatch}) => {
+export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, history, dispatch}) => {
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
@@ -47,9 +27,8 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
         />
         <FlatButtonStyled
             label='Submit'
-            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem)}
+            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem, history)}
         />
-        <RedirectButton />
     </div>
 }
 
