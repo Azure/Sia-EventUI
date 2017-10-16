@@ -32,12 +32,6 @@ export const eventActions = (siaContext) => ({
     )
 })
 
-const makeSearchable = (event) => ({
-    ...event,
-    filterableIncidentId: event.incidentId.toString()
-})
-
-
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
         type: REQUEST_EVENT,

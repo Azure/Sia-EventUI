@@ -56,6 +56,7 @@ class MainComponent extends React.Component {
               <Router history={history} >
                 <div>
                   <TopNav />
+                  <Popups />
                   <Route exact path="/" component={CreateIncident(incidentActions)} />
                   <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />

@@ -9,17 +9,13 @@ import BadgeStyled from '../elements/BadgeStyled'
 import Timeline from '../Timeline/Timeline'
 import Engagements from '../Engagements'
 import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
-import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
-import EventFilter from '../timeline/EventFilter'
-import EventFooter from '../timeline/EventFooter'
 import { connect } from 'react-redux'
-import * as expandSectionActions from '../../actions/expandSectionActions'
 
 export const DisplayIncident = ({engagementActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(engagementActions, incident, ticket, ticketSystem, null, dispatch),
-        IncidentProgress(null, dispatch),
+        IncidentProgress(null),
         IncidentEvents([[ticket.originId, incident.id]], dispatch)
     ],
     [
@@ -96,7 +92,7 @@ export const IncidentSummary = (engagementActions, incident, ticket, ticketSyste
     return incidentSummaryArray
 }
 
-export const IncidentProgress = (ticketId, dispatch) => {
+export const IncidentProgress = (ticketId) => {
     let incidentProgressArray = [
         [
             [
