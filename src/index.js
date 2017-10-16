@@ -18,7 +18,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import eventActionInitializer from './actions/eventActions'
 import incidentActionInitializer from './actions/incidentActions'
 import engagementActionInitializer from './actions/engagementActions'
-import Search from './components/Search/Search'
+import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
 import EnsureLoggedInContainer from './components/Auth/EnsureLoggedIn'
@@ -56,7 +56,7 @@ class MainComponent extends React.Component {
               <Router history={history} >
                 <div>
                   <TopNav />
-                  <Route exact path="/" component={Search(incidentActions, engagementActions)} />
+                  <Route exact path="/" component={CreateIncident(incidentActions)} />
                   <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />
                   <Route path="/incidents/:incidentId" component={incidentRedirect(incidentActions)} />

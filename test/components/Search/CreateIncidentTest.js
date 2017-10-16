@@ -71,10 +71,8 @@ const inputState = {
     }
 }
 
-const inputOwnProps = {
-    incidentActions: {
-        TestKey: 'TestValue'
-    }
+const inputIncidentActions = {
+    TestKey: 'TestValue'
 }
 
 const expectedResult = {
@@ -91,7 +89,7 @@ const expectedResult = {
 
 describe('CreateIncidentMapStateToProps', () => {
     it('Should correctly generate an args object from state', () => {
-        const result = mapStateToProps(inputState, inputOwnProps)
+        const result = mapStateToProps(inputIncidentActions)(inputState)
 
         expect(result.ticketLookup[1].id).to.equal(expectedResult.ticketLookup[1].id)
         expect(result.input).to.equal(expectedResult.input)
