@@ -28,6 +28,7 @@ import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
+import Popups from './components/Popups'
 
 const authenticationContext = authContext
 

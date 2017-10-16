@@ -21,6 +21,7 @@ const defaultOptions = {
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
     return fetch(baseUrl + relativeUrl, init)
         .then(response => {
+            const localResponse = response
             dispatch(rawHttpResponse(response))
             if(httpResponseNeedsRetry(response)) {
                 retry(`HTTP Response Needs Retry (retry ${number})`)
@@ -31,7 +32,7 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
                         .json()
                         .then(json => {
                             dispatch(jsonResult(json))
-                            return Promise.resolve({json, response})
+                            return Promise.resolve({json, response:localResponse})
                         }, err => Promise.reject(`Error parsing json: ${err}`))
                 }
                 return Promise.resolve(response)

@@ -35,7 +35,7 @@ const configureConnection = (dispatch) => {
         dispatch(getEventActionSet(event.incidentId, event.id).succeed(eventObject))
     })
 
-    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error.message, error.stack))
+    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : "No Error Message", error ? error.stack : "No Stack Trace"))
     
     return connection
 }

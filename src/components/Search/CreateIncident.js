@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 
-const onSubmit = (ticketLookup, input, dispatch, ticketSystem, incidentActions) => () => {
+const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history, incidentActions) => () => {
     if(ticketLookup[input])
     {
         dispatch(incidentActions.duplicateIncident(input))
@@ -12,9 +12,10 @@ const onSubmit = (ticketLookup, input, dispatch, ticketSystem, incidentActions) 
     {
         dispatch(incidentActions.postIncident(input, ticketSystem))
     }
+    history.push(/tickets/ + input)
 }
 
-export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, dispatch, incidentActions}) => {
+export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, history, dispatch, incidentActions}) => {
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
@@ -25,7 +26,7 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
         />
         <FlatButtonStyled
             label='Submit'
-            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem, incidentActions)}
+            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem, history, incidentActions)}
         />
     </div>
 }
@@ -39,6 +40,5 @@ export function mapStateToProps(state, ownProps){
         incidentActions: ownProps.incidentActions
     }
 }
-
 
 export default connect(mapStateToProps)(CreateIncident)
