@@ -2,11 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
-
+import { updateIncidentCreationInput, duplicateIncident } from '../../actions/incidentActions'
 const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history, incidentActions) => () => {
     if(ticketLookup[input])
     {
-        dispatch(incidentActions.duplicateIncident(input))
+        dispatch(duplicateIncident(input))
     }
     else
     {
@@ -20,7 +20,7 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
         <TextField
             hintText='Ticket Id of primary ticket'
             floatingLabelText='Create Incident'
-            onChange={(event, newValue) => dispatch(incidentActions.updateIncidentCreationInput(newValue))}
+            onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
             value={input}
             errorText={creationError}
         />

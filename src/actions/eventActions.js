@@ -29,6 +29,19 @@ export const eventActions = (siaContext) => ({
         authenticatedFetch(siaContext),
         [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
         getEventsActionSet(siaContext)(incidentId)
+    ),
+
+    postEvent: (incidentId, eventTypeId = 0, occurrenceTime = moment()) => reduxBackedPromise(
+        authenticatedPost(siaContext),
+        [
+            (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
+            {
+                eventTypeId,
+                occurred: occurrenceTime,
+                eventFired: occurrenceTime
+            }
+        ],
+        postEventActionSet(incidentId)
     )
 })
 
@@ -127,15 +140,4 @@ export const postEventActionSet = (incidentId) => ({
 })
 
 
-export const postEvent = (incidentId, eventTypeId = 0, occurrenceTime = moment()) => reduxBackedPromise(
-    authenticatedPost,
-    [
-        (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
-        {
-            eventTypeId,
-            occurred: occurrenceTime,
-            eventFired: occurrenceTime
-        }
-    ],
-    postEventActionSet(incidentId)
-)
+export default eventActions

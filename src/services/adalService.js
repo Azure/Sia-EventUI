@@ -32,5 +32,5 @@ export const userSignedIn =
       siaContext.dispatch(authActions.userLoginError(err))
       return
     }
-    setTimeout(siaContext.dispatch, null, authActions.onLoginActions(siaContext.authContext))
+    setTimeout(siaContext.dispatch, null, authActions.onLoginActions(siaContext))
   }

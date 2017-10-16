@@ -149,7 +149,7 @@ export const createIncidentActionSet = (ticketId, ticketSystem, eventActions) =>
             incident
         })
 
-        dispatch(eventActions.getEventsActionSet(incident.id).succeed(incident.events))
+        dispatch(eventActions.fetchEvents(incident.id))
     },
 
     fail: (reason) => ({
