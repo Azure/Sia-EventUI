@@ -7,3 +7,5 @@ export const Debug = ({authContext}) => {
                 onTouchTap={authContext.clearCache()}
             />)
 }
+
+export default Debug
