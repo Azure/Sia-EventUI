@@ -2,24 +2,14 @@
 import { expect } from 'chai'
 import { connect } from 'react-redux'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import Checkpoint from '../../../src/components/Incident/Checkpoint'
 import { Step, Stepper } from 'material-ui/Stepper'
 import KeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import StepperStyled from '../../../src/components/elements/StepperStyled'
 
 
-function setup() {
-
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<Checkpoint />)
-    let output = renderer.getRenderOutput()
-
-    return {
-        output,
-        renderer
-    }
-}
+const setup = () => createComponent(Checkpoint, null)
 
 const expectedStepLabels = [
     'Detect',
@@ -31,8 +21,7 @@ const expectedStepLabels = [
 
 describe('Checkpoint', function test () {
     beforeEach( () => {
-        const {output} = setup()
-        this.output = output
+        this.output = setup()
     })
 
     it('Should render a StepperStyled with correct arguments', () => {

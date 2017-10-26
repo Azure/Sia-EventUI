@@ -1,5 +1,6 @@
 'use strict'
-import { expect } from 'chai';
+import moment from 'moment'
+import { expect } from 'chai'
 import * as ticketActions from '../../src/actions/ticketActions.js'
 import * as incidentActions from '../../src/actions/incidentActions.js'
 import { map, query, systems } from '../../src/reducers/ticketReducers.js'
@@ -55,17 +56,33 @@ const replacementIncidentsList = [
     }
 ]
 
+const receiveIncident = incident => ({
+    type: incidentActions.RECEIVE_INCIDENT,
+    incident
+})
+
+const receiveIncidents = incidents => ({
+    type: incidentActions.RECEIVE_INCIDENTS,
+    incidents,
+    receivedAt: moment()
+})
+
+const createIncident = incident => ({
+    type: incidentActions.CREATE_INCIDENT_SUCCESS,
+    incident
+})
+
 const defaultQueryString = 'default'
 
 describe('Ticket Reducers', function test () {
     describe('maps reducer', function mapsTest () {
         beforeEach( () => {
-            this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, incidentActions.getIncidentsActionSet.succeed(replacementIncidentsList))
-            this.OnReceiveIncidentsFromPopulated  = map(populatedTicketList, incidentActions.getIncidentsActionSet.succeed(replacementIncidentsList))
-            this.OnCreateIncidentFromEmpty = map(emptyTicketList, incidentActions.createIncidentActionSet().succeed(replacementIncidentsList[0]))
-            this.OnCreateIncidentFromPopulated = map(populatedTicketList, incidentActions.createIncidentActionSet().succeed(replacementIncidentsList[0]))
-            this.OnReceiveIncidentFromEmpty = map(emptyTicketList, incidentActions.getIncidentActionSet().succeed(replacementIncidentsList[0]))
-            this.OnReceiveIncidentFromPopulated = map(populatedTicketList, incidentActions.getIncidentActionSet().succeed(replacementIncidentsList[0]))
+            this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, receiveIncidents(replacementIncidentsList))
+            this.OnReceiveIncidentsFromPopulated  = map(populatedTicketList, receiveIncidents(replacementIncidentsList))
+            this.OnCreateIncidentFromEmpty = map(emptyTicketList, createIncident(replacementIncidentsList[0]))
+            this.OnCreateIncidentFromPopulated = map(populatedTicketList, createIncident(replacementIncidentsList[0]))
+            this.OnReceiveIncidentFromEmpty = map(emptyTicketList, receiveIncident(replacementIncidentsList[0]))
+            this.OnReceiveIncidentFromPopulated = map(populatedTicketList, receiveIncident(replacementIncidentsList[0]))
         })
         
         it('Should replace the list of tickets on receive incidents', () => {

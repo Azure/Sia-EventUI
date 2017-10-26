@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import { Login, LoginComponentDidMount, mapStateToProps } from '../../../src/components/Auth/Login'
 import GetMockStore from '../../helpers/mockReduxStore'
 import GetMockADAL from '../../helpers/mockAdal'
@@ -18,14 +18,7 @@ function setup({isLoggedIn, loginInProgress, signInAutomatically, dispatch, ADAL
         dispatch
     }
 
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<Login {...props}/>)
-    let output = renderer.getRenderOutput()
-
-    return {
-        output,
-        renderer
-    }
+    return createComponent(Login, props)
 }
 
 const mocks = (ADALWatcher) => {
@@ -90,10 +83,10 @@ describe('Login', function test () {
         LoginComponentDidMount(this.loggedOutWithSignInCase)
         LoginComponentDidMount(this.loggedOutNoSignInCase)
 
-        this.loggedInComponent = setup(this.loggedInCase).output
-        this.loginInProgressComponent = setup(this.loginInProgressCase).output
-        this.loggedOutWithSignInComponent = setup(this.loggedOutWithSignInCase).output
-        this.loggedOutNoSignInComponent = setup(this.loggedOutNoSignInCase).output
+        this.loggedInComponent = setup(this.loggedInCase)
+        this.loginInProgressComponent = setup(this.loginInProgressCase)
+        this.loggedOutWithSignInComponent = setup(this.loggedOutWithSignInCase)
+        this.loggedOutNoSignInComponent = setup(this.loggedOutNoSignInCase)
     })
 
     it('Should attempt to log in when user is signed out and has signInAutomatically as true', () => {

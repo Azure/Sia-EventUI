@@ -7,7 +7,7 @@ export const reduxBackedPromise = (promiseGenerator, promiseArgs, actionSet) => 
 
     dispatch(actionSet.try())
 
-    return promiseGenerator(dispatch, ...promiseArgs)
+    return promiseGenerator(...promiseArgs)
         .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))
 }

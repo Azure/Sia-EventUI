@@ -9,17 +9,13 @@ import BadgeStyled from '../elements/BadgeStyled'
 import Timeline from '../Timeline/Timeline'
 import Engagements from '../Engagements'
 import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
-import CodeIcon from 'material-ui/svg-icons/action/code'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
-import EventFilter from '../timeline/EventFilter'
-import EventFooter from '../timeline/EventFooter'
 import { connect } from 'react-redux'
-import * as expandSectionActions from '../../actions/expandSectionActions'
 
-export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
+export const DisplayIncident = ({engagementActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(incident, ticket, ticketSystem, null, dispatch),
-        IncidentProgress(null, dispatch),
+        IncidentSummary(engagementActions, incident, ticket, ticketSystem, null, dispatch),
+        IncidentProgress(null),
         IncidentEvents([[ticket.originId, incident.id]], dispatch)
     ],
     [
@@ -42,7 +38,7 @@ export const IncidentEventsName = () => {
     return 'IncidentEvents'
 }
 
-export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispatch) => {
+export const IncidentSummary = (engagementActions, incident, ticket, ticketSystem, ticketId, dispatch) => {
     let incidentSummaryArray = [
         [
             [
@@ -88,6 +84,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
                 incidentId={incident.id}
                 engagements={incident.engagements}
                 dispatch={dispatch}
+                engagementActions={engagementActions}
             />
         ],
         [<ComparisonLinks ticketId={ticket.originId} />]
@@ -95,7 +92,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
     return incidentSummaryArray
 }
 
-export const IncidentProgress = (ticketId, dispatch) => {
+export const IncidentProgress = (ticketId) => {
     let incidentProgressArray = [
         [
             [

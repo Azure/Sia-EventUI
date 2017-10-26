@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import { LoginError, mapStateToProps } from '../../../src/components/Auth/LoginError'
 
 function setup() {
@@ -9,20 +9,12 @@ function setup() {
         error: 'Test Error'
     }
 
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<LoginError {...props}/>)
-    let output = renderer.getRenderOutput()
-
-    return {
-        output,
-        renderer
-    }
+    return createComponent(LoginError, props)
 }
 
 describe('LoginError', function test () {
     beforeEach( () => {
-        const {output} = setup()
-        this.output = output
+        this.output = setup()
     })
 
     it('Should render a div with error message', () => {

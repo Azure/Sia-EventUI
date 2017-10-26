@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import Link from '../../../src/components/elements/Link'
 
 
@@ -10,21 +10,15 @@ function setup(active) {
         active,
         children: []
     }
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<Link {...props}/>)
-    let output = renderer.getRenderOutput()
 
-    return {
-        output,
-        renderer
-    }
+    return createComponent(Link, props)
 }
 
 describe('Link', function test () {
     beforeEach( () => {
-        const activeOutput = setup(true).output
+        const activeOutput = setup(true)
         this.activeOutput = activeOutput
-        const inactiveOutput = setup(false).output
+        const inactiveOutput = setup(false)
         this.inactiveOutput = inactiveOutput
     })
 

@@ -69,7 +69,7 @@ export const query = (state = defaultQueryString, action) => {
         case CREATE_INCIDENT_SUCCESS:
             if(action && action.incident && action.incident.primaryTicket && action.incident.primaryTicket.originId) {
                 return action.incident.primaryTicket.originId.toString()
-            } 
+            }
             else return state
         default:
             return state

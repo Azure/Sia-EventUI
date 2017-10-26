@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
 import * as formActions from '../../actions/formActions'
 import * as popupActions from '../../actions/popupActions'
-import { postEvent } from '../../actions/eventActions'
 import { addEventFormName } from '../Incident/EventDialogControl'
 
-let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateSelectedIncidentId, updateEventInput }) => {
+const AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateSelectedIncidentId, updateEventInput, eventActions }) => {
   return (
     <div>
         <span> Associated Ticket:</span>
@@ -22,7 +21,7 @@ let AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, updateS
         <RaisedButtonStyled
           onTouchTap={() => {
             dispatch(popupActions.hidePopup())
-            dispatch(postEvent(selectedIncidentId))
+            dispatch(eventActions.postEvent(selectedIncidentId))
             dispatch(formActions.clearForm(addEventFormName))
           }}
         >
@@ -59,6 +58,6 @@ const EventLabel = (eventInput, updateEventInput) => <label>
           />
         </label>
 
-AddEvent = connect()(AddEvent)
+const ConnectedAddEvent = connect()(AddEvent)
 
-export default AddEvent
+export default ConnectedAddEvent

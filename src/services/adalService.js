@@ -15,43 +15,22 @@ export const authContext = new AuthenticationContext({
       popUp: true
   })
 
-export const ADAL = dispatch => {
-  const context = authContext
-  context.callback = userSignedIn(dispatch)
+export const generateSiaContext = (authContext, dispatch) => {
+  const context = ({
+    authContext,
+    dispatch
+  })
+
+  context.authContext.callback = userSignedIn(context)
   return context
 }
 
-export const userSignedIn = function(dispatch){
-  return function(err) {
+export const userSignedIn =
+  (siaContext) =>
+  (err) => {
     if (err) {
-      dispatch(authActions.userLoginError(err))
+      siaContext.dispatch(authActions.userLoginError(err))
       return
     }
-    setTimeout(dispatch, null, authActions.onLoginActions())
+    setTimeout(siaContext.dispatch, null, authActions.onLoginActions(siaContext))
   }
-}
-
-const callbackBridge = (resolve, reject) => (errDesc, token) => {
-  if(errDesc){
-    reject(errDesc)
-    return
-  }
-  resolve(token)
-}
-
-const dispatchOnResolve = (resolve, dispatch, action) => (reason) => {
-  dispatch(action)
-  resolve(reason)
-}
-
-export const tokenPromise = (dispatch) => new Promise((resolve, reject) => {
-  authContext.acquireToken(clientId, callbackBridge(resolve, reject))
-}).catch((reason)=> {
-  if(reason && reason === 'User login is required'){
-    return new Promise((innerResolve, innerReject) => {
-      dispatch(authActions.loginInProgress())
-      authContext.callback = callbackBridge(dispatchOnResolve(innerResolve, dispatch, authActions.userLoggedIn()), innerReject)
-      authContext.login()
-    })
-  }
-})

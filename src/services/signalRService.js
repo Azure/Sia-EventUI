@@ -7,7 +7,7 @@ const defaultBasePath = BASE_URL
 
 let signalRConnectionSingleton
 
-export const getSignalRConnection = (dispatch) => {
+export const establishSignalRConnection = (dispatch) => {
     if(!signalRConnectionSingleton) {
         resetSignalRConnection(dispatch)
     }
@@ -35,7 +35,7 @@ const configureConnection = (dispatch) => {
         dispatch(getEventActionSet(event.incidentId, event.id).succeed(eventObject))
     })
 
-    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : "No Error Message", error ? error.stack : "No Stack Trace"))
+    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace'))
     
     return connection
 }
@@ -47,4 +47,4 @@ const startConnection = (connection, dispatch) => {
             (error) => dispatch(signalRActions.failEstablishConnection(error.message, error.stack)))
 }
 
-export default getSignalRConnection
+export default establishSignalRConnection

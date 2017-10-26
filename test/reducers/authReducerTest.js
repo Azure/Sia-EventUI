@@ -3,6 +3,16 @@ import { expect } from 'chai';
 import * as authActions from '../../src/actions/authActions.js'
 import authReducer from '../../src/reducers/authReducer.js'
 
+const generatedAuthReducer = authReducer(dummyAuthContext, dummyClientId)
+
+const dummyClientId = 'Not my actual clientId'
+
+const dummyAuthContext = {
+    getCachedToken: (clientId) => null,
+
+    getCachedUser: () => null
+}
+
 const testUser = {
     userName: 'testUser@contoso.com'
 }
@@ -50,20 +60,20 @@ describe('authReducer', function test () {
         this.testToken = 'Test Token'
         this.testError = 'Test Error'
 
-        this.onLoginFromDefault = authReducer(defaultState, authActions.userLoggedIn(testUser))
-        this.onLoginFromLoggedOut = authReducer(loggedOutState, authActions.userLoggedIn(testUser))
-        this.onLoginFromError = authReducer(loginErrorState, authActions.userLoggedIn(testUser))
-        this.onLoginFromInProgress = authReducer(loginInProgressState, authActions.userLoggedIn(testUser))
+        this.onLoginFromDefault = generatedAuthReducer(defaultState, authActions.userLoggedIn(testUser))
+        this.onLoginFromLoggedOut = generatedAuthReducer(loggedOutState, authActions.userLoggedIn(testUser))
+        this.onLoginFromError = generatedAuthReducer(loginErrorState, authActions.userLoggedIn(testUser))
+        this.onLoginFromInProgress = generatedAuthReducer(loginInProgressState, authActions.userLoggedIn(testUser))
         
-        this.onErrorFromDefault = authReducer(defaultState, authActions.userLoginError(this.testError))
-        this.onErrorFromLoggedIn = authReducer(loggedInState, authActions.userLoginError(this.testError))
-        this.onErrorFromInProgress = authReducer(loginInProgressState, authActions.userLoginError(this.testError))
+        this.onErrorFromDefault = generatedAuthReducer(defaultState, authActions.userLoginError(this.testError))
+        this.onErrorFromLoggedIn = generatedAuthReducer(loggedInState, authActions.userLoginError(this.testError))
+        this.onErrorFromInProgress = generatedAuthReducer(loginInProgressState, authActions.userLoginError(this.testError))
         
-        this.onLogoutFromError = authReducer(loginErrorState, authActions.userLoggedOut())
-        this.onLogoutFromLoggedIn = authReducer(loggedInState, authActions.userLoggedOut())
+        this.onLogoutFromError = generatedAuthReducer(loginErrorState, authActions.userLoggedOut())
+        this.onLogoutFromLoggedIn = generatedAuthReducer(loggedInState, authActions.userLoggedOut())
 
-        this.onInProgressFromDefault = authReducer(defaultState, authActions.loginInProgress())
-        this.onInProgressFromError = authReducer(loginErrorState, authActions.loginInProgress())
+        this.onInProgressFromDefault = generatedAuthReducer(defaultState, authActions.loginInProgress())
+        this.onInProgressFromError = generatedAuthReducer(loginErrorState, authActions.loginInProgress())
     })
 
     it('Should set isLoggedIn to true on login', () => {

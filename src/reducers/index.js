@@ -9,9 +9,9 @@ import signalR from './signalRReducer'
 import popup from './popupReducer'
 import forms from './formReducer'
 
-const rootReducer = combineReducers({
+const rootReducer = (authContext, clientId) => combineReducers({
     incidents,
-    auth,
+    auth: auth(authContext, clientId),
     tickets,
     engagements,
     events,

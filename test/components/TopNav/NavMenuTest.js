@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import createComponent from '../../helpers/shallowRenderHelper'
 import { NavMenu } from '../../../src/components/TopNav/NavMenu'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
@@ -18,20 +18,12 @@ function setup() {
         alias: 'testAlias'
     }
 
-    let renderer = TestUtils.createRenderer()
-    renderer.render(<NavMenu {...props}/>)
-    let output = renderer.getRenderOutput()
-
-    return {
-        output,
-        renderer
-    }
+    return createComponent(NavMenu, props)
 }
 
 describe('NavMenu', function test () {
     beforeEach( () => {
-        const {output} = setup()
-        this.output = output
+        this.output = setup()
     })
 
     it('Should render an IconMenu with an icon button', () => {
