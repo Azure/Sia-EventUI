@@ -41,6 +41,13 @@ div#app {
   justify-content: space-between;
   align-items: center;
   padding-top: 1%;
+  max-width: 87%;
+}
+
+.incident-card {
+  display: flex;
+  flex: 1;
+  max-width: 87%;
 }
 
 .incident-EventFooter {
@@ -49,6 +56,7 @@ div#app {
   align-items: center;
   justify-content: space-between;
   padding: 2%;
+  max-width: 83%;
 }
 
 @media (max-width: 920px) {
