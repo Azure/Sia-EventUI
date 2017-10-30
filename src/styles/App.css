@@ -41,13 +41,6 @@ div#app {
   justify-content: space-between;
   align-items: center;
   padding-top: 1%;
-  max-width: 87%;
-}
-
-.incident-card {
-  display: flex;
-  flex: 1;
-  max-width: 87%;
 }
 
 .incident-EventFooter {
@@ -56,31 +49,36 @@ div#app {
   align-items: center;
   justify-content: space-between;
   padding: 2%;
-  max-width: 83%;
+}
+
+@media (max-width: 1800px) {
+  
+  div#app {
+    max-width: 25%;
+  }
+
+}
+
+@media (max-width: 1600px) {
+  
+  div#app {
+    max-width: 30%;
+  }
+
+}
+
+@media (max-width: 1200px) {
+  
+  div#app {
+    max-width: 40%;
+  }
+
 }
 
 @media (max-width: 920px) {
 
   div#app {
-    max-width: 25%;
-  }
-  
-  .incident-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .incident-row {
-    display: flex;
-    flex: 1;
-    flex-wrap: nowrap;
-  }
-
-  .incident-col {
-    display: flex;
-    flex: 1 50%;
-    flex-wrap: nowrap;
+    max-width: 50%;
   }
 
 }
@@ -88,26 +86,7 @@ div#app {
 @media (max-width: 768px) {
 
   div#app {
-    max-width: 50%;
-  }
-
-  .incident-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .incident-row {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .incident-col {
-    display: flex;
-    flex: 1 50%;
-    flex-wrap: nowrap;
+    max-width: 75%;
   }
 
 }

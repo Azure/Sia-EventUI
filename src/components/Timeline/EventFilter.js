@@ -5,10 +5,9 @@ import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import * as eventActions from '../../actions/eventActions'
 
-const defaultPrimary = 'All'
+const defaultPrimary = 'Active'
 
 const filterLabels = [
-  'All',
   'Active',
   'Dismissed',
   'System',
