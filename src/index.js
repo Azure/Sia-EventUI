@@ -18,6 +18,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import eventActionInitializer from './actions/eventActions'
 import incidentActionInitializer from './actions/incidentActions'
 import engagementActionInitializer from './actions/engagementActions'
+import eventTypeActionInitializer from './actions/Playbook/eventTypeActions'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
@@ -41,10 +42,10 @@ const siaContext = generateSiaContext(authenticationContext, store.dispatch)
 const eventActions = eventActionInitializer(siaContext)
 const incidentActions = incidentActionInitializer(siaContext, eventActions)
 const engagementActions = engagementActionInitializer(siaContext)
+const eventTypeActions = eventTypeActionInitializer(siaContext)
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
-
 
 class MainComponent extends React.Component {
   render() {
@@ -61,7 +62,7 @@ class MainComponent extends React.Component {
                   <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />
                   <Route path="/incidents/:incidentId" component={incidentRedirect(incidentActions)} />
-                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext}/>}/>
+                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} eventTypeActions={eventTypeActions} dispatch={store.dispatch}/>}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>
@@ -74,3 +75,4 @@ class MainComponent extends React.Component {
 
 // Render the main component into the dom
 ReactDOM.render(<MainComponent />, document.getElementById('app'))
+

@@ -16,3 +16,19 @@ export const mergeWithOverwrite = (arr1, arr2) => {
     return arr1.filter(arr1Entity => !(arr2.map(arr2Entity => arr2Entity.id).includes(arr1Entity.id))).concat(arr2)
 }
 
+export const mergeToStateById = (state, records) => Object.assign(
+    {},
+    state,
+    ...recordsToLookupObject(records)
+)
+
+export const recordKeyValuePair = (record) => ({
+    [record.id]: record
+})
+
+export const recordsToLookupObject = (records) => records.map(record => recordKeyValuePair(record))
+
+export const withParentId = (records, parentIdName, parentId) => records.map(record => Object.assign({}, record, {[parentIdName]:parentId}))
+
+export const byConcatenatingArrays = (aggregateArray, current) => aggregateArray.concat(current)
+
