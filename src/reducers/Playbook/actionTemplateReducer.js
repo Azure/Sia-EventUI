@@ -1,5 +1,5 @@
 import * as eventTypeActions from '../../actions/Playbook/eventTypeActions'
-import { mergeToStateById, withParentId } from '../reducerHelpers'
+import { mergeToStateById } from '../reducerHelpers'
 
 const defaultActionTemplateCollection = {}
 

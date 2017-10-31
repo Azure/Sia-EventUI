@@ -22,7 +22,7 @@ export const eventTypeActions = (siaContext) => ({
             {
                 name,
                 data
-            } 
+            }
         ],
         postEventTypeActionSet(name, data)
     )

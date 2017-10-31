@@ -1,5 +1,5 @@
 import * as eventTypeActions from '../../actions/Playbook/eventTypeActions'
-import { mergeToStateById, withParentId, byConcatenatingArrays } from '../reducerHelpers'
+import { mergeToStateById, byConcatenatingArrays } from '../reducerHelpers'
 
 const defaultConditionSetCollection = {}
 

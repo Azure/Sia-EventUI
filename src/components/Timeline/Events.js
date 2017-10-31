@@ -2,18 +2,21 @@ import React from 'react'
 import moment from 'moment'
 import Event from './Event'
 
-export const Events = (events) => {
+export const Events = (events, eventTypeActions, ticketId) => {
     let localKey = 0
     return (
         Array.from(events)
           .map(event =>
             <Event
               key = {localKey++}
-              ticketId = {event.ticketId}
+              ticketId = {ticketId}
               dismissed = {event.dismissed}
               text = {GenerateTextFromEventType(event.eventTypeId) }
               time = {moment(event.occurred ? event.occurred : event.Occurred)}
               backgroundColor = {event.backgroundColor}
+              event = {event}
+              eventTypeId = {event.eventTypeId}
+              eventTypeActions = {eventTypeActions}
             />
         )
     )

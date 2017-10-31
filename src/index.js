@@ -40,9 +40,12 @@ establishSignalRConnection(store.dispatch)
 const siaContext = generateSiaContext(authenticationContext, store.dispatch)
 
 const eventActions = eventActionInitializer(siaContext)
-const incidentActions = incidentActionInitializer(siaContext, eventActions)
-const engagementActions = engagementActionInitializer(siaContext)
-const eventTypeActions = eventTypeActionInitializer(siaContext)
+const actions = ({
+  event: eventActions,
+  incident: incidentActionInitializer(siaContext, eventActions),
+  engagement: engagementActionInitializer(siaContext),
+  eventType: eventTypeActionInitializer(siaContext)
+})
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
@@ -58,11 +61,11 @@ class MainComponent extends React.Component {
                 <div>
                   <TopNav />
                   <Popups eventActions={eventActions} />
-                  <Route exact path="/" component={CreateIncident(incidentActions)} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
-                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />
-                  <Route path="/incidents/:incidentId" component={incidentRedirect(incidentActions)} />
-                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} eventTypeActions={eventTypeActions} dispatch={store.dispatch}/>}/>
+                  <Route exact path="/" component={CreateIncident(actions.incident)} />
+                  <Route exact path="/tickets/:ticketId" component={Ticket(actions)} />
+                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(actions)} />
+                  <Route path="/incidents/:incidentId" component={incidentRedirect(actions.incident)} />
+                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} eventTypeActions={actions.eventType} dispatch={store.dispatch}/>}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>

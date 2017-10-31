@@ -17,8 +17,7 @@ class CompareTickets extends Component {
         secondTicketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired,
-        incidentActions: PropTypes.object.isRequired,
-        engagementActions: PropTypes.object.isRequired
+        actions: PropTypes.object.isRequired
     }
 
     componentDidMount() {
@@ -35,28 +34,27 @@ class CompareTickets extends Component {
             secondTicket,
             secondTicketSystem,
             dispatch,
-            incidentActions,
-            engagementActions,
+            actions,
             expandSection
         } = this.props
 
         if(firstIncident && firstIncident.error)
         {
-            return ErrorLoadingIncident(incidentActions, firstIncident)
+            return ErrorLoadingIncident(actions.incident, firstIncident)
         }
         if(secondIncident && secondIncident.error)
         {
-            return ErrorLoadingIncident(incidentActions, secondIncident)
+            return ErrorLoadingIncident(actions.incident, secondIncident)
         }
         if(!firstIncident
             || firstIncident.IsFetching
             || !secondIncident
             || secondIncident.IsFetching){
-            return CurrentlyLoadingIncident(incidentActions, dispatch)
+            return CurrentlyLoadingIncident(actions.incident, dispatch)
         }
         if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
         {
-            return (CompareIncidents(engagementActions, firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch))
+            return (CompareIncidents(actions.engagement, actions.eventType, firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch))
         }
         return (
             <Redirect to={`/tickets/${firstIncident.primaryTicket.originId}/compare/${secondIncident.primaryTicket.originId}`}>
@@ -66,7 +64,7 @@ class CompareTickets extends Component {
     }
 }
 
-const mapStateToProps = (incidentActions, engagementActions) => (state, ownProps) => {
+const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets, expandSection } = state
     const { match } = ownProps
     const firstTicketId = parseInt(match.params.firstTicketId)
@@ -84,12 +82,11 @@ const mapStateToProps = (incidentActions, engagementActions) => (state, ownProps
         secondTicketSystem: tickets.systems[getTicketSystemId(secondTicket)],
         preferences: tickets.preferences,
         expandSection,
-        incidentActions,
-        engagementActions
+        actions
     }
 }
 
 
-const connectedCompareTickets = (incidentActions, engagementActions) => connect(mapStateToProps(incidentActions, engagementActions))(CompareTickets)
+const connectedCompareTickets = (actions) => connect(mapStateToProps(actions))(CompareTickets)
 
 export default connectedCompareTickets
