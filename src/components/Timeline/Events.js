@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import Event from './Event'
 
-export const Events = (events, eventTypeActions, ticketId) => {
+export const Events = (events, eventTypeActions, ticketId, eventTypes) => {
     let localKey = 0
     return (
         Array.from(events)
@@ -11,10 +11,10 @@ export const Events = (events, eventTypeActions, ticketId) => {
               key = {localKey++}
               ticketId = {ticketId}
               dismissed = {event.dismissed}
-              text = {GenerateTextFromEventType(event.eventTypeId) }
+              text = {LoadTextFromEventType(event.eventTypeId, eventTypes) }
               time = {moment(event.occurred ? event.occurred : event.Occurred)}
               backgroundColor = {event.backgroundColor}
-              event = {event}
+              eventId = {event.id}
               eventTypeId = {event.eventTypeId}
               eventTypeActions = {eventTypeActions}
             />
@@ -22,21 +22,10 @@ export const Events = (events, eventTypeActions, ticketId) => {
     )
 }
 
-const GenerateTextFromEventType = (eventType) => {
-  switch(eventType){
-    case 1:
-      return 'Impact Detected'
-    case 2:
-      return 'Impact Start'
-    case 3:
-      return 'Impact Mitigated'
-    case 4:
-      return 'Incident Resolved'
-    case 5:
-      return 'Incident Acknowledged'
-    default:
-      return 'This Event has no text'
-  }
+const LoadTextFromEventType = (eventTypeId, eventTypes) => {
+  const eventType = eventTypes[eventTypeId]
+  if(!eventType) return 'Loading event information...'
+  return eventType.name
 }
 
 export default Events

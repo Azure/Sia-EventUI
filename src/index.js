@@ -65,7 +65,7 @@ class MainComponent extends React.Component {
                   <Route exact path="/tickets/:ticketId" component={Ticket(actions)} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(actions)} />
                   <Route path="/incidents/:incidentId" component={incidentRedirect(actions.incident)} />
-                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} eventTypeActions={actions.eventType} dispatch={store.dispatch}/>}/>
+                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} dispatch={store.dispatch}/>}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>

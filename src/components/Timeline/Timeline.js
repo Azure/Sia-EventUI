@@ -1,4 +1,4 @@
-import { connect } from 'react-redux'
+
 import React, { Component } from 'react'
 import Filter from './EventFilter'
 import Footer from './EventFooter'
@@ -14,14 +14,15 @@ class Timeline extends Component {
 
   componentDidMount() {
     updatePagination(this.props.dispatch, this.props.incidentIds)
+    fetchMissingEventTypes(this.props)
   }
 
   render() {
-    const { events, dispatch, eventTypeActions, ticketId } = this.props
+    const { events, dispatch, eventTypeActions, ticketId, eventTypes } = this.props
     return (
       <div>
         <Filter pagination={events} dispatch={dispatch}/>
-        {Events(events.pageList, eventTypeActions, ticketId)}
+        {Events(events.pageList, eventTypeActions, ticketId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )
@@ -33,11 +34,20 @@ const updatePagination = (dispatch, incidentIds) => {
     dispatch(eventActions.pagination.sort('occurred'))
 }
 
+const fetchMissingEventTypes = (props) => {
+  const eventTypeIds = Object.keys(props.eventTypes)
+  props.events
+    .map(event => event.eventTypeId)
+    .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
+    .foreach(missingEventTypeId => props.dispatch(props.eventTypeActions.getEventType(missingEventTypeId)))
+}
+
 const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
-    events: events
+    events: events,
+    eventTypes: state.playbook.eventTypes
   }
 }
 

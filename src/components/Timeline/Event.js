@@ -4,7 +4,7 @@ import moment from 'moment'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 
-const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, event, eventTypeActions }) => {
+const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, eventId, eventTypeActions }) => {
     return (<Card
                 className="incident-card"
                 style={{ backgroundColor }}
@@ -18,7 +18,7 @@ const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId,
                 <CardText expandable={true}>
                     Select the Actions below:
                     <BootstrapPlaybook
-                        eventId={event.id}
+                        eventId={eventId}
                         eventTypeId={eventTypeId}
                         ticketId={ticketId}
                         incidentId={incidentId}
