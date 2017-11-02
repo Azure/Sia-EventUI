@@ -1,4 +1,5 @@
 
+import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Filter from './EventFilter'
 import Footer from './EventFooter'
@@ -36,10 +37,10 @@ const updatePagination = (dispatch, incidentIds) => {
 
 const fetchMissingEventTypes = (props) => {
   const eventTypeIds = Object.keys(props.eventTypes)
-  props.events
+  props.events.pageList
     .map(event => event.eventTypeId)
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
-    .foreach(missingEventTypeId => props.dispatch(props.eventTypeActions.getEventType(missingEventTypeId)))
+    .forEach(missingEventTypeId => props.dispatch(props.eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
 const mapStateToProps = (state, ownProps) => {

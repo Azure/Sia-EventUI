@@ -1,5 +1,5 @@
 import * as eventTypeActions from '../../actions/Playbook/eventTypeActions'
-import { mergeToStateById } from '../reducerHelpers'
+import { mergeToStateById, withParentId } from '../reducerHelpers'
 
 const defaultActionTemplateCollection = {}
 
@@ -9,7 +9,7 @@ export const actionTemplateReducer = (state = defaultActionTemplateCollection, a
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
             return mergeToStateById(
                 state,
-                action.eventType.actions.map(siaAction => Object.assign({}, siaAction.actionTemplate, {actionId: siaAction.id}))
+                withParentId('actionId', action.eventType.actions, (act) => act.actionTemplate, (act) => act.id)
             )
         default:
             return state

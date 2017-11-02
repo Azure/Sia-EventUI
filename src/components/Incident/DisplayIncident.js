@@ -122,7 +122,7 @@ export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventTypeActions
             ]
         ],
         [
-            <Timeline 
+            <Timeline
                 incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}
                 eventTypeActions={eventTypeActions}
                 ticketId={ticketToIncidentIdMap[0][0]}

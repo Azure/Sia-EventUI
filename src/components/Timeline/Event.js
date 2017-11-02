@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
+import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 
 const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, eventId, eventTypeActions }) => {

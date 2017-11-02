@@ -47,7 +47,7 @@ class Ticket extends Component {
                 eventTypeActions={actions.eventType}
                 incident={incident}
                 ticket={ticket}
-                ticketSystem={ticketSystem} 
+                ticketSystem={ticketSystem}
              />
         }
         return (

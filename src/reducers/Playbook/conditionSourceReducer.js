@@ -1,5 +1,5 @@
 import * as eventTypeActions from '../../actions/Playbook/eventTypeActions'
-import { mergeToStateById, byConcatenatingArrays } from '../reducerHelpers'
+import { mergeToStateById, byConcatenation, withParentId } from '../reducerHelpers'
 
 const defaultConditionSourceCollection = {}
 
@@ -9,12 +9,15 @@ export const ConditionSourceReducer = (state = defaultConditionSourceCollection,
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
             return mergeToStateById(
                 state,
-                action.eventType.actions
-                    .map(siaAction => siaAction.conditionSets)
-                    .reduce(byConcatenatingArrays, [])
-                    .map(conditionSet => conditionSet.conditions)
-                    .reduce(byConcatenatingArrays, [])
-                    .map(condition => Object.assign({}, condition.conditionSource, {conditionId:condition.id}))
+                withParentId(
+                    'conditionId',
+                    action.eventType.actions
+                        .map(siaAction => siaAction.conditionSets)
+                        .reduce(byConcatenation, [])
+                        .map(conditionSet => conditionSet.conditions)
+                        .reduce(byConcatenation, []),
+                    (cond) => cond.conditionSource
+                )
             )
         default:
             return state

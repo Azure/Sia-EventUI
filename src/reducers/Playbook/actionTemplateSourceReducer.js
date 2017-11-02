@@ -1,5 +1,5 @@
 import * as eventTypeActions from '../../actions/Playbook/eventTypeActions'
-import { mergeToStateById } from '../reducerHelpers'
+import { mergeToStateById, withParentId } from '../reducerHelpers'
 
 const defaultActionTemplateSourceCollection = {}
 
@@ -9,11 +9,11 @@ export const actionTemplateSourceReducer = (state = defaultActionTemplateSourceC
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
             return mergeToStateById(
                 state,
-                action.eventType.actions
-                    .map(siaAction => siaAction.actionTemplate)
-                    .map(actionTemplate => actionTemplate.sources
-                                            .map(source => Object.assign({}, source, {actionTemplateId:actionTemplate.id}))
-                    ).reduce((aggregateArray, currentSources) => aggregateArray.concat(currentSources), [])
+                withParentId(
+                    'actionTemplateId',
+                    action.eventType.actions.map(siaAction => siaAction.actionTemplate),
+                    (at) => at.sources
+                )
             )
         default:
             return state

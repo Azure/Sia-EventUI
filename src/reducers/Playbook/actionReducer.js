@@ -9,7 +9,11 @@ export const actionReducer = (state = defaultActionCollection, action) => {
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
             return mergeToStateById(
                 state,
-                withParentId(action.eventType.actions, 'eventTypeId', action.eventType.id)
+                withParentId(
+                    'eventTypeId',
+                    [action.eventType],
+                    (et) => et.actions
+                )
             )
         default:
             return state

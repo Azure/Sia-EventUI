@@ -28,7 +28,13 @@ export const recordKeyValuePair = (record) => ({
 
 export const recordsToLookupObject = (records) => records.map(record => recordKeyValuePair(record))
 
-export const withParentId = (records, parentIdName, parentId) => records.map(record => Object.assign({}, record, {[parentIdName]:parentId}))
+export const withParentId = (parentIdName, parents, fnParentToRecords) => parents
+    .map(parent => Array.isArray(fnParentToRecords(parent))
+        ? fnParentToRecords(parent).map(record => Object.assign({}, record, {[parentIdName]:parent.id}))
+        : Object.assign({}, fnParentToRecords(parent), {[parentIdName]:parent.id})
+    ).reduce(byConcatenation, [])
+    
+    
 
-export const byConcatenatingArrays = (aggregateArray, current) => aggregateArray.concat(current)
+export const byConcatenation = (aggregateArray, current) => aggregateArray.concat(current)
 
