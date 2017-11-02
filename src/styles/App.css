@@ -51,28 +51,34 @@ div#app {
   padding: 2%;
 }
 
-@media (max-width: 920px) {
-
+@media (max-width: 1800px) {
+  
   div#app {
     max-width: 25%;
   }
+
+}
+
+@media (max-width: 1600px) {
   
-  .incident-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+  div#app {
+    max-width: 30%;
   }
 
-  .incident-row {
-    display: flex;
-    flex: 1;
-    flex-wrap: nowrap;
+}
+
+@media (max-width: 1200px) {
+  
+  div#app {
+    max-width: 40%;
   }
 
-  .incident-col {
-    display: flex;
-    flex: 1 50%;
-    flex-wrap: nowrap;
+}
+
+@media (max-width: 920px) {
+
+  div#app {
+    max-width: 50%;
   }
 
 }
@@ -80,26 +86,7 @@ div#app {
 @media (max-width: 768px) {
 
   div#app {
-    max-width: 50%;
-  }
-
-  .incident-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .incident-row {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    flex-wrap: nowrap;
-  }
-
-  .incident-col {
-    display: flex;
-    flex: 1 50%;
-    flex-wrap: nowrap;
+    max-width: 75%;
   }
 
 }
