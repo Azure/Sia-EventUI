@@ -33,7 +33,7 @@ export const mapStateToProps = (state, ownProps) => {
     })
     return {
         isUrl: actionTemplate.isUrl,
-        name: action.name,
+        name: actionTemplate.name,
         filledTemplate
     }
 }

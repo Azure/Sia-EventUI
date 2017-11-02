@@ -8,8 +8,12 @@ export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagement
     let localKey = 0
     return  <div>{
                 actions.map(action =>
+                <div key={localKey++}>
+                    <span>
+                        {action.name}
+                    </span>
+                    <br/>
                     <Play
-                        key={localKey++}
                         action={action}
                         eventTypeId={eventTypeId}
                         eventId={eventId}
@@ -17,6 +21,7 @@ export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagement
                         ticketId={ticketId}
                         engagementId={engagementId}
                     />
+                </div>
                 )
             }</div>
 }
