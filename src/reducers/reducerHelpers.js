@@ -19,22 +19,37 @@ export const mergeWithOverwrite = (arr1, arr2) => {
 export const mergeToStateById = (state, records) => Object.assign(
     {},
     state,
-    ...recordsToLookupObject(records)
+    ...recordsToIdValuePairArray(records)
 )
 
-export const recordKeyValuePair = (record) => ({
+const extractIdValuePair = (record) => ({
     [record.id]: record
 })
 
-export const recordsToLookupObject = (records) => records.map(record => recordKeyValuePair(record))
+export const recordsToIdValuePairArray = (records) => records 
+? Array.isArray(records)
+    ? records.map(extractIdValuePair)
+    : [extractIdValuePair(records)]
+: []
 
 export const withParentId = (parentIdName, parents, fnParentToRecords) => parents
-    .map(parent => Array.isArray(fnParentToRecords(parent))
-        ? fnParentToRecords(parent).map(record => Object.assign({}, record, {[parentIdName]:parent.id}))
-        : Object.assign({}, fnParentToRecords(parent), {[parentIdName]:parent.id})
-    ).reduce(byConcatenation, [])
+    ? Array.isArray(parents)
+        ? parents.map(extractRecordsFromParent(parentIdName, fnParentToRecords))
+            .reduce(byConcatenation, [])
+        : withParentId(parentIdName, [parents], fnParentToRecords)
+    : []
     
-    
+export const extractRecordsFromParent = (parentIdName, fnParentToRecords) => parent => {
+    if(!parent) return []
+    var records = fnParentToRecords(parent)
+    if(!records) return []
+    return  Array.isArray(records)
+            ? records.map(record => Object.assign({}, record, {[parentIdName]:parent.id}))
+            : Object.assign({}, fnParentToRecords(parent), {[parentIdName]:parent.id})
+}
 
-export const byConcatenation = (aggregateArray, current) => aggregateArray.concat(current)
-
+export const byConcatenation = (aggregateArray, current) => current
+? Array.isArray(current)
+    ? aggregateArray.concat(current)
+    : [...aggregateArray, current]
+: aggregateArray

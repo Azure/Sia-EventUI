@@ -29,7 +29,7 @@ export const eventTypeActions = (siaContext) => ({
 })
 
 
-const getEventTypeActionSet = (eventTypeId) => ({
+export const getEventTypeActionSet = (eventTypeId) => ({
     try: () => ({
         type: TRY_GET_EVENT_TYPE,
         eventTypeId
@@ -48,7 +48,7 @@ const getEventTypeActionSet = (eventTypeId) => ({
     })
 })
 
-const postEventTypeActionSet = (name, data) => ({
+export const postEventTypeActionSet = (name, data) => ({
     try: () => ({
         type: TRY_POST_EVENT_TYPE,
         name,

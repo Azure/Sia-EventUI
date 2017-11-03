@@ -7,7 +7,8 @@ export const ConditionSourceReducer = (state = defaultConditionSourceCollection,
     switch(action.type){
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
-            return mergeToStateById(
+            return action.eventType && action.eventType.actions
+            ? mergeToStateById(
                 state,
                 withParentId(
                     'conditionId',
@@ -19,6 +20,7 @@ export const ConditionSourceReducer = (state = defaultConditionSourceCollection,
                     (cond) => cond.conditionSource
                 )
             )
+            : state
         default:
             return state
     }

@@ -7,14 +7,16 @@ export const actionTemplateSourceReducer = (state = defaultActionTemplateSourceC
     switch(action.type){
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
-            return mergeToStateById(
-                state,
-                withParentId(
-                    'actionTemplateId',
-                    action.eventType.actions.map(siaAction => siaAction.actionTemplate),
-                    (at) => at.sources
+            return action.eventType && action.eventType.actions
+                ? mergeToStateById(
+                    state,
+                    withParentId(
+                        'actionTemplateId',
+                        action.eventType.actions.map(siaAction => siaAction.actionTemplate),
+                        (at) => at.sources
+                    )
                 )
-            )
+                : state
         default:
             return state
     }

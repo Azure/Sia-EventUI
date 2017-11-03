@@ -7,7 +7,8 @@ export const ConditionReducer = (state = defaultConditionCollection, action) => 
     switch(action.type){
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
         case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
-            return mergeToStateById(
+            return action.eventType && action.eventType.actions
+            ? mergeToStateById(
                 state,
                 withParentId(
                     'conditionSetId',
@@ -17,6 +18,7 @@ export const ConditionReducer = (state = defaultConditionCollection, action) => 
                     (cs) => cs.conditions
                 )
             )
+            : state
         default:
             return state
     }
