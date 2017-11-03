@@ -1,14 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Menu from 'material-ui/Menu'
+import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { Link } from 'react-router-dom'
 
 export const ComparisonLinks = ({otherIncidentTicketIds, ticketId}) => {
     let key = 0
-    return <div>
-                Compare With:
-                <Menu>
+    return <SelectField floatingLabelText="Compare With Incident">
                     {otherIncidentTicketIds.map(otherTicketId =>
                         <MenuItem
                             key={key++}
@@ -19,8 +17,7 @@ export const ComparisonLinks = ({otherIncidentTicketIds, ticketId}) => {
                             }
                         />
                     )}
-                </Menu>
-            </div>
+                </SelectField>
 
 }
 
