@@ -4,14 +4,7 @@ import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import { updateIncidentCreationInput, duplicateIncident } from '../../actions/incidentActions'
 const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history, incidentActions) => () => {
-    if(ticketLookup[input])
-    {
-        dispatch(duplicateIncident(input))
-    }
-    else
-    {
-        dispatch(incidentActions.postIncident(input, ticketSystem))
-    }
+
     history.push(/tickets/ + input)
 }
 
@@ -19,7 +12,7 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
-            floatingLabelText='Create Incident'
+            floatingLabelText='TicketId'
             onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
             value={input}
             errorText={creationError}
