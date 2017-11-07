@@ -122,7 +122,9 @@ const TestConditionSet = (conditionSet, conditions, metConditions) => {
             return !!metConditions.find(associatedWithThisConditionSet)
         case 2: //All of
             return metConditions.filter(associatedWithThisConditionSet).length === conditions.filter(associatedWithThisConditionSet).length
+        case 3: //Not All Of
+            return metConditions.filter(associatedWithThisConditionSet).length !== conditions.filter(associatedWithThisConditionSet).length
         default: //noneOf
-            return metConditions.filter(associatedWithThisConditionSet).length === 0
+            return !metConditions.find(associatedWithThisConditionSet)
     }
 }
