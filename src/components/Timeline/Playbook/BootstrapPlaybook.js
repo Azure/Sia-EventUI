@@ -11,26 +11,24 @@ export class BootstrapPlaybook extends React.Component {
         BootstrapIfNeeded(this.props)
     }
 
+    componentDidUpdate() {
+        BootstrapIfNeeded(this.props)
+    }
+
     render() {
-        return IsBootstrapNeeded(this.props)
-            ? <div>Fetching action options...</div>
-            : <Playbook
-                eventId={this.props.eventId}
-                eventTypeId={this.props.eventTypeId}
-                ticketId={this.props.ticketId}
-                incidentId={this.props.incidentId}
-            />
+        return <div></div>
     }
 }
 
 export const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
-    eventType: state.playbook.eventTypes[ownProps.eventTypeId]
+    eventType: state.eventTypes.records[ownProps.eventTypeId],
+    isFetching: state.eventTypes.fetching.find(id => id === ownProps.eventTypeId)
 })
 
 export default connect(mapStateToProps)(BootstrapPlaybook)
 
-const IsBootstrapNeeded = (props) => !props.eventType
+const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
 const BootstrapIfNeeded = (props) => {
     if(IsBootstrapNeeded(props))

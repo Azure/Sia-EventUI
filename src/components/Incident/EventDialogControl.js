@@ -7,6 +7,7 @@ export const addEventPopupName = 'AddEvents'
 export const addEventFormName = 'AddEvents'
 export const eventInputKey = 'eventInput'
 export const selectedIncidentIdKey = 'selectedIncidentId'
+export const eventTypeIdInputKey = 'eventTypeIdInput'
 
 
 export const EventDialogControl = ({incidentIds, dispatch}) =>

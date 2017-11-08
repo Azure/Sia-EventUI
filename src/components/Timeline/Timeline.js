@@ -48,7 +48,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     events: events,
-    eventTypes: state.playbook.eventTypes
+    eventTypes: state.eventTypes.records
   }
 }
 

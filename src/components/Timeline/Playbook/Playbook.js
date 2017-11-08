@@ -7,28 +7,29 @@ import { selectSourceObject } from './Play'
 export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagementId, actions}) => {
     let localKey = 0
     return  <div>{
-                actions.map(action =>
-                <div key={localKey++}>
-                    <span>
-                        {action.name}
-                    </span>
-                    <br/>
-                    <Play
-                        action={action}
-                        eventTypeId={eventTypeId}
-                        eventId={eventId}
-                        incidentId={incidentId}
-                        ticketId={ticketId}
-                        engagementId={engagementId}
-                    />
-                </div>
-                )
+                actions 
+                ? actions.map(action =>
+                    <div key={localKey++}>
+                        <span>
+                            {action.name}
+                        </span>
+                        <br/>
+                        <Play
+                            action={action}
+                            eventTypeId={eventTypeId}
+                            eventId={eventId}
+                            incidentId={incidentId}
+                            ticketId={ticketId}
+                            engagementId={engagementId}
+                        />
+                    </div>)
+                : <div>Fetching action options...</div>
             }</div>
 }
 
 export const mapStateToProps = (state, ownProps) => {
     const auth = state.auth
-    const eventType = state.playbook.eventTypes[ownProps.eventTypeId]
+    const eventType = state.eventTypes.records[ownProps.eventTypeId]
     const event = Object.values(state.events.list).find(event => event.id == ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(
@@ -37,36 +38,14 @@ export const mapStateToProps = (state, ownProps) => {
         && engagement.particpant.team == auth.userTeam
         && engagement.participant.role == auth.userRole
     )
-    const actions = Object.values(state.playbook.actions).filter(action => action.eventTypeId === ownProps.eventTypeId)
-    const conditionSets = actions
-        .map(action => Object.values(state.playbook.conditionSets).filter(conditionSet => conditionSet.actionId === action.id))
-        .reduce((accum, current) => accum.concat(current), [])
-    const conditionSetIds = conditionSets
-        .map(conditionSet => conditionSet.id)
-        .reduce((existingIds, newId) => existingIds.includes(newId) ? existingIds : existingIds.concat([newId]), [])
-    const conditions = Object.values(state.playbook.conditions).filter(
-        condition => conditionSetIds.includes(condition.conditionSetId)
-    )
-    const conditionIds = conditions.map(condition => condition.id)
-    const conditionSources = Object.values(state.playbook.conditionSources).filter(
-        conditionSource => conditionIds.includes(conditionSource.conditionId)
-    )
-    const conditionData = conditionSources.map(
-        conditionSource => ({
-            [conditionSource.conditionId]: ByPath.get(
-                selectSourceObject(conditionSource.sourceObject, event, ticket, eventType, engagement),
-                conditionSource.key
-            )
-        })
-    ).reduce(ByAccumulatingProperties, {})
-    const metConditions = conditions.filter(condition => TestCondition(condition, conditionData[condition.id]))
-    const metConditionSets = conditionSets.filter(conditionSet => TestConditionSet(conditionSet, conditions, metConditions))
+    const actions = eventType.actions
     const qualifiedActions = actions.filter(
-        action => conditionSets.filter(
-            conditionSet => conditionSet.actionId === action.id
-        ).length === metConditionSets.filter(
-            conditionSet => conditionSet.actionId == action.id
-        ).length
+        action => action.conditionSets.reduce(
+            (allConditionSetsMet, currentConditionSet) => allConditionsMet 
+                ? TestConditionSet(currentConditionSet)
+                : false,
+            true
+        )
     )
     return {
         actions: qualifiedActions,
@@ -78,16 +57,14 @@ export const mapStateToProps = (state, ownProps) => {
 export default connect(mapStateToProps)(Playbook)
 
 
-
-const ByAccumulatingProperties = (existingObject, additionalProperty) => Object.assign(existingObject, additionalProperty)
-
-const TestCondition = (condition, dataValue) => {
-    const testResult = TestByConditionType(condition, dataValue)
+const TestCondition = (condition) => {
+    const testResult = TestByConditionType(condition)
     return condition.ConditionType === 1 ? testResult : !testResult
 }
 
-const TestByConditionType = (condition, dataValue) => {
+const TestByConditionType = (condition) => {
     let comparisonValue
+    let value = condition ? condition.value : null
     switch(condition.dataFormat)
     {
         case 1: //string
@@ -102,29 +79,45 @@ const TestByConditionType = (condition, dataValue) => {
     switch(condition.conditionType)
     {
         //contains
-        case 2: return dataValue.includes(comparisonValue)
+        case 2: return value && value.includes(comparisonValue)
         //has value
-        case 3: return !!dataValue
+        case 3: return !!value
         //greater than
-        case 4: return dataValue > comparisonValue
+        case 4: return value && value > comparisonValue
         //less than
-        case 5: return comparisonValue > dataValue
+        case 5: return value && comparisonValue > value
         //equals
-        default: return dataValue === comparisonValue
+        default: return value === comparisonValue
     }
 }
 
-const TestConditionSet = (conditionSet, conditions, metConditions) => {
-    const associatedWithThisConditionSet = (condition) => condition.conditionSetId == conditionSet.id
+
+const TestConditionSet = (conditionSet) => {
+    const conditionsWithValue = conditionSet.conditions 
+        ? conditionSet.conditions
+            .map(condition => condition.conditionSource 
+                ? ({
+                    ...condition,
+                    value: ByPath.get(
+                        selectSourceObject(condition.conditionSource.sourceObject, event, ticket, eventType, engagement),
+                        condition.conditionSource.key
+                    )
+                })
+                : ({
+                    ...condition,
+                    value: null
+                })
+            )
+        : []
     switch(conditionSet.type)
     {
         case 1: //Any of
-            return !!metConditions.find(associatedWithThisConditionSet)
+            return conditions.map(TestCondition).filter(b => b).length > 0
         case 2: //All of
-            return metConditions.filter(associatedWithThisConditionSet).length === conditions.filter(associatedWithThisConditionSet).length
+            return conditions.map(TestCondition).filter(b => b).length === conditions.length
         case 3: //Not All Of
-            return metConditions.filter(associatedWithThisConditionSet).length !== conditions.filter(associatedWithThisConditionSet).length
+            return conditions.map(TestCondition).filter(b => b).length < conditions.length
         default: //noneOf
-            return !metConditions.find(associatedWithThisConditionSet)
+            return conditions.map(TestCondition).filter(b => b).length === 0
     }
 }

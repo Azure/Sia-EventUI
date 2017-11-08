@@ -3,29 +3,39 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
+import Playbook from './Playbook/Playbook'
 
 const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, eventId, eventTypeActions }) => {
-    return (<Card
-                className="incident-card"
-                style={{ backgroundColor }}
-            >
-                <CardHeader
-                    title={ticketId ? `${ticketId}: ${text}` : text}
-                    subtitle={time.format('LTS')}
-                    actAsExpander={true}
-                    showExpandableButton={true}
+    return (
+    <div>
+        <BootstrapPlaybook
+            eventId={eventId}
+            eventTypeId={eventTypeId}
+            ticketId={ticketId}
+            incidentId={incidentId}
+            eventTypeActions={eventTypeActions}
+        />
+        <Card
+            className="incident-card"
+            style={{ backgroundColor }}
+        >
+            <CardHeader
+                title={ticketId ? `${ticketId}: ${text}` : text}
+                subtitle={time.format('LTS')}
+                actAsExpander={true}
+                showExpandableButton={true}
+            />
+            <CardText expandable={true}>
+                Select the Actions below:
+                <Playbook
+                    eventId={eventId}
+                    eventTypeId={eventTypeId}
+                    ticketId={ticketId}
+                    incidentId={incidentId}
                 />
-                <CardText expandable={true}>
-                    Select the Actions below:
-                    <BootstrapPlaybook
-                        eventId={eventId}
-                        eventTypeId={eventTypeId}
-                        ticketId={ticketId}
-                        incidentId={incidentId}
-                        eventTypeActions={eventTypeActions}
-                    />
-                </CardText>
-            </Card>
+            </CardText>
+        </Card>
+    </div>
 )}
 
 Event.propTypes = {

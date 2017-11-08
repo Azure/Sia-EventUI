@@ -14,20 +14,20 @@ export const Play = ({isUrl, filledTemplate, name}) => {
 }
 
 export const mapStateToProps = (state, ownProps) => {
-    const eventType = state.playbook.eventTypes[ownProps.eventTypeId]
+    const eventType = state.eventTypes.records[ownProps.eventTypeId]
     const event = state.events.list.find(event => event.id === ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     const action = ownProps.action
-    const actionTemplate = Object.values(state.playbook.actionTemplates).find(template => template.actionId === action.id)
-    const actionTemplateSources = Object.values(state.playbook.actionTemplateSources).filter(source => source.actionTemplateId === actionTemplate.id)
+    const actionTemplate = action.actionTemplate
+    const actionTemplateSources = actionTemplate.sources
     const actionTemplateSourcesWithData = actionTemplateSources.map(
         templateSource => Object.assign({}, templateSource, {dataValue: ByPath.get(
             selectSourceObject(templateSource.sourceObject, event, ticket, eventType, engagement),
             templateSource.key
         )})
     )
-    let filledTemplate = actionTemplate.template
+    let filledTemplate = Object.assign({}, actionTemplate.template)
     actionTemplateSourcesWithData.forEach(source => {
         filledTemplate = filledTemplate.replace('${' + source.name + '}', source.dataValue)
     })
