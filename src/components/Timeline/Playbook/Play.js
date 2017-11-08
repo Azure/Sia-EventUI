@@ -4,12 +4,11 @@ import ByPath from 'object-path'
 import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
 
 
-export const Play = ({isUrl, filledTemplate, name}) => {
+export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dispatch}) => {
     return isUrl ? <a href={filledTemplate}>Link: {name}</a>
                  : <FlatButtonStyled
                         label={'Publish Event: ' + name}
-                        //Todo: add event publish
-                        onTouchTap={() => alert('Not yet implemented')}
+                        onTouchTap={publishEvent(incidentId, eventActions, dispatch)(filledTemplate)}
                     />
 }
 
@@ -27,15 +26,21 @@ export const mapStateToProps = (state, ownProps) => {
             templateSource.key
         )})
     )
-    let filledTemplate = Object.assign({}, actionTemplate.template)
+    let filledTemplate = actionTemplate.template
     actionTemplateSourcesWithData.forEach(source => {
         filledTemplate = filledTemplate.replace('${' + source.name + '}', source.dataValue)
     })
     return {
+        ...ownProps,
         isUrl: actionTemplate.isUrl,
         name: actionTemplate.name,
         filledTemplate
     }
+}
+
+const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) => () => {
+    const parsedTemplate = JSON.parse(filledTemplate)
+    dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
 }
 
 export default connect(mapStateToProps)(Play)

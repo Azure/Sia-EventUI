@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Playbook from './Playbook'
 
 export class BootstrapPlaybook extends React.Component {
     constructor() {

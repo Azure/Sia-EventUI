@@ -5,7 +5,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 
-const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, eventId, eventTypeActions }) => {
+const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId, eventId, eventActions, eventTypeActions }) => {
     return (
     <div>
         <BootstrapPlaybook
@@ -32,6 +32,7 @@ const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId,
                     eventTypeId={eventTypeId}
                     ticketId={ticketId}
                     incidentId={incidentId}
+                    eventActions={eventActions}
                 />
             </CardText>
         </Card>

@@ -35,7 +35,7 @@ export const getEventTypeActionSet = (eventTypeId) => ({
         eventTypeId
     }),
 
-    succeed: (eventType, response) => ({
+    succeed: (eventType) => ({
         type: GET_EVENT_TYPE_SUCCESS,
         eventTypeId,
         eventType
@@ -55,7 +55,7 @@ export const postEventTypeActionSet = (name, data) => ({
         data
     }),
 
-    succeed: (eventType, response) => ({
+    succeed: (eventType) => ({
         type: POST_EVENT_TYPE_SUCCESS,
         name,
         eventType

@@ -43,6 +43,7 @@ class Ticket extends Component {
         if(incident.primaryTicket.originId === ticket.originId)
         {
             return <DisplayIncident
+                eventActions={actions.event}
                 engagementActions={actions.engagement}
                 eventTypeActions={actions.eventType}
                 incident={incident}

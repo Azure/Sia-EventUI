@@ -15,9 +15,9 @@ const AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, event
           IncidentIdLabel(
             ticketIdToIncidentIdMap[0],
             ticketIdToIncidentIdMap[1],
-            selectedIncidentId 
-              ? selectedIncidentId 
-              : incidentIdCounter++ 
+            selectedIncidentId
+              ? selectedIncidentId
+              : incidentIdCounter++
                 ? ticketIdToIncidentIdMap[0]
                 : 0, //If none are selected, select the first
             updateSelectedIncidentId)
@@ -70,7 +70,7 @@ const EventTypeIdLabel = (eventTypeIdInput, updateEventTypeIdInput) => <label>
   EventTypeId:
   <input
     name="eventTypeId"
-    id={`eventTypeIdInput`}
+    id={'eventTypeIdInput'}
     type="text"
     style={{width: '74%'}}
     onChange={updateEventTypeIdInput()}

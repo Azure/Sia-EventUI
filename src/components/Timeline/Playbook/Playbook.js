@@ -4,10 +4,10 @@ import ByPath from 'object-path'
 import Play from './Play'
 import { selectSourceObject } from './Play'
 
-export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagementId, actions}) => {
+export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagementId, actions, eventActions, eventTypeActions}) => {
     let localKey = 0
     return  <div>{
-                actions 
+                actions
                 ? actions.map(action =>
                     <div key={localKey++}>
                         <span>
@@ -21,6 +21,8 @@ export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagement
                             incidentId={incidentId}
                             ticketId={ticketId}
                             engagementId={engagementId}
+                            eventActions={eventActions}
+                            eventTypeActions={eventTypeActions}
                         />
                     </div>)
                 : <div>Fetching action options...</div>
@@ -33,16 +35,19 @@ export const mapStateToProps = (state, ownProps) => {
     const event = Object.values(state.events.list).find(event => event.id == ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(
-        engagement => engagement.incidentId == ownProps.incidentId
+        engagement => engagement
+        && engagement.incidentId == ownProps.incidentId
+        && engagement.participant
         && engagement.participant.alias == auth.userAlias
-        && engagement.particpant.team == auth.userTeam
+        && engagement.participant.team == auth.userTeam
         && engagement.participant.role == auth.userRole
     )
     const actions = eventType.actions
+    var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
     const qualifiedActions = actions.filter(
         action => action.conditionSets.reduce(
-            (allConditionSetsMet, currentConditionSet) => allConditionsMet 
-                ? TestConditionSet(currentConditionSet)
+            (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
+                ? populatedConditionSetTest(currentConditionSet)
                 : false,
             true
         )
@@ -92,10 +97,10 @@ const TestByConditionType = (condition) => {
 }
 
 
-const TestConditionSet = (conditionSet) => {
-    const conditionsWithValue = conditionSet.conditions 
+const TestConditionSet = (event, ticket, eventType, engagement) => (conditionSet) => {
+    const conditionsWithValue = conditionSet.conditions
         ? conditionSet.conditions
-            .map(condition => condition.conditionSource 
+            .map(condition => condition.conditionSource
                 ? ({
                     ...condition,
                     value: ByPath.get(
@@ -112,12 +117,12 @@ const TestConditionSet = (conditionSet) => {
     switch(conditionSet.type)
     {
         case 1: //Any of
-            return conditions.map(TestCondition).filter(b => b).length > 0
+            return conditionsWithValue.map(TestCondition).filter(b => b).length > 0
         case 2: //All of
-            return conditions.map(TestCondition).filter(b => b).length === conditions.length
+            return conditionsWithValue.map(TestCondition).filter(b => b).length === conditionsWithValue.length
         case 3: //Not All Of
-            return conditions.map(TestCondition).filter(b => b).length < conditions.length
+            return conditionsWithValue.map(TestCondition).filter(b => b).length < conditionsWithValue.length
         default: //noneOf
-            return conditions.map(TestCondition).filter(b => b).length === 0
+            return conditionsWithValue.map(TestCondition).filter(b => b).length === 0
     }
 }

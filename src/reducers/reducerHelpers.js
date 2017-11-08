@@ -26,7 +26,7 @@ const extractIdValuePair = (record) => ({
     [record.id]: record
 })
 
-export const recordsToIdValuePairArray = (records) => records 
+export const recordsToIdValuePairArray = (records) => records
 ? Array.isArray(records)
     ? records.map(extractIdValuePair)
     : [extractIdValuePair(records)]

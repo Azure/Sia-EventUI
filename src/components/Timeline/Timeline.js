@@ -19,11 +19,11 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, dispatch, eventTypeActions, ticketId, eventTypes } = this.props
+    const { events, dispatch, eventActions, eventTypeActions, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
         <Filter pagination={events} dispatch={dispatch}/>
-        {Events(events.pageList, eventTypeActions, ticketId, eventTypes)}
+        {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )

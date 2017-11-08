@@ -12,11 +12,11 @@ import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import { connect } from 'react-redux'
 
-export const DisplayIncident = ({engagementActions, eventTypeActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
+export const DisplayIncident = ({engagementActions, eventActions, eventTypeActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(engagementActions, incident, ticket, ticketSystem, null, dispatch),
         IncidentProgress(null),
-        IncidentEvents([[ticket.originId, incident.id]], dispatch, eventTypeActions)
+        IncidentEvents([[ticket.originId, incident.id]], dispatch, eventActions, eventTypeActions)
     ],
     [
         IncidentSummaryName(),
@@ -113,7 +113,7 @@ export const IncidentProgress = (ticketId) => {
     return incidentProgressArray
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventTypeActions) => {
+export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventActions, eventTypeActions) => {
     let incidentEventsArray = [
         [
             [
@@ -124,8 +124,10 @@ export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventTypeActions
         [
             <Timeline
                 incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}
+                eventActions={eventActions}
                 eventTypeActions={eventTypeActions}
                 ticketId={ticketToIncidentIdMap[0][0]}
+                incidentId={ticketToIncidentIdMap[0][1]}
             />
         ]
     ]
