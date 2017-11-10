@@ -9,7 +9,7 @@ SIA is built using:
 SIA is configured for Wepback's hot module reloading, so changes should automatically appear in your browser.
 
 # Before You Start
-You will need to add const files in config for each environment you want to use; these are not tracked in git. See <code>cfg/constExample.js</code> for more details. Const files follow the naming convention $env.const.js (localhost.const.js is the const file loaded by localhost.js, for example)
+You will need to add const files in config for each environment you want to use; these are not tracked in git. See <code>cfg/constExample.js</code> for more details. Const files follow the naming convention $env.const.js (localhost.const.js is the const file loaded by localhost.js, for example).
 
 # To start
 + Have Node.js installed (the latest LTS release is preferred)
@@ -17,7 +17,7 @@ You will need to add const files in config for each environment you want to use;
 + Navigate to the SIA-EventUI source directory (the directory this file is in (<code>README.md</code>)) and enter these commands:
     + `npm install`
     + `npm run serve`
-+ navigate to http://localhost:3000
++ Navigate to http://localhost:3000
 
 # To start pointing at local API
 + Have Node.js installed (the latest LTS release is preferred)
@@ -25,7 +25,7 @@ You will need to add const files in config for each environment you want to use;
 + Start the gateway project and all dependencies by entering these commands:
     + `npm install`
     + `npm start`
-+ navigate to http://localhost:3000
++ Navigate to http://localhost:3000
 
 # To Test
 + Enter this command:
