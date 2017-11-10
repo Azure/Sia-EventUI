@@ -1,4 +1,4 @@
-import * as eventTypeActions from '../actions/Playbook/eventTypeActions'
+import * as eventTypeActions from '../actions/eventTypeActions'
 import { mergeToStateById } from './reducerHelpers'
 import { combineReducers } from 'redux'
 
@@ -8,10 +8,9 @@ const defaultFetchingEventTypes = []
 export const fetching =  (state = defaultFetchingEventTypes, action) => {
     switch(action.type){
         case eventTypeActions.TRY_GET_EVENT_TYPE:
-        case eventTypeActions.TRY_POST_EVENT_TYPE:
-            return state.concat([action.eventTypeId])
-        case eventTypeActions.POST_EVENT_TYPE_FAILURE:
-        case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
+            return state.includes(action.eventTypeId)
+                ? state
+                : state.concat([action.eventTypeId])
         case eventTypeActions.GET_EVENT_TYPE_FAILURE:
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
             return state.filter(id => id !== action.eventTypeId)
@@ -24,7 +23,6 @@ export const fetching =  (state = defaultFetchingEventTypes, action) => {
 export const records = (state = defaultEventTypeCollection, action) => {
     switch(action.type){
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
-        case eventTypeActions.POST_EVENT_TYPE_SUCCESS:
             return mergeToStateById(state, action.eventType)
         default:
             return state

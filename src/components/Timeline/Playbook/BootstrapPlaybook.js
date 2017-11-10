@@ -15,7 +15,7 @@ export class BootstrapPlaybook extends React.Component {
     }
 
     render() {
-        return <div></div>
+        return null
     }
 }
 

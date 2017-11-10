@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import ByPath from 'object-path'
 import Play from './Play'
 import { selectSourceObject } from './Play'
@@ -61,26 +62,23 @@ export const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps)(Playbook)
 
-
-const TestCondition = (condition) => {
-    const testResult = TestByConditionType(condition)
-    return condition.ConditionType === 1 ? testResult : !testResult
-}
-
-const TestByConditionType = (condition) => {
-    let comparisonValue
-    let value = condition ? condition.value : null
+export const GetComparisonValue = (condition) => {
     switch(condition.dataFormat)
     {
         case 1: //string
-            comparisonValue = condition.comparisonValue
-            break
+            return condition.comparisonValue
         case 2: //datetime
-            comparisonValue = condition.dateTimeComparisonValue
-            break
+            return condition.dateTimeComparisonValue 
+                ? moment(condition.dateTimeComparisonValue)
+                : condition.dateTimeComparisonValue
         default: //int
-            comparisonValue = condition.integerComparisonValue
+            return condition.integerComparisonValue
     }
+}
+
+export const testableTestByConditionType = (getComparisonValue) => (condition) => {
+    const comparisonValue = getComparisonValue(condition)
+    const value = condition ? condition.value : null
     switch(condition.conditionType)
     {
         //contains
@@ -96,15 +94,23 @@ const TestByConditionType = (condition) => {
     }
 }
 
+const TestByConditionType = testableTestByConditionType(GetComparisonValue)
 
-const TestConditionSet = (event, ticket, eventType, engagement) => (conditionSet) => {
+export const testableTestCondition = (testByConditionType) => (condition) => {
+    const testResult = testByConditionType(condition)
+    return condition.ConditionType === 1 ? testResult : !testResult
+}
+
+const TestCondition = testableTestCondition(TestByConditionType)
+
+export const testableTestConditionSet = (select) => (event, ticket, eventType, engagement) => (conditionSet) => {
     const conditionsWithValue = conditionSet.conditions
         ? conditionSet.conditions
             .map(condition => condition.conditionSource
                 ? ({
                     ...condition,
                     value: ByPath.get(
-                        selectSourceObject(condition.conditionSource.sourceObject, event, ticket, eventType, engagement),
+                        select(condition.conditionSource.sourceObject, event, ticket, eventType, engagement),
                         condition.conditionSource.key
                     )
                 })
@@ -126,3 +132,5 @@ const TestConditionSet = (event, ticket, eventType, engagement) => (conditionSet
             return conditionsWithValue.map(TestCondition).filter(b => b).length === 0
     }
 }
+
+const TestConditionSet = testableTestConditionSet(selectSourceObject)

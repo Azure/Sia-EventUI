@@ -21,7 +21,7 @@ const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventTypeId,
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time.format('LTS')}
+                subtitle={time.format('LT')}
                 actAsExpander={true}
                 showExpandableButton={true}
             />
