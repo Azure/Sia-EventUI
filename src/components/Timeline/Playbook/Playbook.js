@@ -86,9 +86,10 @@ export const testableTestByConditionType = (getComparisonValue) => (condition) =
         //has value
         case 3: return !!value
         //greater than
-        case 4: return value && value > comparisonValue
+        case 4: return value && (value > comparisonValue)
         //less than
-        case 5: return value && comparisonValue > value
+        case 5: 
+            return value && (comparisonValue > value)
         //equals
         default: return value === comparisonValue
     }
@@ -103,7 +104,7 @@ export const testableTestCondition = (testByConditionType) => (condition) => {
 
 const TestCondition = testableTestCondition(TestByConditionType)
 
-export const testableTestConditionSet = (select) => (event, ticket, eventType, engagement) => (conditionSet) => {
+export const testableTestConditionSet = (select, testCondition) => (event, ticket, eventType, engagement) => (conditionSet) => {
     const conditionsWithValue = conditionSet.conditions
         ? conditionSet.conditions
             .map(condition => condition.conditionSource
@@ -120,17 +121,18 @@ export const testableTestConditionSet = (select) => (event, ticket, eventType, e
                 })
             )
         : []
+    const metConditionsCount = conditionsWithValue.map(testCondition).filter(b => b).length
     switch(conditionSet.type)
     {
         case 1: //Any of
-            return conditionsWithValue.map(TestCondition).filter(b => b).length > 0
+            return metConditionsCount > 0
         case 2: //All of
-            return conditionsWithValue.map(TestCondition).filter(b => b).length === conditionsWithValue.length
+            return metConditionsCount === conditionsWithValue.length
         case 3: //Not All Of
-            return conditionsWithValue.map(TestCondition).filter(b => b).length < conditionsWithValue.length
+            return metConditionsCount < conditionsWithValue.length
         default: //noneOf
-            return conditionsWithValue.map(TestCondition).filter(b => b).length === 0
+            return metConditionsCount === 0
     }
 }
 
-const TestConditionSet = testableTestConditionSet(selectSourceObject)
+const TestConditionSet = testableTestConditionSet(selectSourceObject, TestCondition)
