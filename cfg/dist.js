@@ -5,7 +5,7 @@ let webpack = require('webpack')
 
 let baseConfig = require('./base')
 let defaultSettings = require('./defaults')
-let constants = require('./dist.const');
+let constants = require('./defaultConstants');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 // Add needed plugins here
