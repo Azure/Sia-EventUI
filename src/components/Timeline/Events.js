@@ -12,7 +12,7 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
           incidentId = {incidentId}
           ticketId = {ticketId}
           dismissed = {event.dismissed}
-          text = {LoadTextFromEventType(event.eventTypeId, eventTypes) }
+          text = {LoadTextFromEvent(event, eventTypes) }
           time = {moment(event.occurred ? event.occurred : event.Occurred)}
           backgroundColor = {event.backgroundColor}
           eventId = {event.id}
@@ -24,10 +24,21 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
   )
 }
 
-const LoadTextFromEventType = (eventTypeId, eventTypes) => {
-  const eventType = eventTypes[eventTypeId]
-  if(!eventType) return 'Loading event information...'
-  return eventType.name
+const LoadTextFromEvent = (event, eventTypes) => {
+  const eventType = eventTypes[event.eventTypeId]
+  if(!eventType) 
+    if (!event.data.displayText)
+      return JSON.stringify(event.data)
+    else
+      return event.data.displayText
+  else
+    if (!eventType.displayTemplate.pattern)
+      if (!eventType.name)  
+        return 'Loading event information...'
+      else
+        return eventType.name
+    else
+      return eventType.displayTemplate.pattern      
 }
 
 export default Events
