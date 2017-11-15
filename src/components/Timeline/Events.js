@@ -26,19 +26,11 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
 
 const LoadTextFromEvent = (event, eventTypes) => {
   const eventType = eventTypes[event.eventTypeId]
-  if(!eventType) 
-    if (!event.data.displayText)
-      return JSON.stringify(event.data)
-    else
-      return event.data.displayText
+  if (eventType) 
+    return eventType.displayTemplate.pattern ? eventType.displayTemplate.pattern 
+    : (eventType.name ? eventType.name : 'Loading event information...')
   else
-    if (!eventType.displayTemplate.pattern)
-      if (!eventType.name)  
-        return 'Loading event information...'
-      else
-        return eventType.name
-    else
-      return eventType.displayTemplate.pattern      
+    return event.data.displayText ? event.data.displayText : JSON.stringify(event.data)
 }
 
 export default Events
