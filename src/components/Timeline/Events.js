@@ -24,13 +24,41 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
   )
 }
 
+// const LoadTextFromEvent = (event, eventTypes) => {
+//   const eventType = eventTypes[event.eventTypeId]
+//   if (eventType)
+//     return eventType.displayTemplate? eventType.displayTemplate.pattern : null
+//     || eventType.name
+//     || 'Loading event information...'
+//   else
+//     return event.data.displayText ? event.data.displayText : JSON.stringify(event.data)
+// }
+
 const LoadTextFromEvent = (event, eventTypes) => {
   const eventType = eventTypes[event.eventTypeId]
-  if (eventType) 
-    return eventType.displayTemplate.pattern ? eventType.displayTemplate.pattern 
-    : (eventType.name ? eventType.name : 'Loading event information...')
+  if (eventType)
+    return  HasValidDisplayTemplatePattern(eventType)? eventType.displayTemplate.pattern
+    : (HasValidName(eventType) ? eventType.name : 'Loading event information...')
+  else if (HasValidData(event))
+    return HasValidDisplayText(event.data) ? event.data.displayText : JSON.stringify(event.data)
   else
-    return event.data.displayText ? event.data.displayText : JSON.stringify(event.data)
+    return 'Loading event information...'
+}
+
+const HasValidDisplayTemplatePattern = (eventType) => {
+  return eventType.displayTemplate && eventType.displayTemplate.pattern && eventType.displayTemplate.pattern.length > 0 ? true : false
+}
+
+const HasValidName = (eventType) => {
+  return eventType.name && eventType.name.length > 0 ? true: false
+}
+
+const HasValidData = (event) => {
+  return event.data ? true: false
+}
+
+const HasValidDisplayText = (data) => {
+  return data.displayText ? true: false
 }
 
 export default Events
