@@ -97,14 +97,14 @@ const eventSeven = {
 }
 
 const eventEight = {
-    eventTypeId: 100,
+    eventTypeId: 4,
     data: {
         someField: 'User data here'
     }
 }
 
 const eventNine = {
-    eventTypeId: 100,
+    eventTypeId: 5,
     data: {
         displayText: '',
         someField: 'User data here'
@@ -171,11 +171,11 @@ describe('Events', function test () {
         expect(this.output[7].props.text).to.equal('eventType.name')
     })
 
-    it('Should return events with text from stringified event.data if no eventType, no event.data.displayText, and no event.name', () => {
+    it('Should return events with text from stringified event.data if no eventType.displayTemplate, no event.data.displayText, and no eventType.name', () => {
         expect(this.output[8].props.text).to.equal('{"someField":"User data here"}')
     })
 
-    it('Should return events with text from stringified event.data if no eventType, invalid event.data.displayText, and no event.name', () => {
+    it('Should return events with text from stringified event.data if no eventType.displayTemplate, invalid event.data.displayText, and an invalid eventType.name', () => {
         expect(this.output[9].props.text).to.equal('{"displayText":"","someField":"User data here"}')
     })
 
