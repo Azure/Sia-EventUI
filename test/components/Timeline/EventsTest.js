@@ -11,7 +11,7 @@ const eventTypeOne = {
 }
 
 const eventTypeTwo = {
-    name: 'Two',
+    name: 'Two'
 }
 
 const eventTypeThree = {
@@ -31,16 +31,16 @@ const eventTypeFour = {
 const eventOne = {
     eventTypeId: 0,
     data: {
-        someField: '',
-        displayText: 'One, only one'
+        displayText: 'One, only one',
+        someField: ''
     }
 }
 
 const eventTwo = {
     eventTypeId: 1,
     data: {
-        someField: '',
-        displayText: ''
+        displayText: '',
+        someField: ''
     }
 }
 
@@ -101,7 +101,7 @@ describe('Events', function test () {
     it('Should return events with text from the eventType.displayTemplate.pattern', () => {
         expect(this.output[0].props.text).to.equal('One is the loneliest number')
     })
-
+ 
     it('Should return events with text from the eventType.name if no displayTemplate', () => {
         expect(this.output[1].props.text).to.equal('Two')
     })
@@ -119,7 +119,6 @@ describe('Events', function test () {
     })
 
     it('Should return events with text from stringified event.data', () => {
-        const x = '{"someField":"User data here"}'
         expect(this.output[5].props.text).to.equal('{"someField":"User data here"}')
     })
 })
