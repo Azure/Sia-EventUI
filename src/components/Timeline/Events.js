@@ -24,31 +24,40 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
   )
 }
 
+// const LoadTextFromEvent = (event, eventTypes) => {
+//   const eventType = eventTypes[event.eventTypeId]
+//   if (eventType)
+//     return  HasValidDisplayTemplatePattern(eventType)? eventType.displayTemplate.pattern
+//     : (HasValidName(eventType) ? eventType.name : 'Loading event information...')
+//   else if (HasValidData(event))
+//     return HasValidDisplayText(event.data) ? event.data.displayText : JSON.stringify(event.data)
+//   else
+//     return 'Loading event information...'
+// }
+
 const LoadTextFromEvent = (event, eventTypes) => {
   const eventType = eventTypes[event.eventTypeId]
-  if (eventType)
-    return  HasValidDisplayTemplatePattern(eventType)? eventType.displayTemplate.pattern
-    : (HasValidName(eventType) ? eventType.name : 'Loading event information...')
-  else if (HasValidData(event))
-    return HasValidDisplayText(event.data) ? event.data.displayText : JSON.stringify(event.data)
-  else
-    return 'Loading event information...'
+  return  HasValidDisplayTemplatePattern(eventType)? eventType.displayTemplate.pattern
+  : HasValidDisplayText(event.data) ? event.data.displayText
+  : HasValidName(eventType) ? eventType.name
+  : HasValidData(event) ? JSON.stringify(event.data)
+  :'This event has no text'
 }
 
 const HasValidDisplayTemplatePattern = (eventType) => {
-  return eventType.displayTemplate && eventType.displayTemplate.pattern && eventType.displayTemplate.pattern.length > 0 ? true : false
-}
-
-const HasValidName = (eventType) => {
-  return eventType.name && eventType.name.length > 0 ? true: false
-}
-
-const HasValidData = (event) => {
-  return event.data ? true: false
+  return eventType && eventType.displayTemplate && eventType.displayTemplate.pattern && eventType.displayTemplate.pattern.length > 0 ? true : false
 }
 
 const HasValidDisplayText = (data) => {
-  return data.displayText ? true: false
+  return data && data.displayText && data.displayText.length > 0? true:false
+}
+
+const HasValidName = (eventType) => {
+  return eventType && eventType.name && eventType.name.length > 0 ? true: false
+}
+
+const HasValidData = (event) => {
+  return !!(event.data)
 }
 
 export default Events
