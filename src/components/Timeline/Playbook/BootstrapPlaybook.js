@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { IsBootstrapNeeded, BootstrapIfNeeded } from '../../../services/playbookService'
 
 export class BootstrapPlaybook extends React.Component {
     constructor() {
@@ -19,20 +20,12 @@ export class BootstrapPlaybook extends React.Component {
     }
 }
 
-export const mapStateToProps = (state, ownProps) => ({
+export const mapStateToBootstrapPlaybookProps = (state, ownProps) => ({
     ...ownProps,
     eventType: state.eventTypes.records[ownProps.eventTypeId],
     isFetching: state.eventTypes.fetching.find(id => id === ownProps.eventTypeId)
 })
 
-export default connect(mapStateToProps)(BootstrapPlaybook)
+export default connect(mapStateToBootstrapPlaybookProps)(BootstrapPlaybook)
 
-const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
-
-const BootstrapIfNeeded = (props) => {
-    if(IsBootstrapNeeded(props))
-    {
-        props.dispatch(props.eventTypeActions.fetchEventType(props.eventTypeId))
-    }
-}
 

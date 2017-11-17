@@ -139,48 +139,5 @@ describe('Events', function test () {
     it('Should return the right ticketId', () => {
         expect(this.output[0].props.ticketId).to.equal(ticketId)
     })
-    it('Should return events with text from the eventType.displayTemplate.pattern', () => {
-        expect(this.output[0].props.text).to.equal('Valid displayTemplate.pattern')
-    })
-
-    it('Should return events with text from the displayText if no eventType', () => {
-        expect(this.output[1].props.text).to.equal('User displayText')
-    })
- 
-    it('Should return events with text from the displayText if no displayTemplate', () => {
-        expect(this.output[2].props.text).to.equal('User displayText')
-    })
-
-    it('Should return events with text from the displayText if no displayText.pattern', () => {
-        expect(this.output[3].props.text).to.equal('User displayText')
-    })
-
-    it('Should return events with text from the displayText if invalid displayText.pattern', () => {
-        expect(this.output[4].props.text).to.equal('User displayText')
-    })
-
-    it('Should return events with text from the eventType.name if no eventType.displayTemplate.pattern and no event.data', () => {
-        expect(this.output[5].props.text).to.equal('eventType.name')
-    })
-
-    it('Should return events with text from the eventType.name if no eventType.displayTemplate.pattern and no event.data.displayText', () => {
-        expect(this.output[6].props.text).to.equal('eventType.name')
-    })
-
-    it('Should return events with text from the eventType.name if no eventType.displayTemplate.pattern and invalid event.data.displayText', () => {
-        expect(this.output[7].props.text).to.equal('eventType.name')
-    })
-
-    it('Should return events with text from stringified event.data if no eventType, no event.data.displayText, and no event.name', () => {
-        expect(this.output[8].props.text).to.equal('{"someField":"User data here"}')
-    })
-
-    it('Should return events with text from stringified event.data if no eventType, invalid event.data.displayText, and no event.name', () => {
-        expect(this.output[9].props.text).to.equal('{"displayText":"","someField":"User data here"}')
-    })
-
-    it('Should return events with error message when no eventType and no data', () => {
-        expect(this.output[10].props.text).to.equal('This event has no text')
-    })
 
 })

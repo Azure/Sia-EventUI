@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ByPath from 'object-path'
 import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
+import { selectSourceObject, fillTemplate } from '../../../services/playbookService'
 
 
 export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dispatch}) => {
@@ -12,24 +13,14 @@ export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dis
                     />
 }
 
-export const mapStateToProps = (state, ownProps) => {
+export const mapStateToPlayProps = (state, ownProps) => {
     const eventType = state.eventTypes.records[ownProps.eventTypeId]
     const event = state.events.list.find(event => event.id === ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     const action = ownProps.action
-    const actionTemplate = action.actionTemplate
-    const actionTemplateSources = actionTemplate.sources
-    const actionTemplateSourcesWithData = actionTemplateSources.map(
-        templateSource => Object.assign({}, templateSource, {dataValue: ByPath.get(
-            selectSourceObject(templateSource.sourceObject, event, ticket, eventType, engagement),
-            templateSource.key
-        )})
-    )
-    let filledTemplate = actionTemplate.template
-    actionTemplateSourcesWithData.forEach(source => {
-        filledTemplate = filledTemplate.replace('${' + source.name + '}', source.dataValue)
-    })
+    const filledTemplate = action ? fillTemplate(action.actionTemplate, event, ticket, eventType, engagement) : ''
+  
     return {
         ...ownProps,
         isUrl: actionTemplate.isUrl,
@@ -43,14 +34,5 @@ const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) =>
     dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
 }
 
-export default connect(mapStateToProps)(Play)
+export default connect(mapStateToPlayProps)(Play)
 
-export const selectSourceObject = (sourceObjectEnum, event, ticket, eventType, engagement) => {
-    switch(sourceObjectEnum){
-        case 1: return event
-        case 2: return ticket
-        case 3: return eventType
-        case 4: return engagement
-        default: return null //not sure if there's a better behavior for undefined enum
-    }
-}
