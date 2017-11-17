@@ -26,7 +26,7 @@ export const GetComparisonValue = (condition) => {
         case 1: //string
             return condition.comparisonValue
         case 2: //datetime
-            return condition.dateTimeComparisonValue 
+            return condition.dateTimeComparisonValue
                 ? moment(condition.dateTimeComparisonValue)
                 : condition.dateTimeComparisonValue
         default: //int
@@ -46,7 +46,7 @@ export const testableTestByConditionType = (getComparisonValue) => (condition) =
         //greater than
         case 4: return value && (value > comparisonValue)
         //less than
-        case 5: 
+        case 5:
             return value && (comparisonValue > value)
         //equals
         default: return value === comparisonValue
@@ -97,7 +97,7 @@ export const TestConditionSet = testableTestConditionSet(selectSourceObject, Tes
 
 export const testableFillTemplate = (selectSource) => (template, event, ticket, eventType, engagement) => {
     if(!template || !template.pattern) return ''
-    const templateSourcesWithData = template.sources 
+    const templateSourcesWithData = template.sources
         ? template.sources.map(
                 source => Object.assign({}, source, {dataValue: ByPath.get(
                 selectSource(source.sourceObject, event, ticket, eventType, engagement),

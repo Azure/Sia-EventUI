@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 import Event from './Event'
 
 export const Events = (events, eventActions, eventTypeActions, ticketId, incidentId) => {

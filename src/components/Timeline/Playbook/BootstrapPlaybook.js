@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { IsBootstrapNeeded, BootstrapIfNeeded } from '../../../services/playbookService'
+import { BootstrapIfNeeded } from '../../../services/playbookService'
 
 export class BootstrapPlaybook extends React.Component {
     constructor() {

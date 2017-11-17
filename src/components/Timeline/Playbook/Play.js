@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import ByPath from 'object-path'
 import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
-import { selectSourceObject, fillTemplate } from '../../../services/playbookService'
+import { fillTemplate } from '../../../services/playbookService'
 
 
 export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dispatch}) => {
@@ -23,8 +22,8 @@ export const mapStateToPlayProps = (state, ownProps) => {
   
     return {
         ...ownProps,
-        isUrl: actionTemplate.isUrl,
-        name: actionTemplate.name,
+        isUrl: action.actionTemplate.isUrl,
+        name: action.actionTemplate.name,
         filledTemplate
     }
 }
