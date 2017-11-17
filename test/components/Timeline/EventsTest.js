@@ -97,14 +97,14 @@ const eventSeven = {
 }
 
 const eventEight = {
-    eventTypeId: 100,
+    eventTypeId: 4,
     data: {
         someField: 'User data here'
     }
 }
 
 const eventNine = {
-    eventTypeId: 100,
+    eventTypeId: 5,
     data: {
         displayText: '',
         someField: 'User data here'
