@@ -1,16 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Play from './Play'
-import {
-    selectSourceObject,
-    GetComparisonValue,
-    TestByConditionType,
-    TestCondition,
-    TestConditionSet
-} from '../../../services/playbookService'
+import { TestConditionSet } from '../../../services/playbookService'
 
 
-export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagementId, actions, eventActions, eventTypeActions}) => {
+export const Playbook = ({
+    eventTypeId,
+    eventId,
+    incidentId,
+    ticketId,
+    engagementId,
+    actions,
+    eventActions,
+    eventTypeActions
+}) => {
     let localKey = 0
     return  <div>{
                 actions
@@ -38,7 +41,8 @@ export const Playbook = ({eventTypeId, eventId, incidentId, ticketId, engagement
 export const mapStateToPlaybookProps = (state, ownProps) => {
     const auth = state.auth
     const eventType = state.eventTypes.records[ownProps.eventTypeId]
-    const event = Object.values(state.events.list).find(event => event.id == ownProps.eventId)
+    const event = Object.values(state.events.list)
+        .find(event => event.id == ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(
         engagement => engagement
@@ -66,4 +70,3 @@ export const mapStateToPlaybookProps = (state, ownProps) => {
 }
 
 export default connect(mapStateToPlaybookProps)(Playbook)
-

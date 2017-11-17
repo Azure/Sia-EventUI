@@ -7,7 +7,18 @@ import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
 
-export const Event = ({ text, time, backgroundColor, incidentId, ticketId, eventType, eventTypeId, eventId, eventActions, eventTypeActions }) => {
+export const Event = ({ 
+    text,
+    time,
+    backgroundColor,
+    incidentId,
+    ticketId,
+    eventType,
+    eventTypeId,
+    eventId,
+    eventActions,
+    eventTypeActions
+}) => {
     return (
     <div>
         <BootstrapPlaybook
