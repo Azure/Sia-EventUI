@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
@@ -32,7 +33,7 @@ export const Event = ({
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time.format('LT')}
+                subtitle={time ? time.format('LT') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
             />
@@ -51,7 +52,6 @@ export const Event = ({
 )}
 
 Event.propTypes = {
-    dismissed: PropTypes.bool,
     text: PropTypes.string.isRequired,
     time: PropTypes.instanceOf(moment),
     backgroundColor: PropTypes.string,
@@ -60,7 +60,7 @@ Event.propTypes = {
 
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
-    const eventType = state.eventTypes.records[ownProps.event.eventTypeId]
+    const eventType = state.eventTypes.records[event.eventTypeId]
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
@@ -68,11 +68,12 @@ export const mapStateToEventProps = (state, ownProps) => {
         ticket,
         engagement,
         eventId: event.id,
-        time: moment(event.occurred),
+        eventTypeId: event.eventTypeId,
+        time: moment(event.occurred ? event.occurred: event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
         text: LoadTextFromEvent(event, eventType, ticket, engagement)
     }
 }
 
-export default Event
+export default connect(mapStateToEventProps)(Event)
