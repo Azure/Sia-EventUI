@@ -136,3 +136,4 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
   const HasValidData = (event) => {
     return !!(event.data)
   }
+  
