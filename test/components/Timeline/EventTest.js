@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from '../../helpers/shallowRenderHelper'
-import Event from '../../../src/components/Timeline/Event'
+import { Event } from '../../../src/components/Timeline/Event'
 import BootstrapPlaybook from '../../../src/components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import moment from 'moment'
