@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
-import { fillTemplate } from '../../../services/playbookService'
+import { fillTemplate, publishEvent } from '../../../services/playbookService'
 
 
 export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dispatch}) => {
@@ -26,11 +26,6 @@ export const mapStateToPlayProps = (state, ownProps) => {
         name: action.actionTemplate.name,
         filledTemplate
     }
-}
-
-const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) => () => {
-    const parsedTemplate = JSON.parse(filledTemplate)
-    dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
 }
 
 export default connect(mapStateToPlayProps)(Play)

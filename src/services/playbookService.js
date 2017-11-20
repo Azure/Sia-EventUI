@@ -137,3 +137,7 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
     return !!(event.data)
   }
   
+export const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) => () => {
+    const parsedTemplate = JSON.parse(filledTemplate)
+    dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
+}
