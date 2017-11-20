@@ -100,17 +100,17 @@ export const ticketNeedsRefresh = ({incident, ticket, ticketSystem, preferences}
 export const fetchIncidentIfNeeded = props => (dispatch) => {
     if(!props.incident || !props.incident.id) {
         if(props.ticketId) {
-            dispatch(props.incidentActions.fetchIncidentsByTicketId(props.ticketId))
+            dispatch(props.actions.incident.fetchIncidentsByTicketId(props.ticketId))
         }
         else {
-            dispatch(props.incidentActions.fetchIncidents())
+            dispatch(props.actions.incident.fetchIncidents())
         }
     }
     else
     {
         if(ticketNeedsRefresh(props))
         {
-            dispatch(props.incidentActions.fetchIncident(props.incident.id))
+            dispatch(props.actions.incident.fetchIncident(props.incident.id))
         }
     }
 }

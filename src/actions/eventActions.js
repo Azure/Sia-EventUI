@@ -31,14 +31,15 @@ export const eventActions = (siaContext) => ({
         getEventsActionSet(siaContext)(incidentId)
     ),
 
-    postEvent: (incidentId, eventTypeId = 0, occurrenceTime = moment()) => reduxBackedPromise(
+    postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
         authenticatedPost(siaContext),
         [
             (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
             {
                 eventTypeId,
                 occurred: occurrenceTime,
-                eventFired: occurrenceTime
+                eventFired: occurrenceTime,
+                data
             }
         ],
         postEventActionSet(incidentId)

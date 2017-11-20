@@ -16,7 +16,7 @@ export const mapStateToProps = (state) => {
 export const NavMenu = ({dispatch, alias}) => {
         return <IconMenu
                     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
-                    anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
                     targetOrigin={{horizontal: 'left', vertical: 'top'}}
                 >
                     <MenuItem primaryText={ alias }/>

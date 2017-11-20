@@ -18,6 +18,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import eventActionInitializer from './actions/eventActions'
 import incidentActionInitializer from './actions/incidentActions'
 import engagementActionInitializer from './actions/engagementActions'
+import eventTypeActionInitializer from './actions/eventTypeActions'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
@@ -39,12 +40,15 @@ establishSignalRConnection(store.dispatch)
 const siaContext = generateSiaContext(authenticationContext, store.dispatch)
 
 const eventActions = eventActionInitializer(siaContext)
-const incidentActions = incidentActionInitializer(siaContext, eventActions)
-const engagementActions = engagementActionInitializer(siaContext)
+const actions = ({
+  event: eventActions,
+  incident: incidentActionInitializer(siaContext, eventActions),
+  engagement: engagementActionInitializer(siaContext),
+  eventType: eventTypeActionInitializer(siaContext)
+})
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
-
 
 class MainComponent extends React.Component {
   render() {
@@ -57,11 +61,11 @@ class MainComponent extends React.Component {
                 <div>
                   <TopNav />
                   <Popups eventActions={eventActions} />
-                  <Route exact path="/" component={CreateIncident(incidentActions)} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket(incidentActions, engagementActions)} />
-                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(incidentActions, engagementActions)} />
-                  <Route path="/incidents/:incidentId" component={incidentRedirect(incidentActions)} />
-                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext}/>}/>
+                  <Route exact path="/" component={CreateIncident(actions.incident)} />
+                  <Route exact path="/tickets/:ticketId" component={Ticket(actions)} />
+                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(actions)} />
+                  <Route path="/incidents/:incidentId" component={incidentRedirect(actions.incident)} />
+                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} dispatch={store.dispatch}/>}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>
@@ -74,3 +78,4 @@ class MainComponent extends React.Component {
 
 // Render the main component into the dom
 ReactDOM.render(<MainComponent />, document.getElementById('app'))
+

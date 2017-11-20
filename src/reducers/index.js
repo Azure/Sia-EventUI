@@ -8,6 +8,7 @@ import expandSection from './expandSectionReducer'
 import signalR from './signalRReducer'
 import popup from './popupReducer'
 import forms from './formReducer'
+import eventTypes from './eventTypeReducer'
 
 const rootReducer = (authContext, clientId) => combineReducers({
     incidents,
@@ -18,7 +19,8 @@ const rootReducer = (authContext, clientId) => combineReducers({
     popup,
     forms,
     expandSection,
-    signalR
+    signalR,
+    eventTypes
 })
 
 export default rootReducer

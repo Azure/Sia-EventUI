@@ -16,8 +16,7 @@ class Ticket extends Component {
         ticketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired,
-        incidentActions: PropTypes.object.isRequired,
-        engagementActions: PropTypes.object.isRequired
+        actions: PropTypes.object.isRequired
     }
 
     componentDidMount() {
@@ -30,21 +29,27 @@ class Ticket extends Component {
             ticket,
             ticketSystem,
             dispatch,
-            incidentActions,
-            engagementActions
+            actions
         } = this.props
 
         if(incident && incident.error)
         {
-            return ErrorLoadingIncident(incidentActions, incident)
+            return ErrorLoadingIncident(actions.incident, incident)
         }
         if(!incident || incident.IsFetching)
         {
-            return CurrentlyLoadingIncident(incidentActions, dispatch)
+            return CurrentlyLoadingIncident(actions.incident, dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
-            return <DisplayIncident engagementActions={engagementActions} incident={incident} ticket={ticket} ticketSystem={ticketSystem} />
+            return <DisplayIncident
+                eventActions={actions.event}
+                engagementActions={actions.engagement}
+                eventTypeActions={actions.eventType}
+                incident={incident}
+                ticket={ticket}
+                ticketSystem={ticketSystem}
+             />
         }
         return (
             <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>
@@ -54,7 +59,7 @@ class Ticket extends Component {
     }
 }
 
-const mapStateToProps = (incidentActions, engagementActions) => (state, ownProps) => {
+const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
@@ -64,8 +69,7 @@ const mapStateToProps = (incidentActions, engagementActions) => (state, ownProps
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
-        incidentActions,
-        engagementActions
+        actions
     }
 }
 
@@ -86,6 +90,6 @@ export const CurrentlyLoadingIncident = (incidentActions, dispatch) => {
             </div>
 }
 
-const connectedTicket = (incidentActions, engagementActions) => connect(mapStateToProps(incidentActions, engagementActions))(Ticket)
+const connectedTicket = (actions) => connect(mapStateToProps(actions))(Ticket)
 
 export default connectedTicket

@@ -4,7 +4,7 @@ import * as popupActions from '../../actions/popupActions'
 import * as formActions from '../../actions/formActions'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import Dialog from 'material-ui/Dialog'
-import { addEventFormName, eventInputKey, selectedIncidentIdKey } from '../Incident/EventDialogControl'
+import { addEventFormName, eventInputKey, selectedIncidentIdKey, eventTypeIdInputKey } from '../Incident/EventDialogControl'
 import AddEvent from './AddEvent'
 
 const handleUpdateEvent = (dispatch, key) => (value) => event => {
@@ -23,8 +23,10 @@ export const addEventDialog = ({dispatch, form, args, eventActions}) => <Dialog
             incidentIds={args.incidentIds}
             eventInput={form[eventInputKey]}
             selectedIncidentId={form[selectedIncidentIdKey]}
+            eventTypeIdInput={form[eventTypeIdInputKey]}
             updateEventInput={handleUpdateEvent(dispatch, eventInputKey)}
             updateSelectedIncidentId={handleUpdateEvent(dispatch, selectedIncidentIdKey)}
+            updateEventTypeIdInput={handleUpdateEvent(dispatch, eventTypeIdInputKey)}
             eventActions={eventActions}
         />
     </Dialog>
