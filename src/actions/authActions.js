@@ -6,7 +6,6 @@ export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR'
 
 export const onLoginActions = (siaContext) => (dispatch) => {
-    dispatch(incidentActionsInitializer(siaContext, eventActionsInitializer(siaContext)).fetchIncidents())
     const user = siaContext.authContext.getCachedUser()
     dispatch(userLoggedIn(user))
 }

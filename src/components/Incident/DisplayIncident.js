@@ -15,12 +15,10 @@ import { connect } from 'react-redux'
 export const DisplayIncident = ({engagementActions, eventActions, eventTypeActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(engagementActions, incident, ticket, ticketSystem, null, dispatch),
-        IncidentProgress(null),
         IncidentEvents([[ticket.originId, incident.id]], dispatch, eventActions, eventTypeActions)
     ],
     [
         IncidentSummaryName(),
-        IncidentProgressName(),
         IncidentEventsName()
     ],
     expandSection, dispatch)
@@ -86,8 +84,7 @@ export const IncidentSummary = (engagementActions, incident, ticket, ticketSyste
                 dispatch={dispatch}
                 engagementActions={engagementActions}
             />
-        ],
-        [<ComparisonLinks ticketId={ticket.originId} />]
+        ]
     ]
     return incidentSummaryArray
 }
