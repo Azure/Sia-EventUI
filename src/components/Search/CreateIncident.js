@@ -2,13 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
-import { updateIncidentCreationInput, duplicateIncident } from '../../actions/incidentActions'
-const onSubmit = (ticketLookup, input, dispatch, ticketSystem, history, incidentActions) => () => {
+import { updateIncidentCreationInput } from '../../actions/incidentActions'
+const onSubmit = (input, ticketSystem, history) => () => {
 
     history.push(/tickets/ + input)
 }
 
-export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError, history, dispatch, incidentActions}) => {
+export const CreateIncident = ({input, ticketSystem, creationError, history, dispatch}) => {
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
@@ -19,14 +19,13 @@ export const CreateIncident = ({ticketLookup, input, ticketSystem, creationError
         />
         <FlatButtonStyled
             label='Submit'
-            onTouchTap={onSubmit(ticketLookup, input, dispatch, ticketSystem, history, incidentActions)}
+            onTouchTap={onSubmit(input, ticketSystem, history)}
         />
     </div>
 }
 
 export const mapStateToProps = (incidentActions) => (state) => {
     return {
-        ticketLookup: state.tickets.map,
         input: state.incidents.creation.input,
         ticketSystem: state.tickets.systems[1],
         creationError: state.incidents.creation.error ? state.incidents.creation.error.message : '',
