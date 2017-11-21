@@ -1,5 +1,3 @@
-import incidentActionsInitializer from './incidentActions.js'
-import eventActionsInitializer from './eventActions.js'
 export const LOGIN_IN_PROGRESS = 'LOGIN_IN_PROGRESS'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
