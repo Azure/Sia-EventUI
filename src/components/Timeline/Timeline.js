@@ -32,7 +32,7 @@ class Timeline extends Component {
 
 const updatePagination = (dispatch, incidentIds) => {
     dispatch(eventActions.pagination.filter(incidentIds[0].toString()))
-    dispatch(eventActions.pagination.sort('occurred'))
+    // dispatch(eventActions.pagination.sort('occurred'))
 }
 
 const fetchMissingEventTypes = (props) => {
