@@ -14,9 +14,7 @@ export const Event = ({
     incidentId,
     ticketId,
     eventTypeId,
-    eventId,
-    eventActions,
-    eventTypeActions
+    eventId
 }) => {
     return (
     <div>
@@ -25,7 +23,6 @@ export const Event = ({
             eventTypeId={eventTypeId}
             ticketId={ticketId}
             incidentId={incidentId}
-            eventTypeActions={eventTypeActions}
         />
         <Card
             className="incident-card"
@@ -44,7 +41,6 @@ export const Event = ({
                     eventTypeId={eventTypeId}
                     ticketId={ticketId}
                     incidentId={incidentId}
-                    eventActions={eventActions}
                 />
             </CardText>
         </Card>

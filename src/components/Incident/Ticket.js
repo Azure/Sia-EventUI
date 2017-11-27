@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../Buttons'
-import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
+import * as incidentActions from '../../actions/incidentActions'
 
 class Ticket extends Component {
     static propTypes = {
@@ -15,12 +15,11 @@ class Ticket extends Component {
         ticketId: PropTypes.number,
         ticketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
-        preferences: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired
+        preferences: PropTypes.object.isRequired
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchIncidentIfNeeded(this.props))
+        this.props.dispatch(incidentActions.fetchIncidentIfNeeded(this.props))
     }
 
     render() {
@@ -28,24 +27,20 @@ class Ticket extends Component {
             incident,
             ticket,
             ticketSystem,
-            dispatch,
-            actions
+            dispatch
         } = this.props
 
         if(incident && incident.error)
         {
-            return ErrorLoadingIncident(actions.incident, incident)
+            return ErrorLoadingIncident(incident, dispatch)
         }
         if(!incident || incident.IsFetching)
         {
-            return CurrentlyLoadingIncident(actions.incident, dispatch)
+            return CurrentlyLoadingIncident(dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
             return <DisplayIncident
-                eventActions={actions.event}
-                engagementActions={actions.engagement}
-                eventTypeActions={actions.eventType}
                 incident={incident}
                 ticket={ticket}
                 ticketSystem={ticketSystem}
@@ -59,7 +54,7 @@ class Ticket extends Component {
     }
 }
 
-const mapStateToProps = (actions) => (state, ownProps) => {
+const mapStateToProps = (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
@@ -68,28 +63,26 @@ const mapStateToProps = (actions) => (state, ownProps) => {
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        preferences: tickets.preferences,
-        actions
+        preferences: tickets.preferences
     }
 }
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incidentActions, incident, dispatch) => {
+export const ErrorLoadingIncident = (incident, dispatch) => {
     return <div>
                 <div>Error Loading Incident: {incident.error}</div>
                 <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.id)}/>
             </div>
 }
 
-export const CurrentlyLoadingIncident = (incidentActions, dispatch) => {
+export const CurrentlyLoadingIncident = (dispatch) => {
     return <div>
                 <div>Loading Incident...</div>
                 <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncidents()}/>
             </div>
 }
 
-const connectedTicket = (actions) => connect(mapStateToProps(actions))(Ticket)
-
+const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket

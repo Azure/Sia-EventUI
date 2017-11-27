@@ -1,21 +1,29 @@
+import GetAuthContext from '../services/msalService'
+
 export const LOGIN_IN_PROGRESS = 'LOGIN_IN_PROGRESS'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR'
 
-export const onLoginActions = (siaContext) => (dispatch) => {
-    const user = siaContext.authContext.getCachedUser()
-    dispatch(userLoggedIn(user))
-}
-
-export const onLogoutActions = (authContext) => (dispatch) => {
+export const onLogoutActions = (dispatch) => {
     dispatch(userLoggedOut())
-    authContext.logOut()
+    GetAuthContext().logOut()
 }
 
-export const startLogin = (authContext) => (dispatch) => {
+export const startLogin = (dispatch) => {
     dispatch(loginInProgress())
-    authContext.login()
+    if(typeof window !== 'undefined' && !!window)
+    {
+        GetAuthContext().loginPopup()
+        .then(
+            () => dispatch(userLoggedIn(GetAuthContext().getUser())),
+            err => dispatch(userLoginError(err))
+        )
+    }
+    else
+    {
+        dispatch(userLoginError('Window is undefined, so MSAL cannot function!'))
+    }
 }
 
 export const loginInProgress = () => ({

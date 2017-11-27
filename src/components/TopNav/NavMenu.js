@@ -13,17 +13,17 @@ export const mapStateToProps = (state) => {
     }
 }
 
-export const NavMenu = ({dispatch, alias}) => {
-        return <IconMenu
-                    iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
-                    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                    targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                >
-                    <MenuItem primaryText={ alias }/>
-                    <MenuItem primaryText={<Link to="/" >Incident Search</Link>} />
-                    <MenuItem primaryText={<Link to="/" onClick={() => onLogoutActions(dispatch)}>LogOut</Link>} />
-                    <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
-                </IconMenu>
-}
+export const NavMenu = ({dispatch, alias}) =>
+<IconMenu
+    iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
+    anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+    targetOrigin={{horizontal: 'left', vertical: 'top'}}
+>
+    <MenuItem primaryText={ alias }/>
+    <MenuItem primaryText={<Link to="/" >Incident Search</Link>} />
+    <MenuItem primaryText={<Link to="/" onClick={() => dispatch(onLogoutActions)}>LogOut</Link>} />
+    <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
+</IconMenu>
+
 
 export default connect(mapStateToProps)(NavMenu)

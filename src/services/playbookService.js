@@ -1,12 +1,14 @@
 import moment from 'moment'
 import ByPath from 'object-path'
+import * as eventTypeActions from '../actions/eventTypeActions'
+import * as eventActions from '../actions/eventActions'
 
 export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
 export const BootstrapIfNeeded = (props) => {
     if(IsBootstrapNeeded(props))
     {
-        props.dispatch(props.eventTypeActions.fetchEventType(props.eventTypeId))
+        props.dispatch(eventTypeActions.fetchEventType(props.eventTypeId))
     }
 }
 
@@ -137,7 +139,7 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
     return !!(event.data)
   }
   
-export const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) => () => {
+export const publishEvent = (incidentId, filledTemplate) => () => (dispatch) => {
     const parsedTemplate = JSON.parse(filledTemplate)
     dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
 }

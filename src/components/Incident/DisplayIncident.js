@@ -11,10 +11,10 @@ import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import { connect } from 'react-redux'
 
-export const DisplayIncident = ({engagementActions, eventActions, eventTypeActions, incident, ticket, ticketSystem, expandSection, dispatch}) => {
+export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(engagementActions, incident, ticket, ticketSystem, null, dispatch),
-        IncidentEvents([[ticket.originId, incident.id]], dispatch, eventActions, eventTypeActions)
+        IncidentSummary(incident, ticket, ticketSystem, null, dispatch),
+        IncidentEvents([[ticket.originId, incident.id]], dispatch)
     ],
     [
         IncidentSummaryName(),
@@ -35,7 +35,7 @@ export const IncidentEventsName = () => {
     return 'IncidentEvents'
 }
 
-export const IncidentSummary = (engagementActions, incident, ticket, ticketSystem, ticketId, dispatch) => {
+export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispatch) => {
     let incidentSummaryArray = [
         [
             [
@@ -81,7 +81,6 @@ export const IncidentSummary = (engagementActions, incident, ticket, ticketSyste
                 incidentId={incident.id}
                 engagements={incident.engagements}
                 dispatch={dispatch}
-                engagementActions={engagementActions}
             />
         ]
     ]
@@ -109,7 +108,7 @@ export const IncidentProgress = (ticketId) => {
     return incidentProgressArray
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventActions, eventTypeActions) => {
+export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
     let incidentEventsArray = [
         [
             [
@@ -120,8 +119,6 @@ export const IncidentEvents = (ticketToIncidentIdMap, dispatch, eventActions, ev
         [
             <Timeline
                 incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}
-                eventActions={eventActions}
-                eventTypeActions={eventTypeActions}
                 ticketId={ticketToIncidentIdMap[0][0]}
                 incidentId={ticketToIncidentIdMap[0][1]}
             />

@@ -1,14 +1,21 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_LOGIN_ERROR, LOGIN_IN_PROGRESS } from '../actions/authActions.js'
+import { getAuthContext } from '../services/msalService'
 
 const extractAliasFromUserName = (userName) => {
     return userName.slice(0, userName.indexOf('@'))
 }
 
-const getDefaultState = (authContext, clientId) => {
-    const token = authContext.getCachedToken(clientId)
-    const user = authContext.getCachedUser()
+const getDefaultState = () => {
+    var isLoggedIn
+    const authContext = getAuthContext()
+    authContext.acquireTokenSilent()
+        .then(
+            () => isLoggedIn = true,
+            () => isLoggedIn = false
+        )
+    const user = authContext.getUser()
     return {
-        isLoggedIn: (!!token),
+        isLoggedIn,
         loginInProgress: false,
         signInAutomatically: true,
         userTeam: 'none',
@@ -17,7 +24,7 @@ const getDefaultState = (authContext, clientId) => {
     }
 }
 
-const authReducer = (authContext, clientId) => (state = getDefaultState(authContext, clientId), action) => {
+const authReducer = (state = getDefaultState(), action) => {
     switch (action.type) {
         case LOGIN_IN_PROGRESS:
             return {

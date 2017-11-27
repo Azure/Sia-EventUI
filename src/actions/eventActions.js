@@ -18,21 +18,21 @@ export const ADD_EVENT = 'ADD_EVENT'
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
-export const eventActions = (siaContext) => ({
+export const eventActions =({
     fetchEvent: (incidentId, eventId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
         getEventActionSet(incidentId, eventId)
     ),
 
     fetchEvents: (incidentId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
-        getEventsActionSet(siaContext)(incidentId)
+        getEventsActionSet(incidentId)
     ),
 
     postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-        authenticatedPost(siaContext),
+        authenticatedPost,
         [
             (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
             {
@@ -70,7 +70,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
     })
 })
 
-export const getEventsActionSet = (siaContext) => (incidentId) => ({
+export const getEventsActionSet = (incidentId) => ({
     try: () => ({
         type: REQUEST_EVENTS,
         incidentId
@@ -94,9 +94,9 @@ export const getEventsActionSet = (siaContext) => (incidentId) => ({
 
         if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
-                authenticatedFetch(siaContext),
+                authenticatedFetch,
                 [linksHeader.NextPageLink],
-                getEventsActionSet(siaContext)(incidentId)
+                getEventsActionSet(incidentId)
             ))
         }
         else{

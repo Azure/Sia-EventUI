@@ -10,17 +10,17 @@ export const DISENGAGE_SUCCESS = 'DISENGAGE_SUCCESS'
 export const DISENGAGE_FAILURE = 'DISENGAGE_FAILURE'
 export const ENGAGEMENTS = 'ENGAGEMENTS'
 
-export const engagementActions = (siaContext) => ({
+export const engagementActions = ({
     engage: (incidentId, participant, timeEngaged = moment()) =>
     reduxBackedPromise(
-        authenticatedPost(siaContext),
+        authenticatedPost,
         ['incidents/' + incidentId + '/engagements/', {participant}],
         engageActionSet(incidentId, participant, timeEngaged)
     ),
     
     disengage: (participant, engagement, timeDisengaged = moment()) =>
     reduxBackedPromise(
-        authenticatedPut(siaContext),
+        authenticatedPut,
         [
             'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,
             updatedEngagement(engagement, timeDisengaged),

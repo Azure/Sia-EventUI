@@ -1,7 +1,7 @@
 import React from 'react'
 import Event from './Event'
 
-export const Events = (events, eventActions, eventTypeActions, ticketId, incidentId) => {
+export const Events = (events, ticketId, incidentId) => {
   let localKey = 0
   return (
     Array.from(events)
@@ -11,8 +11,6 @@ export const Events = (events, eventActions, eventTypeActions, ticketId, inciden
           incidentId = {incidentId}
           ticketId = {ticketId}
           event = {event}
-          eventActions = {eventActions}
-          eventTypeActions = {eventTypeActions}
         />
     )
   )

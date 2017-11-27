@@ -5,9 +5,9 @@ export const TRY_GET_EVENT_TYPE = 'TRY_GET_EVENT_TYPE'
 export const GET_EVENT_TYPE_SUCCESS = 'GET_EVENT_TYPE_SUCCESS'
 export const GET_EVENT_TYPE_FAILURE = 'GET_EVENT_TYPE_FAILURE'
 
-export const eventTypeActions = (siaContext) => ({
+export const eventTypeActions = ({
     fetchEventType: (eventTypeId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         ['eventTypes/' + eventTypeId],
         getEventTypeActionSet(eventTypeId)
     )

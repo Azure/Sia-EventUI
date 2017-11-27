@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import * as engagementActions from '../actions/engagementActions'
 import IconButtonStyled from './elements/IconButtonStyled'
 import PeopleIcon from 'material-ui/svg-icons/social/people'
 import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline'
@@ -16,7 +17,7 @@ export const mapStateToPropsEngagements = (state, ownProps) => {
     }
 }
 
-export const Engagements = ({dispatch, incidentId, engagements, user, engagementActions}) => {
+export const Engagements = ({dispatch, incidentId, engagements, user}) => {
     return (
         <div>
             <span>
@@ -31,16 +32,15 @@ export const Engagements = ({dispatch, incidentId, engagements, user, engagement
                             key={'engagement' + engagement.id}
                             engagement={engagement}
                             user={user}
-                            engagementActions={engagementActions}
                         />)
                 }
             </span>
-            <Engage dispatch={dispatch} incidentId={incidentId} user={user} engagementActions={engagementActions}/>
+            <Engage dispatch={dispatch} incidentId={incidentId} user={user}/>
         </div>
     )
 }
 
-export const Engagement = ({dispatch, engagement, user, engagementActions}) => {
+export const Engagement = ({dispatch, engagement, user}) => {
     return (
         <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
@@ -65,7 +65,7 @@ export const mapStateToPropsEngage = (state, ownProps) => {
     }
 }
 
-export const Engage = ({dispatch, incidentId, user, engagementActions}) => {
+export const Engage = ({dispatch, incidentId, user}) => {
     return (
         <IconButtonStyled
             tooltip='Engage'

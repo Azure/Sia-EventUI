@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from '../../../services/playbookService'
 
-
-export const Play = ({incidentId, isUrl, filledTemplate, name, eventActions, dispatch}) => {
+export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
     return isUrl ? <a href={filledTemplate}>Link: {name}</a>
                  : <FlatButtonStyled
                         label={'Publish Event: ' + name}
-                        onTouchTap={publishEvent(incidentId, eventActions, dispatch)(filledTemplate)}
+                        onTouchTap={publishEvent(incidentId, filledTemplate)}
                     />
 }
 

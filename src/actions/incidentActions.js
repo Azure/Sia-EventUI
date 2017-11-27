@@ -2,6 +2,7 @@ import moment from 'moment'
 import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 import { reduxBackedPromise } from './actionHelpers'
 import * as ticketActions from './ticketActions'
+import * as eventActions from './eventActions'
 
 export const REQUEST_INCIDENT = 'REQUEST_INCIDENT'
 export const RECEIVE_INCIDENT = 'RECEIVE_INCIDENT'
@@ -17,33 +18,33 @@ export const REQUEST_INCIDENT_BY_TICKET_ID = 'REQUEST_INCIDENT_BY_TICKET_ID'
 export const FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS = 'FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS'
 export const FETCH_INCIDENTS_BY_TICKET_ID_FAILURE = 'FETCH_INCIDENTS_BY_TICKET_ID_FAILURE'
 
-export const incidentActions = (siaContext, eventActions) => ({
+export const incidentActions = ({
     fetchIncident: incidentId => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         ['incidents/' + incidentId],
-        getIncidentActionSet(incidentId, eventActions)
+        getIncidentActionSet(incidentId)
     ),
 
     fetchIncidentsByTicketId: (ticketId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         ['tickets/' + ticketId],
-        getIncidentsByTicketIdActionSet(ticketId, eventActions),
+        getIncidentsByTicketIdActionSet(ticketId),
     ),
 
     fetchIncidents: () => reduxBackedPromise(
-        authenticatedFetch(siaContext),
+        authenticatedFetch,
         ['incidents/'],
-        getIncidentsActionSet(eventActions)
+        getIncidentsActionSet
     ),
 
     postIncident: (ticketId, ticketSystem) => reduxBackedPromise(
-        authenticatedPost(siaContext),
+        authenticatedPost,
         postIncidentFetchArgs(ticketId, ticketSystem),
-        createIncidentActionSet(ticketId, ticketSystem, eventActions)
+        createIncidentActionSet(ticketId, ticketSystem)
     )
 })
 
-export const getIncidentActionSet = (incidentId, eventActions) => ({
+export const getIncidentActionSet = (incidentId) => ({
     try: () => ({
         type: REQUEST_INCIDENT,
         incidentId
@@ -65,7 +66,7 @@ export const getIncidentActionSet = (incidentId, eventActions) => ({
     })
 })
 
-export const getIncidentsByTicketIdActionSet = (ticketId, eventActions) => ({
+export const getIncidentsByTicketIdActionSet = (ticketId) => ({
     try: () => ({
         type: REQUEST_INCIDENT_BY_TICKET_ID,
         ticketId
@@ -115,7 +116,7 @@ export const fetchIncidentIfNeeded = props => (dispatch) => {
     }
 }
 
-export const getIncidentsActionSet = (eventActions) => ({
+export const getIncidentsActionSet = ({
     try: () => ({
         type: REQUEST_INCIDENTS
     }),
@@ -136,7 +137,7 @@ export const getIncidentsActionSet = (eventActions) => ({
     })
 })
 
-export const createIncidentActionSet = (ticketId, ticketSystem, eventActions) => ({
+export const createIncidentActionSet = (ticketId, ticketSystem) => ({
     try: () => ({
         type: TRY_CREATE_INCIDENT,
         ticketId,

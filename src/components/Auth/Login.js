@@ -9,27 +9,28 @@ export class Login extends React.Component {
     
     componentDidMount() {
         //exported separately for testing
-        LoginComponentDidMount(this.props)
+        this.props.LoginComponentDidMount(this.props)
     }
 
     render() {
-        const { ADAL, dispatch } = this.props
+        const { dispatch, StartLogin } = this.props
         return (
-                <button id="SignIn" onClick={() => dispatch(startLogin(ADAL))}>Sign In</button>
+                <button id="SignIn" onClick={() => dispatch(StartLogin)}>Sign In</button>
         )
     }
 }
 
-export const LoginComponentDidMount = ({isLoggedIn, loginInProgress, signInAutomatically, ADAL, dispatch}) => {
+export const LoginComponentDidMount = StartLogin => ({isLoggedIn, loginInProgress, signInAutomatically, dispatch}) => {
     if(!isLoggedIn && !loginInProgress && signInAutomatically) {
-        dispatch(startLogin(ADAL))
+        dispatch(StartLogin)
     }
 }
 
-export const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state) => {
     return {
         ...state.auth,
-        ADAL: ownProps.ADAL
+        LoginComponentDidMount: LoginComponentDidMount(startLogin),
+        StartLogin: startLogin
     }
 }
 
