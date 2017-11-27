@@ -22,7 +22,7 @@ const EventFilter = ({pagination, dispatch}) =>  {
             onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
           >
             {
-              pagination && pagination.order === 'asc'
+              pagination && pagination.order === 'desc'
               ? <ArrowDown/>
               : <ArrowUp/>
             }
