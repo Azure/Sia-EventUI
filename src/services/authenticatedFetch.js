@@ -17,7 +17,7 @@ const defaultOptions = {
     // eslint-disable-next-line no-undef
     maxTimeout: RETRY_MAX_TIMEOUT
 }
-const defaultScopes = [CLIENT_ID]
+const defaultScopes = [clientId]
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
     return fetch(baseUrl + relativeUrl, init)

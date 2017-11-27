@@ -14,7 +14,7 @@ class Timeline extends Component {
   }
 
   componentDidMount() {
-    dispatch(eventActions.pagination.filter(this.props.incidentIds[0].toString()))
+    this.props.dispatch(eventActions.pagination.filter(this.props.incidentIds[0].toString()))
   }
 
   render() {
