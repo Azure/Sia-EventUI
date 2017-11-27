@@ -10,26 +10,26 @@ export const DISENGAGE_SUCCESS = 'DISENGAGE_SUCCESS'
 export const DISENGAGE_FAILURE = 'DISENGAGE_FAILURE'
 export const ENGAGEMENTS = 'ENGAGEMENTS'
 
-export const engagementActions = ({
-    engage: (incidentId, participant, timeEngaged = moment()) =>
-    reduxBackedPromise(
-        authenticatedPost,
-        ['incidents/' + incidentId + '/engagements/', {participant}],
-        engageActionSet(incidentId, participant, timeEngaged)
-    ),
+
+export const engage = (incidentId, participant, timeEngaged = moment()) =>
+reduxBackedPromise(
+    authenticatedPost,
+    ['incidents/' + incidentId + '/engagements/', {participant}],
+    engageActionSet(incidentId, participant, timeEngaged)
+)
     
-    disengage: (participant, engagement, timeDisengaged = moment()) =>
-    reduxBackedPromise(
-        authenticatedPut,
-        [
-            'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,
-            updatedEngagement(engagement, timeDisengaged),
-            null,
-            false
-        ],
-        disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged)
-    )
-})
+export const disengage = (participant, engagement, timeDisengaged = moment()) =>
+reduxBackedPromise(
+    authenticatedPut,
+    [
+        'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,
+        updatedEngagement(engagement, timeDisengaged),
+        null,
+        false
+    ],
+    disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged)
+)
+
 
 const engageActionSet = (incidentId, participant, timeEngaged) => ({
     try: () => ({
@@ -79,5 +79,3 @@ const disengageActionSet = (incidentId, participant, engagement, timeDisengaged)
 })
 
 export const pagination = paginationActions(ENGAGEMENTS)
-
-export default engagementActions

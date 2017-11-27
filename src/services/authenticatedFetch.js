@@ -17,6 +17,7 @@ const defaultOptions = {
     // eslint-disable-next-line no-undef
     maxTimeout: RETRY_MAX_TIMEOUT
 }
+const defaultScopes = [CLIENT_ID]
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
     return fetch(baseUrl + relativeUrl, init)
@@ -41,11 +42,9 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
 }
 
 const tryGetToken = (authContext) => (retry, number) =>
-authContext.acquireTokenSilent()
+authContext.acquireTokenSilent(defaultScopes)
     .then(
-        token => token,
-        () => authContext.acquireTokenPopup()
-            .then(token => token)
+        token => token
     )
     .catch(err => retry(`Error during fetch: ${err} (retry ${number})`))
 

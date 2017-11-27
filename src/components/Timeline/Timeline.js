@@ -14,11 +14,7 @@ class Timeline extends Component {
   }
 
   componentDidMount() {
-    updatePagination(this.props.dispatch, this.props.incidentIds)
-  }
-
-  componentDidUpdate() {
-    updatePagination(this.props.dispatch, this.props.incidentIds)
+    dispatch(eventActions.pagination.filter(this.props.incidentIds[0].toString()))
   }
 
   render() {
@@ -31,11 +27,6 @@ class Timeline extends Component {
       </div>
     )
   }
-}
-
-const updatePagination = (dispatch, incidentIds) => {
-    dispatch(eventActions.pagination.filter(incidentIds[0].toString()))
-    dispatch(eventActions.pagination.sort('occurred'))
 }
 
 const mapStateToProps = (state, ownProps) => {

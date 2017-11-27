@@ -19,7 +19,8 @@ class Ticket extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(incidentActions.fetchIncidentIfNeeded(this.props))
+        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences } = this.props
+        dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences))
     }
 
     render() {

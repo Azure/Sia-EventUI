@@ -18,33 +18,33 @@ export const ADD_EVENT = 'ADD_EVENT'
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
-export const eventActions =({
-    fetchEvent: (incidentId, eventId) => reduxBackedPromise(
-        authenticatedFetch,
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
-        getEventActionSet(incidentId, eventId)
-    ),
 
-    fetchEvents: (incidentId) => reduxBackedPromise(
-        authenticatedFetch,
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
-        getEventsActionSet(incidentId)
-    ),
+export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
+    authenticatedFetch,
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
+    getEventActionSet(incidentId, eventId)
+)
 
-    postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-        authenticatedPost,
-        [
-            (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
-            {
-                eventTypeId,
-                occurred: occurrenceTime,
-                eventFired: occurrenceTime,
-                data
-            }
-        ],
-        postEventActionSet(incidentId)
-    )
-})
+export const fetchEvents = (incidentId) => reduxBackedPromise(
+    authenticatedFetch,
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
+    getEventsActionSet(incidentId)
+)
+
+export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
+    authenticatedPost,
+    [
+        (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
+        {
+            eventTypeId,
+            occurred: occurrenceTime,
+            eventFired: occurrenceTime,
+            data
+        }
+    ],
+    postEventActionSet(incidentId)
+)
+
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -139,6 +139,3 @@ export const postEventActionSet = (incidentId) => ({
         failureReason
     })
 })
-
-
-export default eventActions

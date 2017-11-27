@@ -20,7 +20,8 @@ const getDefaultState = () => {
         signInAutomatically: true,
         userTeam: 'none',
         userRole: 'Crisis Manager',
-        userAlias: (user && user.userName) ? extractAliasFromUserName(user.userName) : null
+        userAlias: (user && user.displayableId) ? extractAliasFromUserName(user.displayableId) : null,
+        userUniqueId: user ? user.userIdentifier : null
     }
 }
 
@@ -39,7 +40,8 @@ const authReducer = (state = getDefaultState(), action) => {
                 error: null,
                 loginInProgress: false,
                 signInAutomatically: true,
-                userAlias: extractAliasFromUserName(action.user.userName)
+                userAlias: (action.user && action.user.displayableId) ? extractAliasFromUserName(action.user.displayableId) : null,
+                userUniqueId: action.user ? action.user.userIdentifier : null
             }
         case USER_LOGGED_OUT:
             return {
