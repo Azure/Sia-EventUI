@@ -101,7 +101,6 @@ export const ticketNeedsRefresh = (incident, ticket, ticketSystem, preferences) 
 export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences) => (dispatch) => {
     if(!incident || !incident.id) {
         if(ticketId) {
-            debugger
             dispatch(fetchIncidentsByTicketId(ticketId))
         }
         else {
