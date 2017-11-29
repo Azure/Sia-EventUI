@@ -5,8 +5,9 @@ import FlatButtonStyled from '../elements/FlatButtonStyled'
 import { updateIncidentCreationInput } from '../../actions/incidentActions'
 
 const onSubmit = (input, history) => () => {
-    if (input)
-    {history.push(/tickets/ + input)}
+    if (input) {
+        history.push(/tickets/ + input)
+    }
 }
 
 const submitIfEnter = (input, history) => (event) => {
