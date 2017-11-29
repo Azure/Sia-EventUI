@@ -23,6 +23,13 @@ export const list = (state = defaultEventCollection, action) => {
     }
 }
 
-export const events = paginated(list, eventActions.pagination.types)
+export const events = paginated(list, eventActions.pagination.types, {
+    defaultPage: 1,
+    defaultSortOrder: 'desc',
+    defaultSortBy: 'occurred',
+    defaultPer: 10,
+    defaultFilter: '',
+    defaultTotal: 0
+  })
 
 export default events
