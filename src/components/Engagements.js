@@ -20,7 +20,7 @@ export const Engagements = ({dispatch, incidentId, engagements, user, engagement
     return (
         <div>
             <span>
-                <IconButtonStyled tooltip="Engagment">
+                <IconButtonStyled tooltip="Engagement">
                     <PeopleIcon />
                 </IconButtonStyled>
                 &nbsp;
@@ -32,6 +32,7 @@ export const Engagements = ({dispatch, incidentId, engagements, user, engagement
                             engagement={engagement}
                             user={user}
                             engagementActions={engagementActions}
+                            dispatch={dispatch}
                         />)
                 }
             </span>
@@ -45,7 +46,7 @@ export const Engagement = ({dispatch, engagement, user, engagementActions}) => {
         <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
             <IconButtonStyled
-                label='Disengage'
+                tooltip='Disengage'
                 onTouchTap={() => dispatch(engagementActions.disengage(user, engagement))}
             >
                 <RemoveCircleOutlineIcon />
