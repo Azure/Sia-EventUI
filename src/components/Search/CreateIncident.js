@@ -3,23 +3,32 @@ import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
 import { updateIncidentCreationInput } from '../../actions/incidentActions'
-const onSubmit = (input, ticketSystem, history) => () => {
 
-    history.push(/tickets/ + input)
+const onSubmit = (input, history) => () => {
+    if (input) {
+        history.push(/tickets/ + input)
+    }
 }
 
-export const CreateIncident = ({input, ticketSystem, creationError, history, dispatch}) => {
+const submitIfEnter = (input, history) => (event) => {
+    if (event.key === 'Enter') {
+        onSubmit(input, history)()
+    }
+}
+
+export const CreateIncident = ({input, creationError, history, dispatch}) => {
     return <div>
         <TextField
             hintText='Ticket Id of primary ticket'
             floatingLabelText='TicketId'
             onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+            onKeyDown={submitIfEnter(input,history)}
             value={input}
             errorText={creationError}
         />
         <FlatButtonStyled
             label='Submit'
-            onTouchTap={onSubmit(input, ticketSystem, history)}
+            onTouchTap={onSubmit(input, history)}
         />
     </div>
 }
