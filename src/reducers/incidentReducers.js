@@ -91,9 +91,7 @@ export const creation = (state = defaultCreationState, action) =>{
     }
 }
 
-const incidentReducer = combineReducers({
+export default combineReducers({
     map,
     creation
 })
-
-export default incidentReducer
