@@ -14,6 +14,7 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
+export const ADD_EVENT_FILTER = 'ADD_EVENT_FILTER'
 
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
