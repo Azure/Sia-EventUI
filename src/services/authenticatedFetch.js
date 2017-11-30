@@ -1,6 +1,6 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
-import GetAuthContext from './msalService'
+import { getToken } from './authNService'
 
 // eslint-disable-next-line no-undef
 export const clientId = CLIENT_ID //From config
@@ -41,18 +41,14 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         }, err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
-const tryGetToken = (authContext) => (retry, number) =>
-authContext.acquireTokenSilent(defaultScopes)
-    .then(
-        token => token
-    )
-    .catch(err => retry(`Error during fetch: ${err} (retry ${number})`))
+const tryGetToken = (retry, number) => getToken()
+    .then(token => token)
+    .catch(err => retry(`Error when attempting to retrieve token: ${err} (retry ${number})`))
 
 
 export const authenticatedFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
-    const authContext = GetAuthContext()
     return PromiseRetry(
-        tryGetToken(authContext),
+        tryGetToken,
         defaultOptions
     ).then(token => {
         const authenticatedInit = initWithAuth(init, token)

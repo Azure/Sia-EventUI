@@ -1,27 +1,14 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_LOGIN_ERROR, LOGIN_IN_PROGRESS } from '../actions/authActions.js'
-import { getAuthContext } from '../services/msalService'
-
-const extractAliasFromUserName = (userName) => {
-    return userName.slice(0, userName.indexOf('@'))
-}
+import * as authNService from '../services/authNService'
 
 const getDefaultState = () => {
-    var isLoggedIn
-    const authContext = getAuthContext()
-    authContext.acquireTokenSilent()
-        .then(
-            () => isLoggedIn = true,
-            () => isLoggedIn = false
-        )
-    const user = authContext.getUser()
     return {
-        isLoggedIn,
+        isLoggedIn: authNService.isLoggedIn(),
         loginInProgress: false,
         signInAutomatically: true,
         userTeam: 'none',
         userRole: 'Crisis Manager',
-        userAlias: (user && user.displayableId) ? extractAliasFromUserName(user.displayableId) : null,
-        userUniqueId: user ? user.userIdentifier : null
+        userAlias: authNService.getUserAlias()
     }
 }
 
@@ -40,8 +27,7 @@ const authReducer = (state = getDefaultState(), action) => {
                 error: null,
                 loginInProgress: false,
                 signInAutomatically: true,
-                userAlias: (action.user && action.user.displayableId) ? extractAliasFromUserName(action.user.displayableId) : null,
-                userUniqueId: action.user ? action.user.userIdentifier : null
+                userAlias: authNService.getUserAlias(action.user)
             }
         case USER_LOGGED_OUT:
             return {

@@ -85,7 +85,7 @@
   },
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha1-final",
-    "adal-angular": "^1.0.14",
+    "adal-angular": "^1.0.15",
     "cross-env": "^5.0.0",
     "express": "^4.15.2",
     "msal": "^0.1.3",

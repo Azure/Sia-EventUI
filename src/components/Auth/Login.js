@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { startLogin } from '../../actions/authActions'
+import { login } from '../../services/authNService'
 
 export class Login extends React.Component {
     constructor() {
@@ -9,28 +9,31 @@ export class Login extends React.Component {
     
     componentDidMount() {
         //exported separately for testing
-        this.props.LoginComponentDidMount(this.props)
+        LoginComponentDidMount(this.props)
     }
 
     render() {
-        const { dispatch, StartLogin } = this.props
+        const { dispatch } = this.props
         return (
-                <button id="SignIn" onClick={() => dispatch(StartLogin)}>Sign In</button>
+                <button id="SignIn" onClick={() => dispatch(login)}>Sign In</button>
         )
     }
 }
 
-export const LoginComponentDidMount = StartLogin => ({isLoggedIn, loginInProgress, signInAutomatically, dispatch}) => {
+export const LoginComponentDidMount = ({
+    isLoggedIn,
+    loginInProgress,
+    signInAutomatically,
+    dispatch
+}) => {
     if(!isLoggedIn && !loginInProgress && signInAutomatically) {
-        dispatch(StartLogin)
+        dispatch(login)
     }
 }
 
 export const mapStateToProps = (state) => {
     return {
         ...state.auth,
-        LoginComponentDidMount: LoginComponentDidMount(startLogin),
-        StartLogin: startLogin
     }
 }
 
