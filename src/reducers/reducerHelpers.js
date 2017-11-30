@@ -53,3 +53,19 @@ export const byConcatenation = (aggregateArray, current) => current
     ? aggregateArray.concat(current)
     : [...aggregateArray, current]
 : aggregateArray
+
+export const buildFetching = (actions, defaultFetchList = [], getId = action => action.id)  =>
+     (state = defaultFetchList, action) =>
+     {
+        switch(action.type){
+            case actions.try:
+                return state.includes(getId(action))
+                    ? state
+                    : state.concat([getId(action)])
+            case actions.fail:
+            case actions.succeed:
+                return state.filter(id => id !== getId(action))
+            default:
+                return state
+    }
+}
