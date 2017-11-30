@@ -2,6 +2,7 @@ import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
 import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
+import deepEquals from 'deep-equal'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -14,7 +15,8 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
-export const ADD_EVENT_FILTER = 'ADD_EVENT_FILTER'
+
+export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
@@ -26,10 +28,10 @@ export const eventActions = (siaContext) => ({
         getEventActionSet(incidentId, eventId)
     ),
 
-    fetchEvents: (incidentId) => reduxBackedPromise(
+    fetchEvents: (filter) => reduxBackedPromise(
         authenticatedFetch(siaContext),
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
-        getEventsActionSet(siaContext)(incidentId)
+        [(filter.incidentId ? 'incidents/' + filter.incidentId + '/': '') + 'events/' + serializeFilters(filter)],
+        getEventsActionSet(siaContext)(filter.incidentId)
     ),
 
     postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
@@ -46,6 +48,15 @@ export const eventActions = (siaContext) => ({
         postEventActionSet(incidentId)
     )
 })
+
+export const serializeFilters = (filters) => filters
+    ? Object.entries(filters)
+        .filter(filter => filter[0] !== 'incidentId')
+        .map(filter => `${filter[0]}=${filter[1]}`)
+        .reduce((prev, current) => prev.concat(current, '&'), '')
+        .slice(0, -1)
+    : ''
+
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -141,5 +152,20 @@ export const postEventActionSet = (incidentId) => ({
     })
 })
 
+export const updateEventFilter = (siaContext, oldFilter) => (newFilter) => (dispatch) => {
+    if(!newFilter.incidentId){
+        throw 'Need to filter on incidentId!'
+    }
+    if(!deepEquals(oldFilter, newFilter))
+    {
+        dispatch(changeEventFilter(newFilter))
+        dispatch(eventActions(siaContext).fetchEvents(newFilter))
+    }
+}
+
+export const changeEventFilter = (filter) => ({
+    type: CHANGE_EVENT_FILTER,
+    filter
+})
 
 export default eventActions

@@ -66,7 +66,7 @@ const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
-    events: events,
+    events: events.pages,
     eventTypes: state.eventTypes.records
   }
 }

@@ -76,7 +76,6 @@ const inputIncidentActions = {
 }
 
 const expectedResult = {
-    ticketLookup: {1: {id:100}},
     input: 'test input',
     ticketSystem: {
         id: 1
@@ -91,7 +90,6 @@ describe('CreateIncidentMapStateToProps', () => {
     it('Should correctly generate an args object from state', () => {
         const result = mapStateToProps(inputIncidentActions)(inputState)
 
-        expect(result.ticketLookup[1].id).to.equal(expectedResult.ticketLookup[1].id)
         expect(result.input).to.equal(expectedResult.input)
         expect(result.ticketSystem.id).to.equal(expectedResult.ticketSystem.id)
         expect(result.creationError).to.equal(expectedResult.creationError)
