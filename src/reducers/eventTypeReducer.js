@@ -3,7 +3,6 @@ import { mergeToStateById, buildFetching } from './reducerHelpers'
 import { combineReducers } from 'redux'
 
 const defaultEventTypeCollection = {}
-const defaultFetchingEventTypes = []
 
 const eventTypeActionSet = ({
     try: eventTypeActions.TRY_GET_EVENT_TYPE,
