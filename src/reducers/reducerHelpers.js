@@ -38,7 +38,7 @@ export const withParentId = (parentIdName, parents, fnParentToRecords) => parent
             .reduce(byConcatenation, [])
         : withParentId(parentIdName, [parents], fnParentToRecords)
     : []
-    
+
 export const extractRecordsFromParent = (parentIdName, fnParentToRecords) => parent => {
     if(!parent) return []
     var records = fnParentToRecords(parent)
@@ -62,9 +62,11 @@ export const buildFetching = (actions, defaultFetchList = [], getId = action => 
                 return state.includes(getId(action))
                     ? state
                     : state.concat([getId(action)])
-            case actions.fail:
+            case actions.fail: // fallthrough to the next case
             case actions.succeed:
-                return state.filter(id => id !== getId(action))
+                return state.includes(getId(action))
+                    ? state.filter(id => id !== getId(action))
+                    : state
             default:
                 return state
     }
