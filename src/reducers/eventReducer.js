@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite } from './reducerHelpers'
@@ -9,6 +10,15 @@ const makeSearchable = (event) => ({
     ...event,
     filterableIncidentId: event.incidentId.toString()
 })
+
+const pageArgs = {
+    defaultPage: 1,
+    defaultSortOrder: 'desc',
+    defaultSortBy: 'occurred',
+    defaultPer: 10,
+    defaultFilter: '',
+    defaultTotal: 0
+}
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
@@ -26,7 +36,7 @@ export const list = (state = defaultEventCollection, action) => {
     }
 }
 
-export const events = paginated(list, eventActions.pagination.types)
+export const events = paginated(list, eventActions.pagination.types, pageArgs)
 
 export default combineReducers({
     pages,
