@@ -19,7 +19,8 @@ describe('Reducer Helpers', function () {
             const reducerUnderTest = buildFetching(defaultActionCases)
             const testAction = {type: 'NO-OP'}
 
-            expect(reducerUnderTest(emptyState, testAction).length).to.equal(0)
+            expect(reducerUnderTest(emptyState, testAction).length)
+                .to.equal(0)
         })
 
         it('Should generate a reducer that adds ' +
@@ -29,8 +30,10 @@ describe('Reducer Helpers', function () {
             const reducerUnderTest = buildFetching(defaultActionCases)
             const testAction = {type: 'TRY', id: 13}
 
-            expect(reducerUnderTest(emptyState, testAction).includes(13)).to.be.true
-            expect(reducerUnderTest(existingFetchesState, testAction).includes(13)).to.be.true
+            expect(reducerUnderTest(emptyState, testAction)
+                .includes(13)).to.be.true
+            expect(reducerUnderTest(existingFetchesState, testAction)
+                .includes(13)).to.be.true
         })
 
     })
