@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import Filter from './EventFilter'
 import DropDownMenu from '../elements/DropDownMenu'
 // import { DropDownMenu } from 'material-ui'
-import mockEventTypes from '../elements/mockEventTypes'
+import mockEventTypesAbbreviated from '../elements/mockEventTypes'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
@@ -57,7 +57,7 @@ const fetchMissingEventTypes = (props) => {
 }
 
 const fetchAllEventTypes = (eventTypes) => {
-  console.log(mockEventTypes)
+  console.log(mockEventTypesAbbreviated)
 }
 
 const setBaseFilter = (incidentIds) => {
