@@ -45,8 +45,9 @@ export const incidentActions = (siaContext, eventActions) => ({
 
 export const getIncidentActionSet = ({
     try: () => ({
-        type: REQUEST_INCIDENT,
-        incidentId
+        type: REQUEST_INCIDENT
+        // ,
+        // incidentId
     }),
 
     succeed: (incident) => ({
@@ -56,12 +57,11 @@ export const getIncidentActionSet = ({
 
     fail: (failureReason) => ({
         type: RECEIVE_INCIDENT_FAILURE,
-        id: eventFilters.incidentId,
         error: failureReason
     })
 })
 
-export const getIncidentsByTicketIdActionSet = (ticketId, eventActions) => ({
+export const getIncidentsByTicketIdActionSet = (ticketId) => ({
     try: () => ({
         type: REQUEST_INCIDENT_BY_TICKET_ID,
         ticketId
@@ -107,7 +107,7 @@ export const fetchIncidentIfNeeded = props => (dispatch) => {
     }
 }
 
-export const getIncidentsActionSet = (eventActions) => ({
+export const getIncidentsActionSet = () => ({
     try: () => ({
         type: REQUEST_INCIDENTS
     }),
@@ -124,7 +124,7 @@ export const getIncidentsActionSet = (eventActions) => ({
     })
 })
 
-export const createIncidentActionSet = (ticketId, ticketSystem, eventActions) => ({
+export const createIncidentActionSet = (ticketId, ticketSystem) => ({
     try: () => ({
         type: TRY_CREATE_INCIDENT,
         ticketId,
@@ -142,16 +142,19 @@ export const createIncidentActionSet = (ticketId, ticketSystem, eventActions) =>
     })
 })
 
-const postIncidentFetchArgs = (ticketId, ticketSystem) => [
-            'incidents/',
-            {
-                title: 'placeholder',
-                primaryTicket: {
-                    originId: ticketId,
-                    ticketingSystemId: ticketSystem.id
+const postIncidentFetchArgs = (ticketId, ticketSystem) => {
+    return [
+                'incidents/',
+                {
+                    title: 'placeholder',
+                    primaryTicket: {
+                        originId: ticketId,
+                        ticketingSystemId: ticketSystem.id
+                    }
                 }
-            }
-        ]
+            ]
+}
+    
 
 export const updateIncidentCreationInput = (input) => ({
     type: UPDATE_INCIDENT_CREATION_INPUT,

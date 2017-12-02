@@ -24,8 +24,7 @@ export const linksHeaderName = 'links'
 export const eventActions = (siaContext) => ({
     fetchEvent: (incidentId, eventId) => reduxBackedPromise(
         authenticatedFetch(siaContext),
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
-        // [getEventFetchArgs(incidentId, eventId)],
+        getEventFetchArgs(incidentId, eventId),
         getEventActionSet(incidentId, eventId)
     ),
 
@@ -51,7 +50,7 @@ export const getEventsFetchArgs = (filter) => ([
 ])
 
 export const getEventFetchArgs = (incidentId, eventId) => {
-    return getEventsEndPoint(incidentId) + 'eventId'
+    return [getEventsEndPoint(incidentId) + eventId]
 }
 
 export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime) => ([

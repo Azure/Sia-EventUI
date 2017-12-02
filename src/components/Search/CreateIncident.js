@@ -10,12 +10,6 @@ const onSubmit = (input, history) => () => {
     }
 }
 
-const submitIfEnter = (input, history) => (event) => {
-    if (event.key === 'Enter') {
-        onSubmit(input, history)()
-    }
-}
-
 export const CreateIncident = ({input, creationError, history, dispatch}) => {
     return <form onSubmit={onSubmit(input, history)}>
                 <TextField

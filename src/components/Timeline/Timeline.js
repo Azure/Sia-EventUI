@@ -56,17 +56,12 @@ const fetchMissingEventTypes = (props) => {
     .forEach(missingEventTypeId => props.dispatch(props.eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
-// const fetchAllEventTypes = (eventTypes) => {
-//   const types = mockEventTypes.map(type => type.id, type.name)
-//   console.log(types)
-// }
+const fetchAllEventTypes = (eventTypes) => {
+  console.log(mockEventTypes)
+}
 
 const setBaseFilter = (incidentIds) => {
   return incidentIds[0].toString()
-}
-
-const populateFilterOptions = (e) => {
-  e.preventDefault()
 }
 
 const mapStateToProps = (state, ownProps) => {
