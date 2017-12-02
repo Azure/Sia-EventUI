@@ -53,6 +53,7 @@ var config = {
       'RETRY_MIN_TIMEOUT': constants.retryMinTimeoutInMiliseconds,
       'RETRY_MAX_TIMEOUT': constants.retryMaxTimeoutInMiliseconds,
       'TICKET_REFRESH_INTERVAL': constants.ticketRefreshIntervalInSeconds,
+      'AAD_INSTANCE': constants.aadInstance,
       'AAD_TENANT': constants.aadTenant,
       'CLIENT_ID': constants.clientId
     })

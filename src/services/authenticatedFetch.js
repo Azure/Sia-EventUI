@@ -1,21 +1,16 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
 import * as authActions from '../actions/authActions'
+import config from 'config'
 
-// eslint-disable-next-line no-undef
-export const clientId = CLIENT_ID //From config
+export const clientId = config.clientId
 
-// eslint-disable-next-line no-undef
-const defaultBasePath = BASE_URL
+const defaultBasePath = config.baseUrl
 const defaultOptions = {
-    // eslint-disable-next-line no-undef
-    retries: RETRIES,
-    // eslint-disable-next-line no-undef
-    factor: RETRY_EXPONENTIAL_BACKOFF_FACTOR,
-    // eslint-disable-next-line no-undef
-    minTimeout: RETRY_MIN_TIMEOUT,
-    // eslint-disable-next-line no-undef
-    maxTimeout: RETRY_MAX_TIMEOUT
+    retries: config.retries,
+    factor: config.retryExponentialBackoffFactor,
+    minTimeout: config.retryMinTimeoutInMiliseconds,
+    maxTimeout: config.retryMaxTimeoutInMiliseconds
 }
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
