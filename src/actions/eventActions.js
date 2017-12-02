@@ -25,33 +25,47 @@ export const eventActions = (siaContext) => ({
     fetchEvent: (incidentId, eventId) => reduxBackedPromise(
         authenticatedFetch(siaContext),
         [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
+        // [getEventFetchArgs(incidentId, eventId)],
         getEventActionSet(incidentId, eventId)
     ),
 
     fetchEvents: (filter) => reduxBackedPromise(
         authenticatedFetch(siaContext),
-        [(filter.incidentId ? 'incidents/' + filter.incidentId + '/': '') + 'events/' + serializeFilters(filter)],
-        getEventsActionSet(siaContext)(filter.incidentId)
+        getEventsFetchArgs(filter),
+        getActionSetForEvents(siaContext)(filter.incidentId)
     ),
 
     postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
         authenticatedPost(siaContext),
-        [
-            (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
-            {
-                eventTypeId,
-                occurred: occurrenceTime,
-                eventFired: occurrenceTime,
-                data
-            }
-        ],
+        postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
         postEventActionSet(incidentId)
-    )
+    ),
+    changeEventFilter: changeEventFilter,
+    applyFilter: applyFilter(siaContext)
 })
 
+export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
+
+export const getEventsFetchArgs = (filter) => ([
+   getEventsEndPoint(filter.incidentId) + serializeFilters(filter)
+])
+
+export const getEventFetchArgs = (incidentId, eventId) => {
+    return getEventsEndPoint(incidentId) + 'eventId'
+}
+
+export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime) => ([
+    getEventsEndPoint(incidentId),
+    {
+        eventTypeId,
+        occurred: occurrenceTime,
+        eventFired: occurrenceTime,
+        data
+    }
+])
+
 export const serializeFilters = (filters) => filters
-    ? Object.entries(filters)
-        .filter(filter => filter[0] !== 'incidentId')
+    ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
         .reduce((prev, current) => prev.concat(current, '&'), '')
         .slice(0, -1)
@@ -82,7 +96,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
     })
 })
 
-export const getEventsActionSet = (siaContext) => (incidentId) => ({
+export const getActionSetForEvents = (siaContext) => (incidentId) => ({
     try: () => ({
         type: REQUEST_EVENTS,
         incidentId
@@ -108,7 +122,7 @@ export const getEventsActionSet = (siaContext) => (incidentId) => ({
             dispatch(reduxBackedPromise(
                 authenticatedFetch(siaContext),
                 [linksHeader.NextPageLink],
-                getEventsActionSet(siaContext)(incidentId)
+                getActionSetForEvents(siaContext)(incidentId)
             ))
         }
         else{
@@ -152,7 +166,7 @@ export const postEventActionSet = (incidentId) => ({
     })
 })
 
-export const updateEventFilter = (siaContext, oldFilter) => (newFilter) => (dispatch) => {
+export const applyFilter = (siaContext) => (oldFilter, newFilter) => (dispatch) => {
     if(!newFilter.incidentId){
         throw 'Need to filter on incidentId!'
     }

@@ -21,7 +21,7 @@ export const incidentActions = (siaContext, eventActions) => ({
     fetchIncident: incidentId => reduxBackedPromise(
         authenticatedFetch(siaContext),
         ['incidents/' + incidentId],
-        getIncidentActionSet(incidentId, eventActions)
+        getIncidentActionSet
     ),
 
     fetchIncidentsByTicketId: (ticketId) => reduxBackedPromise(
@@ -43,24 +43,20 @@ export const incidentActions = (siaContext, eventActions) => ({
     )
 })
 
-export const getIncidentActionSet = (incidentId, eventActions) => ({
+export const getIncidentActionSet = ({
     try: () => ({
         type: REQUEST_INCIDENT,
         incidentId
     }),
 
-    succeed: (incident) => (dispatch) => {
-        dispatch({
-            type: RECEIVE_INCIDENT,
-            incident
-        })
-
-        dispatch(eventActions.fetchEvents(incidentId))
-    },
+    succeed: (incident) => ({
+        type: RECEIVE_INCIDENT,
+        incident
+    }),
 
     fail: (failureReason) => ({
         type: RECEIVE_INCIDENT_FAILURE,
-        id: incidentId,
+        id: eventFilters.incidentId,
         error: failureReason
     })
 })
@@ -71,15 +67,11 @@ export const getIncidentsByTicketIdActionSet = (ticketId, eventActions) => ({
         ticketId
     }),
     
-    succeed: (incidents) => (dispatch) => {
-        dispatch({
-            type: FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
-            ticketId,
-            incidents
-        })
-
-        incidents.map(incident => dispatch(eventActions.fetchEvents(incident.id)))
-    } ,
+    succeed: (incidents) => ({
+        type: FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
+        ticketId,
+        incidents
+    }),
 
     fail: (error) => ({
         type: FETCH_INCIDENTS_BY_TICKET_ID_FAILURE,
@@ -120,15 +112,11 @@ export const getIncidentsActionSet = (eventActions) => ({
         type: REQUEST_INCIDENTS
     }),
 
-    succeed: (incidents) => (dispatch) => {
-        dispatch({
-            type: RECEIVE_INCIDENTS,
-            incidents,
-            receivedAt: moment()
-        })
-
-        incidents.map(incident => dispatch(eventActions.fetchEvents(incident.id)))
-    },
+    succeed: (incidents) => ({
+        type: RECEIVE_INCIDENTS,
+        incidents,
+        receivedAt: moment()
+    }),
 
     fail:  (error) => ({
         type: RECEIVE_INCIDENTS_FAILURE,
@@ -143,14 +131,10 @@ export const createIncidentActionSet = (ticketId, ticketSystem, eventActions) =>
         ticketSystem
     }),
 
-    succeed: (incident) => (dispatch) => {
-        dispatch({
-            type: CREATE_INCIDENT_SUCCESS,
-            incident
-        })
-
-        dispatch(eventActions.fetchEvents(incident.id))
-    },
+    succeed: (incident) => ({
+        type: CREATE_INCIDENT_SUCCESS,
+        incident
+    }),
 
     fail: (reason) => ({
         type: CREATE_INCIDENT_FAILURE,

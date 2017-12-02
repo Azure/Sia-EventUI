@@ -2,9 +2,18 @@ import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite } from './reducerHelpers'
-import { combineReducers } from 'redux'
 
 const defaultEventCollection = []
+
+const defaultFilter = {
+    incidentId: null,
+    eventTypeId: null,
+    occurred: null,
+    eventFired: null,
+    dataKey: null,
+    dataValue: null
+}
+
 
 const makeSearchable = (event) => ({
     ...event,
@@ -29,16 +38,23 @@ export const list = (state = defaultEventCollection, action) => {
             return addEventsToState(state, [action.event])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
-        case eventActions.CHANGE_EVENT_FILTER:
-            return defaultEventCollection
         default:
             return state
     }
 }
 
-export const events = paginated(list, eventActions.pagination.types, pageArgs)
+export const filter = (state = defaultFilter, action) => {
+    switch(action.type) {
+        case eventActions.CHANGE_EVENT_FILTER:
+            return Object.assign({}, action.filter)
+        default:
+            return state
+    }
+}
+
+export const pages = paginated(list, eventActions.pagination.types, pageArgs)
 
 export default combineReducers({
     pages,
     filter
-}) 
+})

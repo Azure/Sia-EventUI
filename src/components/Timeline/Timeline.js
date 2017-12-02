@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Filter from './EventFilter'
 import DropDownMenu from '../elements/DropDownMenu'
+// import { DropDownMenu } from 'material-ui'
+import mockEventTypes from '../elements/mockEventTypes'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
@@ -25,13 +27,14 @@ class Timeline extends Component {
   componentDidMount() {
     updatePagination(this.props.dispatch, this.props.incidentIds)
     fetchMissingEventTypes(this.props)
+    // fetchAllEventTypes()
   }
 
   render() {
     const { events, dispatch, eventActions, eventTypeActions, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
-        <FlatButtonStyled label='RED' onTouchTap={this.populateFilterOptions}>RED</FlatButtonStyled>
+        <FlatButtonStyled label='RED' onTouchTap={this.fetchAllEventTypes}>RED</FlatButtonStyled>
         <DropDownMenu {...filterLabels}/>
         <Filter pagination={events} dispatch={dispatch}/>
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
@@ -53,13 +56,17 @@ const fetchMissingEventTypes = (props) => {
     .forEach(missingEventTypeId => props.dispatch(props.eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
+// const fetchAllEventTypes = (eventTypes) => {
+//   const types = mockEventTypes.map(type => type.id, type.name)
+//   console.log(types)
+// }
+
 const setBaseFilter = (incidentIds) => {
   return incidentIds[0].toString()
 }
 
 const populateFilterOptions = (e) => {
   e.preventDefault()
-  console.log('SQUEEE')
 }
 
 const mapStateToProps = (state, ownProps) => {

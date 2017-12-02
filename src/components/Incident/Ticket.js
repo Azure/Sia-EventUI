@@ -21,6 +21,17 @@ class Ticket extends Component {
 
     componentDidMount() {
         this.props.dispatch(fetchIncidentIfNeeded(this.props))
+        if (this.props.incident && this.props.incident.id)
+        {
+            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.incident && this.props.incident.id)
+        {
+            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
+        }
     }
 
     render() {
@@ -63,13 +74,22 @@ const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
+    const filter = state.events.filter
     return {
         incident: getIncident(ticket, incidents),
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
-        actions
+        actions,
+        filter
+    }
+}
+
+export const synchronizeFilters = (filter, incidentId, dispatch, eventActions) => {
+    if (filter.incidentId != incidentId)
+    {
+        dispatch(eventActions.applyFilter(filter, {incidentId: incidentId}))
     }
 }
 
