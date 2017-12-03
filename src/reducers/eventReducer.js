@@ -52,7 +52,7 @@ export const filter = (state = defaultFilter, action) => {
         case eventActions.ADD_FILTER_ON_EVENT_TYPE:
             return {
                 ...state,
-                selectedOption: {dataKey: action.filter.id, dataValue: action.filter.name},
+                selectedOption: [{dataKey: action.filter.id, dataValue: action.filter.name}],
                 error: 'BOO'
             }
         default:
