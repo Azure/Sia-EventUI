@@ -37,21 +37,14 @@ class Timeline extends Component {
     
     return (
       <div>
-        <DropDownFilter
-        options={menuTypes}
-        eventActions={eventActions}
-        dispatch={dispatch}
-        selectedOption={{id: null, name: null}}
-        />
-        <div>
           <AutoComplete
-                    floatingLabelText="Type 'r', case insensitive"
+                    floatingLabelText="Filter by event type"
                     filter={AutoComplete.caseInsensitiveFilter}
                     dataSource={menuTypes}
                     onNewRequest={(s,i)=>dispatch(eventActions.addFilterOnEventType(s))}
                     dataSourceConfig={dataSourceConfig}
           />
-        </div>     
+            
         <Filter pagination={events} dispatch={dispatch}/>
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
