@@ -1,43 +1,34 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { addFilterOnEventType } from '../../actions/eventActions'
 
-class DropDownMenu extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {value: ''}
-        this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
+export const DropDownFilter = (props) => {
+    const {dispatch, eventActions, options, selectedOption} = props
+    return (
+        <form>
+            <label>
+                Filtering On:
+                <select
+                    value={selectedOption}
+                    onChange={(event) => dispatch(eventActions.addFilterOnEventType(event.target))}>
+                    {options.map(o => <option value={o.name} key={o.id}>{o.name}</option>)}
+                </select>
+            </label>
+        </form>
+    )
+}
 
-    handleChange(event) {
-        this.setState({value: event.target.value})
-    }
+const fetchAllEventTypes = (selection) => {
+    console.log(selection)
+  }
 
-    handleSubmit(event) {
-        alert(`You chose ${this.state.value}`)
-        event.preventDefault()
-    }
-
-    populateOptions() {
-        let options = Object.values(this.props)
-        if (options.length === 0) options = []
-        return options
-    }
-
-    render() {
-        const options = this.populateOptions()
-        return (
-            <form>
-                <label>
-                    Filtering On:
-                    <select
-                        value={this.state.value}
-                        onChange={this.handleChange}>
-                        {options.map(o => <option value={o} key={o}>{o}</option>)}
-                    </select>
-                </label>
-            </form>
-        )
+export const mapStateToProps = (eventActions, options, selectedOption) => (state) => {
+    return {
+        ...state,
+        options: options,
+        selectedOption: null,
+        eventActions
     }
 }
 
-export default DropDownMenu
+export default (eventActions, filterOptions, selectedOption) => connect(mapStateToProps(eventActions, filterOptions, selectedOption))(DropDownFilter)

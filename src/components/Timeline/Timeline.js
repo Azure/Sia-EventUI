@@ -2,21 +2,16 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Filter from './EventFilter'
-import DropDownMenu from '../elements/DropDownMenu'
+import {DropDownFilter} from '../elements/DropDownMenu'
 // import { DropDownMenu } from 'material-ui'
-import mockEventTypesAbbreviated from '../elements/mockEventTypes'
+import { mockEventTypes } from '../elements/mockEventTypes'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
 import * as eventActions from '../../actions/eventActions'
 import { FlatButtonStyled } from '../elements/FlatButtonStyled'
-
-const filterLabels = [
-  'Active',
-  'Dismissed',
-  'System',
-  'Manual'
-]
+// import {AutoCompleteFilter}  from '../elements/AutoCompleteFilter'
+import AutoComplete from 'material-ui/AutoComplete'
 
 class Timeline extends Component {
   static propTypes = {
@@ -27,15 +22,36 @@ class Timeline extends Component {
   componentDidMount() {
     updatePagination(this.props.dispatch, this.props.incidentIds)
     fetchMissingEventTypes(this.props)
-    // fetchAllEventTypes()
   }
 
   render() {
     const { events, dispatch, eventActions, eventTypeActions, ticketId, incidentId, eventTypes } = this.props
+    const types = mockEventTypes.types.map(t=> t.name)
+    const menuTypes = mockEventTypes.types
+    
+    const dataSourceConfig = {
+      text: 'name',
+      value: 'id',
+    }
+    
+    
     return (
       <div>
-        <FlatButtonStyled label='RED' onTouchTap={this.fetchAllEventTypes}>RED</FlatButtonStyled>
-        <DropDownMenu {...filterLabels}/>
+        <DropDownFilter
+        options={menuTypes}
+        eventActions={eventActions}
+        dispatch={dispatch}
+        selectedOption={{id: null, name: null}}
+        />
+        <div>
+          <AutoComplete
+                    floatingLabelText="Type 'r', case insensitive"
+                    filter={AutoComplete.caseInsensitiveFilter}
+                    dataSource={menuTypes}
+                    onNewRequest={(s,i)=>dispatch(eventActions.addFilterOnEventType(s))}
+                    dataSourceConfig={dataSourceConfig}
+          />
+        </div>     
         <Filter pagination={events} dispatch={dispatch}/>
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
@@ -43,7 +59,7 @@ class Timeline extends Component {
     )
   }
 }
-
+ 
 const updatePagination = (dispatch, incidentIds) => {
     dispatch(eventActions.pagination.filter(setBaseFilter(incidentIds)))
 }
@@ -57,7 +73,8 @@ const fetchMissingEventTypes = (props) => {
 }
 
 const fetchAllEventTypes = (eventTypes) => {
-  console.log(mockEventTypesAbbreviated)
+  const types = mockEventTypes.types.map(t=> t.name)
+  return types
 }
 
 const setBaseFilter = (incidentIds) => {
@@ -71,6 +88,18 @@ const mapStateToProps = (state, ownProps) => {
     events: events.pages,
     eventTypes: state.eventTypes.records
   }
+}
+
+const dataSourceConfig = {
+  text: 'id',
+  value: 'name',
+}
+
+const testText = (input) => {
+  debugger
+  console.log('wooooooo')
+  console.log(value.code)
+  
 }
 
 export default connect(mapStateToProps)(Timeline)

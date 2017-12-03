@@ -1,20 +1,3 @@
-export const mockEventTypesAbbreviated = [
-    {
-        'name': 'Bridge Join',
-        'id': 1,
-    },
-
-    {
-        'name': 'Impact Detected',
-        'id': 3,
-    },
-    
-    {
-        'name': 'Escalation Started',
-        'id': 15,
-    }
-]
-
 export const mockEventTypes = {
     types: [
         {

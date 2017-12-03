@@ -17,6 +17,7 @@ export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
+export const ADD_FILTER_ON_EVENT_TYPE = 'ADD_FILTER_ON_EVENT_TYPE'
 
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
@@ -40,7 +41,8 @@ export const eventActions = (siaContext) => ({
         postEventActionSet(incidentId)
     ),
     changeEventFilter: changeEventFilter,
-    applyFilter: applyFilter(siaContext)
+    applyFilter: applyFilter(siaContext),
+    addFilterOnEventType: addFilterOnEventType(siaContext)
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -178,6 +180,11 @@ export const applyFilter = (siaContext) => (oldFilter, newFilter) => (dispatch) 
 
 export const changeEventFilter = (filter) => ({
     type: CHANGE_EVENT_FILTER,
+    filter
+})
+
+export const addFilterOnEventType = (siaContext) => (filter) => ({
+    type: ADD_FILTER_ON_EVENT_TYPE,
     filter
 })
 

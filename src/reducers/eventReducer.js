@@ -31,6 +31,8 @@ const pageArgs = {
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
+// const addFilterToState = (state, events) => mergeWithOverwrite(state, events.list.dataKey)
+
 export const list = (state = defaultEventCollection, action) => {
     switch(action.type){
         case eventActions.RECEIVE_EVENT:
@@ -47,10 +49,18 @@ export const filter = (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({}, action.filter)
+        case eventActions.ADD_FILTER_ON_EVENT_TYPE:
+            return {
+                ...state,
+                selectedOption: {dataKey: action.filter.id, dataValue: action.filter.name},
+                error: 'BOO'
+            }
         default:
             return state
     }
 }
+
+
 
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)
 

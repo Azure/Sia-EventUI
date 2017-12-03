@@ -31,4 +31,20 @@ const EventFilter = ({pagination, dispatch}) =>  {
 
 }
 
+export const EventFilterMenu = ({eventTypes, dispatch}) =>  {
+  return <div className="incident-EventFilter">
+            <form>
+                <label>
+                    Filtering On:
+                    <select
+                        value={input}
+                        onChange={(event, newValue)=> dispatch(eventActions.changeEventFilter(newValue))}>
+                        {options.map(o => <option value={o} key={o}>{o}</option>)}
+                    </select>
+                </label>
+            </form>
+        </div>
+
+}
+
 export default EventFilter
