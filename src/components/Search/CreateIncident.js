@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
+import FlatButtonStyled from '../elements/FlatButtonStyled'
 import { updateIncidentCreationInput } from '../../actions/incidentActions'
 
 const onSubmit = (input, history) => () => {
