@@ -2,6 +2,7 @@ import moment from 'moment'
 import { combineReducers } from 'redux'
 import { UPDATE_TICKET_QUERY } from '../actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from '../actions/incidentActions.js'
+import config from 'config'
 
 const defaultTicketList = {}
 
@@ -84,8 +85,7 @@ export const systems = (state = defaultSystems, action) => {
 }
 
 const defaultPreferences = {
-    // eslint-disable-next-line no-undef
-    refreshIntervalInSeconds: TICKET_REFRESH_INTERVAL
+    refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
 }
 
 export const preferences = (state = defaultPreferences, action) => {

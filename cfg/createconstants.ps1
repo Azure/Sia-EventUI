@@ -1,9 +1,10 @@
 # Powershell script for VSTS build that accesses build environment variables to create config file.
 
 $s = "let baseConstants = require('./defaultConstants')
-module.exports = Object.assign({}, baseConstants, {    
-    aadTenant: ""$env:aadTenant"",    
-    clientId: ""$env:clientId"",
+module.exports = Object.assign({}, baseConstants, {
+  aadInstance: ""$env:aadInstance"",
+  aadTenant: ""$env:aadTenant"",
+  clientId: ""$env:clientId"",
 baseUrl: JSON.stringify(""$env:baseUrl""),
 
     authRedirectUri: JSON.stringify(""$env:authRedirectUri""),})"

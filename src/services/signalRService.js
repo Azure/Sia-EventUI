@@ -1,9 +1,9 @@
 import * as signalR from '@aspnet/signalr-client'
 import { getEventActionSet } from '../actions/eventActions'
 import * as signalRActions from '../actions/signalRActions'
+import config from 'config'
 
-// eslint-disable-next-line no-undef
-const defaultBasePath = BASE_URL
+const defaultBasePath = config.baseUrl
 
 let signalRConnectionSingleton
 

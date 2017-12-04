@@ -1,9 +1,13 @@
 # About this folder
 
 This folder holds configuration files for different environments.
+
 You can use it to provide your app with different settings based on the 
 current environment, e.g. to configure different API base urls depending on 
 whether your setup runs in dev mode or is built for distribution.
+
+***Note that there is a Webpack alias defined in /cfg/base.js which redirects `'config'` to `'${projectRoot}/config/$env'`***
+
 You can include the configuration into your code like this:
 
 **ES2015 Modules**
