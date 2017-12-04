@@ -10,27 +10,20 @@ const onSubmit = (input, history) => () => {
     }
 }
 
-const submitIfEnter = (input, history) => (event) => {
-    if (event.key === 'Enter') {
-        onSubmit(input, history)()
-    }
-}
-
 export const CreateIncident = ({input, creationError, history, dispatch}) => {
-    return <div>
-        <TextField
-            hintText='Ticket Id of primary ticket'
-            floatingLabelText='TicketId'
-            onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
-            onKeyDown={submitIfEnter(input,history)}
-            value={input}
-            errorText={creationError}
-        />
-        <FlatButtonStyled
-            label='Submit'
-            onTouchTap={onSubmit(input, history)}
-        />
-    </div>
+    return <form onSubmit={onSubmit(input, history)}>
+                <TextField
+                    hintText='Ticket Id of primary ticket'
+                    floatingLabelText='Ticket Id'
+                    onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+                    value={input}
+                    errorText={creationError}
+                />
+                <FlatButtonStyled
+                    label='Submit'
+                    onTouchTap={onSubmit(input, history)}
+                />
+            </form>
 }
 
 export const mapStateToProps = (incidentActions) => (state) => {
