@@ -1,20 +1,10 @@
 import React from 'react'
-import FlatButtonStyled from '../elements/FlatButtonStyled'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import * as eventActions from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
 import MockEventTypes, { mockEventTypes } from '../elements/mockEventTypes'
-
-const defaultPrimary = 'Active'
-
-const filterLabels = [
-  'Active',
-  'Dismissed',
-  'System',
-  'Manual'
-]
 
 const filterTypes = mockEventTypes.types
 
