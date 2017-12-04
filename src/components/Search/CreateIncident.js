@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
-import FlatButtonStyled from '../elements/FlatButtonStyled'
 import { updateIncidentCreationInput } from '../../actions/incidentActions'
 
 const onSubmit = (input, history) => () => {
+<<<<<<< HEAD
     if (input) {
         history.push(/tickets/ + input)
     }
@@ -25,6 +25,27 @@ export const CreateIncident = ({input, creationError, history, dispatch}) => {
                 />
             </form>
 }
+=======
+    if (input)
+    {history.push(/tickets/ + input)}
+}
+
+export const CreateIncident = ({input, creationError, history, dispatch}) => {
+        return <form onSubmit={onSubmit(input, history)}>
+                    <TextField
+                        hintText='Ticket Id of primary ticket'
+                        floatingLabelText='Ticket Id'
+                        onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+                        value={input}
+                        errorText={creationError}
+                    />
+                    <FlatButtonStyled
+                        label='Submit'
+                        onTouchTap={onSubmit(input, history)}
+                    />
+                </form>
+    }
+>>>>>>> updated to reflect later changes -- resolve conflicts
 
 export const mapStateToProps = (incidentActions) => (state) => {
     return {

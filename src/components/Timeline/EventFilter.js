@@ -17,7 +17,6 @@ const EventFilter = ({pagination, dispatch}) =>  {
             }
           </IconButtonStyled>
         </div>
-
 }
 
 export default EventFilter
