@@ -22,18 +22,7 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.DefinePlugin({
-      'BASE_URL': constants.baseUrl,
-      'AUTH_REDIRECT_URI': constants.authRedirectUri,
-      'RETRIES': constants.retries,
-      'RETRY_EXPONENTIAL_BACKOFF_FACTOR': constants.retryExponentialBackoffFactor,
-      'RETRY_MIN_TIMEOUT': constants.retryMinTimeoutInMiliseconds,
-      'RETRY_MAX_TIMEOUT': constants.retryMaxTimeoutInMiliseconds,
-      'TICKET_REFRESH_INTERVAL': constants.ticketRefreshIntervalInSeconds,
-      'AAD_INSTANCE': constants.aadInstance,
-      'AAD_TENANT': constants.aadTenant,
-      'CLIENT_ID': constants.clientId
-    })
+    new webpack.DefinePlugin({constants})
   ],
   module: defaultSettings.getDefaultModules()
 });
