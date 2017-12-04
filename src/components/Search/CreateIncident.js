@@ -10,20 +10,20 @@ const onSubmit = (input, history) => () => {
 }
 
 export const CreateIncident = ({input, creationError, history, dispatch}) => {
-        return <form onSubmit={onSubmit(input, history)}>
-                    <TextField
-                        hintText='Ticket Id of primary ticket'
-                        floatingLabelText='Ticket Id'
-                        onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
-                        value={input}
-                        errorText={creationError}
-                    />
-                    <FlatButtonStyled
-                        label='Submit'
-                        onTouchTap={onSubmit(input, history)}
-                    />
-                </form>
-    }
+    return <form onSubmit={onSubmit(input, history)}>
+                <TextField
+                    hintText='Ticket Id of primary ticket'
+                    floatingLabelText='Ticket Id'
+                    onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+                    value={input}
+                    errorText={creationError}
+                />
+                <FlatButtonStyled
+                    label='Submit'
+                    onTouchTap={onSubmit(input, history)}
+                />
+            </form>
+}
 
 export const mapStateToProps = (incidentActions) => (state) => {
     return {
