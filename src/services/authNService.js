@@ -1,18 +1,27 @@
+// eslint-disable-next-line no-unused-vars
+import * as unused from './adalShim' //see file for more info
 import * as msalService from './msalService'
 import * as adalService from './adalService'
 import * as authActions from '../actions/authActions'
 // eslint-disable-next-line no-undef
 const authVersion = AUTH_VERSION
 
-
-
+const testAuthVersion = 'TEST'
+const testLoginAction = ({type:'TEST_LOGIN'})
+const testLogOutAction = ({type:'TEST_LOGOUT'})
+const testAlias = 'Test@test.test'
+const testToken = 'testToken'
 
 export const login = (dispatch) => {
     dispatch(authActions.loginInProgress())
     switch(authVersion)
     {
+        case testAuthVersion:
+            dispatch(testLoginAction)
+            break
         case msalService.authVersion:
             dispatch(msalService.login)
+            break
         default:
             dispatch(adalService.login)
     }
@@ -21,8 +30,12 @@ export const login = (dispatch) => {
 export const logOut = (dispatch) => {
     switch(authVersion)
     {
+        case testAuthVersion:
+            dispatch(testLogOutAction)
+            break
         case msalService.authVersion:
             dispatch(msalService.logOut)
+            break
         default:
             dispatch(adalService.logOut)
     }
@@ -33,6 +46,9 @@ export const clearCache = () => {
     {
         case msalService.authVersion:
             msalService.clearCache()
+            break
+        case testAuthVersion:
+            break
         default:
             adalService.clearCache()
     }
@@ -41,6 +57,8 @@ export const clearCache = () => {
 export const isLoggedIn = () => {
     switch(authVersion)
     {
+        case testAuthVersion:
+            return false
         case msalService.authVersion:
             return msalService.isLoggedIn()
         default:
@@ -51,6 +69,8 @@ export const isLoggedIn = () => {
 export const getUserAlias = (user) => {
     switch(authVersion)
     {
+        case testAuthVersion:
+            return testAlias
         case msalService.authVersion:
             return msalService.getUserAlias(user)
         default:
@@ -58,11 +78,13 @@ export const getUserAlias = (user) => {
     }
 }
 
-export const getToken = () => {
+export const getToken = (scopes) => {
     switch(authVersion)
     {
+        case testAuthVersion:
+            return testToken
         case msalService.authVersion:
-            return msalService.getToken()
+            return msalService.getToken(scopes)
         default:
             return adalService.getToken()
     }

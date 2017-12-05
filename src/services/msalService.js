@@ -7,7 +7,9 @@ export const clientId = CLIENT_ID //From config
 export const authVersion = 'msal'
 
 const defaultScopes = [clientId]
+// eslint-disable-next-line no-undef
 const authority = 'https://login.microsoftonline.com/' + AAD_TENANT
+
 export const getAuthContext = () =>
 {
     if(typeof window !== 'undefined' && !!window)
@@ -32,9 +34,9 @@ export const getAuthContext = () =>
 export const login = (dispatch) => {
     if(typeof window !== 'undefined' && !!window)
     {
-        GetAuthContext().loginRedirect()
+        getAuthContext().loginRedirect()
         .then(
-            () => dispatch(authActions.userLoggedIn(GetAuthContext().getUser())),
+            () => dispatch(authActions.userLoggedIn(getAuthContext().getUser())),
             err => dispatch(authActions.userLoginError(err))
         )
     }
@@ -46,7 +48,7 @@ export const login = (dispatch) => {
 
 export const logOut = (dispatch) => {
     getAuthContext().logOut()
-    dispatch(userLoggedOut())
+    dispatch(authActions.userLoggedOut())
 }
 
 export const clearCache = () => {
@@ -74,8 +76,8 @@ const extractAliasFromUserName = (userName) => {
     return userName.slice(0, userName.indexOf('@'))
 }
 
-export const getToken = () => getAuthContext()
-    .acquireTokenSilent(defaultScopes)
+export const getToken = (scopes) => getAuthContext()
+    .acquireTokenSilent(scopes)
 
 const windowDoesntExistRejection = 'MSAL library cannot function in a headless broswer; the window object must exist'
 const failOnNoWindow = () => Promise.reject(windowDoesntExistRejection)

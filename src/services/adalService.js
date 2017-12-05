@@ -1,3 +1,4 @@
+
 import AuthenticationContext from 'adal-angular'
 import * as authActions from '../actions/authActions'
 
@@ -37,7 +38,7 @@ export const login = (dispatch) => {
 
 export const logOut = (dispatch) => {
   getAuthContext().logOut()
-  dispatch(userLoggedOut())
+  dispatch(authActions.userLoggedOut())
 }
 
 export const clearCache = () => {

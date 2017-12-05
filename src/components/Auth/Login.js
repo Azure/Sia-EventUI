@@ -33,7 +33,7 @@ export const LoginComponentDidMount = ({
 
 export const mapStateToProps = (state) => {
     return {
-        ...state.auth,
+        ...state.auth
     }
 }
 

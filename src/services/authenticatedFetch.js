@@ -41,7 +41,7 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         }, err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
-const tryGetToken = (retry, number) => getToken()
+const tryGetToken = (retry, number) => getToken(defaultScopes)
     .then(token => token)
     .catch(err => retry(`Error when attempting to retrieve token: ${err} (retry ${number})`))
 

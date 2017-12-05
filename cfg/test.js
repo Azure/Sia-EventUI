@@ -54,7 +54,8 @@ var config = {
       'RETRY_MAX_TIMEOUT': constants.retryMaxTimeoutInMiliseconds,
       'TICKET_REFRESH_INTERVAL': constants.ticketRefreshIntervalInSeconds,
       'AAD_TENANT': constants.aadTenant,
-      'CLIENT_ID': constants.clientId
+      'CLIENT_ID': constants.clientId,
+      'AUTH_VERSION': constants.authVersion
     })
   ],
 
