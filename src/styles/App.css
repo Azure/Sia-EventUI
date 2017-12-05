@@ -116,3 +116,7 @@ div#app {
   }
 
 }
+
+::-ms-clear {
+  display: none;
+}
