@@ -1,14 +1,12 @@
 import { UserAgentApplication } from 'msal'
 import * as authActions from '../actions/authActions'
+import config from 'config'
 
-// eslint-disable-next-line no-undef
-export const clientId = CLIENT_ID //From config
-
+export const clientId = config.clientId
 export const authVersion = 'msal'
 
 const defaultScopes = [clientId]
-// eslint-disable-next-line no-undef
-const authority = 'https://login.microsoftonline.com/' + AAD_TENANT
+const authority = config.aadInstance + config.aadTenant
 
 export const getAuthContext = () =>
 {
@@ -18,12 +16,10 @@ export const getAuthContext = () =>
         ? window.msal
         : new UserAgentApplication(
             clientId,
-            // eslint-disable-next-line no-undef
             authority,
             tokenRetrieved,
             {
-                // eslint-disable-next-line no-undef
-                redirectUri: AUTH_REDIRECT_URI, //From config
+                redirectUri: config.authRedirectUri,
                 validateAuthority: true
             }
         )

@@ -3,8 +3,9 @@ import * as unused from './adalShim' //see file for more info
 import * as msalService from './msalService'
 import * as adalService from './adalService'
 import * as authActions from '../actions/authActions'
-// eslint-disable-next-line no-undef
-const authVersion = AUTH_VERSION
+import config from 'config'
+
+const authVersion = config.authVersion
 
 const testAuthVersion = 'TEST'
 const testLoginAction = ({type:'TEST_LOGIN'})
