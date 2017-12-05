@@ -1,7 +1,6 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
 import { getToken } from './authNService'
-import * as authActions from '../actions/authActions'
 import config from 'config'
 
 export const clientId = config.clientId

@@ -1,15 +1,14 @@
 'use strict'
 
-let webpack = require('webpack')
-let nodeExternals = require('webpack-node-externals')
-let WebpackShellPlugin = require('webpack-shell-plugin')
-let baseConfig = require('./base')
+var webpack = require('webpack')
+var nodeExternals = require('webpack-node-externals')
+var WebpackShellPlugin = require('webpack-shell-plugin')
 let defaultSettings = require('./defaults')
 let constants = require('./test.const')
 
-let testStandinFor = (variableName) => 'Test Standin For ' + variableName
+var testStandinFor = (variableName) => 'Test Standin For ' + variableName
 
-let config = Object.assign({}, baseConfig, {
+var config = {
   entry: './test/loadtests.js',
   output: {
     filename: 'temp/testBundle.js'
@@ -46,13 +45,7 @@ let config = Object.assign({}, baseConfig, {
     new WebpackShellPlugin({
       onBuildExit: "mocha temp/testBundle.js"
     }),
-    new webpack.DefinePlugin(Object.assign(
-      {},
-      constants,
-      {
-          authVersion: "'TEST'"
-      }
-  ))
+    new webpack.DefinePlugin({constants})
   ],
 
   resolve: {
@@ -67,6 +60,6 @@ let config = Object.assign({}, baseConfig, {
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },
-})
+}
 
 module.exports = config
