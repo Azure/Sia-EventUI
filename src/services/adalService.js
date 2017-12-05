@@ -26,7 +26,6 @@ export const getAuthContext = (dispatch) => {
   if(dispatch)
   {
     context.callback = (err) => {
-      console.log('result from callback: ' + err)
       err
         ? dispatch(authActions.userLoginError(err))
         : dispatch(authActions.userLoggedIn(context.getCachedUser()))
