@@ -19,16 +19,7 @@ let config = Object.assign({}, baseConfig, {
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"',
-      'BASE_URL': constants.baseUrl,
-      'AUTH_REDIRECT_URI': constants.authRedirectUri,
-      'RETRIES': constants.retries,
-      'RETRY_EXPONENTIAL_BACKOFF_FACTOR': constants.retryExponentialBackoffFactor,
-      'RETRY_MIN_TIMEOUT': constants.retryMinTimeoutInMiliseconds,
-      'RETRY_MAX_TIMEOUT': constants.retryMaxTimeoutInMiliseconds,
-      'TICKET_REFRESH_INTERVAL': constants.ticketRefreshIntervalInSeconds,
-      'AAD_TENANT': constants.aadTenant,
-      'CLIENT_ID': constants.clientId,
-      'AUTH_VERSION': constants.authVersion
+      constants
     }),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false

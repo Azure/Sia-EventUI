@@ -1,19 +1,17 @@
 
 import AuthenticationContext from 'adal-angular'
 import * as authActions from '../actions/authActions'
+import config from 'config'
 
-// eslint-disable-next-line no-undef
-export const clientId = CLIENT_ID //From config
+export const clientId = config.clientId
 
 export const authVersion = 'adal'
 
 
 export const getAuthContext = () => new AuthenticationContext({
-      instance: 'https://login.microsoftonline.com/',
-      // eslint-disable-next-line no-undef
-      tenant: AAD_TENANT, //From config
-      // eslint-disable-next-line no-undef
-      redirectUri: AUTH_REDIRECT_URI, //From config
+      instance: config.aadInstance,
+      tenant: config.aadTenant,
+      redirectUri: config.authRedirectUri,
       clientId: clientId,
 
       popUp: true
