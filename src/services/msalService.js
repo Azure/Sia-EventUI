@@ -75,6 +75,9 @@ const extractAliasFromUserName = (userName) => {
 export const getToken = (scopes) => getAuthContext()
     .acquireTokenSilent(scopes)
 
+export const loginInProgress = () => getAuthContext()._loginInProgress
+
+
 const windowDoesntExistRejection = 'MSAL library cannot function in a headless broswer; the window object must exist'
 const failOnNoWindow = () => Promise.reject(windowDoesntExistRejection)
 const msalServiceHeadlessBrowserMode = ({

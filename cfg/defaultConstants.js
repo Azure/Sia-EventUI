@@ -18,7 +18,7 @@ module.exports = {
 
 //   Leave this as is if your code is in a public repo (or delete it if you want).  You can override the defaults with the real information in your cfg/$env.const.js file.  
 
-    aadInstance: "'Your Azure Active Directory instance here'", //Yes, use both single and double quotes.
+    aadInstance: "'https://login.microsoftonline.com/'", //Replace only if using AAD non-public instances. Yes, use both single and double quotes.
 
     aadTenant: "'Your Azure Active Directory tenant here'", //Yes, use both single and double quotes.
 

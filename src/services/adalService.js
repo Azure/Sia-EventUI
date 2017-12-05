@@ -8,25 +8,38 @@ export const clientId = config.clientId
 export const authVersion = 'adal'
 
 
-export const getAuthContext = () => new AuthenticationContext({
+let context
+
+export const getAuthContext = (dispatch) => {
+  if(!context)
+  {
+    context = new AuthenticationContext({
       instance: config.aadInstance,
       tenant: config.aadTenant,
       redirectUri: config.authRedirectUri,
       clientId: clientId,
 
       popUp: true
-  })
+    })
+  }
+  
+  if(dispatch)
+  {
+    context.callback = (err) => {
+      console.log('result from callback: ' + err)
+      err
+        ? dispatch(authActions.userLoginError(err))
+        : dispatch(authActions.userLoggedIn(context.getCachedUser()))
+    }
+  }
+
+  return context
+}
 
 export const login = (dispatch) => {
   if(typeof window !== 'undefined' && !!window)
   {
-    const context = getAuthContext()
-    context.callback = (err) => {
-      err
-        ? dispatch(authActions.userLoginError(err))
-        : dispatch(authActions.userLoggedIn(getAuthContext().getCachedUser()))
-    }
-    context.login()
+      getAuthContext(dispatch).login()
   }
   else
   {
@@ -35,7 +48,7 @@ export const login = (dispatch) => {
 }
 
 export const logOut = (dispatch) => {
-  getAuthContext().logOut()
+  getAuthContext(dispatch).logOut()
   dispatch(authActions.userLoggedOut())
 }
 
@@ -48,13 +61,11 @@ export const isLoggedIn = () => {
   return !!token
 }
 
-export const getUserAlias = (passedInUser) => {
-  const user = passedInUser
-      ? passedInUser
-      : getAuthContext().getUser()
+export const getUserAlias = () => {
+  const user = getAuthContext().getCachedUser()
   return (user && user.userName)
-      ? extractAliasFromUserName(user.userName)
-      : null
+    ? extractAliasFromUserName(user.userName)
+    : null
 }
 
 const extractAliasFromUserName = (userName) => {
@@ -63,6 +74,10 @@ const extractAliasFromUserName = (userName) => {
 
 export const getToken = () => tokenPromise()
 
+export const loginInProgress = () => {
+  const authContext = getAuthContext()
+  return authContext._loginInProgress || authContext._acquireTokenInProgress
+}
 
 const tokenPromise = () => new Promise(
   (resolve, reject) => {
@@ -73,5 +88,3 @@ const tokenPromise = () => new Promise(
 const callbackBridge = (resolve, reject) => (errDesc, token) => errDesc
   ? reject(errDesc)
   : resolve(token)
-
-  

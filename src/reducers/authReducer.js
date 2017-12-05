@@ -2,14 +2,15 @@ import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_LOGIN_ERROR, LOGIN_IN_PROGRESS } 
 import * as authNService from '../services/authNService'
 
 const getDefaultState = () => {
-    return {
+    const defaultState = {
         isLoggedIn: authNService.isLoggedIn(),
-        loginInProgress: false,
+        loginInProgress: authNService.loginInProgress(),
         signInAutomatically: true,
         userTeam: 'none',
         userRole: 'Crisis Manager',
         userAlias: authNService.getUserAlias()
     }
+    return defaultState
 }
 
 const authReducer = (state = getDefaultState(), action) => {

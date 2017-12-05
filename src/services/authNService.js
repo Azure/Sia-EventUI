@@ -90,3 +90,15 @@ export const getToken = (scopes) => {
             return adalService.getToken()
     }
 }
+
+export const loginInProgress = () => {
+    switch(authVersion)
+    {
+        case testAuthVersion:
+            return false
+        case msalService.authVersion:
+            return msalService.loginInProgress()
+        default:
+            return adalService.loginInProgress()
+    }
+}
