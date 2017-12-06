@@ -95,15 +95,7 @@ const mapStateToProps = (actions) => (state, ownProps) => {
 export const synchronizeFilters = (filter, incidentId, dispatch, eventActions) => {
     if (filter.incidentId != incidentId)
     {
-        dispatch(eventActions.applyFilter(filter, {incidentId: incidentId}))
-    }
-    if (filter.selectedFilters)
-    {
-        console.log('WE HAVE SELECTED FILTERS', filter.selectedFilters)
-        let obj = {}
-        obj['incidentId'] = incidentId
-        obj[filter.latest.type] = filter.latest.id
-        dispatch(eventActions.applyFilter(filter,obj))
+        dispatch(eventActions.applyFilter(filter, {incidentId: incidentId, eventTypes: []}))
     }
 }
 

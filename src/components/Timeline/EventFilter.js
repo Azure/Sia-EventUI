@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
@@ -13,14 +14,19 @@ const dataSourceConfig = {
   value: 'id'
 }
 
-const EventFilter = ({pagination, dispatch, eventActions}) =>  {
+const EventFilter = ({pagination, filterInfo, dispatch}) =>  {
+  console.log('FILTER INFO', filterInfo)
+  const filterChips = filterInfo ? filterInfo.map(f=> <span key={f.id}>{f.name}</span>) : null
+  console.log('FILTER CHIPS', filterChips)
   return  (
     <div className="incident-EventFilter">
+      {filterChips}
       <AutoComplete
                 floatingLabelText="Filter by event type"
                 filter={AutoComplete.caseInsensitiveFilter}
                 dataSource={filterTypes}
-                onNewRequest={(type,indexInDataSource)=>dispatch(eventActions.addFilterOnEventType(type))}
+                onNewRequest={(type,indexInDataSource)=>{console.log('TYPE', type)
+                                                        dispatch(eventActions.addFilterOnEventType(type))}}
                 dataSourceConfig={dataSourceConfig}
       />
       <IconButtonStyled
@@ -37,4 +43,14 @@ const EventFilter = ({pagination, dispatch, eventActions}) =>  {
   )
 }
 
-export default EventFilter
+
+const mapStateToProps = (state, ownProps) => {
+  const { events } = state
+  return {
+    ...ownProps,
+    pagination: events.pages,
+    filterInfo: events.filter.eventTypes
+  }
+}
+
+export default connect(mapStateToProps)(EventFilter)

@@ -23,13 +23,18 @@ describe('Event Reducer', function EventReducerTest() {
                 }
 
                 var expectedState = { 
-                    kermit: 'the frog'
+                    incidentId: 0,
+                    eventTypes: [{id: 1, name: 'TestName'}]                    
                 }
 
                 
                 var filterAction = { 
                     type: 'CHANGE_EVENT_FILTER', 
-                    condition: "key=kermit" }
+                    filter: {
+                        incidentId: 0,
+                        eventTypes: [{id: 1, name: 'TestName'}]
+                    } 
+                }
 
                 expect(filter(state, filterAction)).to.eql(expectedState)
             })

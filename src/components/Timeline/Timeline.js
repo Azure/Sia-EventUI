@@ -23,7 +23,7 @@ class Timeline extends Component {
     
     return (
       <div>
-        <Filter pagination={events} eventActions={eventActions} dispatch={dispatch} />
+        <Filter />
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
       </div>

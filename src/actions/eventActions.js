@@ -69,30 +69,43 @@ export const serializeFiltersOld = (filters) =>{
     return filters
     ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
-        .reduce((prev, current) => prev.concat(current, '&'), '')
-        .slice(0, -1)
+        .join('&')
     : ''
 }
+    /* filters = {
+        incidentId: 0,
+        eventTypes: [{id: 0, name: Philip}, ...]
+        occurredStart: someDateTime,
+        occurredEnd: someDateTime
+    } 
+    */
+    // filters.eventTypes = []
+    // GOAL URL:
+    // incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
 
 // THIS ISN'T SET UP TO TAKE AN ARRAY OF EVENTYPES AS A FILTER.  WE MUST CHANGE THAT
 export const serializeFilters = (filters) => {
-    if (filters) {
-        console.log('OVER IN SERIALIZE FILTERS', filters)
-        return Object.entries(filters)
-        .filter(filter => filter[0] !== 'incidentId')
-        .map(filter => `${filter[0]}=${filter[1]}`)
-        .reduce((prev, current) => prev.concat(current, '&'), '')
-        .slice(0, -1)
-
-    }
-    else {
+    if (!filters) {
         return ''
     }
+    const eventTypes = serializeEventTypes(filters.eventTypes)
+    const filterTokens = Object.entries(filters)        
+                        .filter(filter => filter[0] !== 'incidentId' && filter[0] !== 'eventTypes')
+                        .map(filter => `${filter[0]}=${filter[1]}`)
+    const finalFilterTokens = eventTypes 
+        ? filterTokens.concat(eventTypes) 
+        : filterTokens 
+    return finalFilterTokens.join('&')
 
-    
-
-    
 }
+//[{id:, name:}]
+export const serializeEventTypes = (eventTypes) => {
+    if (!eventTypes || eventTypes.length === 0) {
+        return ''
+    }
+    return 'eventTypes=' + eventTypes.map(eventType => eventType.id).join(',')
+}
+
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -215,9 +228,10 @@ export const changeEventFilter = (filter) => ({
     filter
 })
 
-export const addFilterOnEventType = (siaContext) => (filter) => ({
+export const addFilterOnEventType = (eventTypeInfo) => ({
     type: ADD_FILTER_ON_EVENT_TYPE,
-    filter
+    id: eventTypeInfo.id,
+    name: eventTypeInfo.name
 })
 
 export default eventActions
