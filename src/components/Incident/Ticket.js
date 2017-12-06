@@ -31,9 +31,7 @@ class Ticket extends Component {
     componentDidUpdate() {
         if (this.props.incident && this.props.incident.id)
         {
-            debugger
             synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
-            // debugger
         }
     }
 
@@ -83,7 +81,7 @@ const mapStateToProps = (actions) => (state, ownProps) => {
     return {
         incident: getIncident(ticket, incidents),
         ticket,
-        // NOTE:  we can probably delete ticketId since we just use it to get the actual ticket.  
+        // NOTE:  we can probably delete ticketId since we just use it to get the actual ticket.
         //  NOTE:  Doesn't seem to be used further
         ticketId,
         filterValue,
@@ -95,19 +93,17 @@ const mapStateToProps = (actions) => (state, ownProps) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, dispatch, eventActions) => {
-    debugger
-    console.log('FILTER HERE', filter)
     if (filter.incidentId != incidentId)
     {
         dispatch(eventActions.applyFilter(filter, {incidentId: incidentId}))
     }
-    console.log('UPDATED FILTER MAYBE', filter)
     if (filter.selectedFilters)
     {
-        console.log('I win')
-    }
-    else {
-        console.log('you lose')
+        console.log('WE HAVE SELECTED FILTERS', filter.selectedFilters)
+        let obj = {}
+        obj['incidentId'] = incidentId
+        obj[filter.latest.type] = filter.latest.id
+        dispatch(eventActions.applyFilter(filter,obj))
     }
 }
 
