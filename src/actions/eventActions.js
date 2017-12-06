@@ -66,7 +66,6 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
 ])
 
 export const serializeFiltersOld = (filters) =>{
-    console.log('FILTERS HERE', filters)
     return filters
     ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
@@ -75,22 +74,24 @@ export const serializeFiltersOld = (filters) =>{
     : ''
 }
 
+// THIS ISN'T SET UP TO TAKE AN ARRAY OF EVENTYPES AS A FILTER.  WE MUST CHANGE THAT
 export const serializeFilters = (filters) => {
-    debugger
-    console.log('GRRRRRRR')
-    if (!filters.selectedFilters) {
-        console.log('no selected filters yet')
-    }
-    else {
-        console.log('now selected filters', filters)
-    }
-    const firstFilter = filters.incidentId ? console.log('WOOOOOO') : console.log('BOOOOOOOO')
-    return filters
-    ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
+    if (filters) {
+        console.log('OVER IN SERIALIZE FILTERS', filters)
+        return Object.entries(filters)
+        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
         .reduce((prev, current) => prev.concat(current, '&'), '')
         .slice(0, -1)
-    : ''
+
+    }
+    else {
+        return ''
+    }
+
+    
+
+    
 }
 
 export const getEventActionSet = (incidentId, eventId) => ({
@@ -188,6 +189,17 @@ export const postEventActionSet = (incidentId) => ({
 })
 
 export const applyFilter = (siaContext) => (oldFilter, newFilter) => (dispatch) => {
+    if(!newFilter.incidentId){
+        throw 'Need to filter on incidentId!'
+    }
+    if(!deepEquals(oldFilter, newFilter))
+    {
+        dispatch(changeEventFilter(newFilter))
+        dispatch(eventActions(siaContext).fetchEvents(newFilter))
+    }
+}
+
+export const applyFilterOLD = (siaContext) => (oldFilter, newFilter) => (dispatch) => {
     if(!newFilter.incidentId){
         throw 'Need to filter on incidentId!'
     }
