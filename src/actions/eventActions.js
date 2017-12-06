@@ -42,8 +42,7 @@ export const eventActions = (siaContext) => ({
     ),
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
-    addFilterOnEventType: addFilterOnEventType(siaContext),
-    updateFilter: updateFilter
+    addFilterOnEventType: addFilterOnEventType(siaContext)
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -67,6 +66,7 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
 ])
 
 export const serializeFiltersOld = (filters) =>{
+    console.log('FILTERS HERE', filters)
     return filters
     ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
