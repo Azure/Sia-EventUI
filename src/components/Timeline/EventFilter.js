@@ -4,7 +4,7 @@ import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import * as eventActions from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
-import MockEventTypes, { mockEventTypes } from '../elements/mockEventTypes'
+import { mockEventTypes } from '../elements/mockEventTypes'
 
 const filterTypes = mockEventTypes.types
 
@@ -20,7 +20,7 @@ const EventFilter = ({pagination, dispatch, eventActions}) =>  {
                 floatingLabelText="Filter by event type"
                 filter={AutoComplete.caseInsensitiveFilter}
                 dataSource={filterTypes}
-                onNewRequest={(s,i)=>dispatch(eventActions.addFilterOnEventType(s))}
+                onNewRequest={(type,indexInDataSource)=>dispatch(eventActions.addFilterOnEventType(type))}
                 dataSourceConfig={dataSourceConfig}
       />
       <IconButtonStyled
@@ -35,22 +35,6 @@ const EventFilter = ({pagination, dispatch, eventActions}) =>  {
       </IconButtonStyled>
     </div>
   )
-}
-
-export const EventFilterMenu = ({eventTypes, dispatch}) =>  {
-  return <div className="incident-EventFilter">
-            <form>
-                <label>
-                    Filtering On:
-                    <select
-                        value={input}
-                        onChange={(event, newValue)=> dispatch(eventActions.changeEventFilter(newValue))}>
-                        {options.map(o => <option value={o} key={o}>{o}</option>)}
-                    </select>
-                </label>
-            </form>
-        </div>
-
 }
 
 export default EventFilter
