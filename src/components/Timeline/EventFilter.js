@@ -5,6 +5,7 @@ import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import * as eventActions from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
+import Chip from 'material-ui/Chip'
 import { mockEventTypes } from '../elements/mockEventTypes'
 
 const filterTypes = mockEventTypes.types
@@ -17,10 +18,12 @@ const dataSourceConfig = {
 const EventFilter = ({pagination, filterInfo, dispatch}) =>  {
   console.log('FILTER INFO', filterInfo)
   const filterChips = filterInfo ? filterInfo.map(f=> <span key={f.id}>{f.name}</span>) : null
+  const myChips = filterChips? renderChips(filterChips) : null
   console.log('FILTER CHIPS', filterChips)
   return  (
     <div className="incident-EventFilter">
       {filterChips}
+      {myChips}
       <AutoComplete
                 floatingLabelText="Filter by event type"
                 filter={AutoComplete.caseInsensitiveFilter}
@@ -43,6 +46,43 @@ const EventFilter = ({pagination, filterInfo, dispatch}) =>  {
   )
 }
 
+const testTap = () => {
+  console.log('BUTTON TAPPED')
+}
+
+const renderChip = (data) => {
+  return (
+    <Chip
+      key={data.key}
+      onRequestDelete={() => handleRequestDelete(data.key)}
+      style={chipStyles.chip}
+    >
+      {data.name}
+    </Chip>
+  )
+}
+
+const handleRequestDelete = (data) => {
+  console.log(data)
+}
+
+const chipStyles = {
+  chip: {
+    margin: 4,
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+}
+
+const renderChips = (data) => {
+  return (
+    <div style={chipStyles.wrapper}>
+      {data.map(renderChip, this)}
+    </div>
+  )
+}
 
 const mapStateToProps = (state, ownProps) => {
   const { events } = state
