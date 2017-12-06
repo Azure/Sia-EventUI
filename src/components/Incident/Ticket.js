@@ -13,6 +13,7 @@ class Ticket extends Component {
         incident: PropTypes.object,
         ticket: PropTypes.object,
         ticketId: PropTypes.number,
+        filterValue: PropTypes.string,
         ticketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired,
@@ -30,7 +31,9 @@ class Ticket extends Component {
     componentDidUpdate() {
         if (this.props.incident && this.props.incident.id)
         {
+            debugger
             synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
+            // debugger
         }
     }
 
@@ -72,13 +75,18 @@ class Ticket extends Component {
 
 const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets } = state
+    // NOTE:  this ticketId param comes from the URL (we think!)
     const ticketId = parseInt(ownProps.match.params.ticketId)
+    const filterValue = ownProps.match.params.filterValue
     const ticket = tickets.map[ticketId]
     const filter = state.events.filter
     return {
         incident: getIncident(ticket, incidents),
         ticket,
+        // NOTE:  we can probably delete ticketId since we just use it to get the actual ticket.  
+        //  NOTE:  Doesn't seem to be used further
         ticketId,
+        filterValue,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
         actions,
@@ -87,9 +95,19 @@ const mapStateToProps = (actions) => (state, ownProps) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, dispatch, eventActions) => {
+    debugger
+    console.log('FILTER HERE', filter)
     if (filter.incidentId != incidentId)
     {
         dispatch(eventActions.applyFilter(filter, {incidentId: incidentId}))
+    }
+    console.log('UPDATED FILTER MAYBE', filter)
+    if (filter.selectedFilters)
+    {
+        console.log('I win')
+    }
+    else {
+        console.log('you lose')
     }
 }
 

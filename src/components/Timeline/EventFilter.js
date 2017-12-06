@@ -10,32 +10,31 @@ const filterTypes = mockEventTypes.types
 
 const dataSourceConfig = {
   text: 'name',
-  value: 'id',
+  value: 'id'
 }
 
 const EventFilter = ({pagination, dispatch, eventActions}) =>  {
-  return <div className="incident-EventFilter">
-          {/* {filterLabels.map(label => <FlatButtonStyled label={label} key={label} primary={label === defaultPrimary}/>)} */}
-          
-          <AutoComplete
-                    floatingLabelText="Filter by event type"
-                    filter={AutoComplete.caseInsensitiveFilter}
-                    dataSource={filterTypes}
-                    onNewRequest={(s,i)=>dispatch(eventActions.addFilterOnEventType(s))}
-                    dataSourceConfig={dataSourceConfig}
-          />
-          <IconButtonStyled
-            tooltip='order'
-            onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
-          >
-            {
-              pagination && pagination.order === 'desc'
-              ? <ArrowDown/>
-              : <ArrowUp/>
-            }
-          </IconButtonStyled>
-        </div>
-
+  return  (
+    <div className="incident-EventFilter">
+      <AutoComplete
+                floatingLabelText="Filter by event type"
+                filter={AutoComplete.caseInsensitiveFilter}
+                dataSource={filterTypes}
+                onNewRequest={(s,i)=>dispatch(eventActions.addFilterOnEventType(s))}
+                dataSourceConfig={dataSourceConfig}
+      />
+      <IconButtonStyled
+        tooltip='order'
+        onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
+      >
+        {
+          pagination && pagination.order === 'desc'
+          ? <ArrowDown/>
+          : <ArrowUp/>
+        }
+      </IconButtonStyled>
+    </div>
+  )
 }
 
 export const EventFilterMenu = ({eventTypes, dispatch}) =>  {

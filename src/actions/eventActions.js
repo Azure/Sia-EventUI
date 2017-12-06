@@ -42,7 +42,8 @@ export const eventActions = (siaContext) => ({
     ),
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
-    addFilterOnEventType: addFilterOnEventType(siaContext)
+    addFilterOnEventType: addFilterOnEventType(siaContext),
+    updateFilter: updateFilter
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -65,13 +66,32 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     }
 ])
 
-export const serializeFilters = (filters) => filters
+export const serializeFiltersOld = (filters) =>{
+    return filters
     ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
         .map(filter => `${filter[0]}=${filter[1]}`)
         .reduce((prev, current) => prev.concat(current, '&'), '')
         .slice(0, -1)
     : ''
+}
 
+export const serializeFilters = (filters) => {
+    debugger
+    console.log('GRRRRRRR')
+    if (!filters.selectedFilters) {
+        console.log('no selected filters yet')
+    }
+    else {
+        console.log('now selected filters', filters)
+    }
+    const firstFilter = filters.incidentId ? console.log('WOOOOOO') : console.log('BOOOOOOOO')
+    return filters
+    ? Object.entries(filters)        .filter(filter => filter[0] !== 'incidentId')
+        .map(filter => `${filter[0]}=${filter[1]}`)
+        .reduce((prev, current) => prev.concat(current, '&'), '')
+        .slice(0, -1)
+    : ''
+}
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({

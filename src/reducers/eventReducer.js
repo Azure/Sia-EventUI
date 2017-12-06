@@ -48,13 +48,24 @@ export const list = (state = defaultEventCollection, action) => {
 export const filter = (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
+            debugger
             return Object.assign({}, action.filter)
         case eventActions.ADD_FILTER_ON_EVENT_TYPE:
+            var updatedFilters = {}
+            const newFilter = {type: 'eventType', id: action.filter.id, text: action.filter.name}
+            if (state.selectedFilters) {
+                updatedFilters = Object.assign({}, state.selectedFilters)
+                updatedFilters[action.filter.id] = newFilter
+            }
+            else {
+                updatedFilters[action.filter.id] = newFilter
+            }
             return {
                 ...state,
-                selectedOption: [{dataKey: action.filter.id, dataValue: action.filter.name}],
+                selectedFilters: updatedFilters,
                 error: 'BOO'
             }
+        
         default:
             return state
     }
