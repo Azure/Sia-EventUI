@@ -1,6 +1,7 @@
+import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
-import { mergeWithOverwrite } from './reducerHelpers'
+import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
 
 const defaultEventCollection = []
 
@@ -32,4 +33,13 @@ export const events = paginated(list, eventActions.pagination.types, {
     defaultTotal: 0
   })
 
-export default events
+export const fetching = buildFetching({
+    try: eventActions.REQUEST_EVENT,
+    succeed: eventActions.RECEIVE_EVENT,
+    fail: eventActions.RECEIVE_EVENT_FAILURE
+})
+
+export default combineReducers({
+    list,
+    fetching
+})

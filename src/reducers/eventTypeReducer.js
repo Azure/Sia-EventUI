@@ -4,13 +4,11 @@ import { combineReducers } from 'redux'
 
 const defaultEventTypeCollection = {}
 
-const eventTypeActionSet = ({
+export const fetching = buildFetching({
     try: eventTypeActions.TRY_GET_EVENT_TYPE,
     succeed: eventTypeActions.GET_EVENT_TYPE_SUCCESS,
     fail: eventTypeActions.GET_EVENT_TYPE_FAILURE
 })
-
-export const fetching = buildFetching(eventTypeActionSet)
 
 export const records = (state = defaultEventTypeCollection, action) => {
     switch(action.type){

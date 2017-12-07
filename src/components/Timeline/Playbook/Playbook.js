@@ -1,37 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Play from './Play'
 import { TestConditionSet } from '../../../services/playbookService'
+import DisplayPlaybook from './DisplayPlaybook'
 
-export const Playbook = ({
-    eventTypeId,
-    eventId,
-    incidentId,
-    ticketId,
-    engagementId,
-    actions
-}) => {
-    let localKey = 0
-    return  <div>{
-                actions
-                ? actions.map(action =>
-                    <div key={localKey++}>
-                        <span>
-                            {action.name}
-                        </span>
-                        <br/>
-                        <Play
-                            action={action}
-                            eventTypeId={eventTypeId}
-                            eventId={eventId}
-                            incidentId={incidentId}
-                            ticketId={ticketId}
-                            engagementId={engagementId}
-                        />
-                    </div>)
-                : <div>Fetching action options...</div>
-            }</div>
-}
+export const Playbook = (args) => args.eventTypeIsFetching
+    || args.eventIsFetching
+    ? <div>Fetching event information...</div>
+    : DisplayPlaybook(args)
+
 
 export const mapStateToPlaybookProps = (state, ownProps) => {
     const auth = state.auth
@@ -60,6 +36,8 @@ export const mapStateToPlaybookProps = (state, ownProps) => {
     return {
         actions: qualifiedActions,
         engagementId: engagement ? engagement.id : null,
+        eventTypeIsFetching: state.evenTypes.fetching.includes(ownProps.eventTypeId),
+        eventIsFetching: state.events.fetching.includes(ownProps.eventid),
         ...ownProps
     }
 }

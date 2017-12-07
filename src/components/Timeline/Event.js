@@ -11,6 +11,7 @@ export const Event = ({
     text,
     time,
     backgroundColor,
+    isFetching,
     incidentId,
     ticketId,
     eventTypeId,
@@ -62,6 +63,7 @@ export const mapStateToEventProps = (state, ownProps) => {
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
         ...ownProps,
+        isFetching,
         ticket,
         engagement,
         eventId: event.id,

@@ -12,7 +12,7 @@ describe('Reducer Helpers', function () {
     const emptyState = []
     const existingFetchesState = [1, 3, 5]
 
-    describe.only('buildFetching() generates a reducer', function () {
+    describe('buildFetching() generates a reducer', function () {
       const reducerUnderTest = buildFetching(defaultActionCases)
 
       describe('when the action type matches try', function () {
