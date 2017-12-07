@@ -31,8 +31,6 @@ const pageArgs = {
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
-// const addFilterToState = (state, events) => mergeWithOverwrite(state, events.list.dataKey)
-
 export const list = (state = defaultEventCollection, action) => {
     switch(action.type){
         case eventActions.RECEIVE_EVENT:
@@ -56,15 +54,22 @@ export const filter = (state = defaultFilter, action) => {
             }
             return {
                 ...state,
+                filterSearchField: ' ',
                 eventTypes: state.eventTypes.concat({id: action.id, name: action.name})
             }
-        
+        case eventActions.REMOVE_EVENT_FILTER:
+            if (!state.eventTypes.map(e=> e.id).includes(action.id))
+            {
+                return state
+            }
+            return {
+                ...state,
+                eventTypes: state.eventTypes.filter(eventType => eventType.id !== action.id)
+            }
         default:
             return state
     }
 }
-
-
 
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)
 
