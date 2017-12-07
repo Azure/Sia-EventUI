@@ -15,23 +15,29 @@ const dataSourceConfig = {
   value: 'id'
 }
 
-const EventFilter = ({pagination, filterInfo, dispatch}) =>  {
-  console.log('FILTER INFO', filterInfo)
-  const filterChips = filterInfo ? filterInfo.map(f=> <span key={f.id}>{f.name}</span>) : null
-  const myChips = filterChips? renderChips(filterChips) : null
-  console.log('FILTER CHIPS', filterChips)
+const chipStyles = {
+  chip: {
+    margin: 4
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
+}
+
+const EventFilter = ({pagination, filterInfo, filterSearchField, dispatch}) =>  {
+  const filterChips = filterInfo ? renderChips(filterInfo, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
-      {myChips}
-      <AutoComplete
-                floatingLabelText="Filter by event type"
-                filter={AutoComplete.caseInsensitiveFilter}
-                dataSource={filterTypes}
-                onNewRequest={(type,indexInDataSource)=>{console.log('TYPE', type)
-                                                        dispatch(eventActions.addFilterOnEventType(type))}}
-                dataSourceConfig={dataSourceConfig}
-      />
+        <AutoComplete
+                  floatingLabelText="Filter by event type"
+                  filter={AutoComplete.caseInsensitiveFilter}
+                  dataSource={filterTypes}
+                  searchText={filterSearchField}
+                  onNewRequest={(type,indexInDataSource)=>{dispatch(eventActions.addFilterOnEventType(type))}}
+                  dataSourceConfig={dataSourceConfig}
+        />
       <IconButtonStyled
         tooltip='order'
         onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
@@ -46,41 +52,23 @@ const EventFilter = ({pagination, filterInfo, dispatch}) =>  {
   )
 }
 
-const testTap = () => {
-  console.log('BUTTON TAPPED')
-}
-
-const renderChip = (data) => {
+const renderChips = (eventTypes, dispatch) => {
   return (
-    <Chip
-      key={data.key}
-      onRequestDelete={() => handleRequestDelete(data.key)}
-      style={chipStyles.chip}
-    >
-      {data.name}
-    </Chip>
+    <div style={chipStyles.wrapper}>
+      {eventTypes.map((eventType) => renderChip(eventType, dispatch))}
+    </div>
   )
 }
 
-const handleRequestDelete = (data) => {
-  console.log(data)
-}
-
-const chipStyles = {
-  chip: {
-    margin: 4,
-  },
-  wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-}
-
-const renderChips = (data) => {
+const renderChip = (eventType, dispatch) => {
   return (
-    <div style={chipStyles.wrapper}>
-      {data.map(renderChip, this)}
-    </div>
+    <Chip
+      key={eventType.id}
+      onRequestDelete={() => dispatch(eventActions.removeEventFilter(eventType))}
+      style={chipStyles.chip}
+    >
+      {eventType.name}
+    </Chip>
   )
 }
 
@@ -89,7 +77,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     pagination: events.pages,
-    filterInfo: events.filter.eventTypes
+    filterInfo: events.filter.eventTypes,
+    filterSearchField: events.filter.filterSearchField
   }
 }
 
