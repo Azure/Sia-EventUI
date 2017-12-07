@@ -18,6 +18,7 @@ export const ADD_EVENT = 'ADD_EVENT'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const ADD_FILTER_ON_EVENT_TYPE = 'ADD_FILTER_ON_EVENT_TYPE'
+export const REMOVE_EVENT_FILTER = 'REMOVE_EVENT_FILTER'
 
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
@@ -42,7 +43,8 @@ export const eventActions = (siaContext) => ({
     ),
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
-    addFilterOnEventType: addFilterOnEventType(siaContext)
+    addFilterOnEventType: addFilterOnEventType(siaContext),
+    removeEventFilter: removeEventFilter
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -77,7 +79,7 @@ export const serializeFiltersOld = (filters) =>{
         eventTypes: [{id: 0, name: Philip}, ...]
         occurredStart: someDateTime,
         occurredEnd: someDateTime
-    } 
+    }
     */
     // filters.eventTypes = []
     // GOAL URL:
@@ -89,12 +91,12 @@ export const serializeFilters = (filters) => {
         return ''
     }
     const eventTypes = serializeEventTypes(filters.eventTypes)
-    const filterTokens = Object.entries(filters)        
+    const filterTokens = Object.entries(filters)
                         .filter(filter => filter[0] !== 'incidentId' && filter[0] !== 'eventTypes')
                         .map(filter => `${filter[0]}=${filter[1]}`)
-    const finalFilterTokens = eventTypes 
-        ? filterTokens.concat(eventTypes) 
-        : filterTokens 
+    const finalFilterTokens = eventTypes
+        ? filterTokens.concat(eventTypes)
+        : filterTokens
     return finalFilterTokens.join('&')
 
 }
@@ -212,17 +214,6 @@ export const applyFilter = (siaContext) => (oldFilter, newFilter) => (dispatch) 
     }
 }
 
-export const applyFilterOLD = (siaContext) => (oldFilter, newFilter) => (dispatch) => {
-    if(!newFilter.incidentId){
-        throw 'Need to filter on incidentId!'
-    }
-    if(!deepEquals(oldFilter, newFilter))
-    {
-        dispatch(changeEventFilter(newFilter))
-        dispatch(eventActions(siaContext).fetchEvents(newFilter))
-    }
-}
-
 export const changeEventFilter = (filter) => ({
     type: CHANGE_EVENT_FILTER,
     filter
@@ -230,6 +221,12 @@ export const changeEventFilter = (filter) => ({
 
 export const addFilterOnEventType = (eventTypeInfo) => ({
     type: ADD_FILTER_ON_EVENT_TYPE,
+    id: eventTypeInfo.id,
+    name: eventTypeInfo.name
+})
+
+export const removeEventFilter = (eventTypeInfo) => ({
+    type: REMOVE_EVENT_FILTER,
     id: eventTypeInfo.id,
     name: eventTypeInfo.name
 })
