@@ -43,8 +43,7 @@ export const eventActions = (siaContext) => ({
     ),
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
-    addFilterOnEventType: addFilterOnEventType(siaContext),
-    removeEventFilter: removeEventFilter
+    addFilter: addFilter(siaContext)
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -208,7 +207,7 @@ export const applyFilter = (siaContext) => (oldFilter, newFilter) => (dispatch) 
         throw 'Need to filter on incidentId!'
     }
     if(!deepEquals(oldFilter, newFilter))
-    {
+    {       
         dispatch(changeEventFilter(newFilter))
         dispatch(eventActions(siaContext).fetchEvents(newFilter))
     }
@@ -231,31 +230,44 @@ export const removeEventFilter = (eventTypeInfo) => ({
     name: eventTypeInfo.name
 })
 
-export const addFilter = (siaContext, filter, eventType) => (dispatch) => {
-    if (filter.eventTypes.map(eventType => eventType.id).includes(action.id)) {
-        return {
-            ...filter,
-            filterSearchField: 'x '
+export const addFilter = (siaContext) => (filter, eventType) => (dispatch) => {
+    let oldFilter = filter
+    let newFilter = {}
+
+    if (filter.eventTypes.length > 0 && filter.eventTypes.map(eventType => eventType.id).includes(eventType.id)) {
+        newFilter = {
+            ...filter
         }
     }
     else {
-        return {
-        ...filter,
-        filterSearchField: ' ',
-        eventTypes: filter.eventTypes.concat({id: action.id, name: action.name})
+        newFilter = {
+            ...filter,
+            eventTypes: filter.eventTypes.concat({
+                id: eventType.id,
+                name: eventType.name
+            })
         }
     }
+    
+    console.log('OLD FILTER', oldFilter)
+    console.log('NEWLY ADDED FILTERS', newFilter)
+    dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 
 export const removeFilter = (siaContext, filter, eventType) => (dispatch) => {
+    let oldFilter = filter
+    let newFilter
     if (!filter.eventTypes.map(e=> e.id).includes(action.id))
     {
-        return filter
+        newFilter = filter
     }
-    return {
-        ...filter,
-        eventTypes: filter.eventTypes.filter(eventType => eventType.id !== action.id)
+    else {
+        newFilter = {
+            ...filter,
+            eventTypes: filter.eventTypes.filter(eventType => eventType.id !== action.id)
+        }
     }
+    dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 
 export default eventActions

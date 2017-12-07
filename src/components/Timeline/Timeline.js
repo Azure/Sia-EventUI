@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import Filter from './EventFilter'
+import EventFilter from './EventFilter'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
-import * as eventActions from '../../actions/eventActions'
+import {pagination} from '../../actions/eventActions'
 import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 
 class Timeline extends Component {
@@ -19,11 +19,19 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, dispatch, eventActions, eventTypeActions, ticketId, incidentId, eventTypes } = this.props
+    const { events, 
+            dispatch, 
+            eventActions, 
+            eventTypeActions, 
+            ticketId, 
+            incidentId, 
+            eventTypes,
+            siaContext
+    } = this.props
     
     return (
       <div>
-        <Filter />
+        <EventFilter siaContext={siaContext} eventActions={eventActions}  />
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
@@ -32,7 +40,7 @@ class Timeline extends Component {
 }
  
 const updatePagination = (dispatch, incidentIds) => {
-    dispatch(eventActions.pagination.filter(setBaseFilter(incidentIds)))
+    dispatch(pagination.filter(setBaseFilter(incidentIds)))
 }
 
 const fetchMissingEventTypes = (props) => {

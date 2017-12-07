@@ -48,17 +48,12 @@ export const filter = (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({}, action.filter)
-        case eventActions.ADD_FILTER_ON_EVENT_TYPE:
-            if (state.eventTypes.map(eventType => eventType.id).includes(action.id)) {
-                return {
-                    ...state,
-                    filterSearchField: 'x '
-                }
-            }
+        case eventActions.ADD_FILTER_ON_EVENT_TYPE:            
             return {
-                ...state,
-                filterSearchField: ' ',
-                eventTypes: state.eventTypes.concat({id: action.id, name: action.name})
+                ...state
+                // filterSearchField: ' ',
+                // eventTypes: state.eventTypes.concat({id: action.id, name: action.name})
+                // eventTypes: Object.assign({}, filter.e)
             }
         case eventActions.REMOVE_EVENT_FILTER:
             if (!state.eventTypes.map(e=> e.id).includes(action.id))

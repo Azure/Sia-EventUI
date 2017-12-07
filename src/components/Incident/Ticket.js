@@ -41,7 +41,8 @@ class Ticket extends Component {
             ticket,
             ticketSystem,
             dispatch,
-            actions
+            actions,
+            siaContext
         } = this.props
 
         if(incident && incident.error)
@@ -61,6 +62,7 @@ class Ticket extends Component {
                 incident={incident}
                 ticket={ticket}
                 ticketSystem={ticketSystem}
+                siaContext={siaContext}
              />
         }
         return (

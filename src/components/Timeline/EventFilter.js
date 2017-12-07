@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-import * as eventActions from '../../actions/eventActions'
+import {removeFilter} from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import { mockEventTypes } from '../elements/mockEventTypes'
@@ -25,9 +25,9 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({pagination, siaContext, filter, filterInfo, filterSearchField, dispatch}) =>  {
-  const filterChips = filterInfo ? renderChips(filterInfo, dispatch): null
-  filterSearchField ? console.log('FILTERSEARCHFIELD', filterSearchField) : console.log('nope')
+const EventFilter = ({siaContext, eventActions, pagination, filter, dispatch}) =>  {
+  console.log('FILTER', filter)
+  const filterChips = filter.eventTypes ? renderChips(siaContext, filter, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
@@ -35,9 +35,10 @@ const EventFilter = ({pagination, siaContext, filter, filterInfo, filterSearchFi
                   floatingLabelText="Filter by event type"
                   filter={AutoComplete.caseInsensitiveFilter}
                   dataSource={filterTypes}
-                  searchText={filterSearchField}
+                  // searchText={filterSearchField}
                   onNewRequest={
-                    (eventType,indexInDataSource)=>{dispatch(eventActions(siaContext).addFilter(filter, eventType))}}
+                    (eventType, indexInDataSource) => {dispatch(eventActions.addFilter(filter, eventType))}}
+                    // (eventType,indexInDataSource)=>{dispatch(eventActions.addFilterOnEventType(eventType))}}
                   dataSourceConfig={dataSourceConfig}
         />
       <IconButtonStyled
@@ -54,19 +55,19 @@ const EventFilter = ({pagination, siaContext, filter, filterInfo, filterSearchFi
   )
 }
 
-const renderChips = (eventTypes, dispatch) => {
+const renderChips = (siaContext, filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {eventTypes.map((eventType) => renderChip(eventType, dispatch))}
+      {filter.eventTypes.map((eventType) => renderChip(siaContext, filter, eventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (eventType, dispatch) => {
+const renderChip = (siaContext, filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}
-      onRequestDelete={() => dispatch(eventActions.removeEventFilter(eventType))}
+      onRequestDelete={() => dispatch(removeFilter(siaContext, filter, eventType))}
       style={chipStyles.chip}
     >
       {eventType.name}
@@ -79,9 +80,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     pagination: events.pages,
-    filter: events.filter,
-    filterInfo: events.filter.eventTypes,
-    filterSearchField: events.filter.filterSearchField
+    filter: events.filter
+    // filterSearchField: events.filter.filterSearchField
   }
 }
 
