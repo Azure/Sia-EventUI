@@ -231,4 +231,31 @@ export const removeEventFilter = (eventTypeInfo) => ({
     name: eventTypeInfo.name
 })
 
+export const addFilter = (siaContext, filter, eventType) => (dispatch) => {
+    if (filter.eventTypes.map(eventType => eventType.id).includes(action.id)) {
+        return {
+            ...filter,
+            filterSearchField: 'x '
+        }
+    }
+    else {
+        return {
+        ...filter,
+        filterSearchField: ' ',
+        eventTypes: filter.eventTypes.concat({id: action.id, name: action.name})
+        }
+    }
+}
+
+export const removeFilter = (siaContext, filter, eventType) => (dispatch) => {
+    if (!filter.eventTypes.map(e=> e.id).includes(action.id))
+    {
+        return filter
+    }
+    return {
+        ...filter,
+        eventTypes: filter.eventTypes.filter(eventType => eventType.id !== action.id)
+    }
+}
+
 export default eventActions

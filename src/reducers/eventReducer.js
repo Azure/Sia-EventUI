@@ -50,7 +50,10 @@ export const filter = (state = defaultFilter, action) => {
             return Object.assign({}, action.filter)
         case eventActions.ADD_FILTER_ON_EVENT_TYPE:
             if (state.eventTypes.map(eventType => eventType.id).includes(action.id)) {
-                return state
+                return {
+                    ...state,
+                    filterSearchField: 'x '
+                }
             }
             return {
                 ...state,

@@ -25,8 +25,9 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({pagination, filterInfo, filterSearchField, dispatch}) =>  {
+const EventFilter = ({pagination, siaContext, filter, filterInfo, filterSearchField, dispatch}) =>  {
   const filterChips = filterInfo ? renderChips(filterInfo, dispatch): null
+  filterSearchField ? console.log('FILTERSEARCHFIELD', filterSearchField) : console.log('nope')
   return  (
     <div className="incident-EventFilter">
       {filterChips}
@@ -35,7 +36,8 @@ const EventFilter = ({pagination, filterInfo, filterSearchField, dispatch}) =>  
                   filter={AutoComplete.caseInsensitiveFilter}
                   dataSource={filterTypes}
                   searchText={filterSearchField}
-                  onNewRequest={(type,indexInDataSource)=>{dispatch(eventActions.addFilterOnEventType(type))}}
+                  onNewRequest={
+                    (eventType,indexInDataSource)=>{dispatch(eventActions(siaContext).addFilter(filter, eventType))}}
                   dataSourceConfig={dataSourceConfig}
         />
       <IconButtonStyled
@@ -77,6 +79,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     pagination: events.pages,
+    filter: events.filter,
     filterInfo: events.filter.eventTypes,
     filterSearchField: events.filter.filterSearchField
   }
