@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 import { reduxBackedPromise } from './actionHelpers'
 import * as ticketActions from './ticketActions'
 import * as eventActions from './eventActions'
@@ -20,27 +19,24 @@ export const FETCH_INCIDENTS_BY_TICKET_ID_FAILURE = 'FETCH_INCIDENTS_BY_TICKET_I
 
 
 export const fetchIncident = incidentId => reduxBackedPromise(
-    authenticatedFetch,
     ['incidents/' + incidentId],
     getIncidentActionSet(incidentId)
 )
 
 export const fetchIncidentsByTicketId = (ticketId) => reduxBackedPromise(
-    authenticatedFetch,
     ['tickets/' + ticketId],
     getIncidentsByTicketIdActionSet(ticketId),
 )
 
 export const fetchIncidents = () => reduxBackedPromise(
-    authenticatedFetch,
     ['incidents/'],
     getIncidentsActionSet
 )
 
 export const postIncident = (ticketId, ticketSystem) => reduxBackedPromise(
-    authenticatedPost,
     postIncidentFetchArgs(ticketId, ticketSystem),
-    createIncidentActionSet(ticketId, ticketSystem)
+    createIncidentActionSet(ticketId, ticketSystem),
+    'post'
 )
 
 

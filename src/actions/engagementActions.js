@@ -1,5 +1,4 @@
 import moment from 'moment'
-import { authenticatedPost, authenticatedPut } from '../services/authenticatedFetch'
 import { reduxBackedPromise, paginationActions } from './actionHelpers'
 
 export const TRY_ENGAGE = 'TRY_ENGAGE'
@@ -13,21 +12,21 @@ export const ENGAGEMENTS = 'ENGAGEMENTS'
 
 export const engage = (incidentId, participant, timeEngaged = moment()) =>
 reduxBackedPromise(
-    authenticatedPost,
     ['incidents/' + incidentId + '/engagements/', {participant}],
-    engageActionSet(incidentId, participant, timeEngaged)
+    engageActionSet(incidentId, participant, timeEngaged),
+    'post'
 )
     
 export const disengage = (participant, engagement, timeDisengaged = moment()) =>
 reduxBackedPromise(
-    authenticatedPut,
     [
         'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,
         updatedEngagement(engagement, timeDisengaged),
         null,
         false
     ],
-    disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged)
+    disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged),
+    'put'
 )
 
 

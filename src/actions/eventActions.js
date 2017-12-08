@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -20,19 +19,16 @@ export const linksHeaderName = 'links'
 
 
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-    authenticatedFetch,
     [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
     getEventActionSet(incidentId, eventId)
 )
 
 export const fetchEvents = (incidentId) => reduxBackedPromise(
-    authenticatedFetch,
     [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
     getEventsActionSet(incidentId)
 )
 
 export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-    authenticatedPost,
     [
         (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
         {
@@ -42,7 +38,8 @@ export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime 
             data
         }
     ],
-    postEventActionSet(incidentId)
+    postEventActionSet(incidentId),
+    'post'
 )
 
 
@@ -94,7 +91,6 @@ export const getEventsActionSet = (incidentId) => ({
 
         if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
-                authenticatedFetch,
                 [linksHeader.NextPageLink],
                 getEventsActionSet(incidentId)
             ))
