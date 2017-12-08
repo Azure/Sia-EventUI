@@ -41,8 +41,7 @@ class Ticket extends Component {
             ticket,
             ticketSystem,
             dispatch,
-            actions,
-            siaContext
+            actions
         } = this.props
 
         if(incident && incident.error)
@@ -62,7 +61,6 @@ class Ticket extends Component {
                 incident={incident}
                 ticket={ticket}
                 ticketSystem={ticketSystem}
-                siaContext={siaContext}
              />
         }
         return (
@@ -107,7 +105,7 @@ export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? 
 export const ErrorLoadingIncident = (incidentActions, incident, dispatch) => {
     return <div>
                 <div>Error Loading Incident: {incident.error}</div>
-                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.incidentId)}/>
+                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.id)}/>
             </div>
 }
 

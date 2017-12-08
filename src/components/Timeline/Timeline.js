@@ -25,13 +25,12 @@ class Timeline extends Component {
             eventTypeActions, 
             ticketId, 
             incidentId, 
-            eventTypes,
-            siaContext
+            eventTypes
     } = this.props
     
     return (
       <div>
-        <EventFilter siaContext={siaContext} eventActions={eventActions}  />
+        <EventFilter eventActions={eventActions}  />
         {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
         <Footer pagination={events} dispatch={dispatch}/>
       </div>

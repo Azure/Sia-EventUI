@@ -25,9 +25,8 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({siaContext, eventActions, pagination, filter, dispatch}) =>  {
-  console.log('FILTER', filter)
-  const filterChips = filter.eventTypes ? renderChips(siaContext, filter, dispatch): null
+const EventFilter = ({eventActions, pagination, filter, dispatch}) =>  {
+  const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
@@ -55,19 +54,19 @@ const EventFilter = ({siaContext, eventActions, pagination, filter, dispatch}) =
   )
 }
 
-const renderChips = (siaContext, filter, dispatch) => {
+const renderChips = (filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((eventType) => renderChip(siaContext, filter, eventType, dispatch))}
+      {filter.eventTypes.map((eventType) => renderChip(filter, eventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (siaContext, filter, eventType, dispatch) => {
+const renderChip = (filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}
-      onRequestDelete={() => dispatch(removeFilter(siaContext, filter, eventType))}
+      onRequestDelete={() => dispatch(removeFilter(filter, eventType))}
       style={chipStyles.chip}
     >
       {eventType.name}
