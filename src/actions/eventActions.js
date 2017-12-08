@@ -15,11 +15,8 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
-
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
-export const ADD_FILTER_ON_EVENT_TYPE = 'ADD_FILTER_ON_EVENT_TYPE'
-export const REMOVE_EVENT_FILTER = 'REMOVE_EVENT_FILTER'
-
+export const UPDATE_FILTER_SEARCH_BOX = 'UPDATE_FILTER_SEARCH_BOX'
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
@@ -44,6 +41,7 @@ export const eventActions = (siaContext) => ({
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
     addFilter: addFilter(siaContext),
+    updateFilterSearchBox: updateFilterSearchBox,
     removeFilter: removeFilter(siaContext)
 })
 
@@ -219,23 +217,24 @@ export const changeEventFilter = (filter) => ({
     filter
 })
 
-export const addFilterOnEventType = (eventTypeInfo) => ({
-    type: ADD_FILTER_ON_EVENT_TYPE,
-    id: eventTypeInfo.id,
-    name: eventTypeInfo.name
+export const updateFilterSearchBox = (searchText) => ({
+    type: UPDATE_FILTER_SEARCH_BOX,
+    searchText
 })
 
-export const removeEventFilter = (eventTypeInfo) => ({
-    type: REMOVE_EVENT_FILTER,
-    id: eventTypeInfo.id,
-    name: eventTypeInfo.name
-})
+export const isEventTypeInputValid = (eventType) => {
+    return eventType && eventType.id
+}
 
 export const addFilter = (siaContext) => (filter, eventType) => (dispatch) => {
     let oldFilter = filter
     let newFilter = {}
+    
+    if (!isEventTypeInputValid(eventType)) {
+        return
+    }
 
-    if (filter.eventTypes.length > 0 && filter.eventTypes.map(eventType => eventType.id).includes(eventType.id)) {
+    if (filter.eventTypes.map(eventType => eventType.id).includes(eventType.id)) {
         newFilter = {
             ...filter
         }
@@ -249,27 +248,19 @@ export const addFilter = (siaContext) => (filter, eventType) => (dispatch) => {
             })
         }
     }
-    
-    console.log('OLD FILTER', oldFilter)
-    console.log('NEWLY ADDED FILTERS', newFilter)
     dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 
-export const removeFilter = (siaContext) => (filter, eventType) => (dispatch) => {
-    let oldFilter = filter
-    let newFilter
-    if (!filter.eventTypes.map(e=> e.id).includes(eventType.id))
-    {
-        newFilter = filter
+export const removeFilter = (siaContext) => (oldFilter, eventTypeToDelete) => (dispatch) => {
+    if (!oldFilter.eventTypes.map(eventType => eventType.id).includes(eventTypeToDelete.id)) {
+        return
     }
-    else {
-        debugger
-        newFilter = {
-            ...filter,
-            eventTypes: filter.eventTypes.filter(eventType => eventType.id !== eventType.id)
-        }
+
+    const newFilter = {
+        ...oldFilter,
+        eventTypes: oldFilter.eventTypes.filter(eventType => eventTypeToDelete.id !== eventType.id)
     }
-    debugger
+
     dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 

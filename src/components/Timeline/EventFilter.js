@@ -25,21 +25,25 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({eventActions, pagination, filter, dispatch}) =>  {
+const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
   const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
-        <AutoComplete
-                  floatingLabelText="Filter by event type"
-                  filter={AutoComplete.caseInsensitiveFilter}
-                  dataSource={filterTypes}
-                  // searchText={filterSearchField}
-                  onNewRequest={
-                    (eventType, indexInDataSource) => {dispatch(eventActions.addFilter(filter, eventType))}}
-                    // (eventType,indexInDataSource)=>{dispatch(eventActions.addFilterOnEventType(eventType))}}
-                  dataSourceConfig={dataSourceConfig}
-        />
+      <AutoComplete
+        floatingLabelText="Filter by event type"
+        filter={AutoComplete.caseInsensitiveFilter}
+        dataSource={filterTypes}
+        searchText={filterSearchField}
+        onUpdateInput={(searchText) => dispatch(eventActions.updateFilterSearchBox(searchText))}        
+        onNewRequest={
+          (eventType, indexInDataSource) => {
+            dispatch(eventActions.addFilter(filter, eventType))
+            dispatch(eventActions.updateFilterSearchBox(''))
+          }
+        }
+        dataSourceConfig={dataSourceConfig}
+      />
       <IconButtonStyled
         tooltip='order'
         onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
@@ -79,8 +83,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     pagination: events.pages,
-    filter: events.filter
-    // filterSearchField: events.filter.filterSearchField
+    filter: events.filter,
+    filterSearchField: events.filter.filterSearchField
   }
 }
 
