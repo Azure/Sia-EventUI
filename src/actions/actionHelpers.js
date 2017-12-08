@@ -1,13 +1,29 @@
+import { authenticatedFetch, authenticatedPost, authenticatedPut } from '../services/authenticatedFetch'
+
 const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
 
-export const reduxBackedPromise = (promiseGenerator, promiseArgs, actionSet) => (dispatch) => {
+export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') => (dispatch) => {
     if(!actionSet.try) { throw needOnActionSet('try')}
     if(!actionSet.succeed) { throw needOnActionSet('succeed')}
     if(!actionSet.fail) { throw needOnActionSet('fail')}
 
+    let promiseGenerator
+    switch (operation.toUpperCase()) {
+        case 'PUT':
+            promiseGenerator = authenticatedPut
+            break
+        case 'POST':
+            promiseGenerator = authenticatedPost
+            break
+        default:
+            promiseGenerator = authenticatedFetch
+            break
+    }
+    if(!promiseGenerator) { throw 'promiseGenerator not initialized. This should not be possible. Consider rolling back.' }
+
     dispatch(actionSet.try())
 
-    return promiseGenerator(...promiseArgs)
+    return promiseGenerator(dispatch, ...promiseArgs)
         .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))
 }

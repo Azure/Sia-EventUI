@@ -3,21 +3,20 @@ import { connect } from 'react-redux'
 import Login from './Login'
 import LoginError from './LoginError'
 
-export const EnsureLoggedInContainer = ({error, isLoggedIn, ADAL, children}) => {
+export const EnsureLoggedInContainer = ({error, isLoggedIn, children}) => {
   if (error) {
     return <LoginError/>
   }
   if (isLoggedIn) {
     return children
   }
-  return <Login ADAL={ADAL}/>
+  return <Login/>
 }
 
-export const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.auth.isLoggedIn,
-    error: state.auth.error,
-    ADAL: ownProps.ADAL
+    error: state.auth.error
   }
 }
 

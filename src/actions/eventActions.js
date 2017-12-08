@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -18,33 +17,31 @@ export const ADD_EVENT = 'ADD_EVENT'
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
-export const eventActions = (siaContext) => ({
-    fetchEvent: (incidentId, eventId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
-        getEventActionSet(incidentId, eventId)
-    ),
 
-    fetchEvents: (incidentId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
-        [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
-        getEventsActionSet(siaContext)(incidentId)
-    ),
+export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
+    getEventActionSet(incidentId, eventId)
+)
 
-    postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-        authenticatedPost(siaContext),
-        [
-            (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
-            {
-                eventTypeId,
-                occurred: occurrenceTime,
-                eventFired: occurrenceTime,
-                data
-            }
-        ],
-        postEventActionSet(incidentId)
-    )
-})
+export const fetchEvents = (incidentId) => reduxBackedPromise(
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
+    getEventsActionSet(incidentId)
+)
+
+export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
+    [
+        (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
+        {
+            eventTypeId,
+            occurred: occurrenceTime,
+            eventFired: occurrenceTime,
+            data
+        }
+    ],
+    postEventActionSet(incidentId),
+    'POST'
+)
+
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -70,7 +67,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
     })
 })
 
-export const getEventsActionSet = (siaContext) => (incidentId) => ({
+export const getEventsActionSet = (incidentId) => ({
     try: () => ({
         type: REQUEST_EVENTS,
         incidentId
@@ -94,9 +91,8 @@ export const getEventsActionSet = (siaContext) => (incidentId) => ({
 
         if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
-                authenticatedFetch(siaContext),
                 [linksHeader.NextPageLink],
-                getEventsActionSet(siaContext)(incidentId)
+                getEventsActionSet(incidentId)
             ))
         }
         else{
@@ -139,6 +135,3 @@ export const postEventActionSet = (incidentId) => ({
         failureReason
     })
 })
-
-
-export default eventActions

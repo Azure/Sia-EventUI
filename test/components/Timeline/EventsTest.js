@@ -117,8 +117,7 @@ const eventTen = {
 
 const events = [eventZero, eventOne, eventTwo, eventThree, eventFour, 
     eventFive, eventSix, eventSeven, eventEight, eventNine, eventTen]
-const eventActions = null
-const eventTypeActions = null
+
 const ticketId = '2'
 const incidentId = null
 const eventTypes = [eventTypeZero, eventTypeOne, eventTypeTwo, 
@@ -128,7 +127,7 @@ const eventTypes = [eventTypeZero, eventTypeOne, eventTypeTwo,
 describe('Events', function test () {
     beforeEach( () => {
         console.log(events[5].data)
-        this.output = Events(events, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)
+        this.output = Events(events, ticketId, incidentId, eventTypes)
     })
 
     it('Should return an array of Events', () => {

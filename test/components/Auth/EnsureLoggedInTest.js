@@ -2,7 +2,6 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from '../../helpers/shallowRenderHelper'
-import GetMockADAL from '../../helpers/mockAdal'
 import GetMockStore from '../../helpers/mockReduxStore'
 import { EnsureLoggedInContainer, mapStateToProps } from '../../../src/components/Auth/EnsureLoggedIn'
 import Login from '../../../src/components/Auth/Login'
@@ -15,19 +14,16 @@ const children = <div></div>
 const errorState = {
     error: 'Test Error',
     isLoggedIn: true,
-    ADAL: GetMockADAL(null),
     store: GetMockStore({auth:{error:'Test Error'}})
 }
 
 const notLoggedInState = {
     isLoggedIn: false,
-    ADAL: GetMockADAL(null),
     store: GetMockStore({auth:{error:'Test Error'}})
 }
 
 const loggedInState = {
     isLoggedIn: true,
-    ADAL: GetMockADAL(null),
     store: GetMockStore({auth:{error:'Test Error'}})
 }
 

@@ -1,23 +1,19 @@
 import { USER_LOGGED_IN, USER_LOGGED_OUT, USER_LOGIN_ERROR, LOGIN_IN_PROGRESS } from '../actions/authActions.js'
+import * as authNService from '../services/authNService'
 
-const extractAliasFromUserName = (userName) => {
-    return userName.slice(0, userName.indexOf('@'))
-}
-
-const getDefaultState = (authContext, clientId) => {
-    const token = authContext.getCachedToken(clientId)
-    const user = authContext.getCachedUser()
-    return {
-        isLoggedIn: (!!token),
-        loginInProgress: false,
+const getDefaultState = () => {
+    const defaultState = {
+        isLoggedIn: authNService.isLoggedIn(),
+        loginInProgress: authNService.loginInProgress(),
         signInAutomatically: true,
         userTeam: 'none',
         userRole: 'Crisis Manager',
-        userAlias: (user && user.userName) ? extractAliasFromUserName(user.userName) : null
+        userAlias: authNService.getUserAlias()
     }
+    return defaultState
 }
 
-const authReducer = (authContext, clientId) => (state = getDefaultState(authContext, clientId), action) => {
+const authReducer = (state = getDefaultState(), action) => {
     switch (action.type) {
         case LOGIN_IN_PROGRESS:
             return {
@@ -32,7 +28,7 @@ const authReducer = (authContext, clientId) => (state = getDefaultState(authCont
                 error: null,
                 loginInProgress: false,
                 signInAutomatically: true,
-                userAlias: extractAliasFromUserName(action.user.userName)
+                userAlias: authNService.getUserAlias(action.user)
             }
         case USER_LOGGED_OUT:
             return {
