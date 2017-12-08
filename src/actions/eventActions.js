@@ -43,7 +43,8 @@ export const eventActions = (siaContext) => ({
     ),
     changeEventFilter: changeEventFilter,
     applyFilter: applyFilter(siaContext),
-    addFilter: addFilter(siaContext)
+    addFilter: addFilter(siaContext),
+    removeFilter: removeFilter(siaContext)
 })
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
@@ -254,7 +255,7 @@ export const addFilter = (siaContext) => (filter, eventType) => (dispatch) => {
     dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 
-export const removeFilter = (sifilter, eventType) => (dispatch) => {
+export const removeFilter = (siaContext) => (filter, eventType) => (dispatch) => {
     let oldFilter = filter
     let newFilter
     if (!filter.eventTypes.map(e=> e.id).includes(eventType.id))
@@ -262,12 +263,14 @@ export const removeFilter = (sifilter, eventType) => (dispatch) => {
         newFilter = filter
     }
     else {
+        debugger
         newFilter = {
             ...filter,
             eventTypes: filter.eventTypes.filter(eventType => eventType.id !== eventType.id)
         }
     }
-    // dispatch(applyFilter(siaContext)(oldFilter, newFilter))
+    debugger
+    dispatch(applyFilter(siaContext)(oldFilter, newFilter))
 }
 
 export default eventActions

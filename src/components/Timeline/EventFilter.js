@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-import {removeFilter} from '../../actions/eventActions'
+// import {removeFilter} from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import { mockEventTypes } from '../elements/mockEventTypes'
@@ -26,7 +26,7 @@ const chipStyles = {
 }
 
 const EventFilter = ({eventActions, pagination, filter, dispatch}) =>  {
-  const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
+  const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
@@ -54,19 +54,19 @@ const EventFilter = ({eventActions, pagination, filter, dispatch}) =>  {
   )
 }
 
-const renderChips = (filter, dispatch) => {
+const renderChips = (eventActions, filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((eventType) => renderChip(filter, eventType, dispatch))}
+      {filter.eventTypes.map((eventType) => renderChip(eventActions, filter, eventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (filter, eventType, dispatch) => {
+const renderChip = (eventActions, filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}
-      onRequestDelete={() => dispatch(removeFilter(filter, eventType))}
+      onRequestDelete={() => dispatch(eventActions.removeFilter(filter, eventType))}
       style={chipStyles.chip}
     >
       {eventType.name}
