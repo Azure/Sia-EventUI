@@ -20,7 +20,7 @@ export const Engagements = ({dispatch, incidentId, engagements, user, engagement
     return (
         <div>
             <span>
-                <IconButtonStyled tooltip="Engagment">
+                <IconButtonStyled tooltip="Engagement">
                     <PeopleIcon />
                 </IconButtonStyled>
                 &nbsp;
