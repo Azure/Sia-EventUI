@@ -87,20 +87,21 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
 
 
 export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences) =>
-(dispatch) => incident
-        && incident.id //Can we fetch by ID?
-        ? (
-            !incident.IsFetching
-            || !ticket
-            || !ticketSystem
-            || !ticket.lastRefresh
-            || ticket.lastRefresh.isBefore(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
-        ) //Do we have everything we need?
-            ? dispatch(fetchIncident(incident.id))
-            : null //we have everything we need
-        : ticketId
-            ? dispatch(fetchIncidentsByTicketId(ticketId))
-            : dispatch(fetchIncidents())
+(dispatch) => canFetchByIncidentId(incident)
+            ? incidentNeedsRefresh(incident, ticket, ticketSystem)
+                ? dispatch(fetchIncident(incident.id))
+                : null //No refresh needed
+            : ticketId
+                ? dispatch(fetchIncidentsByTicketId(ticketId))
+                : dispatch(fetchIncidents())
+
+const canFetchByIncidentId = (incident) =>  incident&& incident.id
+const incidentNeedsRefresh = (incident, ticket, ticketSystem) => !incident.IsFetching
+|| !ticket
+|| !ticketSystem
+|| !ticket.lastRefresh
+|| ticket.lastRefresh.isBefore(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
+
 
 export const getIncidentsActionSet = ({
     try: () => ({
