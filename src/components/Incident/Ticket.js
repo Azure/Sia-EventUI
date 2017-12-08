@@ -3,7 +3,6 @@ import { Redirect } from 'react-router'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-//import queryString from 'query-string'
 import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../Buttons'
 import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
@@ -44,8 +43,6 @@ class Ticket extends Component {
             actions
         } = this.props
 
-        // const parsed = queryString.parse(location.search)
-        
         if(incident && incident.error)
         {
             return ErrorLoadingIncident(actions.incident, incident)

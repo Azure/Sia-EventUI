@@ -14,6 +14,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
+import queryString from 'query-string'
 import createBrowserHistory from 'history/createBrowserHistory'
 import eventActionInitializer from './actions/eventActions'
 import incidentActionInitializer from './actions/incidentActions'
@@ -34,7 +35,22 @@ import Popups from './components/Popups'
 const authenticationContext = authContext
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-export const store = createStore(incidentApp(authContext, clientId), composeEnhancers(applyMiddleware(thunk)))
+
+const filters = queryString.parse(window.location.search)
+
+const defaultFilters = [
+  {id: 1, name: 'type1'},
+  {id: 2, name: 'type2'},
+  {id: 3, name: 'type3'}
+]
+
+if(filters.eventTypes && filters.eventTypes.length > 0) {
+  filters.eventTypes = filters.eventTypes.map(eventType => defaultFilters.find(filter => filter.id === parseInt(eventType)))
+}
+
+console.log('index filters', filters)
+
+export const store = createStore(incidentApp(authContext, clientId, filters), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 const siaContext = generateSiaContext(authenticationContext, store.dispatch)

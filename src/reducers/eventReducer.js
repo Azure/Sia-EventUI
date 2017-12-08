@@ -5,16 +5,6 @@ import { mergeWithOverwrite } from './reducerHelpers'
 
 const defaultEventCollection = []
 
-const defaultFilter = {
-    incidentId: null,
-    eventTypeId: null,
-    occurred: null,
-    eventFired: null,
-    dataKey: null,
-    dataValue: null
-}
-
-
 const makeSearchable = (event) => ({
     ...event,
     filterableIncidentId: event.incidentId.toString()
@@ -44,7 +34,10 @@ export const list = (state = defaultEventCollection, action) => {
 }
 
 
-export const filter = (state = defaultFilter, action) => {
+export const filter = (defaultFilter) => (state = defaultFilter, action) => {
+    console.log('eventReducer ==> defaultFilter', defaultFilter)
+    console.log('eventReducer ==> state', state)
+    console.log('eventReducer ==> action', action)
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({}, action.filter)
@@ -60,7 +53,7 @@ export const filter = (state = defaultFilter, action) => {
 
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)
 
-export default combineReducers({
+export default (defaultFilter) => combineReducers({
     pages,
-    filter
+    filter: filter(defaultFilter)
 })

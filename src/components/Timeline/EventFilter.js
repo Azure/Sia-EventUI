@@ -25,7 +25,7 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({eventActions, pagination, filter, filterSearchField, location, dispatch}) =>  {
+const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
 
   const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
   return  (
@@ -68,6 +68,7 @@ const renderChips = (eventActions, filter, dispatch) => {
 }
 
 const renderChip = (eventActions, filter, eventType, dispatch) => {
+  console.log('EventFilter.renderChip ==> eventType', eventType)
   return (
     <Chip
       key={eventType.id}
