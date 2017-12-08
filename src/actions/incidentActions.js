@@ -89,8 +89,8 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
 export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences) =>
 (dispatch) => basicIncidentInfoLoaded(incident)
             ? fullIncidentInfoLoaded(incident, ticket, ticketSystem, preferences)
-                ? dispatch(fetchIncident(incident.id))
-                : null //No refresh needed
+                ? null //No refresh needed
+                : dispatch(fetchIncident(incident.id))
             : ticketId
                 ? dispatch(fetchIncidentsByTicketId(ticketId))
                 : dispatch(fetchIncidents())
