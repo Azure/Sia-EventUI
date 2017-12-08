@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import queryString from 'query-string'
 import EventFilter from './EventFilter'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
@@ -25,8 +26,13 @@ class Timeline extends Component {
             eventTypeActions, 
             ticketId, 
             incidentId, 
-            eventTypes
+            eventTypes,
+            location
     } = this.props
+
+    console.log('location', location)
+    const parsed = queryString.parse(location.search)
+    console.log('parsed', parsed)    
     
     return (
       <div>

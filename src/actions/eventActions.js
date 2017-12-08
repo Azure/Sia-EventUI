@@ -80,8 +80,10 @@ export const serializeFiltersOld = (filters) =>{
     }
     */
     // filters.eventTypes = []
-    // GOAL URL:
-    // incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+    // Gateway URL:
+    // /incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+    // UI URL:
+    // /tickets/38805418?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
 
 // THIS ISN'T SET UP TO TAKE AN ARRAY OF EVENTYPES AS A FILTER.  WE MUST CHANGE THAT
 export const serializeFilters = (filters) => {

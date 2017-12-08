@@ -3,6 +3,7 @@ import { Redirect } from 'react-router'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+//import queryString from 'query-string'
 import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../Buttons'
 import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
@@ -13,7 +14,6 @@ class Ticket extends Component {
         incident: PropTypes.object,
         ticket: PropTypes.object,
         ticketId: PropTypes.number,
-        filterValue: PropTypes.string,
         ticketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired,
@@ -44,6 +44,8 @@ class Ticket extends Component {
             actions
         } = this.props
 
+        // const parsed = queryString.parse(location.search)
+        
         if(incident && incident.error)
         {
             return ErrorLoadingIncident(actions.incident, incident)
@@ -75,7 +77,6 @@ const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets } = state
     // NOTE:  this ticketId param comes from the URL (we think!)
     const ticketId = parseInt(ownProps.match.params.ticketId)
-    const filterValue = ownProps.match.params.filterValue
     const ticket = tickets.map[ticketId]
     const filter = state.events.filter
     return {
@@ -84,7 +85,6 @@ const mapStateToProps = (actions) => (state, ownProps) => {
         // NOTE:  we can probably delete ticketId since we just use it to get the actual ticket.
         //  NOTE:  Doesn't seem to be used further
         ticketId,
-        filterValue,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
         actions,

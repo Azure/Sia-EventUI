@@ -25,7 +25,8 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
+const EventFilter = ({eventActions, pagination, filter, filterSearchField, location, dispatch}) =>  {
+
   const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
   return  (
     <div className="incident-EventFilter">
