@@ -62,9 +62,9 @@ class MainComponent extends React.Component {
                   <TopNav />
                   <Popups eventActions={eventActions} />
                   <Route exact path="/" component={CreateIncident(actions.incident)} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket(siaContext, actions)} />
+                  <Route exact path="/tickets/:ticketId" component={Ticket(actions)} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(actions)} />
-                  <Route path="/tickets/:ticketId/filter=:filterValue" component={Ticket(siaContext, actions)}/>
+                  <Route path="/tickets/:ticketId/filter=:filterValue" component={Ticket(actions)}/>
                   <Route path="/incidents/:incidentId" component={incidentRedirect(actions.incident)} />
                   <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} dispatch={store.dispatch}/>}/>
                 </div>
