@@ -39,7 +39,7 @@ export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime 
         }
     ],
     postEventActionSet(incidentId),
-    'post'
+    'POST'
 )
 
 

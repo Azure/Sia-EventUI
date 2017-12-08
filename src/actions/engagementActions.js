@@ -14,7 +14,7 @@ export const engage = (incidentId, participant, timeEngaged = moment()) =>
 reduxBackedPromise(
     ['incidents/' + incidentId + '/engagements/', {participant}],
     engageActionSet(incidentId, participant, timeEngaged),
-    'post'
+    'POST'
 )
     
 export const disengage = (participant, engagement, timeDisengaged = moment()) =>
@@ -26,7 +26,7 @@ reduxBackedPromise(
         false
     ],
     disengageActionSet(engagement.incidentId, participant, engagement, timeDisengaged),
-    'put'
+    'PUT'
 )
 
 

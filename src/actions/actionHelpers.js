@@ -2,17 +2,17 @@ import { authenticatedFetch, authenticatedPost, authenticatedPut } from '../serv
 
 const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
 
-export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'get') => (dispatch) => {
+export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') => (dispatch) => {
     if(!actionSet.try) { throw needOnActionSet('try')}
     if(!actionSet.succeed) { throw needOnActionSet('succeed')}
     if(!actionSet.fail) { throw needOnActionSet('fail')}
 
     let promiseGenerator
-    switch (operation.toLowerCase()) {
-        case 'put':
+    switch (operation.toUpperCase()) {
+        case 'PUT':
             promiseGenerator = authenticatedPut
             break
-        case 'post':
+        case 'POST':
             promiseGenerator = authenticatedPost
             break
         default:

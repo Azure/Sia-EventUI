@@ -36,7 +36,7 @@ export const fetchIncidents = () => reduxBackedPromise(
 export const postIncident = (ticketId, ticketSystem) => reduxBackedPromise(
     postIncidentFetchArgs(ticketId, ticketSystem),
     createIncidentActionSet(ticketId, ticketSystem),
-    'post'
+    'POST'
 )
 
 
