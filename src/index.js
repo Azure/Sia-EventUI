@@ -44,6 +44,7 @@ const defaultFilters = [
   {id: 3, name: 'type3'}
 ]
 
+
 if(filters.eventTypes && filters.eventTypes.length > 0) {
   filters.eventTypes = filters.eventTypes.map(eventType => defaultFilters.find(filter => filter.id === parseInt(eventType)))
 }

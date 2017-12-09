@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite } from './reducerHelpers'
+import { mockEventTypes }  from '../components/elements/mockEventTypes'
 
 const defaultEventCollection = []
 
@@ -38,6 +39,8 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
     console.log('eventReducer ==> defaultFilter', defaultFilter)
     console.log('eventReducer ==> state', state)
     console.log('eventReducer ==> action', action)
+    comparisonFilterToReferenceEventTypes(mockEventTypes, defaultFilter)
+
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({}, action.filter)
@@ -49,6 +52,12 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
         default:
             return state
     }
+}
+
+const comparisonFilterToReferenceEventTypes = (referenceListOfEventTypes, defaultFilter) => {
+    var findEventTypeFromRef = id => referenceListOfEventTypes.types.find(referenceEventType => referenceEventType.id === id)
+    defaultFilter.eventTypes.forEach(eventType => Object.assign(eventType, findEventTypeFromRef(eventType.id)))
+    console.log('should have right names', defaultFilter)
 }
 
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)

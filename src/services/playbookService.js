@@ -3,6 +3,7 @@ import ByPath from 'object-path'
 
 export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
+/// NOTE:  this is what we want!!!!
 export const BootstrapIfNeeded = (props) => {
     if(IsBootstrapNeeded(props))
     {
