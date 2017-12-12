@@ -42,7 +42,7 @@ export const eventActions = (siaContext, history) => ({
     changeEventFilter: changeEventFilter(history),
     applyFilter: applyFilter(siaContext, history),
     addFilter: addFilter(siaContext, history),
-    updateFilterSearchBox: updateFilterSearchBox,
+    // updateFilterSearchBox: updateFilterSearchBox,
     removeFilter: removeFilter(siaContext, history)
 })
 
@@ -66,7 +66,9 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     }
 ])
 
-    /* filters = {
+    /* 
+    SHAPE OF FILTERS
+    filters = {
         incidentId: 0,
         eventTypes: [{id: 0, name: testName}, ...]
         occurredStart: someDateTime,
@@ -74,6 +76,8 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     }
    
     filters.eventTypes = []
+
+    URL PATTERNS
     Gateway URL:
     /incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
     UI URL:
@@ -235,10 +239,10 @@ const serializeEventTypesForUrl = (eventTypes) => {
     return eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
 
-export const updateFilterSearchBox = (searchText) => ({
-    type: UPDATE_FILTER_SEARCH_BOX,
-    searchText
-})
+// export const updateFilterSearchBox = (searchText) => ({
+//     type: UPDATE_FILTER_SEARCH_BOX,
+//     searchText
+// })
 
 export const isEventTypeInputValid = (eventType) => {
     return eventType && eventType.id
