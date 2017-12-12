@@ -3,6 +3,7 @@ import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite } from './reducerHelpers'
 import { mockEventTypes }  from '../components/elements/mockEventTypes'
+import {filterServiceActions} from '../services/filterService'
 
 const defaultEventCollection = []
 
@@ -36,14 +37,10 @@ export const list = (state = defaultEventCollection, action) => {
 
 
 export const filter = (defaultFilter) => (state = defaultFilter, action) => {
-    console.log('eventReducer ==> defaultFilter', defaultFilter)
-    console.log('eventReducer ==> state', state)
-    console.log('eventReducer ==> action', action)
-    comparisonFilterToReferenceEventTypes(mockEventTypes, defaultFilter)
-
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
-            return Object.assign({}, action.filter)
+        console.log('CHANGE EVENT FILTER the filter', action.filter)
+            return Object.assign({eventTypes: [], ticketId: null}, action.filter)
         case eventActions.UPDATE_FILTER_SEARCH_BOX:
             return {
                 ...state, 
@@ -52,12 +49,6 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
         default:
             return state
     }
-}
-
-const comparisonFilterToReferenceEventTypes = (referenceListOfEventTypes, defaultFilter) => {
-    var findEventTypeFromRef = id => referenceListOfEventTypes.types.find(referenceEventType => referenceEventType.id === id)
-    defaultFilter.eventTypes.forEach(eventType => Object.assign(eventType, findEventTypeFromRef(eventType.id)))
-    console.log('should have right names', defaultFilter)
 }
 
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)

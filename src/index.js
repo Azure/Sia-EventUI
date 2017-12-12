@@ -30,33 +30,22 @@ import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
+import {getFilter} from './services/filterService'
+import {mockEventTypes}  from './components/elements/mockEventTypes'
 import Popups from './components/Popups'
 
 const authenticationContext = authContext
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-const filters = queryString.parse(window.location.search)
-
-const defaultFilters = [
-  {id: 1, name: 'type1'},
-  {id: 2, name: 'type2'},
-  {id: 3, name: 'type3'}
-]
-
-
-if(filters.eventTypes && filters.eventTypes.length > 0) {
-  filters.eventTypes = filters.eventTypes.map(eventType => defaultFilters.find(filter => filter.id === parseInt(eventType)))
-}
-
-console.log('index filters', filters)
-
-export const store = createStore(incidentApp(authContext, clientId, filters), composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(authContext, clientId, getFilter(window.location.search, mockEventTypes.types)), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 const siaContext = generateSiaContext(authenticationContext, store.dispatch)
 
-const eventActions = eventActionInitializer(siaContext)
+const history = createBrowserHistory()
+
+const eventActions = eventActionInitializer(siaContext, history)
 const actions = ({
   event: eventActions,
   incident: incidentActionInitializer(siaContext, eventActions),
@@ -65,7 +54,6 @@ const actions = ({
 })
 
 ListenForScreenSize(window, store)
-const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
   render() {

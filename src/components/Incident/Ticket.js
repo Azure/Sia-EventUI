@@ -30,7 +30,7 @@ class Ticket extends Component {
     componentDidUpdate() {
         if (this.props.incident && this.props.incident.id)
         {
-            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
+            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.ticketId, this.props.dispatch, this.props.actions.event)
         }
     }
 
@@ -89,10 +89,13 @@ const mapStateToProps = (actions) => (state, ownProps) => {
     }
 }
 
-export const synchronizeFilters = (filter, incidentId, dispatch, eventActions) => {
+export const synchronizeFilters = (filter, incidentId, ticketId, dispatch, eventActions) => {
+    console.log('SYNCHRONIZE FILTER', filter)
+    const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
+    console.log('new filter in ticket', newFilter)
     if (filter.incidentId != incidentId)
     {
-        dispatch(eventActions.applyFilter(filter, {incidentId: incidentId, eventTypes: []}))
+        dispatch(eventActions.applyFilter(filter, newFilter))
     }
 }
 

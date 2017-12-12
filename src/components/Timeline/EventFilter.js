@@ -7,6 +7,7 @@ import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import { mockEventTypes } from '../elements/mockEventTypes'
+import * as formActions from '../../actions/formActions'
 
 const filterTypes = mockEventTypes.types
 
@@ -25,40 +26,46 @@ const chipStyles = {
   }
 }
 
-const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
-
-  const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
-  return  (
-    <div className="incident-EventFilter">
-      {filterChips}
-      <AutoComplete
-        floatingLabelText="Filter by event type"
-        filter={AutoComplete.caseInsensitiveFilter}
-        dataSource={filterTypes}
-        searchText={filterSearchField}
-        onUpdateInput={(searchText) => dispatch(eventActions.updateFilterSearchBox(searchText))}        
-        onNewRequest={
-          (eventType, indexInDataSource) => {
-            dispatch(eventActions.addFilter(filter, eventType))
-            dispatch(eventActions.updateFilterSearchBox(''))
-          }
-        }
-        dataSourceConfig={dataSourceConfig}
-      />
-      <IconButtonStyled
-        tooltip='order'
-        onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
-      >
-        {
-          pagination && pagination.order === 'desc'
-          ? <ArrowDown/>
-          : <ArrowUp/>
-        }
-      </IconButtonStyled>
-    </div>
-  )
+const filterSearchForm = {
+  name: 'filter selection',
+  field: 'input'
 }
 
+const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
+  
+    const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
+    return  (
+      <div className="incident-EventFilter">
+        {filterChips}
+        <AutoComplete
+          floatingLabelText="Filter by event type"
+          filter={AutoComplete.caseInsensitiveFilter}
+          dataSource={filterTypes}
+          searchText={filterSearchField}
+          onUpdateInput={(searchText) => dispatch(eventActions.updateFilterSearchBox(searchText))}        
+          onNewRequest={
+            (eventType, indexInDataSource) => {
+              dispatch(eventActions.addFilter(filter, eventType))
+              dispatch(eventActions.updateFilterSearchBox(''))
+            }
+          }
+          dataSourceConfig={dataSourceConfig}
+        />
+        <IconButtonStyled
+          tooltip='order'
+          onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
+        >
+          {
+            pagination && pagination.order === 'desc'
+            ? <ArrowDown/>
+            : <ArrowUp/>
+          }
+        </IconButtonStyled>
+      </div>
+    )
+  }
+  
+  
 const renderChips = (eventActions, filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
@@ -68,7 +75,6 @@ const renderChips = (eventActions, filter, dispatch) => {
 }
 
 const renderChip = (eventActions, filter, eventType, dispatch) => {
-  console.log('EventFilter.renderChip ==> eventType', eventType)
   return (
     <Chip
       key={eventType.id}
@@ -86,7 +92,7 @@ const mapStateToProps = (state, ownProps) => {
     ...ownProps,
     pagination: events.pages,
     filter: events.filter,
-    filterSearchField: events.filter.filterSearchField
+    filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
   }
 }
 

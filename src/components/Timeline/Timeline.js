@@ -27,7 +27,7 @@ class Timeline extends Component {
             incidentId, 
             eventTypes
     } = this.props
-   
+
     return (
       <div>
         <EventFilter eventActions={eventActions} />
