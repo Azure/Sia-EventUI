@@ -30,15 +30,15 @@ import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
-import {getFilter} from './services/filterService'
-import {mockEventTypes}  from './components/elements/mockEventTypes'
+import {getFilter, referenceData} from './services/filterService'
+
 import Popups from './components/Popups'
 
 const authenticationContext = authContext
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export const store = createStore(incidentApp(authContext, clientId, getFilter(window.location.search, mockEventTypes.types)), composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(authContext, clientId, getFilter(window.location.search, referenceData.types)), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 const siaContext = generateSiaContext(authenticationContext, store.dispatch)
