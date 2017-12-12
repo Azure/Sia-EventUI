@@ -1,7 +1,7 @@
 import queryString from 'query-string'
 import { mockEventTypes }  from '../components/elements/mockEventTypes'
 
-const referenceData = mockEventTypes
+export const referenceData = mockEventTypes
 
 const getUrlFilterDataFromReferenceData = (filters, referenceData) => {
     if(filters.eventTypes) {
