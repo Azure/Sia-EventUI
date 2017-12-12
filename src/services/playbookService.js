@@ -25,9 +25,9 @@ export const selectSourceObject = (sourceObjectEnum, event, ticket, eventType, e
 export const GetComparisonValue = (condition) => {
     switch(condition.dataFormat)
     {
-        case 1: //string
+        case 0: //string
             return condition.comparisonValue
-        case 2: //datetime
+        case 1: //datetime
             return condition.dateTimeComparisonValue
                 ? moment(condition.dateTimeComparisonValue)
                 : condition.dateTimeComparisonValue
