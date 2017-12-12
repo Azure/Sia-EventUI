@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-// import {removeFilter} from '../../actions/eventActions'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
-import { mockEventTypes } from '../elements/mockEventTypes'
+import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
 
-const filterTypes = mockEventTypes.types
+const filterTypes = referenceData.types
 
 const dataSourceConfig = {
   text: 'name',
