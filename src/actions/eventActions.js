@@ -16,8 +16,8 @@ export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
-export const UPDATE_FILTER_SEARCH_BOX = 'UPDATE_FILTER_SEARCH_BOX'
 export const UPDATE_URL = 'UPDATE_URL'
+
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
@@ -42,7 +42,6 @@ export const eventActions = (siaContext, history) => ({
     changeEventFilter: changeEventFilter(history),
     applyFilter: applyFilter(siaContext, history),
     addFilter: addFilter(siaContext, history),
-    // updateFilterSearchBox: updateFilterSearchBox,
     removeFilter: removeFilter(siaContext, history)
 })
 
@@ -231,18 +230,12 @@ export const getUrlFromFilters = (history, filters) => {
     }
 }
 
-
 const serializeEventTypesForUrl = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
     return eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
-
-// export const updateFilterSearchBox = (searchText) => ({
-//     type: UPDATE_FILTER_SEARCH_BOX,
-//     searchText
-// })
 
 export const isEventTypeInputValid = (eventType) => {
     return eventType && eventType.id
