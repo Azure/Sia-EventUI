@@ -4,7 +4,7 @@ import FlatButtonStyled from '../../../components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from '../../../services/playbookService'
 
 export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
-    return isUrl ? <a href={filledTemplate}>Link: {name}</a>
+    return isUrl ? <a href={filledTemplate} target="_blank">Link: {name}</a>
                  : <FlatButtonStyled
                         label={'Publish Event: ' + name}
                         onTouchTap={publishEvent(incidentId, filledTemplate)}
