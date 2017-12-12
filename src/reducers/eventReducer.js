@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite } from './reducerHelpers'
-import { mockEventTypes }  from '../components/elements/mockEventTypes'
 import {filterServiceActions} from '../services/filterService'
 
 const defaultEventCollection = []
@@ -40,11 +39,11 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({eventTypes: [], ticketId: null}, action.filter)
-        case eventActions.UPDATE_FILTER_SEARCH_BOX:
-            return {
-                ...state, 
-                filterSearchField: action.searchText
-            }
+        // case eventActions.UPDATE_FILTER_SEARCH_BOX:
+        //     return {
+        //         ...state, 
+        //         filterSearchField: action.searchText
+        //     }
         default:
             return state
     }
