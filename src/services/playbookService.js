@@ -60,8 +60,8 @@ export const TestByConditionType = testableTestByConditionType(GetComparisonValu
 export const testableTestCondition = (testByConditionType) => (condition) => {
     const testResult = testByConditionType(condition)
     return condition.AssertionType === 0 
-        ? testResult 
-        : !testResult
+        ? !testResult 
+        : testResult
 }
 
 export const TestCondition = testableTestCondition(TestByConditionType)
