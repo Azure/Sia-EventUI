@@ -84,15 +84,14 @@ export const testableTestConditionSet = (select, testCondition) => (event, ticke
     const metConditionsCount = conditionsWithValue.map(testCondition).filter(b => b).length
     switch(conditionSet.type)
     {
-        case 1: //Any of
+        case 0: //Any of
             return metConditionsCount > 0
-        case 2: //All of
+        case 1: //All of
             return metConditionsCount === conditionsWithValue.length
-        case 3: //Not All Of
-            return metConditionsCount < conditionsWithValue.length
-        default: //noneOf
-            return metConditionsCount === 0
-    }
+        case 2: //noneOf
+            return metConditionsCount === 0            
+        default: //Not All Of
+            return metConditionsCount < conditionsWithValue.length    }
 }
 
 export const TestConditionSet = testableTestConditionSet(selectSourceObject, TestCondition)
