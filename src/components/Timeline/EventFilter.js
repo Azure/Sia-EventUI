@@ -31,6 +31,7 @@ const filterSearchForm = {
   field: 'input'
 }
 
+
 const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
   
     const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
@@ -41,12 +42,12 @@ const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispa
           floatingLabelText="Filter by event type"
           filter={AutoComplete.caseInsensitiveFilter}
           dataSource={filterTypes}
-          searchText={filterSearchField}
-          onUpdateInput={(searchText) => dispatch(eventActions.updateFilterSearchBox(searchText))}        
+          searchText={filterSearchField || ''}
+          onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}        
           onNewRequest={
             (eventType, indexInDataSource) => {
               dispatch(eventActions.addFilter(filter, eventType))
-              dispatch(eventActions.updateFilterSearchBox(''))
+              dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
             }
           }
           dataSourceConfig={dataSourceConfig}

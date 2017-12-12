@@ -103,14 +103,6 @@ export const serializeEventTypes = (eventTypes) => {
     return 'eventTypes=' + eventTypes.map(eventType => eventType.id).join(',')
 }
 
-// export const serializeEventTypesForUrl = (eventTypes) => {
-//     if (!eventTypes || eventTypes.length === 0) {
-//         return ''
-//     }
-//     return eventTypes.map(eventType => `eventType=${eventType.id}`).join('&').slice(0, -1)
-// }
-
-
 export const updateUrlAfterFilterChange = (filter) => {
     type: UPDATE_URL,
     filter
@@ -240,7 +232,7 @@ const serializeEventTypesForUrl = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return eventTypes.map(eventType => `eventType=${eventType.id}`).join('&').slice(0, -1)
+    return eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
 
 export const updateFilterSearchBox = (searchText) => ({
