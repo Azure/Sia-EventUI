@@ -46,8 +46,6 @@ export const incidentActions = (siaContext, eventActions) => ({
 export const getIncidentActionSet = ({
     try: () => ({
         type: REQUEST_INCIDENT
-        // ,
-        // incidentId
     }),
 
     succeed: (incident) => ({

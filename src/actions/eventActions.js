@@ -68,23 +68,23 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
 
     /* filters = {
         incidentId: 0,
-        eventTypes: [{id: 0, name: Philip}, ...]
+        eventTypes: [{id: 0, name: testName}, ...]
         occurredStart: someDateTime,
         occurredEnd: someDateTime
     }
-    */
-    // filters.eventTypes = []
-    // Gateway URL:
-    // /incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
-    // UI URL:
-    // /tickets/38805418?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+   
+    filters.eventTypes = []
+    Gateway URL:
+    /incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+    UI URL:
+    /tickets/38805418?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+     */
 
-// THIS ISN'T SET UP TO TAKE AN ARRAY OF EVENTYPES AS A FILTER.  WE MUST CHANGE THAT
+
 export const serializeFilters = (filters) => {
     if (!filters) {
         return ''
     }
-    console.log('FILTER INFO', filters)
     const eventTypes = serializeEventTypes(filters.eventTypes)
     const filterTokens = Object.entries(filters)
                         .filter(filter => filter[0] !== 'incidentId' && filter[0] !== 'eventTypes' && filter[0] !== 'filterSearchField' && filter[0] !== 'ticketId')
@@ -266,9 +266,6 @@ export const addFilter = (siaContext, history) => (filter, eventType) => (dispat
         }
     }
 
-    
-    console.log('OLD FILTER', oldFilter)
-    console.log('NEW FILTER', newFilter)
     dispatch(applyFilter(siaContext, history)(oldFilter, newFilter))
 }
 

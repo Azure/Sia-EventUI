@@ -17,7 +17,6 @@ const clearInput = (state, form, field) => updateInput(state, form, field)
 const clearForm = (state, form) => {
     var newState = {...state}
     newState[form] = null
-    // newState[form] = ''
     return newState
 }
 

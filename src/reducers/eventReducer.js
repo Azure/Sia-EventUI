@@ -39,7 +39,6 @@ export const list = (state = defaultEventCollection, action) => {
 export const filter = (defaultFilter) => (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
-        console.log('CHANGE EVENT FILTER the filter', action.filter)
             return Object.assign({eventTypes: [], ticketId: null}, action.filter)
         case eventActions.UPDATE_FILTER_SEARCH_BOX:
             return {

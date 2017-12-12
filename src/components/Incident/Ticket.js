@@ -72,15 +72,12 @@ class Ticket extends Component {
 
 const mapStateToProps = (actions) => (state, ownProps) => {
     const { incidents, tickets } = state
-    // NOTE:  this ticketId param comes from the URL (we think!)
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
     const filter = state.events.filter
     return {
         incident: getIncident(ticket, incidents),
         ticket,
-        // NOTE:  we can probably delete ticketId since we just use it to get the actual ticket.
-        //  NOTE:  Doesn't seem to be used further
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
@@ -90,9 +87,7 @@ const mapStateToProps = (actions) => (state, ownProps) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, ticketId, dispatch, eventActions) => {
-    console.log('SYNCHRONIZE FILTER', filter)
     const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
-    console.log('new filter in ticket', newFilter)
     if (filter.incidentId != incidentId)
     {
         dispatch(eventActions.applyFilter(filter, newFilter))

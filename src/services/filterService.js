@@ -16,13 +16,11 @@ const getUrlFilterDataFromReferenceData = (filters, referenceData) => {
 }
 const findEventTypeInRef = (id, referenceData) => {
     const eventType = referenceData.find(refEventType => refEventType.id === parseInt(id))
-    // return eventType
     return eventType ? eventType : {id: id, name: 'unknown'}
 }
 
 export const getFilter = (urlFilterInfo, referenceData) => {
     const filterInput = queryString.parse(urlFilterInfo)
-    console.log('filter iniput', filterInput)
     const filtersWithNames = getUrlFilterDataFromReferenceData(filterInput, referenceData)
     return filtersWithNames
 }
