@@ -16,8 +16,9 @@ export const Event = ({
     eventTypeId,
     eventId
 }) => {
-    return (
-    <div>
+  const itemHighlight = { animation: 'yellowfade 30s' }
+  return (
+    <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
