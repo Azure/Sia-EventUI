@@ -1,4 +1,3 @@
-
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Filter from './EventFilter'
@@ -22,7 +21,7 @@ class Timeline extends Component {
     return (
       <div>
         <Filter pagination={events} dispatch={dispatch}/>
-        {Events(events.pageList, ticketId, incidentId, eventTypes)}
+        <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )
