@@ -42,13 +42,13 @@ export const testableTestByConditionType = (getComparisonValue) => (condition) =
     switch(condition.conditionType)
     {
         //contains
-        case 2: return value && value.includes(comparisonValue)
+        case 1: return value && value.includes(comparisonValue)
         //has value
-        case 3: return !!value
+        case 2: return !!value
         //greater than
-        case 4: return value && (value > comparisonValue)
+        case 3: return value && (value > comparisonValue)
         //less than
-        case 5:
+        case 4:
             return value && (comparisonValue > value)
         //equals
         default: return value === comparisonValue
