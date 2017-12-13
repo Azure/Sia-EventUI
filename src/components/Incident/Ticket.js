@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../Buttons'
 import * as incidentActions from '../../actions/incidentActions'
+import * as eventActions from '../../actions/eventActions'
 
 class Ticket extends Component {
     static propTypes = {

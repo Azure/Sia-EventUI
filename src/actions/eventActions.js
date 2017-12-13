@@ -26,10 +26,10 @@ export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
     getEventActionSet(incidentId, eventId)
 )
 
-    fetchEvents: (filter) => reduxBackedPromise(
+export const fetchEvents = (filter) => reduxBackedPromise(
         getEventsFetchArgs(filter),
         getEventsActionSet(filter.incidentId)
-    ),
+    )
 
 export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
     postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
@@ -57,7 +57,7 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     }
 ])
 
-    /* 
+    /*
     SHAPE OF FILTERS
     filters = {
         incidentId: 0,
@@ -201,7 +201,7 @@ export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => 
         throw 'Need to filter on incidentId!'
     }
     if(!deepEquals(oldFilter, newFilter))
-    {       
+    {
         dispatch(changeEventFilter(history)(newFilter))
         dispatch(fetchEvents(newFilter))
     }

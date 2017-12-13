@@ -36,6 +36,7 @@ const filterSearchForm = {
 const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
   
     const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
+    debugger
     return  (
       <div className="incident-EventFilter">
         {filterChips}
@@ -44,7 +45,7 @@ const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
           filter={AutoComplete.caseInsensitiveFilter}
           dataSource={filterTypes}
           searchText={filterSearchField || ''}
-          onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}        
+          onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
           onNewRequest={
             (eventType, indexInDataSource) => {
               dispatch(eventActions.addFilter(filter, eventType))
