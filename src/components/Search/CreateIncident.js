@@ -27,13 +27,12 @@ export const CreateIncident = ({input, creationError, history, dispatch}) => {
     
 }
 
-export const mapStateToProps = (incidentActions) => (state) => {
+export const mapStateToProps = (state) => {
     return {
         input: state.incidents.creation.input,
         ticketSystem: state.tickets.systems[1],
-        creationError: state.incidents.creation.error ? state.incidents.creation.error.message : '',
-        incidentActions
+        creationError: state.incidents.creation.error ? state.incidents.creation.error.message : ''
     }
 }
 
-export default (incidentActions) => connect(mapStateToProps(incidentActions))(CreateIncident)
+export default connect(mapStateToProps)(CreateIncident)

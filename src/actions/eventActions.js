@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import { authenticatedFetch, authenticatedPost } from '../services/authenticatedFetch'
 import deepEquals from 'deep-equal'
 
 export const EVENTS = 'EVENTS'
@@ -21,29 +20,22 @@ export const UPDATE_URL = 'UPDATE_URL'
 export const pagination = paginationActions(EVENTS)
 export const linksHeaderName = 'links'
 
-export const eventActions = (siaContext, history) => ({
-    fetchEvent: (incidentId, eventId) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
-        getEventFetchArgs(incidentId, eventId),
-        getEventActionSet(incidentId, eventId)
-    ),
+
+export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
+    getEventActionSet(incidentId, eventId)
+)
 
     fetchEvents: (filter) => reduxBackedPromise(
-        authenticatedFetch(siaContext),
         getEventsFetchArgs(filter),
-        getActionSetForEvents(siaContext)(filter.incidentId)
+        getEventsActionSet(filter.incidentId)
     ),
 
-    postEvent: (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-        authenticatedPost(siaContext),
-        postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
-        postEventActionSet(incidentId)
-    ),
-    changeEventFilter: changeEventFilter(history),
-    applyFilter: applyFilter(siaContext, history),
-    addFilter: addFilter(siaContext, history),
-    removeFilter: removeFilter(siaContext, history)
-})
+export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
+    postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
+    postEventActionSet(incidentId),
+    'POST'
+)
 
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
 
@@ -135,7 +127,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
     })
 })
 
-export const getActionSetForEvents = (siaContext) => (incidentId) => ({
+export const getEventsActionSet = (incidentId) => ({
     try: () => ({
         type: REQUEST_EVENTS,
         incidentId
@@ -159,9 +151,8 @@ export const getActionSetForEvents = (siaContext) => (incidentId) => ({
 
         if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
-                authenticatedFetch(siaContext),
                 [linksHeader.NextPageLink],
-                getActionSetForEvents(siaContext)(incidentId)
+                getEventsActionSet(incidentId)
             ))
         }
         else{
@@ -205,14 +196,14 @@ export const postEventActionSet = (incidentId) => ({
     })
 })
 
-export const applyFilter = (siaContext, history) => (oldFilter, newFilter) => (dispatch) => {
+export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
     if(!newFilter.incidentId){
         throw 'Need to filter on incidentId!'
     }
     if(!deepEquals(oldFilter, newFilter))
     {       
         dispatch(changeEventFilter(history)(newFilter))
-        dispatch(eventActions(siaContext, history).fetchEvents(newFilter))
+        dispatch(fetchEvents(newFilter))
     }
 }
 
@@ -241,7 +232,7 @@ export const isEventTypeInputValid = (eventType) => {
     return eventType && eventType.id
 }
 
-export const addFilter = (siaContext, history) => (filter, eventType) => (dispatch) => {
+export const addFilter = (history) => (filter, eventType) => (dispatch) => {
     let newFilter = {}
     let oldFilter = filter
     if (!isEventTypeInputValid(eventType)) {
@@ -263,10 +254,10 @@ export const addFilter = (siaContext, history) => (filter, eventType) => (dispat
         }
     }
 
-    dispatch(applyFilter(siaContext, history)(oldFilter, newFilter))
+    dispatch(applyFilter(history)(oldFilter, newFilter))
 }
 
-export const removeFilter = (siaContext, history) => (oldFilter, eventTypeToDelete) => (dispatch) => {
+export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (dispatch) => {
     if (!oldFilter.eventTypes.map(eventType => eventType.id).includes(eventTypeToDelete.id)) {
         return
     }
@@ -276,7 +267,6 @@ export const removeFilter = (siaContext, history) => (oldFilter, eventTypeToDele
         eventTypes: oldFilter.eventTypes.filter(eventType => eventTypeToDelete.id !== eventType.id)
     }
 
-    dispatch(applyFilter(siaContext, history)(oldFilter, newFilter))
+    dispatch(applyFilter(history)(oldFilter, newFilter))
 }
 
-export default eventActions

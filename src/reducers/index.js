@@ -10,9 +10,9 @@ import popup from './popupReducer'
 import forms from './formReducer'
 import eventTypes from './eventTypeReducer'
 
-const rootReducer = (authContext, clientId, filters) => combineReducers({
+const rootReducer = (filters) => combineReducers({
     incidents,
-    auth: auth(authContext, clientId),
+    auth,
     tickets,
     engagements,
     events: events(filters),

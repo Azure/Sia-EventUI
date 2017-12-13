@@ -1,11 +1,12 @@
 import React from 'react'
 import FlatButtonStyled from './elements/FlatButtonStyled'
+import { clearCache } from '../services/authNService'
 
-export const Debug = ({authContext}) => {
+export const Debug = () => {
     return (<div>
                 <FlatButtonStyled
                     label='Clear Auth Cache'
-                    onTouchTap={() => authContext.clearCache()}
+                    onTouchTap={() => clearCache()}
                 />
             </div>)
 }

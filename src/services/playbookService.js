@@ -1,5 +1,7 @@
 import moment from 'moment'
 import ByPath from 'object-path'
+import * as eventTypeActions from '../actions/eventTypeActions'
+import * as eventActions from '../actions/eventActions'
 
 export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
@@ -7,7 +9,7 @@ export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetchin
 export const BootstrapIfNeeded = (props) => {
     if(IsBootstrapNeeded(props))
     {
-        props.dispatch(props.eventTypeActions.fetchEventType(props.eventTypeId))
+        props.dispatch(eventTypeActions.fetchEventType(props.eventTypeId))
     }
 }
 
@@ -24,9 +26,9 @@ export const selectSourceObject = (sourceObjectEnum, event, ticket, eventType, e
 export const GetComparisonValue = (condition) => {
     switch(condition.dataFormat)
     {
-        case 1: //string
+        case 0: //string
             return condition.comparisonValue
-        case 2: //datetime
+        case 1: //datetime
             return condition.dateTimeComparisonValue
                 ? moment(condition.dateTimeComparisonValue)
                 : condition.dateTimeComparisonValue
@@ -41,13 +43,13 @@ export const testableTestByConditionType = (getComparisonValue) => (condition) =
     switch(condition.conditionType)
     {
         //contains
-        case 2: return value && value.includes(comparisonValue)
+        case 1: return value && value.includes(comparisonValue)
         //has value
-        case 3: return !!value
+        case 2: return !!value
         //greater than
-        case 4: return value && (value > comparisonValue)
+        case 3: return value && (value > comparisonValue)
         //less than
-        case 5:
+        case 4:
             return value && (comparisonValue > value)
         //equals
         default: return value === comparisonValue
@@ -58,7 +60,9 @@ export const TestByConditionType = testableTestByConditionType(GetComparisonValu
 
 export const testableTestCondition = (testByConditionType) => (condition) => {
     const testResult = testByConditionType(condition)
-    return condition.ConditionType === 1 ? testResult : !testResult
+    return condition.AssertionType === 0 
+        ? !testResult 
+        : testResult
 }
 
 export const TestCondition = testableTestCondition(TestByConditionType)
@@ -83,15 +87,14 @@ export const testableTestConditionSet = (select, testCondition) => (event, ticke
     const metConditionsCount = conditionsWithValue.map(testCondition).filter(b => b).length
     switch(conditionSet.type)
     {
-        case 1: //Any of
+        case 0: //Any of
             return metConditionsCount > 0
-        case 2: //All of
+        case 1: //All of
             return metConditionsCount === conditionsWithValue.length
-        case 3: //Not All Of
-            return metConditionsCount < conditionsWithValue.length
-        default: //noneOf
-            return metConditionsCount === 0
-    }
+        case 2: //noneOf
+            return metConditionsCount === 0            
+        default: //Not All Of
+            return metConditionsCount < conditionsWithValue.length    }
 }
 
 export const TestConditionSet = testableTestConditionSet(selectSourceObject, TestCondition)
@@ -138,7 +141,7 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
     return !!(event.data)
   }
   
-export const publishEvent = (incidentId, eventActions, dispatch) => (filledTemplate) => () => {
+export const publishEvent = (incidentId, filledTemplate) => () => (dispatch) => {
     const parsedTemplate = JSON.parse(filledTemplate)
     dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))
 }

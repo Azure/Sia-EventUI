@@ -16,10 +16,6 @@ import {
 } from 'react-router-dom'
 import queryString from 'query-string'
 import createBrowserHistory from 'history/createBrowserHistory'
-import eventActionInitializer from './actions/eventActions'
-import incidentActionInitializer from './actions/incidentActions'
-import engagementActionInitializer from './actions/engagementActions'
-import eventTypeActionInitializer from './actions/eventTypeActions'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
@@ -34,26 +30,14 @@ import {getFilter, referenceData} from './services/filterService'
 
 import Popups from './components/Popups'
 
-const authenticationContext = authContext
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export const store = createStore(incidentApp(authContext, clientId, getFilter(window.location.search, referenceData.types)), composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(getFilter(window.location.search, referenceData.types)), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
-const siaContext = generateSiaContext(authenticationContext, store.dispatch)
-
-const history = createBrowserHistory()
-
-const eventActions = eventActionInitializer(siaContext, history)
-const actions = ({
-  event: eventActions,
-  incident: incidentActionInitializer(siaContext, eventActions),
-  engagement: engagementActionInitializer(siaContext),
-  eventType: eventTypeActionInitializer(siaContext)
-})
 
 ListenForScreenSize(window, store)
+const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
   render() {
@@ -61,16 +45,16 @@ class MainComponent extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <Provider store={store}>
           <div>
-            <EnsureLoggedInContainer ADAL={siaContext.authContext}>
+            <EnsureLoggedInContainer>
               <Router history={history} >
                 <div>
                   <TopNav />
-                  <Popups eventActions={eventActions} />
-                  <Route exact path="/" component={CreateIncident(actions.incident)} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket(actions)} />
-                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets(actions)} />
-                  <Route path="/incidents/:incidentId" component={incidentRedirect(actions.incident)} />
-                  <Route path="/debug" render={() => <Debug authContext={siaContext.authContext} dispatch={store.dispatch}/>}/>
+                  <Popups />
+                  <Route exact path="/" component={CreateIncident} />
+                  <Route exact path="/tickets/:ticketId" component={Ticket} />
+                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
+                  <Route path="/incidents/:incidentId" component={incidentRedirect} />
+                  <Route path="/debug" render={() => <Debug />}/>
                 </div>
               </Router>
             </EnsureLoggedInContainer>

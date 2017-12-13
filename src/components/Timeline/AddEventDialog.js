@@ -11,7 +11,7 @@ const handleUpdateEvent = (dispatch, key) => (value) => event => {
     dispatch(formActions.updateInput(addEventFormName, key, value ? value : event.target.value))
 }
 
-export const addEventDialog = ({dispatch, form, args, eventActions}) => <Dialog
+export const addEventDialog = ({dispatch, form, args}) => <Dialog
         title='Please enter a custom event:'
         actions={addEventDialogOptions(dispatch)}
         open={true}
@@ -27,7 +27,6 @@ export const addEventDialog = ({dispatch, form, args, eventActions}) => <Dialog
             updateEventInput={handleUpdateEvent(dispatch, eventInputKey)}
             updateSelectedIncidentId={handleUpdateEvent(dispatch, selectedIncidentIdKey)}
             updateEventTypeIdInput={handleUpdateEvent(dispatch, eventTypeIdInputKey)}
-            eventActions={eventActions}
         />
     </Dialog>
 
@@ -39,14 +38,12 @@ export const addEventDialogOptions = (dispatch) => [
     />
 ]
 
-export const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state) => {
     return {
         form: state.forms[addEventFormName] ? state.forms[addEventFormName] : {},
-        args: state.popup.args,
-        eventActions: ownProps.eventActions
+        args: state.popup.args
     }
 }
 
-export const connectedAddEventDialog = connect(mapStateToProps)(addEventDialog)
+export default connect(mapStateToProps)(addEventDialog)
 
-export default connectedAddEventDialog

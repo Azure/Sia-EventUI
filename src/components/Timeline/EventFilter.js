@@ -7,6 +7,8 @@ import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
 import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
+import * as eventActions from '../../actions/eventActions'
+
 
 const filterTypes = referenceData.types
 
@@ -31,9 +33,9 @@ const filterSearchForm = {
 }
 
 
-const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispatch}) =>  {
+const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
   
-    const filterChips = filter.eventTypes ? renderChips(eventActions, filter, dispatch): null
+    const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
     return  (
       <div className="incident-EventFilter">
         {filterChips}
@@ -66,15 +68,15 @@ const EventFilter = ({eventActions, pagination, filter, filterSearchField, dispa
   }
   
   
-const renderChips = (eventActions, filter, dispatch) => {
+const renderChips = (filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((eventType) => renderChip(eventActions, filter, eventType, dispatch))}
+      {filter.eventTypes.map((eventType) => renderChip(filter, eventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (eventActions, filter, eventType, dispatch) => {
+const renderChip = (filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}

@@ -3,16 +3,13 @@ import { connect } from 'react-redux'
 import Play from './Play'
 import { TestConditionSet } from '../../../services/playbookService'
 
-
 export const Playbook = ({
     eventTypeId,
     eventId,
     incidentId,
     ticketId,
     engagementId,
-    actions,
-    eventActions,
-    eventTypeActions
+    actions
 }) => {
     let localKey = 0
     return  <div>{
@@ -30,8 +27,6 @@ export const Playbook = ({
                             incidentId={incidentId}
                             ticketId={ticketId}
                             engagementId={engagementId}
-                            eventActions={eventActions}
-                            eventTypeActions={eventTypeActions}
                         />
                     </div>)
                 : <div>Fetching action options...</div>

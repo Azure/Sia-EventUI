@@ -5,6 +5,7 @@ import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
 import {pagination} from '../../actions/eventActions'
+import * as eventTypeActions from '../../actions/eventTypeActions'
 import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 
 class Timeline extends Component {
@@ -19,19 +20,11 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, 
-            dispatch, 
-            eventActions, 
-            eventTypeActions, 
-            ticketId, 
-            incidentId, 
-            eventTypes
-    } = this.props
-
+    const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
-        <EventFilter eventActions={eventActions} />
-        {Events(events.pageList, eventActions, eventTypeActions, ticketId, incidentId, eventTypes)}
+        <EventFilter />
+        <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )
@@ -47,7 +40,7 @@ const fetchMissingEventTypes = (props) => {
   props.events.pageList
     .map(event => event.eventTypeId)
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
-    .forEach(missingEventTypeId => props.dispatch(props.eventTypeActions.fetchEventType(missingEventTypeId)))
+    .forEach(missingEventTypeId => props.dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
 const setBaseFilter = (incidentIds) => {

@@ -14,10 +14,14 @@ module.exports = {
 
     ticketRefreshIntervalInSeconds: 300,
 
+    authVersion: "'ADAL'",
+
 //   Leave this as is if your code is in a public repo (or delete it if you want).  You can override the defaults with the real information in your cfg/$env.const.js file.  
+
+    aadInstance: "'https://login.microsoftonline.com/'", //Replace only if using AAD non-public instances. Yes, use both single and double quotes.
 
     aadTenant: "'Your Azure Active Directory tenant here'", //Yes, use both single and double quotes.
 
-    clientId: "'Your EventUI Azure Active Directory app registration client ID here'"
+    clientId: "'Your EventUI Azure Active Directory app registration client ID here'" //Yes, use both single and double quotes.
 
 }

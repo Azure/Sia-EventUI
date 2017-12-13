@@ -3,11 +3,11 @@ import { connect } from 'react-redux'
 import EventDialog from '../components/Timeline/AddEventDialog'
 import { addEventPopupName } from '../components/Incident/EventDialogControl'
 
-export const Popups = ({selectedPopup, eventActions}) => {
+export const Popups = ({selectedPopup}) => {
     let toRender
     switch(selectedPopup) {
         case addEventPopupName:
-            toRender = <EventDialog eventActions={eventActions}/>
+            toRender = <EventDialog/>
             break
         default:
             toRender = <div/>
@@ -16,10 +16,9 @@ export const Popups = ({selectedPopup, eventActions}) => {
     return toRender
 }
 
-export const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state) => {
     return {
-        selectedPopup: state.popup ? state.popup.popupName : null,
-        eventActions: ownProps.eventActions
+        selectedPopup: state.popup ? state.popup.popupName : null
     }
 }
 

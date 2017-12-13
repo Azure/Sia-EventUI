@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../Buttons'
-import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
+import * as incidentActions from '../../actions/incidentActions'
 
 class Ticket extends Component {
     static propTypes = {
@@ -15,22 +15,22 @@ class Ticket extends Component {
         ticketId: PropTypes.number,
         ticketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
-        preferences: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired
+        preferences: PropTypes.object.isRequired
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchIncidentIfNeeded(this.props))
-        if (this.props.incident && this.props.incident.id)
+        const { dispatch, incident, ticketId, ticket, filter, ticketSystem, preferences } = this.props
+        dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences))
+        if (incident && incident.id)
         {
-            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.dispatch, this.props.actions.event)
+            synchronizeFilters(filter, incident.id, dispatch)
         }
     }
 
     componentDidUpdate() {
         if (this.props.incident && this.props.incident.id)
         {
-            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.ticketId, this.props.dispatch, this.props.actions.event)
+            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.ticketId, this.props.dispatch)
         }
     }
 
@@ -39,24 +39,20 @@ class Ticket extends Component {
             incident,
             ticket,
             ticketSystem,
-            dispatch,
-            actions
+            dispatch
         } = this.props
 
         if(incident && incident.error)
         {
-            return ErrorLoadingIncident(actions.incident, incident)
+            return ErrorLoadingIncident(incident, dispatch)
         }
         if(!incident || incident.IsFetching)
         {
-            return CurrentlyLoadingIncident(actions.incident, dispatch)
+            return CurrentlyLoadingIncident(dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
             return <DisplayIncident
-                eventActions={actions.event}
-                engagementActions={actions.engagement}
-                eventTypeActions={actions.eventType}
                 incident={incident}
                 ticket={ticket}
                 ticketSystem={ticketSystem}
@@ -70,7 +66,7 @@ class Ticket extends Component {
     }
 }
 
-const mapStateToProps = (actions) => (state, ownProps) => {
+const mapStateToProps = (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
@@ -81,36 +77,34 @@ const mapStateToProps = (actions) => (state, ownProps) => {
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         preferences: tickets.preferences,
-        actions,
         filter
     }
 }
 
-export const synchronizeFilters = (filter, incidentId, ticketId, dispatch, eventActions) => {
+export const synchronizeFilters = (filter, incidentId, ticketId, dispatch) => {
     const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
     if (filter.incidentId != incidentId)
     {
-        dispatch(eventActions.applyFilter(filter, newFilter))
+        dispatch(eventActions.applyFilter(history)(filter, newFilter))
     }
 }
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incidentActions, incident, dispatch) => {
+export const ErrorLoadingIncident = (incident, dispatch) => {
     return <div>
                 <div>Error Loading Incident: {incident.error}</div>
                 <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.id)}/>
             </div>
 }
 
-export const CurrentlyLoadingIncident = (incidentActions, dispatch) => {
+export const CurrentlyLoadingIncident = (dispatch) => {
     return <div>
                 <div>Loading Incident...</div>
                 <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncidents()}/>
             </div>
 }
 
-const connectedTicket = (actions) => connect(mapStateToProps(actions))(Ticket)
-
+const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket

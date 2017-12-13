@@ -1,22 +1,18 @@
 import { rawHttpResponse, jsonResult } from '../actions/debugActions'
 import PromiseRetry from 'promise-retry'
-import * as authActions from '../actions/authActions'
+import { getToken } from './authNService'
+import config from 'config'
 
-// eslint-disable-next-line no-undef
-export const clientId = CLIENT_ID //From config
+export const clientId = config.clientId
 
-// eslint-disable-next-line no-undef
-const defaultBasePath = BASE_URL
+const defaultBasePath = config.baseUrl
 const defaultOptions = {
-    // eslint-disable-next-line no-undef
-    retries: RETRIES,
-    // eslint-disable-next-line no-undef
-    factor: RETRY_EXPONENTIAL_BACKOFF_FACTOR,
-    // eslint-disable-next-line no-undef
-    minTimeout: RETRY_MIN_TIMEOUT,
-    // eslint-disable-next-line no-undef
-    maxTimeout: RETRY_MAX_TIMEOUT
+    retries: config.retries,
+    factor: config.retryExponentialBackoffFactor,
+    minTimeout: config.retryMinTimeoutInMiliseconds,
+    maxTimeout: config.retryMaxTimeoutInMiliseconds
 }
+const defaultScopes = [clientId]
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
     return fetch(baseUrl + relativeUrl, init)
@@ -40,30 +36,30 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         }, err => retry(`Error during fetch: ${err} (retry ${number})`))
 }
 
-const tryGetToken = (siaContext) => (retry, number) => {
-    return tokenPromise(siaContext)
-        .catch(err => retry(`Error during fetch: ${err} (retry ${number})`))
-}
+const tryGetToken = (retry, number) => getToken(defaultScopes)
+    .then(token => token)
+    .catch(err => retry(`Error when attempting to retrieve token: ${err} (retry ${number})`))
 
-export const authenticatedFetch = (siaContext) => (relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
+
+export const authenticatedFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => {
     return PromiseRetry(
-        tryGetToken(siaContext),
+        tryGetToken,
         defaultOptions
     ).then(token => {
         const authenticatedInit = initWithAuth(init, token)
         return PromiseRetry(
-            tryFetch(siaContext.dispatch, relativeUrl, authenticatedInit, returnJson, baseUrl),
+            tryFetch(dispatch, relativeUrl, authenticatedInit, returnJson, baseUrl),
             defaultOptions
         )
     })
 }
 
-export const authenticatedPost = (siaContext) => (relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
-    return authenticatedFetch(siaContext)(relativeUrl, initWithContent(init, body), returnJson, baseUrl)
+export const authenticatedPost = (dispatch, relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
+    return authenticatedFetch(dispatch, relativeUrl, initWithContent(init, body), returnJson, baseUrl)
 }
 
-export const authenticatedPut = (siaContext) => (relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
-    return authenticatedFetch(siaContext)(relativeUrl, initWithContent(init, body, 'PUT'), returnJson, baseUrl)
+export const authenticatedPut = (dispatch, relativeUrl, body, init, returnJson = true, baseUrl = defaultBasePath) => {
+    return authenticatedFetch(dispatch, relativeUrl, initWithContent(init, body, 'PUT'), returnJson, baseUrl)
 }
 
 const initWithAuth = (init, token) => {
@@ -87,33 +83,6 @@ const initWithContent = (init, unserializedBody, method = 'POST')  => {
         body,
         headers
     }
-}
-
-const tokenPromise = (siaContext) => new Promise(
-    (resolve, reject) => {
-        siaContext.authContext.acquireToken(clientId, callbackBridge(resolve, reject))
-    }).catch((reason)=> {
-        if(reason && reason === 'User login is required'){
-        return new Promise((innerResolve, innerReject) => {
-            siaContext.dispatch(authActions.loginInProgress())
-            siaContext.authContext.callback = callbackBridge(dispatchOnResolve(innerResolve, siaContext.dispatch, authActions.userLoggedIn()), innerReject)
-            siaContext.authContext.login()
-        })
-        }
-    }
-)
-
-const dispatchOnResolve = (resolve, dispatch, action) => (reason) => {
-    dispatch(action)
-    resolve(reason)
-}
-
-const callbackBridge = (resolve, reject) => (errDesc, token) => {
-    if(errDesc){
-        reject(errDesc)
-        return
-    }
-    resolve(token)
 }
 
 const httpResponseNeedsRetry = (response) => response.status >= 400

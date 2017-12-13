@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
 import * as formActions from '../../actions/formActions'
 import * as popupActions from '../../actions/popupActions'
+import * as eventActions from '../../actions/eventActions'
 import { addEventFormName } from '../Incident/EventDialogControl'
 
-const AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, eventTypeIdInput, updateSelectedIncidentId, updateEventInput, updateEventTypeIdInput, eventActions }) => {
+const AddEvent = ({ dispatch, incidentIds, selectedIncidentId, eventInput, eventTypeIdInput, updateSelectedIncidentId, updateEventInput, updateEventTypeIdInput }) => {
   let incidentIdCounter = 0
   return (
     <div>
