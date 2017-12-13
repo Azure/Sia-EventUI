@@ -22,7 +22,10 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.DefinePlugin({constants})
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"dev"',
+      'constants': JSON.stringify(constants)
+    })
   ],
   module: defaultSettings.getDefaultModules()
 })

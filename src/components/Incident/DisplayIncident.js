@@ -52,7 +52,7 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
         [
             [
                 (key) =>
-                    <a href={`${ticketSystem.linkPrefix}${ticket.originId}${ticketSystem.linkSuffix}`} key={key}>
+                    <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key}>
                         {ticket.originId}
                     </a>,
                 (key) =>
