@@ -26,10 +26,8 @@ const addIncidentToState = (state, incident, incidentPropertyUpdates) => {
 }
 
 const addIncidentsToState = (state, incidents, incidentPropertyUpdates) => {
-    debugger
     let newState = {...state}
     incidents.map(incident => newState[incident.id] = Object.assign({}, incident, incidentPropertyUpdates))
-    debugger
     return newState
 }
 
@@ -42,8 +40,7 @@ export const map = (state = defaultIncidentMap, action) => {
             return addIncidentToState(state, {id: action.id, error: action.error}, endFetch)
         case incidentActions.RECEIVE_INCIDENTS:
         case incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS:
-        debugger
-            return addIncidentsToState(state, action.incidents, endFetch)
+                return addIncidentsToState(state, action.incidents, endFetch)
         case incidentActions.REQUEST_INCIDENT:
             const localIncidentRecord = state[action.incidentId]
             return addIncidentToState(state, localIncidentRecord ? localIncidentRecord : { id: action.incidentId } , startFetch)

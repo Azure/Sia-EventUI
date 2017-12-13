@@ -36,7 +36,7 @@ const filterSearchForm = {
 const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
   
     const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
-    debugger
+  
     return  (
       <div className="incident-EventFilter">
         {filterChips}
