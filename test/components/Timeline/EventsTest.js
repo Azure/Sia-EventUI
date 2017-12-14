@@ -3,39 +3,6 @@ import { expect } from 'chai'
 import Event from '../../../src/components/Timeline/Event'
 import Events from '../../../src/components/Timeline/Events'
 
-const eventTypeZero = {
-    name: 'Everything is set up',
-    displayTemplate: {
-        pattern: 'Valid displayTemplate.pattern'
-    }
-}
-
-const eventTypeOne = {
-    name: 'No displayTemplate.pattern',
-    displayTemplate: {
-    }
-}
-
-const eventTypeTwo = {
-    name: 'Invalid displayTemplate.pattern',
-    displayTemplate: {
-        pattern: ''
-    }
-}
-
-const eventTypeThree = {
-    name: 'eventType.name'
-}
-
-const eventTypeFour = {
-    
-}
-
-const eventTypeFive = {
-    name: ''
-}
-
-
 const eventZero = {
     eventTypeId: 0,
     data: {
@@ -43,7 +10,6 @@ const eventZero = {
         someField: ''
     }
 }
-
 
 const eventOne = {
     eventTypeId: 100,
@@ -120,23 +86,22 @@ const events = [eventZero, eventOne, eventTwo, eventThree, eventFour,
 
 const ticketId = '2'
 const incidentId = null
-const eventTypes = [eventTypeZero, eventTypeOne, eventTypeTwo, 
-    eventTypeThree, eventTypeFour, eventTypeFive]
 
 
 describe('Events', function test () {
     beforeEach( () => {
-        console.log(events[5].data)
-        this.output = Events(events, ticketId, incidentId, eventTypes)
+        this.output = Events({events, ticketId, incidentId})
     })
 
-    it('Should return an array of Events', () => {
-        expect(this.output).to.be.an('array')
-        expect(this.output[0].type).to.equal(Event)
+    it('Should return a div containing an array of Events', () => {
+        expect(this.output.type).to.equal('div')
+        expect(this.output.props.children[0].type).to.equal(Event)
+        expect(this.output.props.children[10].type).to.equal(Event)
+        expect(this.output.props.children[11]).to.not.exist
     })
     
     it('Should return the right ticketId', () => {
-        expect(this.output[0].props.ticketId).to.equal(ticketId)
+        expect(this.output.props.children[0].props.ticketId).to.equal(ticketId)
     })
 
 })

@@ -59,8 +59,8 @@ export const TestByConditionType = testableTestByConditionType(GetComparisonValu
 
 export const testableTestCondition = (testByConditionType) => (condition) => {
     const testResult = testByConditionType(condition)
-    return condition.AssertionType === 0 
-        ? !testResult 
+    return condition.AssertionType === 0
+        ? !testResult
         : testResult
 }
 
@@ -91,7 +91,7 @@ export const testableTestConditionSet = (select, testCondition) => (event, ticke
         case 1: //All of
             return metConditionsCount === conditionsWithValue.length
         case 2: //noneOf
-            return metConditionsCount === 0            
+            return metConditionsCount === 0
         default: //Not All Of
             return metConditionsCount < conditionsWithValue.length    }
 }
