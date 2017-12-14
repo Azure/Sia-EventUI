@@ -27,17 +27,19 @@ class Ticket extends Component {
         const {
             incident,
             ticket,
+            ticketId,
             ticketSystem,
+            incidentIsFetching,
             dispatch
         } = this.props
 
-        if(incident && incident.error)
-        {
-            return ErrorLoadingIncident(incident, dispatch)
-        }
-        if(!incident || incident.IsFetching)
+        if(incidentIsFetching)
         {
             return CurrentlyLoadingIncident(dispatch)
+        }
+        if(!incident || !ticket || incident.error)
+        {
+            return ErrorLoadingIncident(incident, ticketId, dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
@@ -59,22 +61,29 @@ const mapStateToProps = (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
+    const incident = getIncident(ticket, incidents)
     return {
-        incident: getIncident(ticket, incidents),
+        incident,
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        preferences: tickets.preferences
+        preferences: tickets.preferences,
+        incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
+                            incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id)
     }
 }
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incident, dispatch) => {
+export const ErrorLoadingIncident = (incident, ticketId, dispatch) => {
+  const actionForRetry = incident && incident.id
+                       ? incidentActions.fetchIncident(incident.id)
+                       : incidentActions.fetchIncidentsByTicketId(ticketId)
     return <div>
-                <div>Error Loading Incident: {incident.error}</div>
-                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.id)}/>
+                <div>Error Loading Incident: {incident ? incident.error : 'no incident detected'}</div>
+
+                <RetryButton dispatch={dispatch} actionForRetry={actionForRetry}/>
             </div>
 }
 
