@@ -12,7 +12,7 @@ const makeSearchable = (event) => ({
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
-export const list = (state = defaultEventCollection, action) => {
+export const rawList = (state = defaultEventCollection, action) => {
     switch(action.type){
         case eventActions.RECEIVE_EVENT:
         case eventActions.POST_EVENT_SUCCEED:
@@ -24,7 +24,7 @@ export const list = (state = defaultEventCollection, action) => {
     }
 }
 
-export const events = paginated(list, eventActions.pagination.types, {
+export const list = paginated(rawList, eventActions.pagination.types, {
     defaultPage: 1,
     defaultSortOrder: 'desc',
     defaultSortBy: 'occurred',

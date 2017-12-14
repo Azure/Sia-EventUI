@@ -32,7 +32,7 @@ const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
-    events: events,
+    events: events.list,
     eventTypes: state.eventTypes.records
   }
 }
