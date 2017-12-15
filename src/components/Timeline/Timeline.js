@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
 import EventFilter from './EventFilter'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
@@ -23,7 +24,7 @@ class Timeline extends Component {
     const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
-        <EventFilter />
+        <EventFilter history={this.props.history}/>
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
@@ -56,4 +57,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps)(Timeline)
+export default withRouter(connect(mapStateToProps)(Timeline))
