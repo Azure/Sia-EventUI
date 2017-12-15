@@ -69,10 +69,8 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     filters.eventTypes = []
 
     URL PATTERNS
-    Gateway URL:
-    /incident/123/events?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
-    UI URL:
-    /tickets/38805418?eventTypes=1,2,3&occurredStart=someDateTime&occurredEnd=someDateTime
+    Gateway & UI URL:
+    /tickets/38805418?eventTypes=1&eventTypes=2&eventTypes=3&occurredStart=someDateTime&occurredEnd=someDateTime
      */
 
 
@@ -95,7 +93,7 @@ export const serializeEventTypes = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return 'eventTypes=' + eventTypes.map(eventType => eventType.id).join(',')
+    return '?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
 
 export const updateUrlAfterFilterChange = (filter) => {
@@ -216,16 +214,20 @@ export const changeEventFilter = (history) => (filter) => {
 }
 
 export const getUrlFromFilters = (history, filters) => {
-    if (filters && filters.eventTypes && filters.eventTypes.length > 0) {
-        history.push(/tickets/ + filters.ticketId + '/?' + serializeEventTypesForUrl(filters.eventTypes))
+    if (filters && filters.eventTypes ) {
+        history.push(generateUrl(history, filters))
     }
+}
+
+export const generateUrl = (history, filters) => {
+    return /tickets/ + filters.ticketId + serializeEventTypesForUrl(filters.eventTypes)
 }
 
 const serializeEventTypesForUrl = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
+    return '/?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
 
 export const isEventTypeInputValid = (eventType) => {
@@ -258,6 +260,7 @@ export const addFilter = (history) => (filter, eventType) => (dispatch) => {
 }
 
 export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (dispatch) => {
+
     if (!oldFilter.eventTypes.map(eventType => eventType.id).includes(eventTypeToDelete.id)) {
         return
     }
