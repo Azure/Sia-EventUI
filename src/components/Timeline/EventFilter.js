@@ -9,7 +9,6 @@ import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 
-
 const filterTypes = referenceData.types
 
 const dataSourceConfig = {
@@ -33,10 +32,8 @@ const filterSearchForm = {
 }
 
 
-const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
-  
-    const filterChips = filter.eventTypes ? renderChips(filter, dispatch): null
-  
+const EventFilter = ({pagination, filter, filterSearchField, dispatch, history}) =>  {
+    const filterChips = filter.eventTypes ? renderChips(history, filter, dispatch): null
     return  (
       <div className="incident-EventFilter">
         {filterChips}
@@ -48,7 +45,7 @@ const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
           onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
           onNewRequest={
             (eventType, indexInDataSource) => {
-              dispatch(eventActions.addFilter(filter, eventType))
+              dispatch(eventActions.addFilter(history)(filter, eventType))
               dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
             }
           }
@@ -69,19 +66,19 @@ const EventFilter = ({pagination, filter, filterSearchField, dispatch}) =>  {
   }
   
   
-const renderChips = (filter, dispatch) => {
+const renderChips = (history, filter, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((eventType) => renderChip(filter, eventType, dispatch))}
+      {filter.eventTypes.map((eventType) => renderChip(history, filter, eventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (filter, eventType, dispatch) => {
+const renderChip = (history, filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}
-      onRequestDelete={() => dispatch(eventActions.removeFilter(filter, eventType))}
+      onRequestDelete={() => dispatch(eventActions.removeFilter(history)(filter, eventType))}
       style={chipStyles.chip}
     >
       {eventType.name}
