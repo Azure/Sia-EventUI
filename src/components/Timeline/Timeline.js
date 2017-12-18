@@ -1,4 +1,3 @@
-
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import Filter from './EventFilter'
@@ -18,24 +17,21 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
+    const { events, dispatch, ticketId, incidentId } = this.props
     return (
       <div>
         <Filter pagination={events} dispatch={dispatch}/>
-        {Events(events.pageList, ticketId, incidentId, eventTypes)}
+        <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { events } = state
-  return {
-    ...ownProps,
-    events: events,
-    eventTypes: state.eventTypes.records
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  ...ownProps,
+  events: state.events
+})
+
 
 export default connect(mapStateToProps)(Timeline)

@@ -120,3 +120,16 @@ div#app {
 ::-ms-clear {
   display: none;
 }
+
+@keyframes yellowfade {
+  0% {
+    background: yellow;
+  }
+  50% {
+    background: yellow;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
