@@ -4,7 +4,8 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
-import { RetryButton } from '../Buttons'
+import { RetryButton } from '../elements/Buttons'
+import LoadingMessage from '../elements/LoadingMessage'
 import * as incidentActions from '../../actions/incidentActions'
 
 class Ticket extends Component {
@@ -35,7 +36,7 @@ class Ticket extends Component {
 
         if(incidentIsFetching)
         {
-            return CurrentlyLoadingIncident(dispatch)
+            return CurrentlyLoadingIncident(incident, ticketId)
         }
         if(!incident || !ticket || incident.error)
         {
@@ -87,12 +88,14 @@ export const ErrorLoadingIncident = (incident, ticketId, dispatch) => {
             </div>
 }
 
-export const CurrentlyLoadingIncident = (dispatch) => {
-    return <div>
-                <div>Loading Incident...</div>
-                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncidents()}/>
-            </div>
-}
+export const CurrentlyLoadingIncident = (incident, ticketId) => LoadingMessage(
+    'Loading Incident...',
+    (incident && incident.id)
+    ? incidentActions.fetchIncident(incident.id)
+    : ticketId
+        ? incidentActions.fetchIncidentsByTicketId(ticketId)
+        : incidentActions.fetchIncidents()
+)
 
 const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket

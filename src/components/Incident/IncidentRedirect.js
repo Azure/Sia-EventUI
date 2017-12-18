@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import incidentActions from '../../actions/incidentActions'
+import LoadingMessage from '../elements/LoadingMessage'
 
 class IncidentRedirect  extends Component {
     constructor(props){
@@ -9,7 +10,7 @@ class IncidentRedirect  extends Component {
     }
 
     componentDidMount() {
-        const {ticketId, incidentId, dispatch} = this.props
+        const { ticketId, incidentId, dispatch } = this.props
         if(!ticketId){
             dispatch(incidentActions.fetchIncident(incidentId))
         }
@@ -19,15 +20,21 @@ class IncidentRedirect  extends Component {
         if(this.props.ticketId){
             return (<Redirect to={`/tickets/${this.props.ticketId}`}/>)
         }
-        return (<div>Incident not yet loaded</div>)
+        if(this.props.incidentIsFetching)
+        {
+            return LoadingMessage('Loading incident information')
+        }
+        return (<div>Unexpected error or interruption when loading incident</div>)
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const incident = state.incidents.map[ownProps.match.params.incidentId]
+    const incidentId = ownProps.match.params.incidentId
+    const incident = state.incidents.map[incidentId]
     return {
-        incidentId: ownProps.match.params.incidentId,
-        ticketId: (incident ? (incident.primaryTicket ? incident.primaryTicket.originId : null) : null)
+        incidentId,
+        incidentIsFetching: state.incidents.fetchingByIncidentId.includes(incidentId),
+        ticketId: (incident && incident.primaryTicket) ? incident.primaryTicket.originId : null
     }
 }
 
