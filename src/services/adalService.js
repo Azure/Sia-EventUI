@@ -11,12 +11,13 @@ export const authVersion = 'adal'
 let context
 
 export const getAuthContext = (dispatch) => {
+  console.dir(context)
   if(!context)
   {
     context = new AuthenticationContext({
       instance: config.aadInstance,
       tenant: config.aadTenant,
-      redirectUri: config.authRedirectUri,
+     // redirectUri: config.authRedirectUri,
       clientId: clientId,
 
       popUp: true
@@ -26,6 +27,7 @@ export const getAuthContext = (dispatch) => {
   if(dispatch)
   {
     context.callback = (err) => {
+      console.log('context callback hit')
       err
         ? dispatch(authActions.userLoginError(err))
         : dispatch(authActions.userLoggedIn(context.getCachedUser()))
