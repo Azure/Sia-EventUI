@@ -28,6 +28,8 @@ export const list = (state = defaultEventCollection, action) => {
             return addEventsToState(state, [action.event])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
+        case eventActions.CHANGE_EVENT_FILTER:
+            return defaultEventCollection
         default:
             return state
     }
