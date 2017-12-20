@@ -4,16 +4,15 @@ import React from 'react'
 import createComponent from '../../helpers/shallowRenderHelper'
 import { DisplayRetryButton } from '../../../src/components/elements/Buttons'
 import FlatButtonStyled from '../../../src/components/elements/FlatButtonStyled'
+import AddMockDispatch from '../../helpers/mockDispatch'
+
 const setup = (props, children) => createComponent(DisplayRetryButton, props, children)
 
 
 
-const dummyState = (mockDispatchRecorder) => ({
+const dummyState = AddMockDispatch({
     actionForRetry: {
         type: 'ActionForRetry'
-    },
-    dispatch: (action) => {
-        mockDispatchRecorder.action = action
     }
 })
 

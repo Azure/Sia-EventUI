@@ -1,19 +1,16 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
-import incidentActions from '../../actions/incidentActions'
+import * as incidentActions from '../../actions/incidentActions'
 import LoadingMessage from '../elements/LoadingMessage'
 
-class IncidentRedirect  extends Component {
+export class IncidentRedirect extends Component {
     constructor(props){
         super(props)
     }
 
     componentDidMount() {
-        const { ticketId, incidentId, dispatch } = this.props
-        if(!ticketId){
-            dispatch(incidentActions.fetchIncident(incidentId))
-        }
+        IncidentRedirectComponentDidMount(this.props)
     }
 
     render() {
@@ -28,13 +25,28 @@ class IncidentRedirect  extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const incidentId = ownProps.match.params.incidentId
-    const incident = state.incidents.map[incidentId]
+export const IncidentRedirectComponentDidMount = (props) => {
+    const { ticketId, incidentId, dispatch } = props
+    if(!ticketId){
+        dispatch(incidentActions.fetchIncident(incidentId))
+    }
+}
+
+export const mapStateToProps = (state, ownProps) => {
+    const incidentId = (ownProps && ownProps.match && ownProps.match.params)
+        ? ownProps.match.params.incidentId
+        : null
+    const incident = (state && state.incidents && state.incidents.map)
+        ? state.incidents.map[incidentId]
+        : null
     return {
         incidentId,
-        incidentIsFetching: state.incidents.fetchingByIncidentId.includes(incidentId),
-        ticketId: (incident && incident.primaryTicket) ? incident.primaryTicket.originId : null
+        incidentIsFetching: (state && state.incidents && state.incidents.fetchingByIncidentId && Array.isArray(state.incidents.fetchingByIncidentId))
+            ? state.incidents.fetchingByIncidentId.includes(incidentId)
+            : null,
+        ticketId: (incident && incident.primaryTicket)
+            ? incident.primaryTicket.originId
+            : null
     }
 }
 
