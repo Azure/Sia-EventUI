@@ -4,25 +4,29 @@ import moment from 'moment'
 import * as playbook from '../../src/services/playbookService'
 
 describe('TestCondition', function () {
-    it('Should return true when conditionType is 1 and test returns true', () => {
-        expect(playbook.testableTestCondition((c) => true)({ConditionType:1})).to.be.true
+    it('Should return true when AssertionType is 1 and test returns true', () => {
+        expect(playbook.testableTestCondition((c) => true)({AssertionType:1})).to.be.true
     })
-    it('Should return false when conditionType is 1 and test returns false', () => {
-        expect(playbook.testableTestCondition((c) => false)({ConditionType:1})).to.be.false
+    it('Should return false when AssertionType is 1 and test returns false', () => {
+        expect(playbook.testableTestCondition((c) => false)({AssertionType:1})).to.be.false
     })
-    it('Should return false when conditionType is 0 and test returns true', () => {
-        expect(playbook.testableTestCondition((c) => true)({ConditionType:0})).to.be.false
+    it('Should return false when AssertionType is 0 and test returns true', () => {
+        expect(playbook.testableTestCondition((c) => true)({AssertionType:0})).to.be.false
     })
-    it('Should return true when conditionType is 0 and test returns false', () => {
-        expect(playbook.testableTestCondition((c) => false)({ConditionType:0})).to.be.true
+    it('Should return true when AssertionType is 0 and test returns false', () => {
+        expect(playbook.testableTestCondition((c) => false)({AssertionType:0})).to.be.true
     })
 })
 
 describe('GetComparisonValue', function () {
+    const stringDataFormatValue = 0
+    const dateTimeDataFormatValue = 1
+    const intDataFormatValue = 2
+
     it('Should return expected string when condition has string data format and comparison value', () => {
         const getComparisonValueString = ({
             comparisonValue: 'stringValue',
-            dataFormat: 1
+            dataFormat: stringDataFormatValue
         })
         expect(playbook.GetComparisonValue(getComparisonValueString)).to.equal('stringValue')
     })
@@ -30,7 +34,7 @@ describe('GetComparisonValue', function () {
     it('Should return expected dateTime when condition has dateTime data format and comparison value', () => {
         const getComparisonValueDateTime = ({
             dateTimeComparisonValue: '19700101',
-            dataFormat: 2
+            dataFormat: dateTimeDataFormatValue
         })
         expect(playbook.GetComparisonValue(getComparisonValueDateTime).isSame('19700101')).to.be.true
     })
@@ -38,7 +42,7 @@ describe('GetComparisonValue', function () {
     it('Should return expected int when condition has int data format and comparison value', () => {
         const getComparisonValueInt = ({
             integerComparisonValue: 1,
-            dataFormat: 0
+            dataFormat: intDataFormatValue
         })
         
         expect(playbook.GetComparisonValue(getComparisonValueInt)).to.equal(1)
@@ -46,15 +50,15 @@ describe('GetComparisonValue', function () {
 
     it('Should return undefined when no value of the expected condition type is supplied', () => {
         const failGetComparisonValueString = ({
-            dataFormat: 1
+            dataFormat: stringDataFormatValue
         })
         
         const failGetComparisonValueInt = ({
-            dataFormat: 0
+            dataFormat: intDataFormatValue
         })
         
         const failGetComparisonValueDateTime = ({
-            dataFormat: 2
+            dataFormat: dateTimeDataFormatValue
         })
         expect(playbook.GetComparisonValue(failGetComparisonValueString)).to.be.undefined
         expect(playbook.GetComparisonValue(failGetComparisonValueInt)).to.be.undefined
@@ -65,15 +69,15 @@ describe('GetComparisonValue', function () {
 describe('Test By Condition Type', function () {
     const getComparison = (condition) => condition.comparison
 
-    it('Should validate inclusion when condition type is 2', () => {
+    it('Should validate inclusion when condition type is 1', () => {
         const stringIncludesCondition = ({
-            conditionType: 2,
+            conditionType: 1,
             value: "StringIsIncluded",
             comparison:"IsIncluded"
         })
         
         const stringDoesNotIncludeCondition = ({
-            conditionType: 2,
+            conditionType: 1,
             value: "StringIsNotIncluded",
             comparison:"IsIncluded"
         })
@@ -81,62 +85,62 @@ describe('Test By Condition Type', function () {
         expect(playbook.testableTestByConditionType(getComparison)(stringDoesNotIncludeCondition)).to.be.false
     })
 
-    it('Should validate existence when condition type is 3', () => {
+    it('Should validate existence when condition type is 2', () => {
         const somethingExistsCondition = ({
-            conditionType: 3,
+            conditionType: 2,
             value: 1,
             comparison:"NoOp"
         })
         
         const somethingDoesNotExistCondition = ({
-            conditionType: 3,
+            conditionType: 2,
             comparison:"NoOp"
         })
         expect(playbook.testableTestByConditionType(getComparison)(somethingExistsCondition)).to.be.true
         expect(playbook.testableTestByConditionType(getComparison)(somethingDoesNotExistCondition)).to.be.false
     })
 
-    it('Should validate value is greater than when condition type is 4', () => {
+    it('Should validate value is greater than when condition type is 3', () => {
         const somethingIsGreaterThanCondition = ({
-            conditionType: 4,
-            value: 3,
-            comparison: 2
+            conditionType: 3,
+            value: 2,
+            comparison: 1
         })
         
         const somethingIsNotGreaterThanCondition = ({
-            conditionType: 4,
-            value: 3,
-            comparison: 4
+            conditionType: 3,
+            value: 1,
+            comparison: 2
         })
         expect(playbook.testableTestByConditionType(getComparison)(somethingIsGreaterThanCondition)).to.be.true
         expect(playbook.testableTestByConditionType(getComparison)(somethingIsNotGreaterThanCondition)).to.be.false
     })
 
-    it('Should validate value is less than when condition type is 5', () => {
+    it('Should validate value is less than when condition type is 4', () => {
         const somethingIsNotLessThanCondition = ({
-            conditionType: 5,
-            value: 4,
-            comparison: 3
+            conditionType: 4,
+            value: 2,
+            comparison: 1
         })
         
         const somethingIsLessThanCondition = ({
-            conditionType: 5,
-            value: 4,
-            comparison: 5
+            conditionType: 4,
+            value: 2,
+            comparison: 3
         })
         expect(playbook.testableTestByConditionType(getComparison)(somethingIsLessThanCondition)).to.be.true
         expect(playbook.testableTestByConditionType(getComparison)(somethingIsNotLessThanCondition)).to.be.false
     })
 
-    it('Should validate value is equal when condition type is 1 or anything not provided', () => {
+    it('Should validate value is equal when condition type is 0', () => {
         const sometingIsEqualToCondition = ({
-            conditionType: 1,
+            conditionType: 0,
             value: 1,
             comparison: 1
         })
         
         const sometingIsNotEqualToCondition = ({
-            conditionType: 1,
+            conditionType: 0,
             value: 2,
             comparison: 1
         })
@@ -177,20 +181,20 @@ describe('Test Condition Set', function () {
     const testOneMet = tracker => playbook.testableTestConditionSet(selectReturnEvent, oneMetTestCondition(tracker))(eventWithSomeValueAtExpectedKey)
     const testAllMet = playbook.testableTestConditionSet(selectReturnEvent, allMetTestCondition)(eventWithSomeValueAtExpectedKey)
     
-    it('Should return true in case 1 (any of) when at least one condition is met, and false otherwise', () => {
+    it('Should return true in case 0 (any of) when at least one condition is met, and false otherwise', () => {
         const anyOfConditionSet = {
             ...baseConditionSet,
-            type: 1
+            type: 0
         }
         expect(testNoneMet(anyOfConditionSet)).to.be.false
         expect(testOneMet(0)(anyOfConditionSet)).to.be.true
         expect(testAllMet(anyOfConditionSet)).to.be.true
     })
 
-    it('Should return true in case 2 (all of) when all conditions are met, and false otherwise', () => {
+    it('Should return true in case 1 (all of) when all conditions are met, and false otherwise', () => {
         const allOfConditionSet = {
             ...baseConditionSet,
-            type: 2
+            type: 1
         }
 
         expect(testNoneMet(allOfConditionSet)).to.be.false
@@ -208,10 +212,10 @@ describe('Test Condition Set', function () {
         expect(testAllMet(notAllOfConditionSet)).to.be.false
     })
 
-    it('Should return true in case 0 (None of) when at no conditions are met, and false otherwise', () => {
+    it('Should return true in case 2 (None of) when at no conditions are met, and false otherwise', () => {
         const noneOfConditionSet = {
             ...baseConditionSet,
-            type: 0
+            type: 2
         }
         expect(testNoneMet(noneOfConditionSet)).to.be.true
         expect(testOneMet(0)(noneOfConditionSet)).to.be.false

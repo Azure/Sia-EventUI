@@ -21,7 +21,7 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
+    const { events, dispatch, ticketId, incidentId } = this.props
     return (
       <div>
         <EventFilter history={this.props.history} eventTypes={eventTypes}/>
