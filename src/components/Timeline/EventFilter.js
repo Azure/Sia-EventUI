@@ -10,14 +10,12 @@ import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 import { mockEventTypes } from '../elements/mockEventTypes'
 
-const filterTypes = referenceData.types
-
-const dataSourceConfig = {
+export const dataSourceConfig = {
   text: 'name',
   value: 'id'
 }
 
-const chipStyles = {
+export const chipStyles = {
   chip: {
     margin: 4
   },
@@ -27,7 +25,7 @@ const chipStyles = {
   }
 }
 
-const filterSearchForm = {
+export const filterSearchForm = {
   name: 'filter selection',
   field: 'input'
 }
