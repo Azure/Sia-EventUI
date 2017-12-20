@@ -5,26 +5,32 @@ import EventFilter from './EventFilter'
 import Footer from './EventFooter'
 import PropTypes from 'prop-types'
 import Events from './Events'
-import {pagination} from '../../actions/eventActions'
+import * as eventActions from '../../actions/eventActions'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 
 class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
+    filter: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
 
   componentDidMount() {
-    updatePagination(this.props.dispatch, this.props.incidentIds)
-    fetchMissingEventTypes(this.props)
+    const { incidentIds, eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
+    updatePagination(incidentIds, dispatch)
+    fetchMissingEventTypes(eventTypes, events, dispatch)
+    if (incidentId)
+    {
+        synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
+    }
   }
 
   render() {
-    const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
+    const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
     return (
       <div>
-        <EventFilter history={this.props.history}/>
+        <EventFilter history={history}/>
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>
       </div>
@@ -32,20 +38,25 @@ class Timeline extends Component {
   }
 }
  
-const updatePagination = (dispatch, incidentIds) => {
-    dispatch(pagination.filter(setBaseFilter(incidentIds)))
+const updatePagination = (incidentIds, dispatch) => {
+    dispatch(eventActions.pagination.filter(setBaseFilter(incidentIds)))
 }
 
-const fetchMissingEventTypes = (props) => {
-  const eventTypeIds = Object.keys(props.eventTypes)
-  props.events.pageList
+const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
+  const eventTypeIds = Object.keys(eventTypes)
+  events.pageList
     .map(event => event.eventTypeId)
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
-    .forEach(missingEventTypeId => props.dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
+    .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
 const setBaseFilter = (incidentIds) => {
   return incidentIds[0].toString()
+}
+
+export const synchronizeFilters = (filter, incidentId, ticketId, history, dispatch) => {
+  const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
+  dispatch(eventActions.applyFilter(history)(filter, newFilter))
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -53,6 +64,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     events: events.pages,
+    filter: events.filter,
     eventTypes: state.eventTypes.records
   }
 }

@@ -20,19 +20,8 @@ class Ticket extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, incident, ticketId, ticket, filter, ticketSystem, preferences } = this.props
+        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences } = this.props
         dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences))
-        if (incident && incident.id)
-        {
-            synchronizeFilters(filter, incident.id, dispatch)
-        }
-    }
-
-    componentDidUpdate() {
-        if (this.props.incident && this.props.incident.id)
-        {
-            synchronizeFilters(this.props.filter, this.props.incident.id, this.props.ticketId, this.props.dispatch)
-        }
     }
 
     render() {
@@ -71,24 +60,16 @@ const mapStateToProps = (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
-    const filter = state.events.filter
+    
     return {
         incident: getIncident(ticket, incidents),
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        preferences: tickets.preferences,
-        filter
+        preferences: tickets.preferences
     }
 }
 
-export const synchronizeFilters = (filter, incidentId, ticketId, dispatch) => {
-    const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
-    if (filter.incidentId != incidentId)
-    {
-        dispatch(eventActions.applyFilter(history)(filter, newFilter))
-    }
-}
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
