@@ -15,10 +15,15 @@ export const Event = ({
     incidentId,
     ticketId,
     eventTypeId,
-    eventId
+    eventId,
+    event
 }) => {
-  const itemHighlight = { animation: 'yellowfade 30s' }
-  return (
+    const itemHighlight = event.timeReceived ? {
+        animationName: 'yellowfade',
+        animationDuration: '30s',
+        animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
+    } : {}
+    return (
     <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
@@ -32,7 +37,7 @@ export const Event = ({
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time ? time.format('LT') : 'Time unknown!'}
+                subtitle={time ? time.format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
             />

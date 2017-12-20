@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
+import moment from 'moment'
 import * as eventActions from '../actions/eventActions'
 import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
 
@@ -16,7 +17,7 @@ export const rawList = (state = defaultEventCollection, action) => {
     switch(action.type){
         case eventActions.RECEIVE_EVENT:
         case eventActions.POST_EVENT_SUCCEED:
-            return addEventsToState(state, [action.event])
+            return addEventsToState(state, [{...action.event, timeReceived: moment()}])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
         default:

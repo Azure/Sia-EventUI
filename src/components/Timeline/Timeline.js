@@ -17,7 +17,7 @@ class Timeline extends Component {
   }
 
   render() {
-    const { events, dispatch, ticketId, incidentId, eventTypes } = this.props
+    const { events, dispatch, ticketId, incidentId } = this.props
     return (
       <div>
         <Filter pagination={events} dispatch={dispatch}/>
@@ -28,13 +28,10 @@ class Timeline extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { events } = state
-  return {
+const mapStateToProps = (state, ownProps) => ({
     ...ownProps,
-    events: events.list,
+    events: state.events.list,
     eventTypes: state.eventTypes.records
-  }
-}
+})
 
 export default connect(mapStateToProps)(Timeline)

@@ -45,7 +45,10 @@ var config = {
     new WebpackShellPlugin({
       onBuildExit: "mocha temp/testBundle.js"
     }),
-    new webpack.DefinePlugin({constants})
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"test"',
+      'constants': JSON.stringify(constants)
+    })
   ],
 
   resolve: {

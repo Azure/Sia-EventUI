@@ -8,14 +8,7 @@ const defaultTicketList = {}
 
 const defaultQueryString = ''
 
-const defaultSystems = {
-    1: {
-        id: 1,
-        name: 'Example',
-        linkPrefix: '',
-        linkSuffix: ''
-    }
-}
+const defaultSystems = config.ticketSystems
 
 const parseTicketsFromIncident = (incident) => {
     var associatedTickets = incident.tickets ? [...incident.tickets] : []
