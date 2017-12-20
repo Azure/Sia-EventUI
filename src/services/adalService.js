@@ -11,28 +11,30 @@ export const authVersion = 'adal'
 let context
 
 export const getAuthContext = (dispatch) => {
-  console.dir(context)
   if(!context)
   {
     context = new AuthenticationContext({
       instance: config.aadInstance,
       tenant: config.aadTenant,
-      redirectUri: chrome.identity.getRedirectURL('/extension.html'),
+      redirectUri: config.redirectUri,
+     // redirectUri: (chrome && chrome.identity) ? chrome.identity.getRedirectURL('/extension.html') : config.redirectUri, // eslint-disable-line no-undef
       clientId: clientId
     })
-    context.config.displayCall = (url) => {
-      chrome.identity.launchWebAuthFlow({url: url, interactive: true}, (resp) => {
-        console.log(resp)
-        
-        context.handleWindowCallback(resp.split('#')[1])
-      })
-    }
+    console.log(chrome)
+    //if in chrome extension configure auth accordingly
+    // if(0) // eslint-disable-line no-undef
+    // {
+    //   context.config.displayCall = (url) => {
+    //     chrome.identity.launchWebAuthFlow({url: url, interactive: true}, (resp) => { // eslint-disable-line no-undef
+    //         context.handleWindowCallback(resp.split('#')[1])
+    //     })
+    //   }
+    // }
   }
   
   if(dispatch)
   {
     context.callback = (err) => {
-      console.log('context callback hit')
       err
         ? dispatch(authActions.userLoginError(err))
         : dispatch(authActions.userLoggedIn(context.getCachedUser()))
@@ -45,14 +47,7 @@ export const getAuthContext = (dispatch) => {
 export const login = (dispatch) => {
   if(typeof window !== 'undefined' && !!window)
   {
-    // chrome.identity.launchWebAuthFlow(
-    //   {
-      //   //url: `${config.aadInstance}${config.aadTenant}/oauth2/v2.0/authorize?client_id=${config.clientId}&response_type=id_token+token&redirect_uri=${chrome.identity.getRedirectURL('/extension.html')}&nonce=123456789&scope=openid profile`,
-      //   url:`${config.aadInstance}microsoft.onmicrosoft.com/oauth2/authorize?response_type=id_token&client_id=${config.clientId}&redirect_uri=${chrome.identity.getRedirectURL('/extension.html')}&client-request-id=11323aa6-e5a5-4920-9750-445abc26fd64&x-client-SKU=Js&x-client-Ver=1.0.15&nonce=ed9ddeeb-165e-41a1-9ad3-62f566d0f32b`, 
-      //   interactive:true}, 
-      // (resp)=>{console.log(resp)})
       getAuthContext(dispatch).login()
-     //`${config.aadInstance}${config.aadTenant}/oauth2/v2.0/authorize?client_id=${config.clientId}&response_type=id_token+token&redirect_uri=${chrome.identity.getRedirectURL('/extension.html')}&nonce=123456789&scope=openid`}, 
   }
   else
   {
