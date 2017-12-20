@@ -8,7 +8,6 @@ import Chip from 'material-ui/Chip'
 import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
-import { mockEventTypes } from '../elements/mockEventTypes'
 
 export const dataSourceConfig = {
   text: 'name',
