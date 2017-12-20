@@ -90,12 +90,16 @@ export const ErrorLoadingIncident = (incident, ticketId, dispatch) => {
 
 export const CurrentlyLoadingIncident = (incident, ticketId) => LoadingMessage(
     'Loading Incident...',
-    (incident && incident.id)
+    DetermineRetryAction(incident, ticketId)
+)
+
+const DetermineRetryAction = (incident, ticketId) => (incident && incident.id)
     ? incidentActions.fetchIncident(incident.id)
     : ticketId
         ? incidentActions.fetchIncidentsByTicketId(ticketId)
         : incidentActions.fetchIncidents()
-)
 
 const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket
+
+

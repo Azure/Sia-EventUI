@@ -1,11 +1,14 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import { TestConditionSet } from '../../../services/playbookService'
+import LoadingMessage from '../../elements/LoadingMessage'
 import DisplayPlaybook from './DisplayPlaybook'
+import * as eventActions from '../../../actions/eventActions'
+import * as eventTypeActions from '../../../actions/eventTypeActions'
 
-export const Playbook = (args) => args.eventTypeIsFetching
-    || args.eventIsFetching
-    ? <div>Fetching event information...</div>
+export const Playbook = (args) => args.eventIsFetching
+    ? args.eventtypeIsFetching
+        ? LoadingMessage('Fetching event type information...', eventTypeActions.fetchEventType(args.eventTypeId))
+        : LoadingMessage('Fetching event information...', eventActions.fetchEvent(args.incidentId, args.eventId))
     : DisplayPlaybook(args)
 
 

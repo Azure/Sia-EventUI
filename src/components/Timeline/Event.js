@@ -6,25 +6,28 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
+import LoadingMessage from '../elements/LoadingMessage'
+import * as eventTypeActions from '../../actions/eventTypeActions'
 
 export const Event = ({
     text,
     time,
     backgroundColor,
-    isFetching,
     incidentId,
     ticketId,
     eventTypeId,
+    eventTypeIsFetching,
     eventId,
     event
 }) => {
-    const itemHighlight = event.timeReceived ? {
+    const itemHighlight = (event && event.timeReceived) ? {
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
-    return (
-    <div style={itemHighlight}>
+    return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
+        ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
+        : <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -52,7 +55,7 @@ export const Event = ({
             </CardText>
         </Card>
     </div>
-)}
+}
 
 Event.propTypes = {
     text: PropTypes.string.isRequired,
@@ -64,15 +67,16 @@ Event.propTypes = {
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
     const eventType = state.eventTypes.records[event.eventTypeId]
+    const eventTypeIsFetching = state.eventTypes.fetching.includes(event.eventTypeId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
         ...ownProps,
-        isFetching: state.events.fetching.includes(event.id),
         ticket,
         engagement,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
+        eventTypeIsFetching,
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
