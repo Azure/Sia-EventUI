@@ -53,7 +53,7 @@ div#app {
 }
 
 @media (max-width: 1800px) {
-  
+
   div#app {
     max-width: 25%;
   }
@@ -61,7 +61,7 @@ div#app {
 }
 
 @media (max-width: 1600px) {
-  
+
   div#app {
     max-width: 30%;
   }
@@ -69,7 +69,7 @@ div#app {
 }
 
 @media (max-width: 1200px) {
-  
+
   div#app {
     max-width: 40%;
   }
@@ -126,7 +126,7 @@ div#app {
   0% {
     background: yellow;
   }
-  50% {
+  20% {
     background: yellow;
   }
   100% {

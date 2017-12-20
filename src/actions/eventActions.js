@@ -15,6 +15,7 @@ export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
+export const UPDATE_EVENTS_AFTER_FILTER_CHANGE = 'UPDATE_EVENTS_AFTER_FILTER_CHANGE'
 export const UPDATE_URL = 'UPDATE_URL'
 
 export const pagination = paginationActions(EVENTS)
@@ -22,7 +23,7 @@ export const linksHeaderName = 'links'
 
 
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
+    [getEventsEndPoint(incidentId) + eventId],
     getEventActionSet(incidentId, eventId)
 )
 
@@ -94,11 +95,6 @@ export const serializeEventTypes = (eventTypes) => {
         return ''
     }
     return '?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
-}
-
-export const updateUrlAfterFilterChange = (filter) => {
-    type: UPDATE_URL,
-    filter
 }
 
 export const getEventActionSet = (incidentId, eventId) => ({

@@ -9,14 +9,12 @@ import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 
-const filterTypes = referenceData.types
-
-const dataSourceConfig = {
+export const dataSourceConfig = {
   text: 'name',
   value: 'id'
 }
 
-const chipStyles = {
+export const chipStyles = {
   chip: {
     margin: 4
   },
@@ -26,13 +24,13 @@ const chipStyles = {
   }
 }
 
-const filterSearchForm = {
+export const filterSearchForm = {
   name: 'filter selection',
   field: 'input'
 }
 
 
-const EventFilter = ({pagination, filter, filterSearchField, dispatch, history}) =>  {
+const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
     const filterChips = filter.eventTypes ? renderChips(history, filter, dispatch): null
     return  (
       <div className="incident-EventFilter">
@@ -86,13 +84,20 @@ const renderChip = (history, filter, eventType, dispatch) => {
   )
 }
 
+const extractEventTypesFromEventTypeObject = (eventTypes) => {
+  const eventTypeFilters = []
+  for (var o in eventTypes) { eventTypeFilters.push(eventTypes[o]) }
+  return eventTypeFilters
+}
+
 const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
     pagination: events.pages,
     filter: events.filter,
-    filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
+    filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
+    filterTypes: ownProps.eventTypes ? extractEventTypesFromEventTypeObject(ownProps.eventTypes) : []
   }
 }
 
