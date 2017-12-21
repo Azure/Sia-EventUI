@@ -33,15 +33,18 @@ import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
+const urlFilter = getFilterFromUrl(window.location.search)
+debugger
 export const store = createStore(incidentApp(getFilterFromUrl(window.location.search)), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 
-store.dispatch(fetchEventTypes())
-
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
-
+debugger
+// store.dispatch(fetchEventTypes(urlFilter, history, store.dispatch))
+store.dispatch(fetchEventTypes())
+debugger
 class MainComponent extends React.Component {
   render() {    
     return (

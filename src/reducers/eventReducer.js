@@ -41,6 +41,8 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
     switch(action.type) {
         case eventActions.CHANGE_EVENT_FILTER:
             return Object.assign({eventTypes: [], ticketId: null}, action.filter)
+        case eventActions.GET_EVENT_TYPES_SUCCESS:
+            console.log('they talk to each other')
         default:
             return state
     }

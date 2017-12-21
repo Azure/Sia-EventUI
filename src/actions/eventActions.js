@@ -276,12 +276,15 @@ export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (disp
 }
 
 export const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
+    debugger
     const newFilter = {
         ...oldFilter,
         validated: true,
         eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
     }
+    debugger
     dispatch(applyFilter(history)(oldFilter, newFilter))
+    debugger
 }
 
 const getFilterDataFromReferenceData = (filterEventTypes, referenceData) => {

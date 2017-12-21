@@ -32,7 +32,7 @@ class Timeline extends Component {
     if (filter.validated === true) {
       return
     }
-    if (filter.validated === false && Object.keys(eventTypes).length > 0) {
+    if (Object.keys(eventTypes).length > 0) {
       validateFilterEventTypesAgainstEventTypes(filter, eventTypes, history, dispatch)
     }
   }
