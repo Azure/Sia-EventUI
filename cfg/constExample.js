@@ -1,4 +1,4 @@
-/*  This is example code that goes in the config file(s) you create for your environment(s).  
+/*  This is example code that goes in the config file(s) you create for your environment(s).
 You'll probably want to use the code in the 'More than Defaults' section.
 */
 

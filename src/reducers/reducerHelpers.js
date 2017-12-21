@@ -38,7 +38,7 @@ export const withParentId = (parentIdName, parents, fnParentToRecords) => parent
             .reduce(byConcatenation, [])
         : withParentId(parentIdName, [parents], fnParentToRecords)
     : []
-    
+
 export const extractRecordsFromParent = (parentIdName, fnParentToRecords) => parent => {
     if(!parent) return []
     var records = fnParentToRecords(parent)
@@ -53,3 +53,21 @@ export const byConcatenation = (aggregateArray, current) => current
     ? aggregateArray.concat(current)
     : [...aggregateArray, current]
 : aggregateArray
+
+export const buildFetching = (actions, defaultFetchList = [], getId = action => action.id)  =>
+     (state = defaultFetchList, action) =>
+     {
+        switch(action.type){
+            case actions.try:
+                return state.includes(getId(action))
+                    ? state
+                    : state.concat([getId(action)])
+            case actions.fail: // fallthrough to the next case
+            case actions.succeed:
+                return state.includes(getId(action))
+                    ? state.filter(id => id !== getId(action))
+                    : state
+            default:
+                return state
+    }
+}

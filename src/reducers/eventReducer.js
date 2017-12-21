@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import moment from 'moment'
 import * as eventActions from '../actions/eventActions'
-import { mergeWithOverwrite } from './reducerHelpers'
+import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
 
 const defaultEventCollection = []
 
@@ -22,8 +22,8 @@ const pageArgs = {
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
-export const list = (state = defaultEventCollection, action) => {
-    switch (action.type) {
+export const rawList = (state = defaultEventCollection, action) => {
+    switch(action.type){
         case eventActions.RECEIVE_EVENT:
         case eventActions.POST_EVENT_SUCCEED:
             return addEventsToState(state, [{...action.event, timeReceived: moment()}])
@@ -46,9 +46,16 @@ export const filter = (defaultFilter) => (state = defaultFilter, action) => {
     }
 }
 
+export const fetching = buildFetching({
+    try: eventActions.REQUEST_EVENT,
+    succeed: eventActions.RECEIVE_EVENT,
+    fail: eventActions.RECEIVE_EVENT_FAILURE
+})
+
 export const pages = paginated(list, eventActions.pagination.types, pageArgs)
 
 export default (defaultFilter) => combineReducers({
+    fetching,
     pages,
     filter: filter(defaultFilter)
 })
