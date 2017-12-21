@@ -26,21 +26,24 @@ import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
-import {getFilter, referenceData} from './services/filterService'
+import { getFilterFromUrl } from './services/filterService'
+import { fetchEventTypes } from './actions/eventTypeActions'
 
 import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export const store = createStore(incidentApp(getFilter(window.location.search, referenceData.types)), composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(getFilterFromUrl(window.location.search)), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
+
+store.dispatch(fetchEventTypes())
 
 ListenForScreenSize(window, store)
 const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
-  render() {
+  render() {    
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <Provider store={store}>
