@@ -285,9 +285,3 @@ export const updateFilterEventTypes = (oldFilter, stateEventTypes, history, disp
     dispatch(applyFilter(history)(oldFilter, newFilter))
 }
 
-const getFilterDataFromReferenceData = (filterEventTypes, referenceData) => {
-    return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
-}
-const findEventTypeInRef = (eventType, referenceData) => {
-    return referenceData.hasOwnProperty(eventType.id) ? referenceData[eventType.id] : eventType
-}
