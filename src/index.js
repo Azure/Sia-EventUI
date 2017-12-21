@@ -43,8 +43,6 @@ ListenForScreenSize(window, store)
 
 const history = createBrowserHistory()
 
-store.dispatch(fetchEventTypes(history))
-
 class MainComponent extends React.Component {
   render() {    
     return (
