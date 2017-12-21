@@ -1,6 +1,6 @@
 import { reduxBackedPromise } from './actionHelpers'
 import * as eventActions from './eventActions'
-
+import {store} from '../index.js'
 export const TRY_GET_EVENT_TYPE = 'TRY_GET_EVENT_TYPE'
 export const GET_EVENT_TYPE_SUCCESS = 'GET_EVENT_TYPE_SUCCESS'
 export const GET_EVENT_TYPE_FAILURE = 'GET_EVENT_TYPE_FAILURE'
@@ -14,8 +14,8 @@ export const fetchEventType = (eventTypeId) => reduxBackedPromise(
     getEventTypeActionSet(eventTypeId)
 )
 
-export const fetchEventTypes = () =>
-    reduxBackedPromise(['eventTypes/'], getEventTypesActionSet())
+export const fetchEventTypes = (history) =>
+    reduxBackedPromise(['eventTypes/'], getEventTypesActionSet(history))
 
 
 
@@ -38,46 +38,43 @@ export const getEventTypeActionSet = (eventTypeId) => ({
     })
 })
 
-// export const getEventTypesActionSet = (urlFilter, history, dispatch) => ({
-//     try: () => ({
-//         type: TRY_GET_EVENT_TYPES
-//     }),
-
-//     succeed: (eventTypes) => {
-//         debugger
-//         dispatch({
-//             type: GET_EVENT_TYPES_SUCCESS,
-//             eventTypes
-//         })
-//         debugger
-//         if (Object.keys(eventTypes).length > 0) {
-//             debugger
-//             validateFilterEventTypesAgainstEventTypes(urlFilter, eventTypes, history, dispatch)
-//             console.log('well here we are, with events')
-//             debugger
-//         }
-//     },
-//     fail: (failureReason) => ({
-//         type: GET_EVENT_TYPES_FAILURE,
-//         failureReason
-//     })
-// })
-// works
-export const getEventTypesActionSet = () => ({
+export const getEventTypesActionSet = (history) => ({
     try: () => ({
         type: TRY_GET_EVENT_TYPES
     }),
 
-    succeed: (eventTypes) => ({
-        type: GET_EVENT_TYPES_SUCCESS,
-        eventTypes
-    }),
-
+    succeed: (eventTypes) => (dispatch) => {
+        const filter = store.getState().events.filter
+        
+        dispatch({
+            type: GET_EVENT_TYPES_SUCCESS,
+            eventTypes
+        })
+        if (Object.keys(eventTypes).length > 0 && filter && filter.eventTypes) {
+            dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
+        }
+    },
     fail: (failureReason) => ({
         type: GET_EVENT_TYPES_FAILURE,
         failureReason
     })
 })
+// works
+// export const getEventTypesActionSet = () => ({
+//     try: () => ({
+//         type: TRY_GET_EVENT_TYPES
+//     }),
+
+//     succeed: (eventTypes) => ({
+//         type: GET_EVENT_TYPES_SUCCESS,
+//         eventTypes
+//     }),
+
+//     fail: (failureReason) => ({
+//         type: GET_EVENT_TYPES_FAILURE,
+//         failureReason
+//     })
+// })
 
 const validateFilterEventTypesAgainstEventTypes = (filter, eventTypes, history, dispatch) => {
     debugger

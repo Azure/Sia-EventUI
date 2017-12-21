@@ -27,15 +27,15 @@ class Timeline extends Component {
     }
   }
 
-  componentDidUpdate() {
-    const { eventTypes, filter, history, dispatch } = this.props
-    if (filter.validated === true) {
-      return
-    }
-    if (Object.keys(eventTypes).length > 0) {
-      validateFilterEventTypesAgainstEventTypes(filter, eventTypes, history, dispatch)
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   const { eventTypes, filter, history, dispatch } = nextProps
+  //   if (filter.validated === true) {
+  //     return
+  //   }
+  //   if (Object.keys(eventTypes).length > 0 && filter && filter.eventTypes) {
+  //     dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
+  //   }
+  // }
 
   render() {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
@@ -68,12 +68,6 @@ const setBaseFilter = (incidentIds) => {
 export const synchronizeFilters = (filter, incidentId, ticketId, history, dispatch) => {
   const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
   dispatch(eventActions.applyFilter(history)(filter, newFilter))
-}
-
-const validateFilterEventTypesAgainstEventTypes = (filter, eventTypes, history, dispatch) => {
-  if (filter && filter.eventTypes) {
-      dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
-  }
 }
 
 const mapStateToProps = (state, ownProps) => {
