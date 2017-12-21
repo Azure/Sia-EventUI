@@ -43,13 +43,14 @@ export const postIncident = (ticketId, ticketSystem) => reduxBackedPromise(
 export const getIncidentActionSet = (incidentId) => ({
     try: () => ({
         type: REQUEST_INCIDENT,
-        incidentId
+        id: incidentId
     }),
 
     succeed: (incident) => (dispatch) => {
         dispatch({
             type: RECEIVE_INCIDENT,
-            incident
+            incident,
+            id: incidentId
         })
 
         dispatch(eventActions.fetchEvents(incidentId))

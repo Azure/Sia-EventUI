@@ -29,9 +29,9 @@ class Timeline extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  ...ownProps,
-  events: state.events
+    ...ownProps,
+    events: state.events.list,
+    eventTypes: state.eventTypes.records
 })
-
 
 export default connect(mapStateToProps)(Timeline)

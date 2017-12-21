@@ -23,7 +23,7 @@ export class BootstrapPlaybook extends React.Component {
 export const mapStateToBootstrapPlaybookProps = (state, ownProps) => ({
     ...ownProps,
     eventType: state.eventTypes.records[ownProps.eventTypeId],
-    isFetching: state.eventTypes.fetching.find(id => id === ownProps.eventTypeId)
+    isFetching: state.eventTypes.fetching.includes(ownProps.eventTypeId)
 })
 
 export default connect(mapStateToBootstrapPlaybookProps)(BootstrapPlaybook)

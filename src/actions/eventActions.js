@@ -47,13 +47,14 @@ export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
         type: REQUEST_EVENT,
         incidentId,
-        eventId
+        id: eventId
     }),
 
     succeed: (event) => (dispatch) => {
         dispatch({
             type: RECEIVE_EVENT,
-            event
+            event,
+            id: eventId
         })
         
         dispatch(updatePagination())
@@ -63,7 +64,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
         type: RECEIVE_EVENT_FAILURE,
         failureReason,
         incidentId,
-        eventId
+        id: eventId
     })
 })
 

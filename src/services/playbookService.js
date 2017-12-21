@@ -118,7 +118,7 @@ export const fillTemplate = testableFillTemplate(selectSourceObject)
 
 export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
     return HasValidDisplayTemplatePattern(eventType) ? fillTemplate(eventType.displayTemplate, event, ticket, eventType, engagement)
-    : HasValidDisplayText(event.data) ? event.data.displayText
+    : HasValidDisplayText(event.data) ? event.data.DisplayText
     : HasValidName(eventType) ? eventType.name
     : HasValidData(event) ? JSON.stringify(event.data)
     :'This event has no text'
@@ -129,7 +129,7 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
   }
   
   const HasValidDisplayText = (data) => {
-    return data && data.displayText && data.displayText.length > 0
+    return data && data.DisplayText && data.DisplayText.length > 0
   }
   
   const HasValidName = (eventType) => {
