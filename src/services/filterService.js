@@ -1,26 +1,25 @@
 import queryString from 'query-string'
-import { mockEventTypes }  from '../components/elements/mockEventTypes'
 
-export const referenceData = mockEventTypes
-
-const getUrlFilterDataFromReferenceData = (filters, referenceData) => {
-    if(filters.eventTypes) {
+const getFilterEventTypes = (filters) => {
+    if (filters.eventTypes) {
         if (Array.isArray(filters.eventTypes) && filters.eventTypes.length > 0) {
-            filters.eventTypes = filters.eventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
+            filters.eventTypes = filters.eventTypes.map(eventType => generateFilterObject(eventType))
         }
         else {
-            filters.eventTypes = [findEventTypeInRef(filters.eventTypes, referenceData)]
+            filters.eventTypes = [generateFilterObject(filters.eventTypes)]
         }
     }
     return filters
 }
-const findEventTypeInRef = (id, referenceData) => {
-    const eventType = referenceData.find(refEventType => refEventType.id === parseInt(id))
-    return eventType ? eventType : {id: id, name: 'unknown'}
+
+const generateFilterObject = (eventTypeId) => {
+    return {id: parseInt(eventTypeId), name: 'unknown'}
 }
 
-export const getFilter = (urlFilterInfo, referenceData) => {
+export const getFilterFromUrl = (urlFilterInfo) => {
     const filterInput = queryString.parse(urlFilterInfo)
-    const filtersWithNames = getUrlFilterDataFromReferenceData(filterInput, referenceData)
-    return filtersWithNames
+    const filter = getFilterEventTypes(filterInput)
+    filter.fromUrl = Object.keys(filterInput).length > 0 ? true : false
+    filter.validated = filter.fromUrl ? false : true
+    return filter
 }
