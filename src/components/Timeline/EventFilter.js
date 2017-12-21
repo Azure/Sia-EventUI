@@ -31,37 +31,37 @@ export const filterSearchForm = {
 
 
 const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
-    const filterChips = filter.eventTypes ? renderChips(history, filter, dispatch): null
-    return  (
-      <div className="incident-EventFilter">
-        {filterChips}
-        <AutoComplete
-          floatingLabelText="Filter by event type"
-          filter={AutoComplete.caseInsensitiveFilter}
-          dataSource={filterTypes}
-          searchText={filterSearchField || ''}
-          onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
-          onNewRequest={
-            (eventType, indexInDataSource) => {
-              dispatch(eventActions.addFilter(history)(filter, eventType))
-              dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
-            }
+  const filterChips = filter.eventTypes ? renderChips(history, filter, dispatch): null
+  return  (
+    <div className="incident-EventFilter">
+      {filterChips}
+      <AutoComplete
+        floatingLabelText="Filter by event type"
+        filter={AutoComplete.caseInsensitiveFilter}
+        dataSource={filterTypes}
+        searchText={filterSearchField || ''}
+        onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
+        onNewRequest={
+          (eventType, indexInDataSource) => {
+            dispatch(eventActions.addFilter(history)(filter, eventType))
+            dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
           }
-          dataSourceConfig={dataSourceConfig}
-        />
-        <IconButtonStyled
-          tooltip='order'
-          onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
-        >
-          {
-            pagination && pagination.order === 'desc'
-            ? <ArrowDown/>
-            : <ArrowUp/>
-          }
-        </IconButtonStyled>
-      </div>
-    )
-  }
+        }
+        dataSourceConfig={dataSourceConfig}
+      />
+      <IconButtonStyled
+        tooltip='order'
+        onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
+      >
+        {
+          pagination && pagination.order === 'desc'
+          ? <ArrowDown/>
+          : <ArrowUp/>
+        }
+      </IconButtonStyled>
+    </div>
+  )
+}
   
   
 const renderChips = (history, filter, dispatch) => {
