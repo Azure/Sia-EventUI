@@ -44,42 +44,30 @@ export const getEventTypesActionSet = (history) => ({
     }),
 
     succeed: (eventTypes) => (dispatch) => {
-        const filter = store.getState().events.filter
-        
+        const oldFilter = store.getState().events.filter
         dispatch({
             type: GET_EVENT_TYPES_SUCCESS,
             eventTypes
         })
-        if (Object.keys(eventTypes).length > 0 && filter && filter.eventTypes) {
-            dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
+        if (Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
+            const newFilter = {
+                ...oldFilter,
+                validated: true,
+                eventTypes: getEventTypesFromReferenceData(oldFilter.eventTypes, eventTypes)
+            }
+            dispatch(eventActions.applyFilter(history)(oldFilter, newFilter))
         }
     },
+
     fail: (failureReason) => ({
         type: GET_EVENT_TYPES_FAILURE,
         failureReason
     })
 })
-// works
-// export const getEventTypesActionSet = () => ({
-//     try: () => ({
-//         type: TRY_GET_EVENT_TYPES
-//     }),
 
-//     succeed: (eventTypes) => ({
-//         type: GET_EVENT_TYPES_SUCCESS,
-//         eventTypes
-//     }),
-
-//     fail: (failureReason) => ({
-//         type: GET_EVENT_TYPES_FAILURE,
-//         failureReason
-//     })
-// })
-
-const validateFilterEventTypesAgainstEventTypes = (filter, eventTypes, history, dispatch) => {
-    debugger
-    if (filter && filter.eventTypes) {
-        debugger
-        dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
-    }
+const getEventTypesFromReferenceData = (filterEventTypes, referenceData) => {
+    return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
+}
+const findEventTypeInRef = (eventType, referenceData) => {
+    return referenceData.hasOwnProperty(eventType.id) ? referenceData[eventType.id] : eventType
 }
