@@ -17,7 +17,7 @@ export const Event = ({
     eventId,
     event
 }) => {
-    const itemHighlight = event.timeReceived ? {
+    const itemHighlight = (event && event.timeReceived) ? {
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
