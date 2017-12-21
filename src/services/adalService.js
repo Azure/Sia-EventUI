@@ -7,9 +7,13 @@ export const clientId = config.clientId
 export const authVersion = 'adal'
 
 
-let context = createContext((chrome && chrome.identity)) // eslint-disable-line no-undef
+let context 
 
 export const getAuthContext = (dispatch) => {
+  if(!context)
+  {
+    context = createContext((chrome && chrome.identity)) // eslint-disable-line no-undef
+  }
   if(dispatch)
   {
     context.callback = (err) => {
