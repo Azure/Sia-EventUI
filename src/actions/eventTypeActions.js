@@ -22,18 +22,18 @@ export const fetchEventTypes = (history) =>
 export const getEventTypeActionSet = (eventTypeId) => ({
     try: () => ({
         type: TRY_GET_EVENT_TYPE,
-        eventTypeId
+        id: eventTypeId
     }),
 
     succeed: (eventType) => ({
         type: GET_EVENT_TYPE_SUCCESS,
-        eventTypeId,
+        id: eventTypeId,
         eventType
     }),
 
     fail: (failureReason) => ({
         type: GET_EVENT_TYPE_FAILURE,
-        eventTypeId,
+        id: eventTypeId,
         failureReason
     })
 })

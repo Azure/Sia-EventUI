@@ -27,28 +27,35 @@ class CompareTickets extends Component {
     render() {
         const {
             firstIncident,
+            firstIncidentIsFetching,
             firstTicket,
+            firstTicketId,
             firstTicketSystem,
             secondIncident,
+            secondIncidentIsFetching,
             secondTicket,
+            secondTicketId,
             secondTicketSystem,
             dispatch,
             expandSection
         } = this.props
 
-        if(firstIncident && firstIncident.error)
+
+        if(firstIncidentIsFetching)
+        {
+            return CurrentlyLoadingIncident(firstIncident, firstTicketId)
+        }
+        if(secondIncidentIsFetching)
+        {
+            return CurrentlyLoadingIncident(secondIncident, secondTicketId)
+        }
+        if(!firstIncident || !firstTicket || firstIncident.error)
         {
             return ErrorLoadingIncident(firstIncident)
         }
-        if(secondIncident && secondIncident.error)
+        if(!secondIncident || !secondTicket || secondIncident.error)
         {
             return ErrorLoadingIncident(secondIncident)
-        }
-        if(!firstIncident
-            || firstIncident.IsFetching
-            || !secondIncident
-            || secondIncident.IsFetching){
-            return CurrentlyLoadingIncident(dispatch)
         }
         if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
         {
@@ -69,12 +76,18 @@ const mapStateToProps = (state, ownProps) => {
     const firstTicket = tickets.map[firstTicketId]
     const secondTicketId = parseInt(match.params.secondTicketId)
     const secondTicket = tickets.map[secondTicketId]
+    const firstIncident = getIncident(firstTicket, incidents)
+    const secondIncident = getIncident(secondTicket, incidents)
     return {
-        firstIncident: getIncident(firstTicket, incidents),
+        firstIncident,
+        firstIncidentIsFetching: incidents.fetchingByTicketId.includes(firstTicketId) ||
+                            firstIncident && firstIncident.id && incidents.fetchingByIncidentId.includes(firstIncident.id),
         firstTicket,
         firstTicketId,
         firstTicketSystem: tickets.systems[getTicketSystemId(firstTicket)],
-        secondIncident: getIncident(secondTicket, incidents),
+        secondIncident,
+        secondIncidentIsFetching: incidents.fetchingByTicketId.includes(secondTicketId) ||
+                            secondIncident && secondIncident.id && incidents.fetchingByIncidentId.includes(secondIncident.id),
         secondTicket,
         secondTicketId,
         secondTicketSystem: tickets.systems[getTicketSystemId(secondTicket)],

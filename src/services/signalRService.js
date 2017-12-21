@@ -44,7 +44,7 @@ const startConnection = (connection, dispatch) => {
     dispatch(signalRActions.tryEstablishConnection())
     connection.start()
         .then(() => dispatch(signalRActions.succeedEstablishConnection()),
-            (error) => dispatch(signalRActions.failEstablishConnection(error.message, error.stack)))
+            (error) => dispatch(signalRActions.failEstablishConnection(error ? error.message : 'No error message', error ? error.stack : 'No stack trace provided')))
 }
 
 export default establishSignalRConnection

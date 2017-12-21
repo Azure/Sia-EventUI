@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import * as incidentActions from '../actions/incidentActions'
 import { ENGAGE_SUCCESS, DISENGAGE_SUCCESS } from '../actions/engagementActions'
+import { buildFetching } from './reducerHelpers'
 
 const defaultIncidents = [
 ]
@@ -92,7 +93,26 @@ export const creation = (state = defaultCreationState, action) =>{
     }
 }
 
-export default combineReducers({
-    map,
-    creation
+export const fetchingByIncidentId = buildFetching({
+    try: incidentActions.REQUEST_INCIDENT,
+    succeed: incidentActions.RECEIVE_INCIDENT,
+    fail: incidentActions.RECEIVE_INCIDENT_FAILURE
 })
+
+export const fetchingByTicketId = buildFetching({
+        try: incidentActions.REQUEST_INCIDENT_BY_TICKET_ID,
+        succeed: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
+        fail: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_FAILURE
+    },
+    [],
+    (action) => action.ticketId
+)
+
+const incidentReducer = combineReducers({
+    map,
+    creation,
+    fetchingByIncidentId,
+    fetchingByTicketId
+})
+
+export default incidentReducer

@@ -1,33 +1,52 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
-import incidentActions from '../../actions/incidentActions'
+import * as incidentActions from '../../actions/incidentActions'
+import LoadingMessage from '../elements/LoadingMessage'
 
-class IncidentRedirect  extends Component {
+export class IncidentRedirect extends Component {
     constructor(props){
         super(props)
     }
 
     componentDidMount() {
-        const {ticketId, incidentId, dispatch} = this.props
-        if(!ticketId){
-            dispatch(incidentActions.fetchIncident(incidentId))
-        }
+        IncidentRedirectComponentDidMount(this.props)
     }
 
     render() {
         if(this.props.ticketId){
             return (<Redirect to={`/tickets/${this.props.ticketId}`}/>)
         }
-        return (<div>Incident not yet loaded</div>)
+        if(this.props.incidentIsFetching)
+        {
+            return LoadingMessage('Loading incident information')
+        }
+        return (<div>Unexpected error or interruption when loading incident</div>)
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const incident = state.incidents.map[ownProps.match.params.incidentId]
+export const IncidentRedirectComponentDidMount = (props) => {
+    const { ticketId, incidentId, dispatch } = props
+    if(!ticketId){
+        dispatch(incidentActions.fetchIncident(incidentId))
+    }
+}
+
+export const mapStateToProps = (state, ownProps) => {
+    const incidentId = (ownProps && ownProps.match && ownProps.match.params)
+        ? ownProps.match.params.incidentId
+        : null
+    const incident = (state && state.incidents && state.incidents.map)
+        ? state.incidents.map[incidentId]
+        : null
     return {
-        incidentId: ownProps.match.params.incidentId,
-        ticketId: (incident ? (incident.primaryTicket ? incident.primaryTicket.originId : null) : null)
+        incidentId,
+        incidentIsFetching: (state && state.incidents && state.incidents.fetchingByIncidentId && Array.isArray(state.incidents.fetchingByIncidentId))
+            ? state.incidents.fetchingByIncidentId.includes(incidentId)
+            : null,
+        ticketId: (incident && incident.primaryTicket)
+            ? incident.primaryTicket.originId
+            : null
     }
 }
 
