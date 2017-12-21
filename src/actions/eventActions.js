@@ -276,13 +276,13 @@ export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (disp
     dispatch(applyFilter(history)(oldFilter, newFilter))
 }
 
-export const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
-    const newFilter = {
-        ...oldFilter,
-        validated: true,
-        eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
-    }
+// export const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
+//     const newFilter = {
+//         ...oldFilter,
+//         validated: true,
+//         eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
+//     }
 
-    dispatch(applyFilter(history)(oldFilter, newFilter))
-}
+//     dispatch(applyFilter(history)(oldFilter, newFilter))
+// }
 
