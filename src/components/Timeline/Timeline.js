@@ -12,6 +12,7 @@ import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
+    eventTypes: PropTypes.object.isRequired,
     filter: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
   }
@@ -23,6 +24,16 @@ class Timeline extends Component {
     if (incidentId)
     {
         synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
+    }
+  }
+
+  componentDidUpdate() {
+    const { eventTypes, filter, history, dispatch } = this.props
+    if (filter.validated === true) {
+      return
+    }
+    if (filter.validated === false && Object.keys(eventTypes).length > 0) {
+      validateFilterEventTypesAgainstEventTypes(filter, eventTypes, history, dispatch)
     }
   }
 
@@ -57,6 +68,12 @@ const setBaseFilter = (incidentIds) => {
 export const synchronizeFilters = (filter, incidentId, ticketId, history, dispatch) => {
   const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
   dispatch(eventActions.applyFilter(history)(filter, newFilter))
+}
+
+const validateFilterEventTypesAgainstEventTypes = (filter, eventTypes, history, dispatch) => {
+  if (filter && filter.eventTypes) {
+      dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
