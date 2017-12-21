@@ -51,6 +51,7 @@ export const getIncidentActionSet = (incidentId) => ({
             incident,
             id: incidentId
         })
+    },
 
     fail: (failureReason) => ({
         type: RECEIVE_INCIDENT_FAILURE,

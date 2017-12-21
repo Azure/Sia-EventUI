@@ -52,7 +52,7 @@ export const fetching = buildFetching({
     fail: eventActions.RECEIVE_EVENT_FAILURE
 })
 
-export const pages = paginated(list, eventActions.pagination.types, pageArgs)
+export const pages = paginated(rawList, eventActions.pagination.types, pageArgs)
 
 export default (defaultFilter) => combineReducers({
     fetching,
