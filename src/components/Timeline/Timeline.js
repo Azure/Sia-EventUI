@@ -23,19 +23,15 @@ class Timeline extends Component {
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId)
     {
-        synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
+      synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const { eventTypes, filter, history, dispatch } = nextProps
-  //   if (filter.validated === true) {
-  //     return
-  //   }
-  //   if (Object.keys(eventTypes).length > 0 && filter && filter.eventTypes) {
-  //     dispatch(eventActions.updateFilterEventTypes(filter, eventTypes, history, dispatch))
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    const { oldFilter, eventTypes, history, dispatch } = nextProps
+    updateFilterEventTypes(oldFilter, eventTypes, history, dispatch)
+
+  }
 
   render() {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
@@ -59,6 +55,18 @@ const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
     .map(event => event.eventTypeId)
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
+}
+
+const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
+  if (oldFilter && oldFilter.validated === false && Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
+    const newFilter = {
+      ...oldFilter,
+      validated: true,
+      eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
+    }
+    dispatch(applyFilter(history)(oldFilter, newFilter))
+  }
+  return
 }
 
 const setBaseFilter = (incidentIds) => {
