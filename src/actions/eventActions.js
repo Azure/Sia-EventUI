@@ -70,7 +70,9 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
     filters.eventTypes = []
 
     URL PATTERNS
-    Gateway & UI URL:
+    Gateway URL:
+    /incidents/2/events/?eventTypes=1&eventTypes=2&eventTypes=3&eventTypes=16
+    UI URL:
     /tickets/38805418?eventTypes=1&eventTypes=2&eventTypes=3&occurredStart=someDateTime&occurredEnd=someDateTime
      */
 
@@ -81,7 +83,11 @@ export const serializeFilters = (filters) => {
     }
     const eventTypes = serializeEventTypes(filters.eventTypes)
     const filterTokens = Object.entries(filters)
-                        .filter(filter => filter[0] !== 'incidentId' && filter[0] !== 'eventTypes' && filter[0] !== 'filterSearchField' && filter[0] !== 'ticketId')
+                        .filter(filter => filter[0] !== 'incidentId' 
+                            && filter[0] !== 'eventTypes' 
+                            && filter[0] !== 'fromUrl' 
+                            && filter[0] !== 'validated'
+                            && filter[0] !== 'ticketId')
                         .map(filter => `${filter[0]}=${filter[1]}`)
     const finalFilterTokens = eventTypes
         ? filterTokens.concat(eventTypes)
@@ -223,7 +229,7 @@ const serializeEventTypesForUrl = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return '/?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
+    return '?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
 }
 
 export const isEventTypeInputValid = (eventType) => {
@@ -269,3 +275,18 @@ export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (disp
     dispatch(applyFilter(history)(oldFilter, newFilter))
 }
 
+export const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
+    const newFilter = {
+        ...oldFilter,
+        validated: true,
+        eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
+    }
+    dispatch(applyFilter(history)(oldFilter, newFilter))
+}
+
+const getFilterDataFromReferenceData = (filterEventTypes, referenceData) => {
+    return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
+}
+const findEventTypeInRef = (eventType, referenceData) => {
+    return referenceData.hasOwnProperty(eventType.id) ? referenceData[eventType.id] : eventType
+}
