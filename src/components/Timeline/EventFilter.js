@@ -84,7 +84,7 @@ const renderChip = (history, filter, eventType, dispatch) => {
   )
 }
 
-const extractEventTypesFromEventTypeObject = (eventTypes) => {
+const extractEventTypesFromEventTypesObject = (eventTypes) => {
   const eventTypeFilters = []
   for (var o in eventTypes) { eventTypeFilters.push(eventTypes[o]) }
   return eventTypeFilters
@@ -97,7 +97,7 @@ const mapStateToProps = (state, ownProps) => {
     pagination: events.pages,
     filter: events.filter,
     filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
-    filterTypes: ownProps.eventTypes ? extractEventTypesFromEventTypeObject(ownProps.eventTypes) : []
+    filterTypes: ownProps.eventTypes ? extractEventTypesFromEventTypesObject(ownProps.eventTypes) : []
   }
 }
 
