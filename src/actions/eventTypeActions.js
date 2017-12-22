@@ -1,6 +1,8 @@
 import { reduxBackedPromise } from './actionHelpers'
 import * as eventActions from './eventActions'
 import {store} from '../index.js'
+import {addEventTypesToFilter} from './filterActions'
+
 export const TRY_GET_EVENT_TYPE = 'TRY_GET_EVENT_TYPE'
 export const GET_EVENT_TYPE_SUCCESS = 'GET_EVENT_TYPE_SUCCESS'
 export const GET_EVENT_TYPE_FAILURE = 'GET_EVENT_TYPE_FAILURE'
@@ -61,21 +63,3 @@ export const getEventTypesActionSet = (history) => ({
     })
 })
 
-const addEventTypesToFilter = (oldFilter, eventTypes) => {
-    let newFilter = oldFilter
-    if (Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
-        newFilter = {
-            ...oldFilter,
-            validated: true,
-            eventTypes: getEventTypesFromReferenceData(oldFilter.eventTypes, eventTypes)
-        }
-    }
-    return newFilter
-}
-
-const getEventTypesFromReferenceData = (filterEventTypes, referenceData) => {
-    return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
-}
-const findEventTypeInRef = (eventType, referenceData) => {
-    return referenceData.hasOwnProperty(eventType.id) ? referenceData[eventType.id] : eventType
-}
