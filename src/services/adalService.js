@@ -2,9 +2,13 @@ import AuthenticationContext from 'adal-angular'
 import * as authActions from '../actions/authActions'
 import config from 'config'
 
+
 export const clientId = config.clientId
 
+
+
 export const authVersion = 'adal'
+
 
 
 let context 
