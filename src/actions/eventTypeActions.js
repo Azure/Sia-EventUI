@@ -49,14 +49,10 @@ export const getEventTypesActionSet = (history) => ({
             type: GET_EVENT_TYPES_SUCCESS,
             eventTypes
         })
-        if (Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
-            const newFilter = {
-                ...oldFilter,
-                validated: true,
-                eventTypes: getEventTypesFromReferenceData(oldFilter.eventTypes, eventTypes)
-            }
-            dispatch(eventActions.applyFilter(history)(oldFilter, newFilter))
-        }
+        const newFilter = addEventTypesToFilter(oldFilter, eventTypes)
+        dispatch(eventActions.applyFilter(history)(oldFilter, newFilter))
+        
+        
     },
 
     fail: (failureReason) => ({
@@ -64,6 +60,18 @@ export const getEventTypesActionSet = (history) => ({
         failureReason
     })
 })
+
+const addEventTypesToFilter = (oldFilter, eventTypes) => {
+    let newFilter = oldFilter
+    if (Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
+        newFilter = {
+            ...oldFilter,
+            validated: true,
+            eventTypes: getEventTypesFromReferenceData(oldFilter.eventTypes, eventTypes)
+        }
+    }
+    return newFilter
+}
 
 const getEventTypesFromReferenceData = (filterEventTypes, referenceData) => {
     return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))

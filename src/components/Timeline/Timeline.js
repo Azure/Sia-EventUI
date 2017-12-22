@@ -27,11 +27,11 @@ class Timeline extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { oldFilter, eventTypes, history, dispatch } = nextProps
-    updateFilterEventTypes(oldFilter, eventTypes, history, dispatch)
+  // componentWillReceiveProps(nextProps) {
+  //   const { oldFilter, eventTypes, history, dispatch } = nextProps
+  //   updateFilterEventTypes(oldFilter, eventTypes, history, dispatch)
 
-  }
+  // }
 
   render() {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
