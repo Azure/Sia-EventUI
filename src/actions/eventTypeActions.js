@@ -1,7 +1,7 @@
 import { reduxBackedPromise } from './actionHelpers'
 import * as eventActions from './eventActions'
 import {store} from '../index.js'
-import {addEventTypesToFilter} from './filterActions'
+import * as filterActions from './filterActions'
 
 export const TRY_GET_EVENT_TYPE = 'TRY_GET_EVENT_TYPE'
 export const GET_EVENT_TYPE_SUCCESS = 'GET_EVENT_TYPE_SUCCESS'
@@ -16,10 +16,9 @@ export const fetchEventType = (eventTypeId) => reduxBackedPromise(
     getEventTypeActionSet(eventTypeId)
 )
 
-export const fetchEventTypes = (history) =>
-    reduxBackedPromise(['eventTypes/'], getEventTypesActionSet(history))
-
-
+export const fetchEventTypes = (history) => reduxBackedPromise(
+    ['eventTypes/'], getEventTypesActionSet(history)
+)
 
 export const getEventTypeActionSet = (eventTypeId) => ({
     try: () => ({
@@ -51,10 +50,10 @@ export const getEventTypesActionSet = (history) => ({
             type: GET_EVENT_TYPES_SUCCESS,
             eventTypes
         })
-        const newFilter = addEventTypesToFilter(oldFilter, eventTypes)
-        dispatch(eventActions.applyFilter(history)(oldFilter, newFilter))
-        
-        
+        debugger
+        const newFilter = filterActions.updateFilterEventTypes(oldFilter, eventTypes)
+        debugger
+        dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))        
     },
 
     fail: (failureReason) => ({
@@ -62,4 +61,5 @@ export const getEventTypesActionSet = (history) => ({
         failureReason
     })
 })
+
 
