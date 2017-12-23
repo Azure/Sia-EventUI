@@ -7,6 +7,7 @@ import PropTypes from 'prop-types'
 import Events from './Events'
 import * as eventActions from '../../actions/eventActions'
 import * as eventTypeActions from '../../actions/eventTypeActions'
+import * as filterActions from '../../actions/filterActions'
 import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 
 class Timeline extends Component {
@@ -23,15 +24,9 @@ class Timeline extends Component {
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId)
     {
-      synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
+      filterActions.synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
     }
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   const { oldFilter, eventTypes, history, dispatch } = nextProps
-  //   updateFilterEventTypes(oldFilter, eventTypes, history, dispatch)
-
-  // }
 
   render() {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
@@ -64,18 +59,13 @@ const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) =
       validated: true,
       eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
     }
-    dispatch(applyFilter(history)(oldFilter, newFilter))
+    dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))
   }
   return
 }
 
 const setBaseFilter = (incidentIds) => {
   return incidentIds[0].toString()
-}
-
-export const synchronizeFilters = (filter, incidentId, ticketId, history, dispatch) => {
-  const newFilter = Object.assign({incidentId: incidentId, ticketId: ticketId}, filter)
-  dispatch(eventActions.applyFilter(history)(filter, newFilter))
 }
 
 const mapStateToProps = (state, ownProps) => {
