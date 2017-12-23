@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import moment from 'moment'
+import filter from './filterReducer'
 import * as eventActions from '../actions/eventActions'
+import * as filterActions from '../actions/filterActions'
 import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
 
 const defaultEventCollection = []
@@ -29,18 +31,8 @@ export const rawList = (state = defaultEventCollection, action) => {
             return addEventsToState(state, [{...action.event, timeReceived: moment()}])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
-        case eventActions.CHANGE_EVENT_FILTER:
+        case filterActions.CHANGE_EVENT_FILTER:
             return defaultEventCollection
-        default:
-            return state
-    }
-}
-
-
-export const filter = (defaultFilter) => (state = defaultFilter, action) => {
-    switch(action.type) {
-        case eventActions.CHANGE_EVENT_FILTER:
-            return Object.assign({eventTypes: [], ticketId: null}, action.filter)
         default:
             return state
     }
