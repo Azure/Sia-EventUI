@@ -2,7 +2,7 @@ import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
 import * as filterActions from './filterActions'
-import deepEquals from 'deep-equal'
+
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -15,9 +15,6 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
-export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
-export const UPDATE_EVENTS_AFTER_FILTER_CHANGE = 'UPDATE_EVENTS_AFTER_FILTER_CHANGE'
-export const UPDATE_URL = 'UPDATE_URL'
 
 export const pagination = paginationActions(EVENTS)
 
