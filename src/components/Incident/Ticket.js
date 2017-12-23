@@ -7,7 +7,6 @@ import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../elements/Buttons'
 import LoadingMessage from '../elements/LoadingMessage'
 import * as incidentActions from '../../actions/incidentActions'
-import * as eventActions from '../../actions/eventActions'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
 class Ticket extends Component {

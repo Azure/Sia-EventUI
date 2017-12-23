@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { reduxBackedPromise } from './actionHelpers'
 import * as ticketActions from './ticketActions'
-import * as eventActions from './eventActions'
 
 export const REQUEST_INCIDENT = 'REQUEST_INCIDENT'
 export const RECEIVE_INCIDENT = 'RECEIVE_INCIDENT'

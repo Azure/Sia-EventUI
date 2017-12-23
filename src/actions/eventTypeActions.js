@@ -1,5 +1,4 @@
 import { reduxBackedPromise } from './actionHelpers'
-import * as eventActions from './eventActions'
 import {store} from '../index.js'
 import * as filterActions from './filterActions'
 
@@ -51,7 +50,7 @@ export const getEventTypesActionSet = (history) => ({
             eventTypes
         })
         const newFilter = filterActions.updateFilterEventTypes(oldFilter, eventTypes)
-        dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))        
+        dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))
     },
 
     fail: (failureReason) => ({

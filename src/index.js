@@ -14,7 +14,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-import queryString from 'query-string'
+
 import createBrowserHistory from 'history/createBrowserHistory'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
@@ -24,10 +24,8 @@ import incidentRedirect from './components/Incident/incidentRedirect'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
-import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
 import { getFilterFromUrl } from './actions/filterActions'
-import { fetchEventTypes } from './actions/eventTypeActions'
 
 import Popups from './components/Popups'
 
@@ -44,7 +42,7 @@ ListenForScreenSize(window, store)
 const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
-  render() {    
+  render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <Provider store={store}>

@@ -52,18 +52,6 @@ const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
-const updateFilterEventTypes = (oldFilter, stateEventTypes, history, dispatch) => {
-  if (oldFilter && oldFilter.validated === false && Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
-    const newFilter = {
-      ...oldFilter,
-      validated: true,
-      eventTypes: getFilterDataFromReferenceData(oldFilter.eventTypes, stateEventTypes)
-    }
-    dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))
-  }
-  return
-}
-
 const setBaseFilter = (incidentIds) => {
   return incidentIds[0].toString()
 }

@@ -33,11 +33,11 @@ export const addFilter = (history) => (filter, eventType) => (dispatch) => {
     else {
         newFilter = {
             ...oldFilter,
-            eventTypes: oldFilter.eventTypes ? 
+            eventTypes: oldFilter.eventTypes ?
             oldFilter.eventTypes.concat({
                                     id: eventType.id,
                                     name: eventType.name
-                                    }) 
+                                    })
             : [{ id: eventType.id, name: eventType.name }]
         }
     }

@@ -16,14 +16,14 @@ describe('FilterActions', function () {
             }
             const expectedResult = 'testProperty=testValue&secondTestProperty=secondTestValue'
 
-            expect(eventActions.serializeFilters(testInput)).to.equal(expectedResult)
+            expect(filterActions.serializeFilters(testInput)).to.equal(expectedResult)
         })
 
         it('Should ignore incidentId', function () {
             const testInput = {
                 incidentId: 'valueThatShouldNotBeThere'
             }
-            expect(eventActions.serializeFilters(testInput)).to.equal('')
+            expect(filterActions.serializeFilters(testInput)).to.equal('')
         })
     })
 })
