@@ -50,9 +50,7 @@ export const getEventTypesActionSet = (history) => ({
             type: GET_EVENT_TYPES_SUCCESS,
             eventTypes
         })
-        debugger
         const newFilter = filterActions.updateFilterEventTypes(oldFilter, eventTypes)
-        debugger
         dispatch(filterActions.applyFilter(history)(oldFilter, newFilter))        
     },
 
