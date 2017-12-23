@@ -5,9 +5,9 @@ import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
-import {referenceData} from '../../services/filterService'
 import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
+import * as filterActions from '../../actions/filterActions'
 
 export const dataSourceConfig = {
   text: 'name',
@@ -43,7 +43,7 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
         onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
         onNewRequest={
           (eventType, indexInDataSource) => {
-            dispatch(eventActions.addFilter(history)(filter, eventType))
+            dispatch(filterActions.addFilter(history)(filter, eventType))
             dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
           }
         }
@@ -76,7 +76,7 @@ const renderChip = (history, filter, eventType, dispatch) => {
   return (
     <Chip
       key={eventType.id}
-      onRequestDelete={() => dispatch(eventActions.removeFilter(history)(filter, eventType))}
+      onRequestDelete={() => dispatch(filterActions.removeFilter(history)(filter, eventType))}
       style={chipStyles.chip}
     >
       {eventType.name}
