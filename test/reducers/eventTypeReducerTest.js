@@ -11,7 +11,7 @@ const newEventTypeId = 2
 const existingEventTypeState = {
     [existingEventTypeId]: {
         name: 'EventType Already In Reducer',
-        eventTypeId: 2
+        id: 2
     }
 }
 
@@ -38,32 +38,32 @@ const fetchingThingsState = [1, 2]
 
 const tryGetExisting = ({
     type: eventTypeActions.TRY_GET_EVENT_TYPE,
-    eventTypeId: 1
+    id: 1
 })
 
 const tryGetNew = ({
     type: eventTypeActions.TRY_GET_EVENT_TYPE,
-    eventTypeId: 3
+    id: 3
 })
 
 const succeedGetExisting = ({
     type: eventTypeActions.GET_EVENT_TYPE_SUCCESS,
-    eventTypeId: 1
+    id: 1
 })
 
 const succeedGetNew = ({
     type: eventTypeActions.GET_EVENT_TYPE_SUCCESS,
-    eventTypeId: 3
+    id: 3
 })
 
 const failGetExisting = ({
     type: eventTypeActions.GET_EVENT_TYPE_FAILURE,
-    eventTypeId: 1
+    id: 1
 })
 
 const failGetNew = ({
     type: eventTypeActions.GET_EVENT_TYPE_FAILURE,
-    eventTypeId: 3
+    id: 3
 })
 
 describe('EventType Reducer', function EventTypeReducerTest() {

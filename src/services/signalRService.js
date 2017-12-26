@@ -30,13 +30,13 @@ const configureConnection = (dispatch) => {
     let connection = new signalR.HubConnection(defaultBasePath + 'events/live')
 
     connection.on('Send', (event) => {
-        let eventObject = JSON.parse(event)
+        const eventObject = JSON.parse(event)
         dispatch(signalRActions.receiveMessage())
-        dispatch(getEventActionSet(event.incidentId, event.id).succeed(eventObject))
+        dispatch(getEventActionSet(eventObject.incidentId, eventObject.id).succeed(eventObject))
     })
 
     connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace'))
-    
+
     return connection
 }
 
@@ -44,7 +44,7 @@ const startConnection = (connection, dispatch) => {
     dispatch(signalRActions.tryEstablishConnection())
     connection.start()
         .then(() => dispatch(signalRActions.succeedEstablishConnection()),
-            (error) => dispatch(signalRActions.failEstablishConnection(error.message, error.stack)))
+            (error) => dispatch(signalRActions.failEstablishConnection(error ? error.message : 'No error message', error ? error.stack : 'No stack trace provided')))
 }
 
 export default establishSignalRConnection

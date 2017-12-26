@@ -5,6 +5,7 @@ var nodeExternals = require('webpack-node-externals')
 var WebpackShellPlugin = require('webpack-shell-plugin')
 let defaultSettings = require('./defaults')
 let constants = require('./test.const')
+let testConstants = Object.assign({}, constants, {authVersion: 'TEST'})
 
 var testStandinFor = (variableName) => 'Test Standin For ' + variableName
 
@@ -47,7 +48,7 @@ var config = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"test"',
-      'constants': JSON.stringify(constants)
+      'constants': JSON.stringify(testConstants)
     })
   ],
 

@@ -4,7 +4,8 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
-import { RetryButton } from '../Buttons'
+import { RetryButton } from '../elements/Buttons'
+import LoadingMessage from '../elements/LoadingMessage'
 import * as incidentActions from '../../actions/incidentActions'
 
 class Ticket extends Component {
@@ -27,17 +28,19 @@ class Ticket extends Component {
         const {
             incident,
             ticket,
+            ticketId,
             ticketSystem,
+            incidentIsFetching,
             dispatch
         } = this.props
 
-        if(incident && incident.error)
+        if(incidentIsFetching)
         {
-            return ErrorLoadingIncident(incident, dispatch)
+            return CurrentlyLoadingIncident(incident, ticketId)
         }
-        if(!incident || incident.IsFetching)
+        if(!incident || !ticket || incident.error)
         {
-            return CurrentlyLoadingIncident(dispatch)
+            return ErrorLoadingIncident(incident, ticketId, dispatch)
         }
         if(incident.primaryTicket.originId === ticket.originId)
         {
@@ -59,31 +62,44 @@ const mapStateToProps = (state, ownProps) => {
     const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
     const ticket = tickets.map[ticketId]
+    const incident = getIncident(ticket, incidents)
     return {
-        incident: getIncident(ticket, incidents),
+        incident,
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        preferences: tickets.preferences
+        preferences: tickets.preferences,
+        incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
+                            incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id)
     }
 }
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incident, dispatch) => {
+export const ErrorLoadingIncident = (incident, ticketId, dispatch) => {
+  const actionForRetry = incident && incident.id
+                       ? incidentActions.fetchIncident(incident.id)
+                       : incidentActions.fetchIncidentsByTicketId(ticketId)
     return <div>
-                <div>Error Loading Incident: {incident.error}</div>
-                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncident(incident.id)}/>
+                <div>Error Loading Incident: {incident ? incident.error : 'no incident detected'}</div>
+
+                <RetryButton dispatch={dispatch} actionForRetry={actionForRetry}/>
             </div>
 }
 
-export const CurrentlyLoadingIncident = (dispatch) => {
-    return <div>
-                <div>Loading Incident...</div>
-                <RetryButton dispatch={dispatch} actionForRetry={incidentActions.fetchIncidents()}/>
-            </div>
-}
+export const CurrentlyLoadingIncident = (incident, ticketId) => LoadingMessage(
+    'Loading Incident...',
+    DetermineRetryAction(incident, ticketId)
+)
+
+const DetermineRetryAction = (incident, ticketId) => (incident && incident.id)
+    ? incidentActions.fetchIncident(incident.id)
+    : ticketId
+        ? incidentActions.fetchIncidentsByTicketId(ticketId)
+        : incidentActions.fetchIncidents()
 
 const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket
+
+
