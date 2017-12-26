@@ -2,7 +2,6 @@ import React from 'react'
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 import Checkpoint from './Checkpoint'
-import EventDialogControl from './EventDialogControl'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import BadgeStyled from '../elements/BadgeStyled'
 import Timeline from '../Timeline/Timeline'
@@ -14,7 +13,7 @@ import { connect } from 'react-redux'
 export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(incident, ticket, ticketSystem, null, dispatch),
-        IncidentEvents([[ticket.originId, incident.id]], dispatch)
+        IncidentEvents([[ticket.originId, incident.id]])
     ],
     [
         IncidentSummaryName(),
@@ -108,27 +107,23 @@ export const IncidentProgress = (ticketId) => {
     return incidentProgressArray
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap, dispatch) => {
+export const IncidentEvents = (ticketToIncidentIdMap) => {
     let incidentEventsArray = [
         [
             [
-                (key) =>
-                    <EventDialogControl incidentIds={ticketToIncidentIdMap} key={key} dispatch={dispatch}/>
+                (key) =><strong key={key}>
+                    Incident Timeline:
+                </strong>
             ]
         ],
         [
             <Timeline
-                incidentIds={ExtractIncidentIdsFromMap(ticketToIncidentIdMap)}
                 ticketId={ticketToIncidentIdMap[0][0]}
                 incidentId={ticketToIncidentIdMap[0][1]}
             />
         ]
     ]
     return incidentEventsArray
-}
-
-const ExtractIncidentIdsFromMap = (ticketToIncidentIdMap) => {
-    return ticketToIncidentIdMap.map(ticketIdIncidentIdPair => ticketIdIncidentIdPair[1])
 }
 
 export const mapStateToProps = (state, ownProps) => {

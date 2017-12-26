@@ -24,7 +24,6 @@ import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import establishSignalRConnection from './services/signalRService'
-import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 export const store = createStore(incidentApp(), composeEnhancers(applyMiddleware(thunk)))
@@ -44,7 +43,6 @@ class MainComponent extends React.Component {
               <Router history={history} >
                 <div>
                   <TopNav />
-                  <Popups />
                   <Route exact path="/" component={CreateIncident} />
                   <Route exact path="/tickets/:ticketId" component={Ticket} />
                   <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
