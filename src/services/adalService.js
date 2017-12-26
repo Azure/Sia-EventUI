@@ -11,7 +11,7 @@ export const authVersion = 'adal'
 
 
 
-let context 
+let context
 
 export const getAuthContext = (dispatch) => {
   if(!context)
