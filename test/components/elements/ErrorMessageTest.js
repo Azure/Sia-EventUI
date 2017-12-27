@@ -6,7 +6,7 @@ import ErrorIcon from 'material-ui/svg-icons/alert/error'
 import { RetryButton } from '../../../src/components/elements/Buttons'
 
 describe('ErrorMessage', function () {
-    it('Should render a CircularProgress icon and a span with the given message when called with just a message', function () {
+    it('Should render an ErrorIcon icon and a span with the given message when called with just a message', function () {
         const testObject = ErrorMessage('TestMessage')
 
         expect(testObject.type).to.equal('div')
