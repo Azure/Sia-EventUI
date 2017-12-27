@@ -24,7 +24,7 @@ export const changeEventFilter = (history) => (filter) => {
 export const addFilter = (history) => (filter, eventType) => (dispatch) => {
     let newFilter = {}
     let oldFilter = filter
-    if (!isEventTypeInputValid(eventType)) {
+    if (!eventType && !eventType.id) {
         return
     }
     if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.map(eventType => eventType.id).includes(eventType.id)) {
@@ -42,10 +42,6 @@ export const addFilter = (history) => (filter, eventType) => (dispatch) => {
         }
     }
     dispatch(applyFilter(history)(oldFilter, newFilter))
-}
-
-const isEventTypeInputValid = (eventType) => {
-    return eventType && eventType.id
 }
 
 export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (dispatch) => {
@@ -97,33 +93,19 @@ export const serializeEventTypesForQuery = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return '?' + eventTypes.map(eventType => `eventTypes=${eventType.id}`).join('&')
-}
-
-const getFilterEventTypes = (filters) => {
-    if (filters.eventTypes) {
-        if (Array.isArray(filters.eventTypes) && filters.eventTypes.length > 0) {
-            filters.eventTypes = filters.eventTypes.map(eventType => generateFilterObject(eventType))
-        }
-        else {
-            filters.eventTypes = [generateFilterObject(filters.eventTypes)]
-        }
-    }
-    return filters
-}
-
-const generateFilterObject = (eventTypeId) => {
-    return {id: parseInt(eventTypeId), name: 'unknown'}
+    return '?' + eventTypes.map(eventType => `eventTypes=${eventType}`).join('&')
 }
 
 export const getFilterFromUrl = (urlFilterInfo) => {
-    const filterInput = queryString.parse(urlFilterInfo)
-    const filter = getFilterEventTypes(filterInput)
-    filter.fromUrl = Object.keys(filterInput).length > 0 ? true : false
+    let filter = queryString.parse(urlFilterInfo)
+    if (!Array.isArray(filter.eventTypes)){
+        filter.eventTypes = [filter.eventTypes]
+    }
+    filter.eventTypes = filter.eventTypes.map(e => parseInt(e))
+    filter.fromUrl = filter.length > 0 ? true : false
     filter.validated = filter.fromUrl ? false : true
     return filter
 }
-
 
 export const getUrlFromFilter = (history, filter) => {
     if (filter && filter.eventTypes) {
@@ -135,25 +117,7 @@ const generateUrl = (history, filter) => {
     return /tickets/ + filter.ticketId + serializeEventTypesForQuery(filter.eventTypes)
 }
 
-/* per docs OK to have utility functions that return new objects with updated fields
-https://redux.js.org/docs/recipes/reducers/RefactoringReducersExample.html */
-
-export const updateFilterEventTypes = (oldFilter, eventTypes) => {
-    debugger
-    let newFilter = { ...oldFilter }
-    if (Object.keys(eventTypes).length > 0 && oldFilter && oldFilter.eventTypes) {
-        newFilter = {
-            ...oldFilter,
-            validated: true,
-            eventTypes: getEventTypesFromReferenceData(oldFilter.eventTypes, eventTypes)
-        }
-    }
-    return newFilter
-}
-
-const getEventTypesFromReferenceData = (filterEventTypes, referenceData) => {
-    return filterEventTypes.map(eventType => findEventTypeInRef(eventType, referenceData))
-}
-const findEventTypeInRef = (eventType, referenceData) => {
-    return referenceData.hasOwnProperty(eventType.id) ? referenceData[eventType.id] : eventType
+export const findEventTypeInRef = (eventType, referenceData) => {
+    let x = referenceData.hasOwnProperty(eventType) ? referenceData[eventType] : {id: eventType, name: 'unknown'}
+    return x
 }
