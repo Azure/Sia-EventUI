@@ -17,6 +17,7 @@ export const Event = ({
     ticketId,
     eventTypeId,
     eventTypeIsFetching,
+    eventTypeIsError,
     eventId,
     event
 }) => {
@@ -67,7 +68,6 @@ Event.propTypes = {
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
     const eventType = state.eventTypes.records[event.eventTypeId]
-    const eventTypeIsFetching = state.eventTypes.fetching.includes(event.eventTypeId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
@@ -76,7 +76,8 @@ export const mapStateToEventProps = (state, ownProps) => {
         engagement,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
-        eventTypeIsFetching,
+        eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
+        eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,

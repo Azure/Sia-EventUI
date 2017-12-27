@@ -31,6 +31,7 @@ class Ticket extends Component {
             ticketId,
             ticketSystem,
             incidentIsFetching,
+            expandSection,
             dispatch
         } = this.props
 
@@ -59,8 +60,16 @@ class Ticket extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { incidents, tickets } = state
     const ticketId = parseInt(ownProps.match.params.ticketId)
+    return {
+        ...getInfoByTicketId(state, ticketId),
+        preferences: state.tickets.preferences,
+        expandSection: state.expandSection
+    }
+}
+
+export const getInfoByTicketId = (state, ticketId) => {
+    const { incidents, tickets } = state
     const ticket = tickets.map[ticketId]
     const incident = getIncident(ticket, incidents)
     return {
@@ -68,9 +77,10 @@ const mapStateToProps = (state, ownProps) => {
         ticket,
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        preferences: tickets.preferences,
         incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
-                            incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id)
+            incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id),
+        incidentIsErrored: incidents.errorByTicketId.includes(ticketId) ||
+            incident && incident.id && incidents.errorByIncidentId.includes(incident.id)
     }
 }
 

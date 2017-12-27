@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import CompareIncidents from './CompareIncidents'
 import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
-import { ErrorLoadingIncident, CurrentlyLoadingIncident, getTicketSystemId, getIncident } from './Ticket'
+import { ErrorLoadingIncident, CurrentlyLoadingIncident, getInfoByTicketId } from './Ticket'
 
 class CompareTickets extends Component {
     static propTypes = {
@@ -26,20 +26,24 @@ class CompareTickets extends Component {
 
     render() {
         const {
+            first,
+            second,
+            dispatch
+        } = this.props
+        const {
             firstIncident,
             firstIncidentIsFetching,
             firstTicket,
             firstTicketId,
-            firstTicketSystem,
+            firstTicketSystem
+        } = first
+        const {
             secondIncident,
             secondIncidentIsFetching,
             secondTicket,
             secondTicketId,
-            secondTicketSystem,
-            dispatch,
-            expandSection
-        } = this.props
-
+            secondTicketSystem
+        } = second
 
         if(firstIncidentIsFetching)
         {
@@ -59,7 +63,14 @@ class CompareTickets extends Component {
         }
         if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
         {
-            return (CompareIncidents(firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch))
+            return <CompareIncidents
+                        firstIncident={firstIncident}
+                        firstTicket={firstTicket}
+                        firstTicketSystem={firstTicketSystem}
+                        secondIncident={secondIncident}
+                        secondTicket={secondTicket}
+                        secondTicketSystem={secondTicketSystem}
+                    />
         }
         return (
             <Redirect to={`/tickets/${firstIncident.primaryTicket.originId}/compare/${secondIncident.primaryTicket.originId}`}>
@@ -79,20 +90,9 @@ const mapStateToProps = (state, ownProps) => {
     const firstIncident = getIncident(firstTicket, incidents)
     const secondIncident = getIncident(secondTicket, incidents)
     return {
-        firstIncident,
-        firstIncidentIsFetching: incidents.fetchingByTicketId.includes(firstTicketId) ||
-                            firstIncident && firstIncident.id && incidents.fetchingByIncidentId.includes(firstIncident.id),
-        firstTicket,
-        firstTicketId,
-        firstTicketSystem: tickets.systems[getTicketSystemId(firstTicket)],
-        secondIncident,
-        secondIncidentIsFetching: incidents.fetchingByTicketId.includes(secondTicketId) ||
-                            secondIncident && secondIncident.id && incidents.fetchingByIncidentId.includes(secondIncident.id),
-        secondTicket,
-        secondTicketId,
-        secondTicketSystem: tickets.systems[getTicketSystemId(secondTicket)],
-        preferences: tickets.preferences,
-        expandSection
+        first: getInfoByTicketId(firstTicketId),
+        second: getInfoByTicketId(secondTicketId),
+        preferences: state.tickets.preferences
     }
 }
 

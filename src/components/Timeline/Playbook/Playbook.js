@@ -41,6 +41,7 @@ export const mapStateToPlaybookProps = (state, ownProps) => {
         engagementId: engagement ? engagement.id : null,
         eventTypeIsFetching: state.evenTypes.fetching.includes(ownProps.eventTypeId),
         eventIsFetching: state.events.fetching.includes(ownProps.eventid),
+        eventIsError: state.events.error.includes(ownProps.eventId),
         ...ownProps
     }
 }
