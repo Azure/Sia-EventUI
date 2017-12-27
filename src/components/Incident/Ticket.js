@@ -31,7 +31,6 @@ class Ticket extends Component {
             ticketId,
             ticketSystem,
             incidentIsFetching,
-            expandSection,
             dispatch
         } = this.props
 
@@ -63,8 +62,7 @@ const mapStateToProps = (state, ownProps) => {
     const ticketId = parseInt(ownProps.match.params.ticketId)
     return {
         ...getInfoByTicketId(state, ticketId),
-        preferences: state.tickets.preferences,
-        expandSection: state.expandSection
+        preferences: state.tickets.preferences
     }
 }
 
