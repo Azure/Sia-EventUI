@@ -1,11 +1,14 @@
-
 import AuthenticationContext from 'adal-angular'
 import * as authActions from '../actions/authActions'
 import config from 'config'
 
+
 export const clientId = config.clientId
 
+
+
 export const authVersion = 'adal'
+
 
 
 let context
@@ -13,16 +16,8 @@ let context
 export const getAuthContext = (dispatch) => {
   if(!context)
   {
-    context = new AuthenticationContext({
-      instance: config.aadInstance,
-      tenant: config.aadTenant,
-      redirectUri: config.authRedirectUri,
-      clientId: clientId,
-
-      popUp: true
-    })
+    context = createContext((chrome && chrome.identity)) // eslint-disable-line no-undef
   }
-  
   if(dispatch)
   {
     context.callback = (err) => {
@@ -87,3 +82,24 @@ const tokenPromise = () => new Promise(
 const callbackBridge = (resolve, reject) => (errDesc, token) => errDesc
   ? reject(errDesc)
   : resolve(token)
+
+function createContext(chromeExtension) {
+  let newContext = new AuthenticationContext({
+    instance: config.aadInstance,
+    tenant: config.aadTenant,
+    redirectUri: (chromeExtension) ? chrome.identity.getRedirectURL('/extension.html') : config.redirectUri, // eslint-disable-line no-undef
+    clientId: clientId,
+    popUp: true
+  })
+
+  //if in chrome extension configure auth accordingly
+  if (chromeExtension)  // eslint-disable-line no-undef
+  {
+    newContext.config.displayCall = (url) => {
+      chrome.identity.launchWebAuthFlow({url: url, interactive: true}, (resp) => { // eslint-disable-line no-undef
+        newContext.handleWindowCallback(resp.split('#')[1])
+      })
+    }
+  }
+  return newContext
+}
