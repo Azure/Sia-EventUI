@@ -12,8 +12,8 @@ class Ticket extends Component {
     static propTypes = {
         incidentId: PropTypes.number,
         incident: PropTypes.object,
-        incidentIsFetching: PropTypes.bool.isRequired,
-        incidentIsError: PropTypes.bool.isRequired,
+        incidentIsFetching: PropTypes.bool,
+        incidentIsError: PropTypes.bool,
         ticket: PropTypes.object,
         ticketId: PropTypes.number,
         ticketSystem: PropTypes.object.isRequired,
@@ -92,7 +92,7 @@ export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? t
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
 export const ErrorLoadingIncident = (incident, ticketId) => ErrorMessage(
-    'Error Loading Incident: ' + incident ? incident.error : 'no incident detected',
+    'Error Loading Incident: ' + (incident ? incident.error : 'incident could not be retrieved'),
     DetermineRetryAction(incident, ticketId)
 )
 
