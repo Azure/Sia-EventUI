@@ -24,7 +24,7 @@ class Timeline extends Component {
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId)
     {
-      filterActions.synchronizeFilters(filter, incidentId, ticketId, history, dispatch)
+      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
     }
   }
 
