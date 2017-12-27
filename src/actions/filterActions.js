@@ -118,6 +118,5 @@ const generateUrl = (history, filter) => {
 }
 
 export const findEventTypeInRef = (eventType, referenceData) => {
-    let x = referenceData.hasOwnProperty(eventType) ? referenceData[eventType] : {id: eventType, name: 'unknown'}
-    return x
+    return referenceData.hasOwnProperty(eventType) ? referenceData[eventType] : {id: eventType, name: 'unknown'}
 }
