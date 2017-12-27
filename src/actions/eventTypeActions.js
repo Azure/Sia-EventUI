@@ -14,7 +14,7 @@ export const fetchEventType = (eventTypeId) => reduxBackedPromise(
 )
 
 export const fetchEventTypes = () => reduxBackedPromise(
-    ['eventTypes/'], getEventTypesActionSet()
+    ['eventTypes/'], getEventTypesActionSet
 )
 
 export const getEventTypeActionSet = (eventTypeId) => ({
@@ -36,12 +36,12 @@ export const getEventTypeActionSet = (eventTypeId) => ({
     })
 })
 
-export const getEventTypesActionSet = () => ({
+export const getEventTypesActionSet = ({
     try: () => ({
         type: TRY_GET_EVENT_TYPES
     }),
 
-    succeed: (eventTypes) => (dispatch) => ({
+    succeed: (eventTypes) => ({
         type: GET_EVENT_TYPES_SUCCESS,
         eventTypes
     }),
