@@ -4,14 +4,16 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import DisplayIncident from './DisplayIncident'
-import { RetryButton } from '../elements/Buttons'
 import LoadingMessage from '../elements/LoadingMessage'
+import ErrorMessage from '../elements/ErrorMessage'
 import * as incidentActions from '../../actions/incidentActions'
 
 class Ticket extends Component {
     static propTypes = {
         incidentId: PropTypes.number,
         incident: PropTypes.object,
+        incidentIsFetching: PropTypes.bool.isRequired,
+        incidentIsError: PropTypes.bool.isRequired,
         ticket: PropTypes.object,
         ticketId: PropTypes.number,
         ticketSystem: PropTypes.object.isRequired,
@@ -20,8 +22,8 @@ class Ticket extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences } = this.props
-        dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences))
+        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
+        dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
     }
 
     render() {
@@ -31,19 +33,22 @@ class Ticket extends Component {
             ticketId,
             ticketSystem,
             incidentIsFetching,
-            incidentIsError,
-            dispatch
+            incidentIsError
         } = this.props
 
         if(incidentIsFetching)
         {
             return CurrentlyLoadingIncident(incident, ticketId)
         }
-        if(!incident || !ticket || incident.error)
+        if(incidentIsError)
         {
-            return ErrorLoadingIncident(incident, ticketId, dispatch)
+            return ErrorLoadingIncident(incident, ticketId)
         }
-        if(incident.primaryTicket.originId === ticket.originId)
+        if(!incident || !incident.primaryTicket || !ticket || incident.error)
+        {
+            return UnexpectedFailureToLoadIncident()
+        }
+        if(incident.primaryTicket.originId && incident.primaryTicket.originId === ticket.originId)
         {
             return <DisplayIncident
                 incident={incident}
@@ -86,20 +91,18 @@ export const getInfoByTicketId = (state, ticketId) => {
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incident, ticketId, dispatch) => {
-  const actionForRetry = incident && incident.id
-                       ? incidentActions.fetchIncident(incident.id)
-                       : incidentActions.fetchIncidentsByTicketId(ticketId)
-    return <div>
-                <div>Error Loading Incident: {incident ? incident.error : 'no incident detected'}</div>
-
-                <RetryButton dispatch={dispatch} actionForRetry={actionForRetry}/>
-            </div>
-}
+export const ErrorLoadingIncident = (incident, ticketId) => ErrorMessage(
+    'Error Loading Incident: ' + incident ? incident.error : 'no incident detected',
+    DetermineRetryAction(incident, ticketId)
+)
 
 export const CurrentlyLoadingIncident = (incident, ticketId) => LoadingMessage(
     'Loading Incident...',
     DetermineRetryAction(incident, ticketId)
+)
+
+export const UnexpectedFailureToLoadIncident = () => ErrorMessage(
+    'Unexpected Failure When Attempting to Display Incident'
 )
 
 const DetermineRetryAction = (incident, ticketId) => (incident && incident.id)

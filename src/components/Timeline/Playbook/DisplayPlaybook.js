@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Play from './Play'
 
 export const DisplayPlaybook = ({
@@ -24,3 +25,12 @@ export const DisplayPlaybook = ({
             engagementId={engagementId}
         />
     </div>)}
+
+DisplayPlaybook.propTypes = {
+    actions: PropTypes.array.isRequired,
+    eventTypeId: PropTypes.number.isRequired,
+    eventId: PropTypes.number.isRequired,
+    ticketId: PropTypes.number.isRequired,
+    engagementId: PropTypes.number,
+    incidentId: PropTypes.number.isRequired
+}

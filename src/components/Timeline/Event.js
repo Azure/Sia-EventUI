@@ -6,6 +6,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
+import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
@@ -26,9 +27,12 @@ export const Event = ({
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
-    return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
+
+    return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-        : <div style={itemHighlight}>
+        : eventTypeIsError
+            ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+            : <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -64,6 +68,8 @@ Event.propTypes = {
     backgroundColor: PropTypes.string,
     ticketId: PropTypes.string
 }
+
+const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
 
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event

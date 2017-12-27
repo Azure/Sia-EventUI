@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import CompareIncidents from './CompareIncidents'
 import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
-import { ErrorLoadingIncident, CurrentlyLoadingIncident, getInfoByTicketId } from './Ticket'
+import { ErrorLoadingIncident, CurrentlyLoadingIncident, UnexpectedFailureToLoadIncident, getInfoByTicketId } from './Ticket'
 
 class CompareTickets extends Component {
     static propTypes = {
@@ -42,11 +42,19 @@ class CompareTickets extends Component {
         }
         if(!first.incident || !first.ticket || first.incident.error)
         {
-            return ErrorLoadingIncident(first.incident)
+            return ErrorLoadingIncident(first.incident, first.ticketId)
         }
         if(!second.incident || !second.ticket || second.incident.error)
         {
-            return ErrorLoadingIncident(second.incident)
+            return ErrorLoadingIncident(second.incident, second.ticketId)
+        }
+        if(!first.incident || !first.ticket || first.incident.error)
+        {
+            return UnexpectedFailureToLoadIncident()
+        }
+        if(!second.incident || !second.ticket || second.incident.error)
+        {
+            return UnexpectedFailureToLoadIncident()
         }
         if(first.incident.primaryTicket.originId === first.ticket.originId
             && second.incident.primaryTicket.originId === second.ticket.originId)

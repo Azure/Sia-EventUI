@@ -1,16 +1,37 @@
 import { connect } from 'react-redux'
 import { TestConditionSet } from '../../../services/playbookService'
 import LoadingMessage from '../../elements/LoadingMessage'
+import ErrorMessage from '../../elements/ErrorMessage'
 import DisplayPlaybook from './DisplayPlaybook'
 import * as eventActions from '../../../actions/eventActions'
 import * as eventTypeActions from '../../../actions/eventTypeActions'
 
-export const Playbook = (args) => args.eventIsFetching
-    ? args.eventtypeIsFetching
-        ? LoadingMessage('Fetching event type information...', eventTypeActions.fetchEventType(args.eventTypeId))
-        : LoadingMessage('Fetching event information...', eventActions.fetchEvent(args.incidentId, args.eventId))
-    : DisplayPlaybook(args)
-
+export const Playbook = ({
+    actions,
+    eventTypeId,
+    incidentId,
+    eventId,
+    ticketId,
+    engagementId,
+    eventIsFetching,
+    eventIsError,
+    eventTypeIsFetching,
+    eventTypeIsError
+}) => {
+    if(eventIsFetching) {
+        return LoadingMessage('Fetching event information...', eventActions.fetchEvent(incidentId, eventId))
+    }
+    if(eventTypeIsFetching) {
+        return LoadingMessage('Fetching event type information...', eventTypeActions.fetchEventType(eventTypeId))
+    }
+    if(eventIsError) {
+        return ErrorMessage('Error fetching event!', eventActions.fetchEvent(incidentId, eventId))
+    }
+    if(eventTypeIsError){
+        return ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+    }
+    return DisplayPlaybook({actions, eventTypeId, eventId, ticketId, engagementId, incidentId})
+}
 
 export const mapStateToPlaybookProps = (state, ownProps) => {
     const auth = state.auth
@@ -40,6 +61,7 @@ export const mapStateToPlaybookProps = (state, ownProps) => {
         actions: qualifiedActions,
         engagementId: engagement ? engagement.id : null,
         eventTypeIsFetching: state.evenTypes.fetching.includes(ownProps.eventTypeId),
+        eventTypeIsError: state.evenTypes.error.includes(ownProps.eventTypeId),
         eventIsFetching: state.events.fetching.includes(ownProps.eventid),
         eventIsError: state.events.error.includes(ownProps.eventId),
         ...ownProps
