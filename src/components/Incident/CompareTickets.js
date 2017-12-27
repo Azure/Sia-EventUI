@@ -9,71 +9,59 @@ import { ErrorLoadingIncident, CurrentlyLoadingIncident, getInfoByTicketId } fro
 
 class CompareTickets extends Component {
     static propTypes = {
-        firstIncident: PropTypes.object,
-        firstTicket: PropTypes.object,
-        firstTicketSystem: PropTypes.object.isRequired,
-        secondIncident: PropTypes.object,
-        secondTicket: PropTypes.object,
-        secondTicketSystem: PropTypes.object.isRequired,
+        first: PropTypes.object.isRequired,
+        second: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchIncidentIfNeeded(this.props))
-        this.props.dispatch(fetchIncidentIfNeeded(this.props))
+        const {
+            first,
+            second,
+            preferences,
+            dispatch
+        } = this.props
+        dispatch(fetchIncidentIfNeeded(first.incident, first.ticketId, first.ticket, first.ticketSystem, preferences))
+        dispatch(fetchIncidentIfNeeded(second.incident, second.ticketId, second.ticket, second.ticketSystem, preferences))
     }
 
     render() {
         const {
             first,
-            second,
-            dispatch
+            second
         } = this.props
-        const {
-            firstIncident,
-            firstIncidentIsFetching,
-            firstTicket,
-            firstTicketId,
-            firstTicketSystem
-        } = first
-        const {
-            secondIncident,
-            secondIncidentIsFetching,
-            secondTicket,
-            secondTicketId,
-            secondTicketSystem
-        } = second
 
-        if(firstIncidentIsFetching)
+        if(first.incidentIsFetching)
         {
             return CurrentlyLoadingIncident(firstIncident, firstTicketId)
         }
-        if(secondIncidentIsFetching)
+        if(second.incidentIsFetching)
         {
             return CurrentlyLoadingIncident(secondIncident, secondTicketId)
         }
-        if(!firstIncident || !firstTicket || firstIncident.error)
+        if(!first.incident || !first.ticket || first.incident.error)
         {
             return ErrorLoadingIncident(firstIncident)
         }
-        if(!secondIncident || !secondTicket || secondIncident.error)
+        if(!second.incident || !second.ticket || second.incident.error)
         {
             return ErrorLoadingIncident(secondIncident)
         }
-        if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
+        if(first.incident.primaryTicket.originId === first.ticket.originId 
+            && second.incident.primaryTicket.originId === second.ticket.originId)
         {
             return <CompareIncidents
-                        firstIncident={firstIncident}
-                        firstTicket={firstTicket}
-                        firstTicketSystem={firstTicketSystem}
-                        secondIncident={secondIncident}
-                        secondTicket={secondTicket}
-                        secondTicketSystem={secondTicketSystem}
+                        firstIncident={first.incident}
+                        firstTicket={first.ticket}
+                        firstTicketSystem={first.ticketSystem}
+                        secondIncident={second.incident}
+                        secondTicket={second.ticket}
+                        secondTicketSystem={second.ticketSystem}
                     />
         }
         return (
-            <Redirect to={`/tickets/${firstIncident.primaryTicket.originId}/compare/${secondIncident.primaryTicket.originId}`}>
+            <Redirect to={`/tickets/${first.incident.primaryTicket.originId}/compare/${second.incident.primaryTicket.originId}`}>
                 <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={connectedCompareTickets}/>
             </Redirect>
         )
@@ -81,17 +69,12 @@ class CompareTickets extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const { incidents, tickets, expandSection } = state
     const { match } = ownProps
     const firstTicketId = parseInt(match.params.firstTicketId)
-    const firstTicket = tickets.map[firstTicketId]
     const secondTicketId = parseInt(match.params.secondTicketId)
-    const secondTicket = tickets.map[secondTicketId]
-    const firstIncident = getIncident(firstTicket, incidents)
-    const secondIncident = getIncident(secondTicket, incidents)
     return {
-        first: getInfoByTicketId(firstTicketId),
-        second: getInfoByTicketId(secondTicketId),
+        first: getInfoByTicketId(state, firstTicketId),
+        second: getInfoByTicketId(state, secondTicketId),
         preferences: state.tickets.preferences
     }
 }
