@@ -9,6 +9,7 @@ import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 import * as filterActions from '../../actions/filterActions'
 
+
 export const dataSourceConfig = {
   text: 'name',
   value: 'id'
@@ -30,8 +31,8 @@ export const filterSearchForm = {
 }
 
 
-const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
-  const filterChips = filter.eventTypes ? renderChips(history, filter, dispatch): null
+const EventFilter = ({pagination, filter, filterSearchField, eventTypes, filterTypes, dispatch, history}) =>  {
+  const filterChips = filter && filter.eventTypes && eventTypes ? renderChips(history, filter, eventTypes, dispatch): null
   return  (
     <div className="incident-EventFilter">
       {filterChips}
@@ -64,15 +65,16 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
 }
   
   
-const renderChips = (history, filter, dispatch) => {
+const renderChips = (history, filter, eventTypes, dispatch) => {
   return (
     <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((eventType) => renderChip(history, filter, eventType, dispatch))}
+      {filter.eventTypes.map((passedEventType) => renderChip(history, filter, eventTypes, passedEventType, dispatch))}
     </div>
   )
 }
 
-const renderChip = (history, filter, eventType, dispatch) => {
+const renderChip = (history, filter, eventTypes, passedEventType, dispatch) => {
+  const eventType = filterActions.findEventTypeInRef(passedEventType, eventTypes)
   return (
     <Chip
       key={eventType.id}
@@ -97,6 +99,7 @@ const mapStateToProps = (state, ownProps) => {
     pagination: events.pages,
     filter: events.filter,
     filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
+    eventTypes: ownProps.eventTypes ? ownProps.eventTypes : null,
     filterTypes: ownProps.eventTypes ? extractEventTypesFromEventTypesObject(ownProps.eventTypes) : []
   }
 }
