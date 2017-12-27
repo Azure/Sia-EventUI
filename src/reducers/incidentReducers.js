@@ -45,7 +45,7 @@ export const map = (state = defaultIncidentMap, action) => {
         case incidentActions.REQUEST_INCIDENT:
             const localIncidentRecord = state[action.incidentId]
             return addIncidentToState(state, localIncidentRecord ? localIncidentRecord : { id: action.incidentId } , startFetch)
-          case incidentActions.REQUEST_INCIDENTS:
+        case incidentActions.REQUEST_INCIDENTS:
             return addIncidentsToState(state, Object.values(state), startFetch)
         case ENGAGE_SUCCESS:
         case DISENGAGE_SUCCESS:

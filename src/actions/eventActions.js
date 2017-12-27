@@ -68,6 +68,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
             event,
             id: eventId
         })
+
         dispatch(updatePagination())
     },
 
@@ -92,12 +93,15 @@ export const getEventsActionSet = (incidentId) => ({
                 linksHeader = JSON.parse(header[1])
             }
         }
+
         dispatch({
             type: RECEIVE_EVENTS,
             events,
             incidentId,
             pagination: linksHeader
         })
+
+
         if(linksHeader.NextPageLink){
             dispatch(reduxBackedPromise(
                 [linksHeader.NextPageLink],
@@ -134,6 +138,7 @@ export const postEventActionSet = (incidentId) => ({
             incidentId,
             event
         })
+        
         dispatch(updatePagination())
     },
 
