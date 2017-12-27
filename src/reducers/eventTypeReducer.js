@@ -14,6 +14,8 @@ export const records = (state = defaultEventTypeCollection, action) => {
     switch(action.type){
         case eventTypeActions.GET_EVENT_TYPE_SUCCESS:
             return mergeToStateById(state, action.eventType)
+        case eventTypeActions.GET_EVENT_TYPES_SUCCESS:
+            return mergeToStateById(state, action.eventTypes)
         default:
             return state
     }

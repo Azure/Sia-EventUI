@@ -14,7 +14,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-import queryString from 'query-string'
+
 import createBrowserHistory from 'history/createBrowserHistory'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
@@ -24,19 +24,21 @@ import incidentRedirect from './components/Incident/incidentRedirect'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
-import { authContext, clientId, generateSiaContext } from './services/adalService'
 import establishSignalRConnection from './services/signalRService'
-import {getFilter, referenceData} from './services/filterService'
+import { getFilterFromUrl } from './actions/filterActions'
 
 import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
-export const store = createStore(incidentApp(getFilter(window.location.search, referenceData.types)), composeEnhancers(applyMiddleware(thunk)))
+const urlFilter = getFilterFromUrl(window.location.search)
+
+export const store = createStore(incidentApp(urlFilter), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 
 ListenForScreenSize(window, store)
+
 const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
