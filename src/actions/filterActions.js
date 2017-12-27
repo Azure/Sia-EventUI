@@ -21,38 +21,35 @@ export const changeEventFilter = (history) => (filter) => {
     }
 }
 
-export const addFilter = (history) => (filter, eventType) => (dispatch) => {
+export const addFilter = (history) => (filter, eventType) => {
     let newFilter = {}
     let oldFilter = filter
     if (!eventType && !eventType.id) {
         return
     }
-    if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.map(eventType => eventType.id).includes(eventType.id)) {
+    if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
         newFilter = {...oldFilter}
     }
     else {
         newFilter = {
             ...oldFilter,
             eventTypes: oldFilter.eventTypes ?
-            oldFilter.eventTypes.concat({
-                                    id: eventType.id,
-                                    name: eventType.name
-                                    })
-            : [{ id: eventType.id, name: eventType.name }]
+            oldFilter.eventTypes.concat(eventType.id)
+            : [eventType.id]
         }
     }
-    dispatch(applyFilter(history)(oldFilter, newFilter))
+    return applyFilter(history)(oldFilter, newFilter)
 }
 
-export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => (dispatch) => {
-    if (!oldFilter.eventTypes.map(eventType => eventType.id).includes(eventTypeToDelete.id)) {
+export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => {
+    if (!oldFilter.eventTypes.includes(eventTypeToDelete.id)) {
         return
     }
     const newFilter = {
         ...oldFilter,
-        eventTypes: oldFilter.eventTypes.filter(eventType => eventTypeToDelete.id !== eventType.id)
+        eventTypes: oldFilter.eventTypes.filter(eventType => eventTypeToDelete.id !== eventType)
     }
-    dispatch(applyFilter(history)(oldFilter, newFilter))
+    return applyFilter(history)(oldFilter, newFilter)
 }
 
 export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
@@ -65,9 +62,9 @@ export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => 
     }
 }
 
-export const synchronizeFilters = (filter, incidentId, ticketId, history, dispatch) => {
+export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
     const newFilter = Object.assign({ incidentId: incidentId, ticketId: ticketId }, filter)
-    dispatch(applyFilter(history)(filter, newFilter))
+    return applyFilter(history)(filter, newFilter)
 }
 
 export const serializeFiltersForUrl = (filters) => {
@@ -79,7 +76,6 @@ export const serializeFiltersForUrl = (filters) => {
         .filter(filter => filter[0] !== 'incidentId'
             && filter[0] !== 'eventTypes'
             && filter[0] !== 'fromUrl'
-            && filter[0] !== 'validated'
             && filter[0] !== 'ticketId')
         .map(filter => `${filter[0]}=${filter[1]}`)
     const finalFilterTokens = eventTypes
@@ -103,7 +99,6 @@ export const getFilterFromUrl = (urlFilterInfo) => {
     }
     filter.eventTypes = filter.eventTypes.map(e => parseInt(e))
     filter.fromUrl = filter.length > 0 ? true : false
-    filter.validated = filter.fromUrl ? false : true
     return filter
 }
 
