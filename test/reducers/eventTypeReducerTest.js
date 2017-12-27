@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import * as eventTypeActions from '../../src/actions/eventTypeActions.js'
-import { fetching, records } from '../../src/reducers/EventTypeReducer'
+import { fetching, records } from '../../src/reducers/eventTypeReducer'
 
 const defaultState = {}
 
