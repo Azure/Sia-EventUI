@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import buildError from '../../../src/reducers/reducerHelpers/error'
 
-describe('Fetching', function () {
+describe('Error Reducer', function () {
     const defaultActionCases = {
         try: 'TRY',
         succeed: 'SUCCEED',
