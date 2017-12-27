@@ -14,7 +14,6 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom'
-
 import createBrowserHistory from 'history/createBrowserHistory'
 import CreateIncident from './components/Search/CreateIncident'
 import Ticket from './components/Incident/Ticket'
@@ -30,15 +29,12 @@ import { getFilterFromUrl } from './actions/filterActions'
 import Popups from './components/Popups'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-
 const urlFilter = getFilterFromUrl(window.location.search)
-
 export const store = createStore(incidentApp(urlFilter), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 
 ListenForScreenSize(window, store)
-
 const history = createBrowserHistory()
 
 class MainComponent extends React.Component {

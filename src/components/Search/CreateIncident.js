@@ -24,7 +24,6 @@ export const CreateIncident = ({input, creationError, history, dispatch}) => {
                     onTouchTap={onSubmit(input, history)}
                 />
             </form>
-    
 }
 
 export const mapStateToProps = (state) => {

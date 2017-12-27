@@ -76,7 +76,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 

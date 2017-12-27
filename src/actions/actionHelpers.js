@@ -22,7 +22,7 @@ export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') =>
     if(!promiseGenerator) { throw 'promiseGenerator not initialized. This should not be possible. Consider rolling back.' }
 
     dispatch(actionSet.try())
-    
+
     return promiseGenerator(dispatch, ...promiseArgs)
         .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))

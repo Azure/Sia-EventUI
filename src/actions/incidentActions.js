@@ -143,7 +143,6 @@ const postIncidentFetchArgs = (ticketId, ticketSystem) => {
                 }
             ]
 }
-    
 
 export const updateIncidentCreationInput = (input) => ({
     type: UPDATE_INCIDENT_CREATION_INPUT,

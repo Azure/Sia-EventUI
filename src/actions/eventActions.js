@@ -3,7 +3,6 @@ import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
 import * as filterActions from './filterActions'
 
-
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
 export const RECEIVE_EVENT = 'RECEIVE_EVENT'
@@ -19,7 +18,6 @@ export const ADD_EVENT = 'ADD_EVENT'
 export const pagination = paginationActions(EVENTS)
 
 export const linksHeaderName = 'links'
-
 
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
     [getEventsEndPoint(incidentId) + eventId],
@@ -145,8 +143,3 @@ export const postEventActionSet = (incidentId) => ({
         failureReason
     })
 })
-
-
-
-
-

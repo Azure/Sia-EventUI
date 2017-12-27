@@ -5,7 +5,6 @@ import * as eventActions from '../actions/eventActions'
 
 export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
-/// NOTE:  this is what we want!!!!
 export const BootstrapIfNeeded = (props) => {
     if(IsBootstrapNeeded(props))
     {
