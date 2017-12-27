@@ -30,7 +30,7 @@ export const Event = ({
 
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-        : eventTypeIsError
+        : eventTypeIsError && !eventHasValidDisplayText(event)
             ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
             : <div style={itemHighlight}>
         <BootstrapPlaybook

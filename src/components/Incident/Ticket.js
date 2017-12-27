@@ -82,9 +82,9 @@ export const getInfoByTicketId = (state, ticketId) => {
         ticketId,
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
-            incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id),
+            (incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id)),
         incidentIsError: incidents.errorByTicketId.includes(ticketId) ||
-            incident && incident.id && incidents.errorByIncidentId.includes(incident.id)
+            (incident && incident.id && incidents.errorByIncidentId.includes(incident.id))
     }
 }
 
