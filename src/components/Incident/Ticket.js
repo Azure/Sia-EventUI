@@ -31,6 +31,7 @@ class Ticket extends Component {
             ticketId,
             ticketSystem,
             incidentIsFetching,
+            incidentIsError,
             dispatch
         } = this.props
 
@@ -77,7 +78,7 @@ export const getInfoByTicketId = (state, ticketId) => {
         ticketSystem: tickets.systems[getTicketSystemId(ticket)],
         incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
             incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id),
-        incidentIsErrored: incidents.errorByTicketId.includes(ticketId) ||
+        incidentIsError: incidents.errorByTicketId.includes(ticketId) ||
             incident && incident.id && incidents.errorByIncidentId.includes(incident.id)
     }
 }

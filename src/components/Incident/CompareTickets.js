@@ -34,21 +34,21 @@ class CompareTickets extends Component {
 
         if(first.incidentIsFetching)
         {
-            return CurrentlyLoadingIncident(firstIncident, firstTicketId)
+            return CurrentlyLoadingIncident(first.incident, first.ticketId)
         }
         if(second.incidentIsFetching)
         {
-            return CurrentlyLoadingIncident(secondIncident, secondTicketId)
+            return CurrentlyLoadingIncident(second.incident, second.ticketId)
         }
         if(!first.incident || !first.ticket || first.incident.error)
         {
-            return ErrorLoadingIncident(firstIncident)
+            return ErrorLoadingIncident(first.incident)
         }
         if(!second.incident || !second.ticket || second.incident.error)
         {
-            return ErrorLoadingIncident(secondIncident)
+            return ErrorLoadingIncident(second.incident)
         }
-        if(first.incident.primaryTicket.originId === first.ticket.originId 
+        if(first.incident.primaryTicket.originId === first.ticket.originId
             && second.incident.primaryTicket.originId === second.ticket.originId)
         {
             return <CompareIncidents
