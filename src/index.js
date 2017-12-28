@@ -59,5 +59,5 @@ class MainComponent extends React.Component {
 }
 
 // Render the main component into the dom
-ReactDOM.render(<MainComponent />, document.getElementById('app'))
+ReactDOM.render(<MainComponent />, document.getElementById('siaApp'))
 
