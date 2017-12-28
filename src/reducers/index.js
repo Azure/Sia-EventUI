@@ -15,7 +15,6 @@ const rootReducer = (filters) => combineReducers({
     tickets,
     engagements,
     events: events(filters),
-    popup,
     forms,
     expandSection,
     signalR,

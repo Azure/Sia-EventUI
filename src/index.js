@@ -26,8 +26,6 @@ import { ListenForScreenSize } from './actions/styleActions'
 import establishSignalRConnection from './services/signalRService'
 import { getFilterFromUrl } from './actions/filterActions'
 
-import Popups from './components/Popups'
-
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const urlFilter = getFilterFromUrl(window.location.search)
 export const store = createStore(incidentApp(urlFilter), composeEnhancers(applyMiddleware(thunk)))
