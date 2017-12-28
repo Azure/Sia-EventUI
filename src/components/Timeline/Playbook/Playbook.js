@@ -60,8 +60,8 @@ export const mapStateToPlaybookProps = (state, ownProps) => {
     return {
         actions: qualifiedActions,
         engagementId: engagement ? engagement.id : null,
-        eventTypeIsFetching: state.evenTypes.fetching.includes(ownProps.eventTypeId),
-        eventTypeIsError: state.evenTypes.error.includes(ownProps.eventTypeId),
+        eventTypeIsFetching: state.eventTypes.fetching.includes(ownProps.eventTypeId),
+        eventTypeIsError: state.eventTypes.error.includes(ownProps.eventTypeId),
         eventIsFetching: state.events.fetching.includes(ownProps.eventid),
         eventIsError: state.events.error.includes(ownProps.eventId),
         ...ownProps
