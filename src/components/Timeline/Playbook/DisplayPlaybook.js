@@ -11,20 +11,25 @@ export const DisplayPlaybook = ({
     incidentId
 }) => {
     let localKey = 0
-    return actions.map(action => <div key={localKey++}>
-        <span>
-            {action.name}
-        </span>
-        <br/>
-        <Play
-            action={action}
-            eventTypeId={eventTypeId}
-            eventId={eventId}
-            incidentId={incidentId}
-            ticketId={ticketId}
-            engagementId={engagementId}
-        />
-    </div>)}
+    
+    return (actions && actions.length > 0)
+    ? actions.map(action =>
+        <div key={localKey++}>
+            <span>
+                {action.name}
+            </span>
+            <br/>
+            <Play
+                action={action}
+                eventTypeId={eventTypeId}
+                eventId={eventId}
+                incidentId={incidentId}
+                ticketId={ticketId}
+                engagementId={engagementId}
+            />
+        </div>)
+    : 'No actions available!'
+}
 
 DisplayPlaybook.propTypes = {
     actions: PropTypes.array.isRequired,
