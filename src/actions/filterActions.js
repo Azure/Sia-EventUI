@@ -54,7 +54,7 @@ export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => {
 
 export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
     if (!newFilter.incidentId) {
-        throw 'Need to filter on incidentId!'
+        throw new Error('Need to filter on incidentId!')
     }
     if (!deepEquals(oldFilter, newFilter)) {
         dispatch(changeEventFilter(history)(newFilter))
@@ -81,7 +81,8 @@ export const serializeFiltersForUrl = (filters) => {
     const finalFilterTokens = eventTypes
         ? filterTokens.concat(eventTypes)
         : filterTokens
-    return finalFilterTokens.join('&')
+    return finalFilterTokens ? '?' + finalFilterTokens.join('&')
+        : ''
 }
 
 //[{id:, name:}]
@@ -89,16 +90,18 @@ export const serializeEventTypesForQuery = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''
     }
-    return '?' + eventTypes.map(eventType => `eventTypes=${eventType}`).join('&')
+    return eventTypes.map(eventType => `eventTypes=${eventType}`).join('&')
 }
 
 export const getFilterFromUrl = (urlFilterInfo) => {
     let filter = queryString.parse(urlFilterInfo)
+    if (typeof(filter) !== 'object' || !filter.eventTypes) {
+        return null
+    }
     if (!Array.isArray(filter.eventTypes)){
         filter.eventTypes = [filter.eventTypes]
     }
     filter.eventTypes = filter.eventTypes.map(e => parseInt(e))
-    filter.fromUrl = filter.length > 0 ? true : false
     return filter
 }
 
@@ -108,8 +111,8 @@ export const getUrlFromFilter = (history, filter) => {
     }
 }
 
-const generateUrl = (history, filter) => {
-    return /tickets/ + filter.ticketId + serializeEventTypesForQuery(filter.eventTypes)
+export const generateUrl = (history, filter) => {
+    return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
 }
 
 export const findEventTypeInRef = (eventType, referenceData) => {
