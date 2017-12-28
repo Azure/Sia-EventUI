@@ -11,7 +11,7 @@ const onSubmit = (input, history) => () => {
 }
 
 export const CreateIncident = ({input, creationError, history, dispatch}) => {
-    return <form onSubmit={onSubmit(input, history)}>
+    return <form id='incident-search' onSubmit={onSubmit(input, history)}>
                 <TextField
                     hintText='Ticket Id of primary ticket'
                     floatingLabelText='Ticket Id'

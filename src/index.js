@@ -24,9 +24,11 @@ import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { ListenForScreenSize } from './actions/styleActions'
 import establishSignalRConnection from './services/signalRService'
+import { getFilterFromUrl } from './actions/filterActions'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-export const store = createStore(incidentApp(), composeEnhancers(applyMiddleware(thunk)))
+const urlFilter = getFilterFromUrl(window.location.search)
+export const store = createStore(incidentApp(urlFilter), composeEnhancers(applyMiddleware(thunk)))
 
 establishSignalRConnection(store.dispatch)
 

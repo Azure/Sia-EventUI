@@ -15,7 +15,7 @@ export const Playbook = (args) => args.eventIsFetching
 export const mapStateToPlaybookProps = (state, ownProps) => {
     const auth = state.auth
     const eventType = state.eventTypes.records[ownProps.eventTypeId]
-    const event = Object.values(state.events.list)
+    const event = Object.values(state.events.pages.list)
         .find(event => event.id == ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(
