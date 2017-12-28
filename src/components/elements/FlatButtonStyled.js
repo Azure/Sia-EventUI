@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import FlatButton from 'material-ui/FlatButton'
 
 const styles = {
@@ -26,6 +27,13 @@ export const FlatButtonStyled = ({label, primary, keyboardFocused, onTouchTap}) 
         >
         </FlatButton>
     )
+}
+
+FlatButtonStyled.propTypes = {
+    label: PropTypes.string.isRequired,
+    primary: PropTypes.bool,
+    keyboardFocused: PropTypes.string,
+    onTouchTap: PropTypes.func.isRequired
 }
 
 export default FlatButtonStyled
