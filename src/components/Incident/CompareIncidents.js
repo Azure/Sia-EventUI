@@ -6,7 +6,7 @@ export const CompareIncidents = (firstIncident, firstTicket, firstTicketSystem, 
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(firstIncident, firstTicket, firstTicketSystem, firstTicket.originId, dispatch),
         IncidentSummary(secondIncident, secondTicket, secondTicketSystem, secondTicket.originId, dispatch),
-        IncidentEvents(ticketIdToIncidentIdMap, dispatch)
+        IncidentEvents(ticketIdToIncidentIdMap)
     ],
     [
         IncidentSummaryName(firstTicket.originId),

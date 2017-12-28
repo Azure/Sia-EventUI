@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import EventFilter from './EventFilter'
 import Footer from './EventFooter'
+import AddEventCard from './AddEventCard'
 import PropTypes from 'prop-types'
 import Events from './Events'
 import * as eventActions from '../../actions/eventActions'
@@ -13,9 +14,11 @@ import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    ticketId: PropTypes.string.isRequired,
+    incidentId: PropTypes.number.isRequired
     eventTypes: PropTypes.object.isRequired,
-    filter: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
+    filter: PropTypes.object.isRequired
   }
 
   componentDidMount() {
@@ -32,6 +35,7 @@ class Timeline extends Component {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
     return (
       <div>
+        {AddEventCard(incidentId)}
         <EventFilter history={history} eventTypes={eventTypes}/>
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
         <Footer pagination={events} dispatch={dispatch}/>

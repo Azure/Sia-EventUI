@@ -4,8 +4,13 @@ var webpack = require('webpack')
 var nodeExternals = require('webpack-node-externals')
 var WebpackShellPlugin = require('webpack-shell-plugin')
 let defaultSettings = require('./defaults')
-let constants = require('./test.const')
-let testConstants = Object.assign({}, constants, {authVersion: 'TEST'})
+
+let testConstants
+try {
+  testConstants = require('./test.const')
+} catch (ex) {
+  testConstants = require('./defaultConstants')
+}
 
 var testStandinFor = (variableName) => 'Test Standin For ' + variableName
 

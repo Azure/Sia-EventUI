@@ -28,7 +28,7 @@ if(typeof(window) !== 'undefined')
 }
 else
 {
-    shimStatement = 'var window = {location:{href:"http://localhost"}};'
+    shimStatement = 'var window = {location:{href:"http://localhost"}}; var chrome = {}'
 }
 
 var geval = eval //force eval to use global scope
