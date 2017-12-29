@@ -24,10 +24,11 @@ export const Event = ({
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
-    } : {}
+  } : {}
+  const expand = (eventId || eventTypeId || ticketId || incidentId) ? true : false
     return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-        : <div style={itemHighlight}>
+      : <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -35,26 +36,26 @@ export const Event = ({
             incidentId={incidentId}
         />
         <Card
-            className="incident-card"
-            style={{ backgroundColor }}
+          className="incident-card"
+          style={{ backgroundColor }}
         >
-            <CardHeader
-                title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time ? time.format('LTS') : 'Time unknown!'}
-                actAsExpander={true}
-                showExpandableButton={true}
-            />
-            <CardText expandable={true}>
-                Select the Actions below:
+          <CardHeader
+            title={ticketId ? `${ticketId}: ${text}` : text}
+            subtitle={time ? time.format('LTS') : 'Time unknown!'}
+            actAsExpander={expand}
+            showExpandableButton={expand}
+          />
+          <CardText expandable={true} >
+            Select the Actions below:
                 <Playbook
-                    eventId={eventId}
-                    eventTypeId={eventTypeId}
-                    ticketId={ticketId}
-                    incidentId={incidentId}
-                />
-            </CardText>
+              eventId={eventId}
+              eventTypeId={eventTypeId}
+              ticketId={ticketId}
+              incidentId={incidentId}
+            />
+          </CardText>
         </Card>
-    </div>
+    </div >
 }
 
 Event.propTypes = {
