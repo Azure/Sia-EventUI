@@ -17,6 +17,7 @@ import Ticket from './components/Incident/Ticket'
 import CompareTickets from './components/Incident/CompareTickets'
 import EnsureLoggedInContainer from './components/Auth/EnsureLoggedIn'
 import incidentRedirect from './components/Incident/incidentRedirect'
+import Home from './components/Home'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
 import { store, persistor } from './configureStore'
@@ -36,7 +37,8 @@ class MainComponent extends React.Component {
                 <Router history={history} >
                   <div>
                     <TopNav />
-                    <Route exact path="/" component={CreateIncident} />
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/search" component={CreateIncident} />
                     <Route exact path="/tickets/:ticketId" component={Ticket} />
                     <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
                     <Route path="/incidents/:incidentId" component={incidentRedirect} />
