@@ -4,6 +4,7 @@ import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import IconButtonStyled from '../elements/IconButtonStyled'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 import Engagements from '../Engagements'
+import GlobalActions from '../Timeline/Playbook/GlobalActions'
 
 export const IncidentSummaryName = (ticketId) => {
     return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
@@ -17,11 +18,12 @@ IncidentSummary.propTypes = {
     dispatch: PropTypes.func.isRequired
 }
 
-export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispatch) =>
+export const IncidentSummary = (incident, ticket, ticketSystem, ticketOriginId, dispatch) =>
 [
-    HeaderRow(ticketId),
+    HeaderRow(ticketOriginId),
     TicketDetailsRow(ticketSystem, ticket),
     TitleRow(incident),
+    GlobalActionsRow(incident, ticketOriginId),
     EngagementsRow(incident, dispatch)
 ]
 
@@ -83,4 +85,14 @@ const EngagementsRow = (incident, dispatch) => [
         engagements={incident.engagements}
         dispatch={dispatch}
     />
+]
+
+const GlobalActionsRow = (incident, ticketId) => [
+    [
+        (key) => <GlobalActions
+                incidentId={incident.id}
+                ticketId={ticketId}
+                key={key}
+            />
+    ]
 ]

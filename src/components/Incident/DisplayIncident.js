@@ -7,7 +7,7 @@ import { IncidentEvents, IncidentEventsName } from './IncidentEvents'
 
 export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
-        IncidentSummary(incident, ticket, ticketSystem, null, dispatch),
+        IncidentSummary(incident, ticket, ticketSystem, ticket.originId, dispatch),
         IncidentEvents([[ticket.originId, incident.id]])
     ],
     [
