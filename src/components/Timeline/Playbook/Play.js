@@ -28,4 +28,3 @@ export const mapStateToPlayProps = (state, ownProps) => {
 }
 
 export default connect(mapStateToPlayProps)(Play)
-
