@@ -28,7 +28,7 @@ const parseTicketFromIncident = (incident) => (ticket) => {
         ticket.status = 'Active',
         ticket.title = incident.title,
         ticket.primaryTicketId = incident.primaryTicket.id
-        ticket.lastRefresh = moment()
+        ticket.lastRefresh = moment().toISOString()
     }
 }
 

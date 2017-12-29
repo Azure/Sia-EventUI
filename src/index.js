@@ -1,13 +1,10 @@
 import 'core-js/fn/object/assign'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
-import incidentApp from './reducers'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import thunk from 'redux-thunk'
 injectTapEventPlugin()
 require('./styles/App.css')
 import {
@@ -22,15 +19,10 @@ import EnsureLoggedInContainer from './components/Auth/EnsureLoggedIn'
 import incidentRedirect from './components/Incident/incidentRedirect'
 import TopNav from './components/TopNav/TopNav'
 import Debug from './components/Debug'
-import { ListenForScreenSize } from './actions/styleActions'
-import establishSignalRConnection from './services/signalRService'
+import { store, persistor } from './configureStore'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-export const store = createStore(incidentApp(), composeEnhancers(applyMiddleware(thunk)))
 
-establishSignalRConnection(store.dispatch)
-
-ListenForScreenSize(window, store)
 const history = createBrowserHistory()
 
 class MainComponent extends React.Component {
@@ -38,20 +30,22 @@ class MainComponent extends React.Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme()}>
         <Provider store={store}>
-          <div>
-            <EnsureLoggedInContainer>
-              <Router history={history} >
-                <div>
-                  <TopNav />
-                  <Route exact path="/" component={CreateIncident} />
-                  <Route exact path="/tickets/:ticketId" component={Ticket} />
-                  <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
-                  <Route path="/incidents/:incidentId" component={incidentRedirect} />
-                  <Route path="/debug" render={() => <Debug />}/>
-                </div>
-              </Router>
-            </EnsureLoggedInContainer>
-          </div>
+          <PersistGate persistor={persistor}>
+            <div>
+              <EnsureLoggedInContainer>
+                <Router history={history} >
+                  <div>
+                    <TopNav />
+                    <Route exact path="/" component={CreateIncident} />
+                    <Route exact path="/tickets/:ticketId" component={Ticket} />
+                    <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
+                    <Route path="/incidents/:incidentId" component={incidentRedirect} />
+                    <Route path="/debug" render={() => <Debug />}/>
+                  </div>
+                </Router>
+              </EnsureLoggedInContainer>
+            </div>
+          </PersistGate>
         </Provider>
       </MuiThemeProvider>
     )
