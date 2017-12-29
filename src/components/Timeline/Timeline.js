@@ -18,12 +18,12 @@ class Timeline extends Component {
     ticketId: PropTypes.string.isRequired,
     incidentId: PropTypes.number.isRequired,
     eventTypes: PropTypes.object.isRequired,
-    filter: PropTypes.object.isRequired
+    filter: PropTypes.object
   }
 
   componentDidMount() {
-    const { incidentIds, eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
-    updatePagination(incidentIds, dispatch)
+    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
+    updatePagination(incidentId, dispatch)
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId)
     {
@@ -44,8 +44,8 @@ class Timeline extends Component {
   }
 }
  
-const updatePagination = (incidentIds, dispatch) => {
-    dispatch(eventActions.pagination.filter(setBaseFilter(incidentIds)))
+const updatePagination = (incidentId, dispatch) => {
+    dispatch(eventActions.pagination.filter(incidentId.toString()))
 }
 
 const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
@@ -54,10 +54,6 @@ const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
     .map(event => event.eventTypeId)
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
-}
-
-const setBaseFilter = (incidentIds) => {
-  return incidentIds[0].toString()
 }
 
 const mapStateToProps = (state, ownProps) => {
