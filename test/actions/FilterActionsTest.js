@@ -3,53 +3,69 @@ import { expect } from 'chai'
 import queryString from 'query-string'
 import * as filterActions from '../../src/actions/filterActions'
 
+// Istanbul for test coverage, provides us with a new command nyc-mocha, which runs the tests and gives a reporter
 describe('FilterActions', function () {
     describe('getFilterFromUrl', function() {
-        const testQueryOne = '?eventTypes=16&eventTypes=11'
-        const expectedValue = [16, 11] 
-        const resultOne = filterActions.getFilterFromUrl(testQueryOne)
-        it('should return the right value from the query string', function() {
-            expect(resultOne).to.be.an('object')
-            expect(resultOne.eventTypes).to.be.an('array')
-            expect(resultOne.eventTypes[0]).to.equal(expectedValue[0])
-            expect(resultOne.eventTypes[1]).to.equal(expectedValue[1])
-        })
-        it('should return an array when query string includes a single filter value', function() {
-            const testQueryTwo = '?eventTypes=1'
-            const resultTwo = filterActions.getFilterFromUrl(testQueryTwo)
+        describe('when the query string provides a single value for eventTypes', function() {
+            it('should return an array with one value', function() {
+                let testQuery = '?eventTypes=1'
+    
+                let result = filterActions.getFilterFromUrl(testQuery)
 
-            expect(resultTwo).to.be.an('object')
-            expect(resultTwo.eventTypes).to.be.an('array')
+                expect(result.eventTypes).to.eql([1])
+            })
         })
-        it('should return an int array', function() {
-            const unexpectedValue = ["16", "11"]
 
-            expect(resultOne.eventTypes[0]).to.not.equal(unexpectedValue[0])
-            expect(resultOne.eventTypes[0]).to.equal(parseInt(unexpectedValue[0]))
-        })
-        it('should return null if filter is of unknown type', function() {
-            const badTestQueryOne = '?foo=baz'
-            const resultThree = filterActions.getFilterFromUrl(badTestQueryOne)
-            expect(resultThree).to.equal(null)
-        })
-        it('should return null if filter has no value in key-value pair', function() {
-            const badTestQueryTwo = '?foo='
-            const resultFour = filterActions.getFilterFromUrl(badTestQueryTwo)
+        describe('when the query string provides multiple values for eventTypes', function() {
+            it('should return the right value from the query string', function() {
+                let testQuery = '?eventTypes=16&eventTypes=11'
 
-            expect(resultFour).to.equal(null)
+                let result = filterActions.getFilterFromUrl(testQuery)
+                
+                expect(result.eventTypes).to.eql([16, 11])
+            })
         })
-        it('should return null if filter has no key in key-value pair', function () {
-            const badTestQueryThree = '?=foo'
-            const resultFive = filterActions.getFilterFromUrl(badTestQueryThree)
 
-            expect(resultFive).to.equal(null)
-        })
-        it('should return null if filter has no key-value pair', function () {
-            const badTestQueryFour = '?'
-            const resultSix = filterActions.getFilterFromUrl(badTestQueryFour)
+        context('bad query strings', function() {
+            describe('when an arbitrary key is given', function() {
+                it('should return null if the arbitrary key is of unknown type', function() {
+                    let badTestQuery = '?foo=baz'
+        
+                    let result = filterActions.getFilterFromUrl(badTestQuery)
 
-            expect(resultSix).to.equal(null)
-        })
+                    expect(result).to.equal(null)
+                })
+            })
+            describe('when filter has no value in key-value pair', function() {
+                it('should return null', function() {
+                    let badTestQuery = '?foo='
+        
+                    let result = filterActions.getFilterFromUrl(badTestQuery)
+        
+                    expect(result).to.equal(null)
+                })
+            })
+
+            describe('when filter has no key in key-value pair', function() {
+                it('should return null', function () {
+                    let badTestQuery = '?=foo'
+        
+                    let result = filterActions.getFilterFromUrl(badTestQuery)
+        
+                    expect(result).to.equal(null)
+                })
+            })
+            
+            describe('when filter has no key-value pair', function() {
+                it('should return null', function () {
+                    let badTestQuery = '?'
+        
+                    let result = filterActions.getFilterFromUrl(badTestQuery)
+        
+                    expect(result).to.equal(null)
+                })
+            })           
+        })        
     })
 
     describe('getUrlFromFilter', function() {
