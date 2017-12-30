@@ -37,7 +37,8 @@ class MainComponent extends React.Component {
                 <Router history={history} >
                   <div>
                     <TopNav />
-                    <Route path="/" component={Home} />
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/extension.html" component={Home} />
                     <Route path="/search" component={CreateIncident} />
                     <Route path="/tickets/:ticketId" component={Ticket} />
                     <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
