@@ -48,6 +48,10 @@ div#siaApp {
   flex-direction: row;
 }
 
+.incident-card {
+  overflow: hidden;
+}
+
 @media (max-width: 1800px) {
 
   div#siaApp {
