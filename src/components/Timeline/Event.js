@@ -40,7 +40,7 @@ export const Event = ({
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time ? time.format('LTS') : 'Time unknown!'}
+                subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
             />
@@ -77,7 +77,7 @@ export const mapStateToEventProps = (state, ownProps) => {
         eventId: event.id,
         eventTypeId: event.eventTypeId,
         eventTypeIsFetching,
-        time: moment(event.occurred ? event.occurred : event.Occurred),
+        time: moment.utc(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
         text: LoadTextFromEvent(event, eventType, ticket, engagement)
