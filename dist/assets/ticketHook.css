@@ -1,0 +1,20 @@
+#trackInSia {
+    position: fixed;
+    bottom: 0;
+    width: 300px;
+    background-color: bisque;
+    color: black;
+    z-index: 1000;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#trackInSia h3{
+    display: inline
+}
+
+/* #trackInSia a{
+    right:10px;
+} */

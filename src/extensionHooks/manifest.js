@@ -1,4 +1,6 @@
-{
+import config from 'config'
+
+let manifest = {
     "name": "SIA",
     "description": "SIA",
     "version": "0.0.0.2",
@@ -7,7 +9,7 @@
         "default_popup": "extension.html"
       },
       "content_scripts" : [{
-        "matches": ["https://icm.ad.msft.net/imp/v3/incidents/details/*"],
+        "matches": [],
         "js":["ticketHook.js"],
         "css":["ticketHook.css"]
       }],
