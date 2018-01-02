@@ -1,6 +1,12 @@
 import * as eventTypeActions from '../actions/eventTypeActions'
 import { mergeToStateById, buildFetching } from './reducerHelpers'
-import { combineReducers } from 'redux'
+import { persistCombineReducers } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+
+const persistConfig = {
+    key: 'eventType',
+    storage
+}
 
 const defaultEventTypeCollection = {}
 
@@ -21,7 +27,7 @@ export const records = (state = defaultEventTypeCollection, action) => {
     }
 }
 
-export const eventTypeReducer = combineReducers({
+export const eventTypeReducer = persistCombineReducers(persistConfig, {
     fetching,
     records
 })

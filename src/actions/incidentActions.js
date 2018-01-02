@@ -94,7 +94,7 @@ const fullIncidentInfoLoaded = (incident, ticket, ticketSystem, preferences) => 
 
 const isTicketInfoRecent = (ticket, preferences) => ticket
 && ticket.lastRefresh
-&& ticket.lastRefresh.isAfter(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
+&& moment(ticket.lastRefresh).isAfter(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
 
 export const getIncidentsActionSet = ({
     try: () => ({

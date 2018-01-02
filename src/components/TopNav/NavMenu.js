@@ -20,7 +20,7 @@ export const NavMenu = ({dispatch, alias}) =>
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
 >
     <MenuItem primaryText={ alias }/>
-    <MenuItem primaryText={<Link to="/" >Incident Search</Link>} />
+    <MenuItem primaryText={<Link to="/search" >Incident Search</Link>} />
     <MenuItem primaryText={<Link to="/" onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
 </IconMenu>
