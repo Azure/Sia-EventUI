@@ -37,6 +37,7 @@ div#siaApp {
   justify-content: space-between;
   align-items: center;
   padding-top: 1%;
+  flex-wrap: wrap;
 }
 
 .incident-EventFooter {
