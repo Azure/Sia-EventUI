@@ -9,7 +9,6 @@ import Events from './Events'
 import * as eventActions from '../../actions/eventActions'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 import * as filterActions from '../../actions/filterActions'
-import { FlatButtonStyled } from '../elements/FlatButtonStyled'
 
 class Timeline extends Component {
   static propTypes = {

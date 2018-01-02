@@ -5,14 +5,6 @@ import * as eventActions from './eventActions'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 
-/*SHAPE OF FILTERS
-filters = {
-    incidentId: 0,
-    eventTypes: [{id: 0, name: testName}, ...]
-    occurredStart: someDateTime,
-    occurredEnd: someDateTime
-}*/
-
 export const changeEventFilter = (history) => (filter) => {
     getUrlFromFilter(history, filter)
     return {
@@ -24,7 +16,7 @@ export const changeEventFilter = (history) => (filter) => {
 export const addFilter = (history) => (filter, eventType) => {
     let newFilter = {}
     let oldFilter = filter
-    if (!eventType && !eventType.id) {
+    if (!eventType || !eventType.id) {
         return
     }
     if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
@@ -81,11 +73,10 @@ export const serializeFiltersForUrl = (filters) => {
     const finalFilterTokens = eventTypes
         ? filterTokens.concat(eventTypes)
         : filterTokens
-    return finalFilterTokens ? '?' + finalFilterTokens.join('&')
+    return finalFilterTokens && finalFilterTokens.length > 0 ? '?' + finalFilterTokens.join('&')
         : ''
 }
 
-//[{id:, name:}]
 export const serializeEventTypesForQuery = (eventTypes) => {
     if (!eventTypes || eventTypes.length === 0) {
         return ''

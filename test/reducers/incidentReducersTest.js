@@ -9,7 +9,7 @@ const dummyEventActions = {
         type: 'DUMMY_FETCH_EVENTS'
     }),
 
-    getActionSetForEvents: (incidentId) => ({
+    getEventsActionSet: (incidentId) => ({
         succeed: (events) => ({
             type: 'DUMMY_FETCH_EVENTS'
         })

@@ -172,7 +172,7 @@ describe('FilterActions', function () {
         const filterWithEventTypes = {incidentId: 0, eventTypes: [1, 2]}
         const filterWithEverything = {incidentId: 0, eventTypes: [1, 2], foo: 'bar'}
 
-        const expectedFilterTokensWithoutEventTypes = '?'
+        const expectedFilterTokensWithoutEventTypes = ''
         const expectedFilterTokensWithEventTypes = '?eventTypes=1&eventTypes=2'
         const expectedFilterTokensWithEverything = '?foo=bar&eventTypes=1&eventTypes=2'
 

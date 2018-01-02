@@ -43,7 +43,7 @@ const EventFilter = ({pagination, filter, filterSearchField, eventTypes, filterT
         searchText={filterSearchField || ''}
         onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
         onNewRequest={
-          (eventType, indexInDataSource) => {
+          (eventType) => {
             dispatch(filterActions.addFilter(history)(filter, eventType))
             dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
           }
@@ -86,12 +86,6 @@ const renderChip = (history, filter, eventTypes, passedEventType, dispatch) => {
   )
 }
 
-const extractEventTypesFromEventTypesObject = (eventTypes) => {
-  const eventTypeFilters = []
-  for (var o in eventTypes) { eventTypeFilters.push(eventTypes[o]) }
-  return eventTypeFilters
-}
-
 const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
@@ -100,7 +94,7 @@ const mapStateToProps = (state, ownProps) => {
     filter: events.filter,
     filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
     eventTypes: ownProps.eventTypes ? ownProps.eventTypes : null,
-    filterTypes: ownProps.eventTypes ? extractEventTypesFromEventTypesObject(ownProps.eventTypes) : []
+    filterTypes: ownProps.eventTypes ? Object.values(ownProps.eventTypes) : []
   }
 }
 

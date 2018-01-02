@@ -7,7 +7,7 @@ import DisplayIncident from './DisplayIncident'
 import { RetryButton } from '../elements/Buttons'
 import LoadingMessage from '../elements/LoadingMessage'
 import * as incidentActions from '../../actions/incidentActions'
-import * as eventTypeActions from '../../actions/eventTypeActions'
+import {fetchEventTypes} from '../../actions/eventTypeActions'
 
 class Ticket extends Component {
     static propTypes = {
@@ -23,7 +23,7 @@ class Ticket extends Component {
     componentDidMount() {
         const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, history } = this.props
         dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences))
-        dispatch(eventTypeActions.fetchEventTypes(history))
+        dispatch(fetchEventTypes(history))
     }
 
     render() {
