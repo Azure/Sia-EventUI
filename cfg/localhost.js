@@ -1,43 +1,23 @@
-'use strict';
+const path = require('path')
+const webpack = require('webpack')
 
-let path = require('path');
-let webpack = require('webpack');
-let baseConfig = require('./base');
-let defaultSettings = require('./defaults');
-let constants = require('./localhost.const');
+const baseConfig = require('./base')
 
-// Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
-
-let config = Object.assign({}, baseConfig, {
-  entry: [
-    'webpack-hot-middleware/client?http://127.0.0.1:' + defaultSettings.port,
-    './src/index'
-  ],
+const config = Object.assign({}, baseConfig, {
   cache: true,
-  devtool: 'eval-source-map',
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new BowerWebpackPlugin({
-      searchResolveModulesDirectories: false
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"localhost"',
-      'constants': JSON.stringify(constants)
-    })
-  ],
-  module: defaultSettings.getDefaultModules()
-});
+  devtool: 'eval-source-map'
+})
 
-// Add needed loaders to the defaults here
-config.module.loaders.push({
-  test: /\.(js|jsx)$/,
-  loader: 'react-hot!babel-loader',
-  include: [].concat(
-    config.additionalPaths,
-    [path.join(__dirname, '/../src')]
-  )
-});
+config.entry.push(...[
+  'react-hot-loader/patch',
+  'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+  path.join(__dirname, '../src/index')
+])
 
-module.exports = config;
+config.plugins.push(...[
+  new webpack.HotModuleReplacementPlugin(),
+  new webpack.NamedModulesPlugin(),
+  new webpack.NoEmitOnErrorsPlugin()
+])
+
+module.exports = config
