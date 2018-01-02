@@ -45,7 +45,7 @@ export const Event = ({
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time ? time.format('LTS') : 'Time unknown!'}
+                subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
             />

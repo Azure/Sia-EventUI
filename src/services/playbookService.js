@@ -32,7 +32,7 @@ export const GetComparisonValue = (condition) => {
             return condition.comparisonValue
         case 1: //datetime
             return condition.dateTimeComparisonValue
-                ? moment(condition.dateTimeComparisonValue)
+                ? moment.utc(condition.dateTimeComparisonValue)
                 : condition.dateTimeComparisonValue
         default: //int
             return condition.integerComparisonValue
