@@ -37,7 +37,8 @@ describe('Playbook Service', function () {
                 dateTimeComparisonValue: '19700101',
                 dataFormat: dateTimeDataFormatValue
             })
-            expect(playbook.GetComparisonValue(getComparisonValueDateTime).isSame('19700101')).to.be.true
+
+            expect(playbook.GetComparisonValue(getComparisonValueDateTime)).to.deep.equal(moment.utc('19700101'))
         })
 
         it('Should return expected int when condition has int data format and comparison value', () => {

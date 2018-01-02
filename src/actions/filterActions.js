@@ -13,7 +13,7 @@ export const changeEventFilter = (history) => (filter) => {
     }
 }
 
-export const addFilter = (history) => (filter, eventType) => {
+export const testableAddFilter = (applyFilter) => (history) => (filter, eventType) => {
     let newFilter = {}
     let oldFilter = filter
     if (!eventType || !eventType.id) {
@@ -33,7 +33,9 @@ export const addFilter = (history) => (filter, eventType) => {
     return applyFilter(history)(oldFilter, newFilter)
 }
 
-export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => {
+export const addFilter = testableAddFilter(applyFilter)
+
+export const testableRemoveFilter = (applyFilter) => (history) => (oldFilter, eventTypeToDelete) => {
     if (!oldFilter.eventTypes.includes(eventTypeToDelete.id)) {
         return
     }
@@ -43,6 +45,8 @@ export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => {
     }
     return applyFilter(history)(oldFilter, newFilter)
 }
+
+export const removeFilter = testableRemoveFilter(applyFilter)
 
 export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
     if (!newFilter.incidentId) {

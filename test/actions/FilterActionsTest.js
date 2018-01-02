@@ -191,6 +191,76 @@ describe('FilterActions', function () {
         })
     })
 
+    describe('testableAddFilter', function() {
+        let mockApplyFilterFunction = (history) => (oldFilter, newFilter) => {
+            return oldFilter.eventTypes.length === newFilter.eventTypes.length ? 'no change'
+                : 'change'
+        }
+        let oldFilter = {incidentId: 42, ticketId: 1, eventTypes: [1]}
+
+        describe('when the eventType to add is new', function() {
+            let history = []
+            let eventType = {id: 100}
+
+            let result = filterActions.testableAddFilter(mockApplyFilterFunction)(history)(oldFilter, eventType)
+            
+            it('should return the word "change"', function() {
+                expect(result).to.equal('change')
+            })
+        })
+
+        describe('when the eventType to add is already in the filter', function () {
+            let history = []
+            let eventType = { id: 1 }
+
+            let result = filterActions.testableAddFilter(mockApplyFilterFunction)(history)(oldFilter, eventType)
+
+            it('should return the phrase "no change"', function () {
+                expect(result).to.equal('no change')
+            })
+        })
+
+        describe('when there is no eventType', function() {
+            let history = []
+            let eventType = null
+
+            let result = filterActions.testableAddFilter(mockApplyFilterFunction)(history)(oldFilter, eventType)
+
+            it('should just return (and be undefined)', function() {
+                expect(result).to.be.undefined
+            })
+        })
+    })
+
+    describe('testableRemoveFilter', function() {
+        let history = []
+        let mockApplyFilterFunction = (history) => (oldFilter, newFilter) => {
+            return oldFilter.eventTypes.length === newFilter.eventTypes.length ? 'no change' 
+                : 'change'
+        }
+        let oldFilter = { eventTypes: [1, 100] }
+
+        describe('when the eventType to delete is in the filter', function() {
+            let eventType = {id: 1}
+
+            let result = filterActions.testableRemoveFilter(mockApplyFilterFunction)(history)(oldFilter, eventType)
+
+            it('should return the word "change"', function() {
+                expect(result).to.equal('change')
+            })
+        })
+
+        describe('when the eventType to delete is not in the filter', function () {
+            let eventType = { id: 1000 }
+
+            let result = filterActions.testableRemoveFilter(mockApplyFilterFunction)(history)(oldFilter, eventType)
+
+            it('should just return (and be undefined)', function () {
+                expect(result).to.be.undefined
+            })
+        })
+    })
+
 })
 
 
