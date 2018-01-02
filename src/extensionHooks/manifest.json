@@ -7,7 +7,7 @@
       "default_popup": "extension.html"
     },
     "content_scripts" : [{
-      "matches": ["https://icm.ad.msft.net/imp/v3/incidents/details/*"],
+      "matches": [],
       "js":["ticketHook.js"],
       "css":["ticketHook.css"]
     }],
