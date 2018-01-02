@@ -1,21 +1,10 @@
-'use strict'
+const nodeExternals = require('webpack-node-externals')
+const WebpackShellPlugin = require('webpack-shell-plugin')
 
-var webpack = require('webpack')
-var nodeExternals = require('webpack-node-externals')
-var WebpackShellPlugin = require('webpack-shell-plugin')
-let defaultSettings = require('./defaults')
+const baseConfig = require('./base')
 
-let testConstants
-try {
-  testConstants = require('./test.const')
-} catch (ex) {
-  testConstants = require('./defaultConstants')
-}
-
-var testStandinFor = (variableName) => 'Test Standin For ' + variableName
-
-var config = {
-  entry: './test/loadtests.js',
+const config = Object.assign({}, baseConfig, {
+  cache: false,
   output: {
     filename: 'temp/testBundle.js'
   },
@@ -23,52 +12,13 @@ var config = {
   externals: [nodeExternals()],
   node: {
     fs: 'empty'
-  },
-  module: {
-    rules: [
-          {
-            test: /\.js$/,
-            enforce: 'pre',
+  }
+})
 
-            loader: 'eslint-loader',
-            options: {
-              emitWarning: true,
-            },
-          },
-        ],
-      loaders: [
-        {
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          query: {
-            presets: ['es2015']
-          }
-        }
-      ]
-  },
+config.entry.push('./test/loadtests.js')
 
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildExit: "mocha temp/testBundle.js"
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"test"',
-      'constants': JSON.stringify(testConstants)
-    })
-  ],
-
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    alias: {
-      actions: `${defaultSettings.srcPath}/actions/`,
-      components: `${defaultSettings.srcPath}/components/`,
-      sources: `${defaultSettings.srcPath}/sources/`,
-      stores: `${defaultSettings.srcPath}/stores/`,
-      styles: `${defaultSettings.srcPath}/styles/`,
-      config: `${defaultSettings.srcPath}/config/` + (process.env.REACT_WEBPACK_ENV ? process.env.REACT_WEBPACK_ENV : 'test'),
-      'react/lib/ReactMount': 'react-dom/lib/ReactMount'
-    }
-  },
-}
+config.plugins.push(new WebpackShellPlugin({
+  onBuildExit: 'mocha --colors temp/testBundle.js'
+}))
 
 module.exports = config

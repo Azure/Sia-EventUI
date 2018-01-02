@@ -40,7 +40,7 @@ describe('NavMenu', function test () {
     it('Should render an Incident Search link', () => {
         expect(this.output.props.children[1].type).to.equal(MenuItem)
         expect(this.output.props.children[1].props.primaryText.type).to.equal(Link)
-        expect(this.output.props.children[1].props.primaryText.props.to).to.equal('/')
+        expect(this.output.props.children[1].props.primaryText.props.to).to.equal('/search')
     })
 
     it('Should render a log out link', () => {

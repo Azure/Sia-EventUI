@@ -1,4 +1,4 @@
-div#app {
+div#siaApp {
   font-family: "Segoe UI", arial, sans-serif;
   max-width: 20%;
 }
@@ -11,7 +11,6 @@ div#app {
 
 .incident-row {
   border: 1px ;
-  display: flex;
   flex: 1;
 	padding-left: 2%;
   padding-right: 2%;
@@ -21,7 +20,6 @@ div#app {
   max-width: 100%;
   box-sizing: border-box;
   border: 1px ;
-  display: flex;
   flex: 1;
   flex-wrap: nowrap;
   align-items: center;
@@ -30,13 +28,11 @@ div#app {
 }
 
 .incident-steplabel {
-	display: flex;
 	flex-direction: column;
   justify-content: space-between;
 }
 
 .incident-EventFilter {
-  display: flex;
   flex: 1;
   justify-content: space-between;
   align-items: center;
@@ -44,16 +40,21 @@ div#app {
 }
 
 .incident-EventFooter {
-  display: flex;
   flex: 1;
   align-items: center;
   justify-content: space-between;
-  padding: 2%;
+  padding: 2%; 
+  display: flex;
+  flex-direction: row;
+}
+
+.incident-card {
+  overflow: hidden;
 }
 
 @media (max-width: 1800px) {
 
-  div#app {
+  div#siaApp {
     max-width: 25%;
   }
 
@@ -61,7 +62,7 @@ div#app {
 
 @media (max-width: 1600px) {
 
-  div#app {
+  div#siaApp {
     max-width: 30%;
   }
 
@@ -69,7 +70,7 @@ div#app {
 
 @media (max-width: 1200px) {
 
-  div#app {
+  div#siaApp {
     max-width: 40%;
   }
 
@@ -77,7 +78,7 @@ div#app {
 
 @media (max-width: 920px) {
 
-  div#app {
+  div#siaApp {
     max-width: 50%;
   }
 
@@ -85,7 +86,7 @@ div#app {
 
 @media (max-width: 768px) {
 
-  div#app {
+  div#siaApp {
     max-width: 75%;
   }
 
@@ -93,7 +94,7 @@ div#app {
 
 @media (max-width: 480px) {
 
-  div#app {
+  div#siaApp {
     max-width: 100%;
   }
 

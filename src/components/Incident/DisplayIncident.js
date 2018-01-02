@@ -51,18 +51,18 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
         [
             [
                 (key) =>
-                    <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key}>
+                    <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key} target="_blank">
                         {ticket.originId}
                     </a>,
                 (key) =>
                     <div key={key}>
-                        Sev 2 {ticket.severity}
+                        {ticket.severity}
                     </div>
             ],
             [
                 (key) =>
                     <div key={key}>
-                        IM: TBD {ticket.imName}
+                        {ticket.imName}
                     </div>,
                 (key) =>
                     <IconButtonStyled tooltip="Edit IM" key={key}>

@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import tickets from './ticketReducers'
 import auth from './authReducer'
 import incidents from './incidentReducers'
@@ -9,7 +8,8 @@ import signalR from './signalRReducer'
 import forms from './formReducer'
 import eventTypes from './eventTypeReducer'
 
-const rootReducer = () => combineReducers({
+
+export default {
     incidents,
     auth,
     tickets,
@@ -19,6 +19,4 @@ const rootReducer = () => combineReducers({
     expandSection,
     signalR,
     eventTypes
-})
-
-export default rootReducer
+}
