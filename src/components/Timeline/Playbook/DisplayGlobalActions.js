@@ -11,23 +11,36 @@ export const DisplayGlobalActions = ({
 }) => {
     let localKey = 0
     return <div>
-        {actions.map(action =>
-            <div key={localKey++}>
-                <span>
-                    {action.name}
-                </span>
-                <br/>
-                <Play
-                    action={action}
-                    incidentId={incidentId}
-                    ticketId={ticketId}
-                    engagementId={engagementId}
-                />
-            </div>
-        )}
+        {actions && Array.isArray(actions) && actions.length
+            ? actions.map(action => DisplayGlobalAction(
+                    action,
+                    ticketId,
+                    engagementId,
+                    incidentId,
+                    localKey++
+                ))
+            : null}
     </div>
 }
 
+export const DisplayGlobalAction = (
+    action,
+    ticketId,
+    engagementId,
+    incidentId,
+    key
+) => <div key={key}>
+    <span>
+        {action.name}
+    </span>
+    <br/>
+    <Play
+        action={action}
+        incidentId={incidentId}
+        ticketId={ticketId}
+        engagementId={engagementId}
+    />
+</div>
 
 export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
     const auth = state.auth
