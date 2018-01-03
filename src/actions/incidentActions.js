@@ -63,7 +63,7 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
         type: REQUEST_INCIDENT_BY_TICKET_ID,
         ticketId
     }),
-    
+
     succeed: (incidents) => ({
         type: FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
         ticketId,
@@ -79,25 +79,25 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
 
 
 export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError) =>
-(dispatch) =>
-(incidentIsFetching || incidentIsError)
-    ? null //No refresh needed
-    : basicIncidentInfoLoaded(incident)
-            ? fullIncidentInfoLoaded(incident, ticket, ticketSystem, preferences)
-                ? null //No refresh needed
-                : dispatch(fetchIncident(incident.id))
-            : ticketId
-                ? dispatch(fetchIncidentsByTicketId(ticketId))
-                : dispatch(fetchIncidents())
+    (dispatch) =>
+        (incidentIsFetching || incidentIsError)
+            ? null //No refresh needed
+            : basicIncidentInfoLoaded(incident)
+                ? fullIncidentInfoLoaded(incident, ticket, ticketSystem, preferences)
+                    ? null //No refresh needed
+                    : dispatch(fetchIncident(incident.id))
+                : ticketId
+                    ? dispatch(fetchIncidentsByTicketId(ticketId))
+                    : dispatch(fetchIncidents())
 
-const basicIncidentInfoLoaded = (incident) =>  incident && incident.id
+const basicIncidentInfoLoaded = (incident) => incident && incident.id
 const fullIncidentInfoLoaded = (incident, ticket, ticketSystem, preferences) => !incident.IsFetching
-&& ticketSystem
-&& isTicketInfoRecent(ticket, preferences)
+    && ticketSystem
+    && isTicketInfoRecent(ticket, preferences)
 
 const isTicketInfoRecent = (ticket, preferences) => ticket
-&& ticket.lastRefresh
-&& moment(ticket.lastRefresh).isAfter(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
+    && ticket.lastRefresh
+    && moment(ticket.lastRefresh).isAfter(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
 
 export const getIncidentsActionSet = ({
     try: () => ({
@@ -110,7 +110,7 @@ export const getIncidentsActionSet = ({
         receivedAt: moment()
     }),
 
-    fail:  (error) => ({
+    fail: (error) => ({
         type: RECEIVE_INCIDENTS_FAILURE,
         error
     })
@@ -136,15 +136,15 @@ export const createIncidentActionSet = (ticketId, ticketSystem) => ({
 
 const postIncidentFetchArgs = (ticketId, ticketSystem) => {
     return [
-                'incidents/',
-                {
-                    title: 'placeholder',
-                    primaryTicket: {
-                        originId: ticketId,
-                        ticketingSystemId: ticketSystem.id
-                    }
-                }
-            ]
+        'incidents/',
+        {
+            title: 'placeholder',
+            primaryTicket: {
+                originId: ticketId,
+                ticketingSystemId: ticketSystem.id
+            }
+        }
+    ]
 }
 
 export const updateIncidentCreationInput = (input) => ({
@@ -153,6 +153,10 @@ export const updateIncidentCreationInput = (input) => ({
 })
 
 export const duplicateIncident = (ticketId) => (dispatch) => {
+<<<<<<< HEAD
     dispatch(createIncidentActionSet(ticketId, {}).fail({ message: 'An incident already exists for this ticket'}))
+=======
+    dispatch(createIncidentActionSet(ticketId, {}).fail({ message: 'An incident already exists for this ticket' }))
+>>>>>>> clean up per suggestions.  only adding propTypes
     dispatch(ticketActions.updateTicketQuery(ticketId))
 }
