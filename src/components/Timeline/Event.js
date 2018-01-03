@@ -6,6 +6,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
+import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
@@ -17,6 +18,7 @@ export const Event = ({
     ticketId,
     eventTypeId,
     eventTypeIsFetching,
+    eventTypeIsError,
     eventId,
     event
 }) => {
@@ -25,9 +27,12 @@ export const Event = ({
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
-    return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
+
+    return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-        : <div style={itemHighlight}>
+        : eventTypeIsError && !eventHasValidDisplayText(event)
+            ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+            : <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -64,10 +69,11 @@ Event.propTypes = {
     ticketId: PropTypes.string
 }
 
+const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
+
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
     const eventType = state.eventTypes.records[event.eventTypeId]
-    const eventTypeIsFetching = state.eventTypes.fetching.includes(event.eventTypeId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
@@ -76,8 +82,9 @@ export const mapStateToEventProps = (state, ownProps) => {
         engagement,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
-        eventTypeIsFetching,
-        time: moment.utc(event.occurred ? event.occurred : event.Occurred),
+        eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
+        eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
+        time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
         text: LoadTextFromEvent(event, eventType, ticket, engagement)

@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import establishSignalRConnection from './services/signalRService'
 import { ListenForScreenSize } from './actions/styleActions'

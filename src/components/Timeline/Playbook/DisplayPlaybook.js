@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TestConditionSet } from '../../../services/playbookService'
 import Play from './Play'
@@ -32,12 +33,21 @@ export const DisplayPlaybook = ({
     </div>
 }
 
+DisplayPlaybook.propTypes = {
+    actions: PropTypes.array.isRequired,
+    eventTypeId: PropTypes.number.isRequired,
+    eventId: PropTypes.number.isRequired,
+    ticketId: PropTypes.string.isRequired,
+    engagementId: PropTypes.number,
+    incidentId: PropTypes.number.isRequired
+}
+
 
 export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
     const auth = state.auth
 
     const eventType = state.eventTypes.records[ownProps.eventTypeId]
-    const event = state.events.list.list.find(
+    const event = state.events.pages.list.find(
         event => event.id === ownProps.eventId
     )
     const ticket = state.tickets.map[ownProps.ticketId]

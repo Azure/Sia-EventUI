@@ -78,8 +78,11 @@ export const getIncidentsByTicketIdActionSet = (ticketId) => ({
 })
 
 
-export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences) =>
-(dispatch) => basicIncidentInfoLoaded(incident)
+export const fetchIncidentIfNeeded = (incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError) =>
+(dispatch) =>
+(incidentIsFetching || incidentIsError)
+    ? null //No refresh needed
+    : basicIncidentInfoLoaded(incident)
             ? fullIncidentInfoLoaded(incident, ticket, ticketSystem, preferences)
                 ? null //No refresh needed
                 : dispatch(fetchIncident(incident.id))
@@ -151,5 +154,5 @@ export const updateIncidentCreationInput = (input) => ({
 
 export const duplicateIncident = (ticketId) => (dispatch) => {
     dispatch(createIncidentActionSet(ticketId, {}).fail({ message: 'An incident already exists for this ticket'}))
-    dispatch(ticketActions.updateIncidentQuery(ticketId))
+    dispatch(ticketActions.updateTicketQuery(ticketId))
 }

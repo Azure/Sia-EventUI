@@ -1,7 +1,8 @@
+import { connect } from 'react-redux'
 import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
-import { IncidentSummary, IncidentEvents, IncidentSummaryName, IncidentEventsName} from './DisplayIncident'
+import { IncidentSummary, IncidentEvents, IncidentSummaryName, IncidentEventsName, mapStateToProps } from './DisplayIncident'
 
-export const CompareIncidents = (firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch) => {
+export const CompareIncidents = ({firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch}) => {
     const ticketIdToIncidentIdMap = [[firstTicket.originId, firstIncident.id], [secondTicket.originId, secondIncident.id]]
     return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
         IncidentSummary(firstIncident, firstTicket, firstTicketSystem, firstTicket.originId, dispatch),
@@ -17,4 +18,4 @@ export const CompareIncidents = (firstIncident, firstTicket, firstTicketSystem, 
     dispatch)
 }
 
-export default CompareIncidents
+export default connect(mapStateToProps)(CompareIncidents)

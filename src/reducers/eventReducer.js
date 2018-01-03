@@ -2,9 +2,11 @@ import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import moment from 'moment'
 import filter from './filterReducer'
-import * as eventActions from '../actions/eventActions'
 import * as filterActions from '../actions/filterActions'
-import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
+import * as eventActions from '../actions/eventActions'
+import { mergeWithOverwrite } from './reducerHelpers/merge'
+import buildFetching from './reducerHelpers/fetching'
+import buildError from './reducerHelpers/error'
 
 const defaultEventCollection = []
 
@@ -12,15 +14,6 @@ const makeSearchable = (event) => ({
     ...event,
     filterableIncidentId: event.incidentId.toString()
 })
-
-const pageArgs = {
-    defaultPage: 1,
-    defaultSortOrder: 'desc',
-    defaultSortBy: 'occurred',
-    defaultPer: 10,
-    defaultFilter: '',
-    defaultTotal: 0
-}
 
 const addEventsToState = (state, events) => mergeWithOverwrite(state, events.map(event => makeSearchable(event)))
 
@@ -38,16 +31,30 @@ export const rawList = (state = defaultEventCollection, action) => {
     }
 }
 
-export const fetching = buildFetching({
+const actionSet = {
     try: eventActions.REQUEST_EVENT,
     succeed: eventActions.RECEIVE_EVENT,
     fail: eventActions.RECEIVE_EVENT_FAILURE
-})
+}
+
+const fetching = buildFetching(actionSet)
+
+const error = buildError(actionSet)
+
+const pageArgs = {
+    defaultPage: 1,
+    defaultSortOrder: 'desc',
+    defaultSortBy: 'occurred',
+    defaultPer: 10,
+    defaultFilter: '',
+    defaultTotal: 0
+}
 
 export const pages = paginated(rawList, eventActions.pagination.types, pageArgs)
 
 export default (defaultFilter) => combineReducers({
     fetching,
+    error,
     pages,
     filter: filter(defaultFilter)
 })

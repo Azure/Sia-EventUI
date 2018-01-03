@@ -1,5 +1,7 @@
 import * as eventTypeActions from '../actions/eventTypeActions'
-import { mergeToStateById, buildFetching } from './reducerHelpers'
+import { mergeToStateById } from './reducerHelpers/merge'
+import buildFetching from './reducerHelpers/fetching'
+import buildError from './reducerHelpers/error'
 import { persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
 
@@ -10,11 +12,15 @@ const persistConfig = {
 
 const defaultEventTypeCollection = {}
 
-export const fetching = buildFetching({
+const actionSet = {
     try: eventTypeActions.TRY_GET_EVENT_TYPE,
     succeed: eventTypeActions.GET_EVENT_TYPE_SUCCESS,
     fail: eventTypeActions.GET_EVENT_TYPE_FAILURE
-})
+}
+
+const fetching = buildFetching(actionSet)
+
+const error = buildError(actionSet)
 
 export const records = (state = defaultEventTypeCollection, action) => {
     switch(action.type){
@@ -29,6 +35,7 @@ export const records = (state = defaultEventTypeCollection, action) => {
 
 export const eventTypeReducer = persistCombineReducers(persistConfig, {
     fetching,
+    error,
     records
 })
 

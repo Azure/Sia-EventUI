@@ -1,9 +1,8 @@
 'use strict'
 import { expect } from 'chai'
-import * as reducerHelpers from '../../src/reducers/reducerHelpers'
-import { buildFetching } from '../../src/reducers/reducerHelpers';
+import buildFetching from '../../../src/reducers/reducerHelpers/fetching'
 
-describe('Reducer Helpers', function () {
+describe('Fetching Reducer', function () {
     const defaultActionCases = {
         try: 'TRY',
         succeed: 'SUCCEED',
