@@ -154,5 +154,5 @@ export const updateIncidentCreationInput = (input) => ({
 
 export const duplicateIncident = (ticketId) => (dispatch) => {
     dispatch(createIncidentActionSet(ticketId, {}).fail({ message: 'An incident already exists for this ticket'}))
-    dispatch(ticketActions.updateIncidentQuery(ticketId))
+    dispatch(ticketActions.updateTicketQuery(ticketId))
 }
