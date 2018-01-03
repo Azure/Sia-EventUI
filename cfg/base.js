@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const env = process.env.REACT_WEBPACK_ENV
 
@@ -91,7 +92,21 @@ const config = {
       'process.env.NODE_ENV': `"${env}"`,
       'constants': JSON.stringify(constants)
     }),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
+    new CopyWebpackPlugin([
+      {
+        from: `${srcPath}/extensionHooks/manifest.json`,
+        transform: function(content, path) {
+          let jsonContent = JSON.parse(content.toString())
+          console.log(jsonContent)
+          console.log(constants.ticketSystems)
+          Object.values(constants.ticketSystems).forEach((system) =>{
+            jsonContent.content_scripts[0].matches.push(`${system.ticketUriPrefix}*`)
+          })
+          return Buffer.from(JSON.stringify(jsonContent))
+        }
+      }
+    ], {copyUnmodified: true}),
   ]
 }
 
