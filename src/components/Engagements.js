@@ -17,7 +17,7 @@ export const mapStateToPropsEngagements = (state, ownProps) => {
     }
 }
 
-export const Engagements = ({ dispatch, incidentId, engagements, user }) => {
+export const Engagements = ({dispatch, incidentId, engagements, user}) => {
     return (
         <div>
             <span>
@@ -36,12 +36,12 @@ export const Engagements = ({ dispatch, incidentId, engagements, user }) => {
                         />)
                 }
             </span>
-            <Engage dispatch={dispatch} incidentId={incidentId} user={user} />
+            <Engage dispatch={dispatch} incidentId={incidentId} user={user}/>
         </div>
     )
 }
 
-export const Engagement = ({ dispatch, engagement, user }) => {
+export const Engagement = ({dispatch, engagement, user}) => {
     return (
         <span>
             {engagement.participant ? engagement.participant.alias : 'No Alias Recorded (BUG)'}
@@ -51,7 +51,6 @@ export const Engagement = ({ dispatch, engagement, user }) => {
             >
                 <RemoveCircleOutlineIcon />
             </IconButtonStyled>
-
         </span>
     )
 }
@@ -67,7 +66,7 @@ export const mapStateToPropsEngage = (state, ownProps) => {
     }
 }
 
-export const Engage = ({ dispatch, incidentId, user }) => {
+export const Engage = ({dispatch, incidentId, user}) => {
     return (
         <IconButtonStyled
             tooltip='Engage'
