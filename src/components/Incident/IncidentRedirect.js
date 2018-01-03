@@ -1,10 +1,18 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Redirect } from 'react-router'
 import * as incidentActions from '../../actions/incidentActions'
 import LoadingMessage from '../elements/LoadingMessage'
 
 export class IncidentRedirect extends Component {
+static propTypes = {
+    incidentIsFetching: PropTypes.bool,
+    ticketId: PropTypes.number,
+    incidentId: PropTypes.number,
+    dispatch: PropTypes.func
+}
+
     constructor(props){
         super(props)
     }

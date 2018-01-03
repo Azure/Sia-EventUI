@@ -16,4 +16,3 @@ export const persistor = persistStore(store)
 establishSignalRConnection(store.dispatch)
 
 ListenForScreenSize(window, store)
-

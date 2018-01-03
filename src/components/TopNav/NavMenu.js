@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
@@ -25,5 +26,8 @@ export const NavMenu = ({dispatch, alias}) =>
     <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
 </IconMenu>
 
-
+NavMenu.propTypes = {
+    dispatch: PropTypes.func,
+    alias: PropTypes.string
+}
 export default connect(mapStateToProps)(NavMenu)

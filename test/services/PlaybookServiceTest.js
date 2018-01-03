@@ -6,16 +6,16 @@ import * as playbook from '../../src/services/playbookService'
 describe('Playbook Service', function () {
     describe('TestCondition', function () {
         it('Should return true when AssertionType is 1 and test returns true', () => {
-            expect(playbook.testableTestCondition((c) => true)({AssertionType:1})).to.be.true
+            expect(playbook.testableTestCondition((c) => true)({ AssertionType: 1 })).to.be.true
         })
         it('Should return false when AssertionType is 1 and test returns false', () => {
-            expect(playbook.testableTestCondition((c) => false)({AssertionType:1})).to.be.false
+            expect(playbook.testableTestCondition((c) => false)({ AssertionType: 1 })).to.be.false
         })
         it('Should return false when AssertionType is 0 and test returns true', () => {
-            expect(playbook.testableTestCondition((c) => true)({AssertionType:0})).to.be.false
+            expect(playbook.testableTestCondition((c) => true)({ AssertionType: 0 })).to.be.false
         })
         it('Should return true when AssertionType is 0 and test returns false', () => {
-            expect(playbook.testableTestCondition((c) => false)({AssertionType:0})).to.be.true
+            expect(playbook.testableTestCondition((c) => false)({ AssertionType: 0 })).to.be.true
         })
     })
 
@@ -45,7 +45,7 @@ describe('Playbook Service', function () {
                 integerComparisonValue: 1,
                 dataFormat: intDataFormatValue
             })
-            
+
             expect(playbook.GetComparisonValue(getComparisonValueInt)).to.equal(1)
         })
 
@@ -53,11 +53,11 @@ describe('Playbook Service', function () {
             const failGetComparisonValueString = ({
                 dataFormat: stringDataFormatValue
             })
-            
+
             const failGetComparisonValueInt = ({
                 dataFormat: intDataFormatValue
             })
-            
+
             const failGetComparisonValueDateTime = ({
                 dataFormat: dateTimeDataFormatValue
             })
@@ -74,13 +74,13 @@ describe('Playbook Service', function () {
             const stringIncludesCondition = ({
                 conditionType: 1,
                 value: "StringIsIncluded",
-                comparison:"IsIncluded"
+                comparison: "IsIncluded"
             })
-            
+
             const stringDoesNotIncludeCondition = ({
                 conditionType: 1,
                 value: "StringIsNotIncluded",
-                comparison:"IsIncluded"
+                comparison: "IsIncluded"
             })
             expect(playbook.testableTestByConditionType(getComparison)(stringIncludesCondition)).to.be.true
             expect(playbook.testableTestByConditionType(getComparison)(stringDoesNotIncludeCondition)).to.be.false
@@ -90,12 +90,12 @@ describe('Playbook Service', function () {
             const somethingExistsCondition = ({
                 conditionType: 2,
                 value: 1,
-                comparison:"NoOp"
+                comparison: "NoOp"
             })
-            
+
             const somethingDoesNotExistCondition = ({
                 conditionType: 2,
-                comparison:"NoOp"
+                comparison: "NoOp"
             })
             expect(playbook.testableTestByConditionType(getComparison)(somethingExistsCondition)).to.be.true
             expect(playbook.testableTestByConditionType(getComparison)(somethingDoesNotExistCondition)).to.be.false
@@ -107,7 +107,7 @@ describe('Playbook Service', function () {
                 value: 2,
                 comparison: 1
             })
-            
+
             const somethingIsNotGreaterThanCondition = ({
                 conditionType: 3,
                 value: 1,
@@ -123,7 +123,7 @@ describe('Playbook Service', function () {
                 value: 2,
                 comparison: 1
             })
-            
+
             const somethingIsLessThanCondition = ({
                 conditionType: 4,
                 value: 2,
@@ -139,7 +139,7 @@ describe('Playbook Service', function () {
                 value: 1,
                 comparison: 1
             })
-            
+
             const sometingIsNotEqualToCondition = ({
                 conditionType: 0,
                 value: 2,
@@ -181,7 +181,7 @@ describe('Playbook Service', function () {
         const testNoneMet = playbook.testableTestConditionSet(selectReturnEvent, noneMetTestCondition)(eventWithSomeValueAtExpectedKey)
         const testOneMet = tracker => playbook.testableTestConditionSet(selectReturnEvent, oneMetTestCondition(tracker))(eventWithSomeValueAtExpectedKey)
         const testAllMet = playbook.testableTestConditionSet(selectReturnEvent, allMetTestCondition)(eventWithSomeValueAtExpectedKey)
-        
+
         it('Should return true in case 0 (any of) when at least one condition is met, and false otherwise', () => {
             const anyOfConditionSet = {
                 ...baseConditionSet,
@@ -233,7 +233,7 @@ describe('Playbook Service', function () {
         })
 
         it('Should return the unmodified pattern when pattern is valid but no sources are available', function () {
-            expect(fillTemplate({pattern:'ExpectedValue'})).to.equal('ExpectedValue')
+            expect(fillTemplate({ pattern: 'ExpectedValue' })).to.equal('ExpectedValue')
         })
 
         it('Should return populated template when template has valid sources', function () {
@@ -275,7 +275,7 @@ describe('Playbook Service', function () {
                 ]
             }
         }
-        
+
         const eventTypeZero = {
             name: 'Everything is set up',
             displayTemplate: {
@@ -316,25 +316,25 @@ describe('Playbook Service', function () {
                     SomeField: ''
                 }
             }
-            
+
             expect(playbook.LoadTextFromEvent(eventTwo, null)).to.equal('User displayText')
-            expect(playbook.LoadTextFromEvent(eventTwo, eventTypeOne)).to.equal('User displayText')        
+            expect(playbook.LoadTextFromEvent(eventTwo, eventTypeOne)).to.equal('User displayText')
             expect(playbook.LoadTextFromEvent(eventTwo, eventTypeTwo)).to.equal('User displayText')
-            expect(playbook.LoadTextFromEvent(eventTwo, eventTypeThree)).to.equal('User displayText')        
+            expect(playbook.LoadTextFromEvent(eventTwo, eventTypeThree)).to.equal('User displayText')
         })
 
         it('Should return the eventType.name if no valid displayTemplate and displayText is not valid', () => {
             const eventFive = {
                 eventTypeId: 3
             }
-            
-            expect(playbook.LoadTextFromEvent(eventFive, eventTypeOne)).to.equal('No displayTemplate.pattern')        
+
+            expect(playbook.LoadTextFromEvent(eventFive, eventTypeOne)).to.equal('No displayTemplate.pattern')
             expect(playbook.LoadTextFromEvent(eventFive, eventTypeTwo)).to.equal('Invalid displayTemplate.pattern')
-            expect(playbook.LoadTextFromEvent(eventFive, eventTypeThree)).to.equal('eventType.name')        
+            expect(playbook.LoadTextFromEvent(eventFive, eventTypeThree)).to.equal('eventType.name')
         })
 
 
-        it('Should return stringified event.data if no valid display template, display text, or event type name', () => {      
+        it('Should return stringified event.data if no valid display template, display text, or event type name', () => {
             const eventNine = {
                 eventTypeId: 100,
                 data: {
@@ -342,7 +342,7 @@ describe('Playbook Service', function () {
                     SomeField: 'User data here'
                 }
             }
-            
+
             expect(playbook.LoadTextFromEvent(eventNine, null)).to.equal('{"DisplayText":"","SomeField":"User data here"}')
         })
 
@@ -351,7 +351,7 @@ describe('Playbook Service', function () {
             const eventTen = {
                 eventTypeId: 100
             }
-            
+
             expect(playbook.LoadTextFromEvent(eventTen, null)).to.equal('This event has no text')
         })
     })

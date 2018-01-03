@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
@@ -32,6 +33,11 @@ export const mapStateToProps = (state, ownProps) => {
         ticketId: ownProps.ticketId,
         otherIncidentTicketIds
     }
+}
+
+ComparisonLinks.propTypes = {
+    otherIncidentTicketIds: PropTypes.array,
+    ticketId: PropTypes.number
 }
 
 export default connect(mapStateToProps)(ComparisonLinks)
