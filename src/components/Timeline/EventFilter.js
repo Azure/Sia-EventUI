@@ -15,6 +15,13 @@ export const dataSourceConfig = {
   value: 'id'
 }
 
+import AutoCompleteMenu from '../elements/AutoCompleteMenu'
+import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
+import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
+import Chip from 'material-ui/Chip'
+import * as eventActions from '../../actions/eventActions'
+import * as filterActions from '../../actions/filterActions'
+
 export const chipStyles = {
   chip: {
     margin: 4
@@ -31,7 +38,11 @@ export const filterSearchForm = {
 }
 
 
-const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
+
+const EventFilter = (props) =>  {
+  const { pagination, filter, filterSearchField, filterSearchForm, eventTypes, dispatch, history } = this.props
+  let filterTypes = eventTypes ? Object.values(ownProps.eventTypes) : []
+
   return  (
     <div className="incident-EventFilter">
       <FilterChips
@@ -40,19 +51,17 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
         recordLookup={'eventTypes.records'}
         onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter,id))}
       />
-      <AutoComplete
-        floatingLabelText="Filter by event type"
-        filter={AutoComplete.caseInsensitiveFilter}
-        dataSource={filterTypes}
+      <AutoCompleteMenu
+        label={'Filter by event type'}
+        dataConfigText={'name'}
+        dataConfigValue={'id'}
+        menuOptions={filterTypes}
         searchText={filterSearchField || ''}
-        onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
-        onNewRequest={
-          (eventType) => {
-            dispatch(filterActions.addFilter(history)(filter, eventType))
-            dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
-          }
-        }
-        dataSourceConfig={dataSourceConfig}
+        onUpdateInput={(searchText) => formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText)}
+        onNewRequest={(menuSelection) => {
+          dispatch(filterActions.addFilter(history)(filter, menuSelection))
+          dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
+        }}
       />
       <IconButtonStyled
         tooltip='order'
@@ -67,15 +76,14 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
     </div>
   )
 }
-  
+
   const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
     pagination: events.pages,
     filter: events.filter,
-    filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
-    filterTypes: ownProps.eventTypes ? Object.values(ownProps.eventTypes) : []
+    filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
   }
 }
 
