@@ -9,10 +9,10 @@ export const DisplayPlaybook = ({
     eventId,
     ticketId,
     engagementId,
-    incidentId
+    incidentId,
 }) => {
-    let localKey = 0
-    return <div>
+  let localKey = 0
+  return <div>
         {actions.map(action =>
             <div key={localKey++}>
                 <span>
@@ -22,7 +22,7 @@ export const DisplayPlaybook = ({
                 <Play
                     action={action}
                     eventTypeId={eventTypeId}
-                    eventId={eventId}
+                    eventId={eventId} 
                     incidentId={incidentId}
                     ticketId={ticketId}
                     engagementId={engagementId}
@@ -50,19 +50,7 @@ export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
         && engagement.participant.role === auth.userRole
     )
 
-    const actions = eventType.actions
-    var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
-    const qualifiedActions = actions.filter(
-        action => action.conditionSets.reduce(
-            (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
-                ? populatedConditionSetTest(currentConditionSet)
-                : false,
-            true
-        )
-    )
-
     return {
-        actions: qualifiedActions,
         engagementId: engagement ? engagement.id : null,
         ...ownProps
     }

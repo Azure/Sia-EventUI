@@ -11,16 +11,18 @@ export const Playbook = ({
     ticketId,
     incidentId,
     eventIsFetching,
-    eventTypeIsFetching
+    eventTypeIsFetching,
+    actions
 }) => eventIsFetching
     ? eventTypeIsFetching
         ? LoadingMessage('Fetching event type information...', eventTypeActions.fetchEventType(eventTypeId))
         : LoadingMessage('Fetching event information...', eventActions.fetchEvent(incidentId, eventId))
     : <DisplayPlaybook
-        eventTypeId={eventTypeId}
-        eventId={eventId}
-        incidentId={incidentId}
-        ticketId={ticketId}
+      eventTypeId={eventTypeId}
+      eventId={eventId}
+      incidentId={incidentId}
+      ticketId={ticketId}
+      actions={actions}
     />
 
 
