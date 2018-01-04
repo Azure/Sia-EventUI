@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Login from './Login'
 import LoginError from './LoginError'
@@ -12,12 +11,6 @@ export const EnsureLoggedInContainer = ({error, isLoggedIn, children}) => {
     return children
   }
   return <Login/>
-}
-
-EnsureLoggedInContainer.propTypes = {
-  error: PropTypes.string,
-  isLoggedIn: PropTypes.bool.isRequired,
-  children: PropTypes.object.isRequired
 }
 
 export const mapStateToProps = (state) => {

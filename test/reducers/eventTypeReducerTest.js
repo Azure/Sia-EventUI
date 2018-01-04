@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import * as eventTypeActions from '../../src/actions/eventTypeActions.js'
-import { records } from '../../src/reducers/eventTypeReducer'
+import { fetching, records } from '../../src/reducers/eventTypeReducer'
 
 const defaultState = {}
 
@@ -135,6 +135,49 @@ describe('EventType Reducer', function EventTypeReducerTest() {
                     it('Should overwrite existing EventType by Id', function () {
                         expect(this.resultFromGet[existingEventTypeId].name).to.equal('Overriding EventType')
                     })
+                })
+            })
+        })
+    })
+    describe('Fetching', function () {
+        describe('Default/Empty State', function () {
+            describe('Event Type Actions', function () {
+                it('Should add event type id to state on try', () => {
+                    expect(fetching(fetchingEmptyState, tryGetNew).length).to.equal(1)
+                })
+
+                it('Should return empty array on succeed and fail', () => {
+                    expect(fetching(fetchingEmptyState, succeedGetNew).length).to.equal(0)
+                    expect(fetching(fetchingEmptyState, failGetNew).length).to.equal(0)
+                })
+            })
+        })
+
+        describe('Fetching Things State', function () {
+            describe('Event Type Actions', function () {
+                it('Should add new event type id to state on try', () => {
+                    const result = fetching(fetchingThingsState, tryGetNew)
+                    expect(result.length).to.equal(fetchingThingsState.length + 1)
+                    expect(result.includes(3))
+                })
+    
+                it('Should make no changes to state on try for existing event type id', () => {
+                    expect(fetching(fetchingThingsState, tryGetExisting).length).to.equal(fetchingThingsState.length)
+                })
+    
+                it('Should make no changes to state on succeed and fail for unrecognized event type id', () => {
+                    expect(fetching(fetchingThingsState, succeedGetNew).length).to.equal(fetchingThingsState.length)
+                    expect(fetching(fetchingThingsState, failGetNew).length).to.equal(fetchingThingsState.length)
+                })
+
+                it('Should remove recognized event type id from state on succeed and fail', () => {
+                    var failResult = fetching(fetchingThingsState, failGetExisting)
+                    expect(failResult.length).to.equal(fetchingThingsState.length - 1)
+                    expect(failResult.includes(3)).to.be.false
+
+                    var succeedResult = fetching(fetchingThingsState, succeedGetExisting)
+                    expect(succeedResult.length).to.equal(fetchingThingsState.length - 1)
+                    expect(succeedResult.includes(3)).to.be.false
                 })
             })
         })

@@ -6,8 +6,7 @@
  * @author somonsmith
  */
 import React from 'react'
-import ShallowRenderer from 'react-test-renderer/shallow'
-
+import TestUtils from 'react-dom/test-utils'
 /**
  * Get the shallow rendered component
  *
@@ -16,8 +15,8 @@ import ShallowRenderer from 'react-test-renderer/shallow'
  * @param  {Mixed} ...children [optional] List of children
  * @return {Object} Shallow rendered output
  */
-export default function createComponent (component, props = {}, ...children) {
-  const shallowRenderer = new ShallowRenderer()
+export default function createComponent(component, props = {}, ...children) {
+  const shallowRenderer = TestUtils.createRenderer()
   shallowRenderer.render(React.createElement(component, props, ...children))
   return shallowRenderer.getRenderOutput()
 }

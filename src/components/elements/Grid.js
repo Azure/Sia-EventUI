@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 
 export const GridSet = (containerClass, rowClass, columnClass, children) => {
@@ -24,12 +23,6 @@ export const Grid = (rowClass, columnClass, children, key = 0) => {
     )
 }
 
-Grid.propTypes = {
-    rowClass: PropTypes.string.isRequired,
-    columnClass: PropTypes.string.isRequired,
-    children: PropTypes.array.isRequired
-}
-
 export const GridRow = (rowClass, columnClass, children, rowKey = 0) => {
     let columnKey = 0
     return (
@@ -44,12 +37,6 @@ export const GridRow = (rowClass, columnClass, children, rowKey = 0) => {
             })}
         </div>
     )
-}
-
-GridRow.propTypes = {
-    rowClass: PropTypes.string.isRequired,
-    columnClass: PropTypes.string.isRequired,
-    children: PropTypes.array.isRequired
 }
 
 export default Grid

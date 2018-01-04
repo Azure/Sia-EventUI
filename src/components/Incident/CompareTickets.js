@@ -5,71 +5,64 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import CompareIncidents from './CompareIncidents'
 import { fetchIncidentIfNeeded } from '../../actions/incidentActions'
-import { ErrorLoadingIncident, CurrentlyLoadingIncident, UnexpectedFailureToLoadIncident, getInfoByTicketId } from './Ticket'
+import { ErrorLoadingIncident, CurrentlyLoadingIncident, getTicketSystemId, getIncident } from './Ticket'
 
 class CompareTickets extends Component {
     static propTypes = {
-        first: PropTypes.object.isRequired,
-        second: PropTypes.object.isRequired,
+        firstIncident: PropTypes.object,
+        firstTicket: PropTypes.object,
+        firstTicketSystem: PropTypes.object.isRequired,
+        secondIncident: PropTypes.object,
+        secondTicket: PropTypes.object,
+        secondTicketSystem: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         preferences: PropTypes.object.isRequired
     }
 
     componentDidMount() {
-        const {
-            first,
-            second,
-            preferences,
-            dispatch
-        } = this.props
-        dispatch(fetchIncidentIfNeeded(first.incident, first.ticketId, first.ticket, first.ticketSystem, preferences))
-        dispatch(fetchIncidentIfNeeded(second.incident, second.ticketId, second.ticket, second.ticketSystem, preferences))
+        this.props.dispatch(fetchIncidentIfNeeded(this.props))
+        this.props.dispatch(fetchIncidentIfNeeded(this.props))
     }
 
     render() {
         const {
-            first,
-            second
+            firstIncident,
+            firstIncidentIsFetching,
+            firstTicket,
+            firstTicketId,
+            firstTicketSystem,
+            secondIncident,
+            secondIncidentIsFetching,
+            secondTicket,
+            secondTicketId,
+            secondTicketSystem,
+            dispatch,
+            expandSection
         } = this.props
 
-        if(first.incidentIsFetching)
+
+        if(firstIncidentIsFetching)
         {
-            return CurrentlyLoadingIncident(first.incident, first.ticketId)
+            return CurrentlyLoadingIncident(firstIncident, firstTicketId)
         }
-        if(second.incidentIsFetching)
+        if(secondIncidentIsFetching)
         {
-            return CurrentlyLoadingIncident(second.incident, second.ticketId)
+            return CurrentlyLoadingIncident(secondIncident, secondTicketId)
         }
-        if(!first.incident || !first.ticket || first.incident.error)
+        if(!firstIncident || !firstTicket || firstIncident.error)
         {
-            return ErrorLoadingIncident(first.incident, first.ticketId)
+            return ErrorLoadingIncident(firstIncident)
         }
-        if(!second.incident || !second.ticket || second.incident.error)
+        if(!secondIncident || !secondTicket || secondIncident.error)
         {
-            return ErrorLoadingIncident(second.incident, second.ticketId)
+            return ErrorLoadingIncident(secondIncident)
         }
-        if(!first.incident || !first.ticket || first.incident.error)
+        if(firstIncident.primaryTicket.originId === firstTicket.originId && secondIncident.primaryTicket.originId === secondTicket.originId)
         {
-            return UnexpectedFailureToLoadIncident()
-        }
-        if(!second.incident || !second.ticket || second.incident.error)
-        {
-            return UnexpectedFailureToLoadIncident()
-        }
-        if(first.incident.primaryTicket.originId === first.ticket.originId
-            && second.incident.primaryTicket.originId === second.ticket.originId)
-        {
-            return <CompareIncidents
-                        firstIncident={first.incident}
-                        firstTicket={first.ticket}
-                        firstTicketSystem={first.ticketSystem}
-                        secondIncident={second.incident}
-                        secondTicket={second.ticket}
-                        secondTicketSystem={second.ticketSystem}
-                    />
+            return (CompareIncidents(firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch))
         }
         return (
-            <Redirect to={`/tickets/${first.incident.primaryTicket.originId}/compare/${second.incident.primaryTicket.originId}`}>
+            <Redirect to={`/tickets/${firstIncident.primaryTicket.originId}/compare/${secondIncident.primaryTicket.originId}`}>
                 <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={connectedCompareTickets}/>
             </Redirect>
         )
@@ -77,13 +70,29 @@ class CompareTickets extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    const { incidents, tickets, expandSection } = state
     const { match } = ownProps
     const firstTicketId = parseInt(match.params.firstTicketId)
+    const firstTicket = tickets.map[firstTicketId]
     const secondTicketId = parseInt(match.params.secondTicketId)
+    const secondTicket = tickets.map[secondTicketId]
+    const firstIncident = getIncident(firstTicket, incidents)
+    const secondIncident = getIncident(secondTicket, incidents)
     return {
-        first: getInfoByTicketId(state, firstTicketId),
-        second: getInfoByTicketId(state, secondTicketId),
-        preferences: state.tickets.preferences
+        firstIncident,
+        firstIncidentIsFetching: incidents.fetchingByTicketId.includes(firstTicketId) ||
+                            firstIncident && firstIncident.id && incidents.fetchingByIncidentId.includes(firstIncident.id),
+        firstTicket,
+        firstTicketId,
+        firstTicketSystem: tickets.systems[getTicketSystemId(firstTicket)],
+        secondIncident,
+        secondIncidentIsFetching: incidents.fetchingByTicketId.includes(secondTicketId) ||
+                            secondIncident && secondIncident.id && incidents.fetchingByIncidentId.includes(secondIncident.id),
+        secondTicket,
+        secondTicketId,
+        secondTicketSystem: tickets.systems[getTicketSystemId(secondTicket)],
+        preferences: tickets.preferences,
+        expandSection
     }
 }
 

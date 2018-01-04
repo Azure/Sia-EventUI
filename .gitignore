@@ -33,7 +33,6 @@ bower_components/
 .idea
 /.vs/slnx.sqlite
 .vscode
-.vs
 
 # Temp directory used by tests
 temp

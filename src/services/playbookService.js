@@ -3,15 +3,12 @@ import ByPath from 'object-path'
 import * as eventTypeActions from '../actions/eventTypeActions'
 import * as eventActions from '../actions/eventActions'
 
-export const IsBootstrapNeeded = (eventType, isFetching, isError) =>
-    !eventType
-    && !isFetching
-    && !isError
+export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
 
-export const BootstrapIfNeeded = ({eventTypeId, eventType, isFetching, isError, dispatch}) => {
-    if(IsBootstrapNeeded(eventType, isFetching, isError))
+export const BootstrapIfNeeded = (props) => {
+    if(IsBootstrapNeeded(props))
     {
-        dispatch(eventTypeActions.fetchEventType(eventTypeId))
+        props.dispatch(eventTypeActions.fetchEventType(props.eventTypeId))
     }
 }
 
@@ -32,7 +29,7 @@ export const GetComparisonValue = (condition) => {
             return condition.comparisonValue
         case 1: //datetime
             return condition.dateTimeComparisonValue
-                ? moment.utc(condition.dateTimeComparisonValue)
+                ? moment(condition.dateTimeComparisonValue)
                 : condition.dateTimeComparisonValue
         default: //int
             return condition.integerComparisonValue

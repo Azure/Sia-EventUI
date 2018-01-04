@@ -89,8 +89,7 @@ function createContext(chromeExtension) {
     tenant: config.aadTenant,
     redirectUri: (chromeExtension) ? chrome.identity.getRedirectURL('/extension.html') : config.redirectUri, // eslint-disable-line no-undef
     clientId: clientId,
-    popUp: true,
-    cacheLocation: 'localStorage'
+    popUp: true
   })
 
   //if in chrome extension configure auth accordingly

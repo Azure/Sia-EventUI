@@ -1,12 +1,10 @@
-[![Build Status](https://travis-ci.org/Azure/Sia-EventUI.svg?branch=master)](https://travis-ci.org/Azure/Sia-EventUI)
-
 # This is the user interface for SRE Incident Assistant (SIA)
 See the [Root repository](https://github.com/azure/Sia-Root) for full project information.
 
 SIA is built using:
 + [ReactJs](https://facebook.github.io/react/)
-+ [Webpack](https://webpack.js.org/)
-+ [Material UI](http://www.material-ui.com/)
++ [Webpack 2](https://webpack.js.org/)
++ [Material UI](http://www.material-ui.com/#/)
 
 SIA is configured for Wepback's hot module reloading, so changes should automatically appear in your browser.
 

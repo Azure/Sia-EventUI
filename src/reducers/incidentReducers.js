@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import * as incidentActions from '../actions/incidentActions'
 import { ENGAGE_SUCCESS, DISENGAGE_SUCCESS } from '../actions/engagementActions'
-import buildFetching from './reducerHelpers/fetching'
-import buildError from './reducerHelpers/error'
+import { buildFetching } from './reducerHelpers'
 
-const defaultIncidents = []
+const defaultIncidents = [
+]
 
 const mapIncidents = (incidents) => {
     let incidentsMap = {}
@@ -92,28 +92,17 @@ export const creation = (state = defaultCreationState, action) =>{
     }
 }
 
-const actionSetByIncidentId = {
+export const fetchingByIncidentId = buildFetching({
     try: incidentActions.REQUEST_INCIDENT,
     succeed: incidentActions.RECEIVE_INCIDENT,
     fail: incidentActions.RECEIVE_INCIDENT_FAILURE
-}
+})
 
-const fetchingByIncidentId = buildFetching(actionSetByIncidentId)
-
-const errorByIncidentId = buildError(actionSetByIncidentId)
-
-const actionSetByTicketId = {
-    try: incidentActions.REQUEST_INCIDENT_BY_TICKET_ID,
-    succeed: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
-    fail: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_FAILURE
-}
-
-const fetchingByTicketId = buildFetching(actionSetByTicketId,
-    [],
-    (action) => action.ticketId
-)
-
-const errorByTicketId = buildError(actionSetByTicketId,
+export const fetchingByTicketId = buildFetching({
+        try: incidentActions.REQUEST_INCIDENT_BY_TICKET_ID,
+        succeed: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS,
+        fail: incidentActions.FETCH_INCIDENTS_BY_TICKET_ID_FAILURE
+    },
     [],
     (action) => action.ticketId
 )
@@ -122,9 +111,7 @@ const incidentReducer = combineReducers({
     map,
     creation,
     fetchingByIncidentId,
-    errorByIncidentId,
-    fetchingByTicketId,
-    errorByTicketId
+    fetchingByTicketId
 })
 
 export default incidentReducer

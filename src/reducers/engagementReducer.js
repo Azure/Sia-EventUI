@@ -1,7 +1,7 @@
 import paginated from 'paginated-redux'
 import * as engagementActions from '../actions/engagementActions'
 import * as incidentActions from '../actions/incidentActions'
-import { mergeWithOverwrite } from './reducerHelpers/merge'
+import { mergeWithOverwrite } from './reducerHelpers'
 
 const defaultEngagementCollection = []
 
