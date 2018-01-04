@@ -111,11 +111,11 @@ describe('FilterActions', function () {
         const unknownEventType = {id: 10000, name: 'unknown'}
 
         it('should return a matching object when given a known id', function() {
-            const result = filterActions.findEventTypeInRef(testEventTypeId, referenceData)
+            const result = filterActions.findEventTypeInRef(referenceData)(testEventTypeId)
             expect(result).to.deep.equal(expectedEventType)
         })
         it('should return a new object with name "unknown" when given an unknown id', function() {
-            const badResult = filterActions.findEventTypeInRef(unknownEventTypeId, referenceData)
+            const badResult = filterActions.findEventTypeInRef(referenceData)(unknownEventTypeId)
             expect(badResult).to.deep.equal(unknownEventType)
         })
     })

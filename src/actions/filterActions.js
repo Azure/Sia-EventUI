@@ -106,6 +106,6 @@ export const generateUrl = (history, filter) => {
     return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
 }
 
-export const findEventTypeInRef = (eventType, referenceData) => {
+export const findEventTypeInRef = (referenceData) => (eventType) => {
     return referenceData.hasOwnProperty(eventType) ? referenceData[eventType] : {id: eventType, name: 'unknown'}
 }
