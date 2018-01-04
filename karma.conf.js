@@ -32,7 +32,8 @@ module.exports = function(config) {
     reporters: [ 'mocha', 'coverage' ],
     preprocessors: {
       '../test/loadtests.js': ['webpack', 'sourcemap'],
-      '../test/**/*Test.js': ['webpack', 'sourcemap']
+      '../test/**/*Test.js': ['webpack', 'sourcemap'],
+      '../src/*.js': 'coverage'
     },
     webpack: webpackCfg,
     webpackServer: {

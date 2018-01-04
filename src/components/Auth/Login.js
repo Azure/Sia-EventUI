@@ -1,8 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { login } from '../../services/authNService'
 
 export class Login extends React.Component {
+    static propTypes = {
+        dispatch: PropTypes.func.isRequired,
+        login: PropTypes.func,
+        isLoggedIn: PropTypes.bool.isRequired,
+        signInAutomatically: PropTypes.bool.isRequired
+    }
+    
     constructor() {
         super()
     }

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Play from './Play'
 
@@ -29,6 +30,15 @@ export const DisplayPlaybook = ({
             </div>
         )}
     </div>
+}
+
+DisplayPlaybook.propTypes = {
+    actions: PropTypes.array.isRequired,
+    eventTypeId: PropTypes.number.isRequired,
+    eventId: PropTypes.number.isRequired,
+    ticketId: PropTypes.string.isRequired,
+    engagementId: PropTypes.number,
+    incidentId: PropTypes.number.isRequired
 }
 
 

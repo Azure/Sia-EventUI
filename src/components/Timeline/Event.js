@@ -6,6 +6,7 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
+import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
 import { TestConditionSet } from '../../services/playbookService'
 import * as eventTypeActions from '../../actions/eventTypeActions'
@@ -18,6 +19,7 @@ export const Event = ({
     ticketId,
     eventTypeId,
     eventTypeIsFetching,
+    eventTypeIsError,
     eventId,
     event,
     actions
@@ -29,9 +31,14 @@ export const Event = ({
     } : {}
     const expand = actions.length > 0
     const iconColor = expand ? 'black':'Lightgrey'
-    return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
+    
+
+    return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-      : <div style={itemHighlight}>
+        : eventTypeIsError && !eventHasValidDisplayText(event)
+            ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+            : <div style={itemHighlight}>
+              
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -73,13 +80,18 @@ Event.propTypes = {
     text: PropTypes.string.isRequired,
     time: PropTypes.instanceOf(moment),
     backgroundColor: PropTypes.string,
-    ticketId: PropTypes.string
+    ticketId: PropTypes.string,
+    eventId: PropTypes.number,
+    eventTypeId: PropTypes.number,
+    eventTypeIsFetching: PropTypes.bool,
+    event: PropTypes.object
 }
+
+const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
 
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
     const eventType = state.eventTypes.records[event.eventTypeId]
-    const eventTypeIsFetching = state.eventTypes.fetching.includes(event.eventTypeId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
   
@@ -101,7 +113,8 @@ export const mapStateToEventProps = (state, ownProps) => {
         engagement,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
-        eventTypeIsFetching,
+        eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
+        eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,

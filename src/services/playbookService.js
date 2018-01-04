@@ -3,12 +3,15 @@ import ByPath from 'object-path'
 import * as eventTypeActions from '../actions/eventTypeActions'
 import * as eventActions from '../actions/eventActions'
 
-export const IsBootstrapNeeded = (props) => !props.eventType && !props.isFetching
+export const IsBootstrapNeeded = (eventType, isFetching, isError) =>
+    !eventType
+    && !isFetching
+    && !isError
 
-export const BootstrapIfNeeded = (props) => {
-    if(IsBootstrapNeeded(props))
+export const BootstrapIfNeeded = ({eventTypeId, eventType, isFetching, isError, dispatch}) => {
+    if(IsBootstrapNeeded(eventType, isFetching, isError))
     {
-        props.dispatch(eventTypeActions.fetchEventType(props.eventTypeId))
+        dispatch(eventTypeActions.fetchEventType(eventTypeId))
     }
 }
 

@@ -13,7 +13,7 @@ export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
 
 export const mapStateToPlayProps = (state, ownProps) => {
     const eventType = state.eventTypes.records[ownProps.eventTypeId]
-    const event = state.events.list.list.find(event => event.id === ownProps.eventId)
+    const event = state.events.pages.list.find(event => event.id === ownProps.eventId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     const action = ownProps.action
