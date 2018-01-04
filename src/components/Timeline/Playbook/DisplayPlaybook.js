@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { TestConditionSet } from '../../../services/playbookService'
 import Play from './Play'
 
 export const DisplayPlaybook = ({
@@ -9,7 +8,7 @@ export const DisplayPlaybook = ({
     eventId,
     ticketId,
     engagementId,
-    incidentId,
+    incidentId
 }) => {
   let localKey = 0
   return <div>
@@ -22,7 +21,7 @@ export const DisplayPlaybook = ({
                 <Play
                     action={action}
                     eventTypeId={eventTypeId}
-                    eventId={eventId} 
+                    eventId={eventId}
                     incidentId={incidentId}
                     ticketId={ticketId}
                     engagementId={engagementId}
@@ -35,12 +34,6 @@ export const DisplayPlaybook = ({
 
 export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
     const auth = state.auth
-
-    const eventType = state.eventTypes.records[ownProps.eventTypeId]
-    const event = state.events.list.list.find(
-        event => event.id === ownProps.eventId
-    )
-    const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(
         engagement => engagement
         && engagement.incidentId === ownProps.incidentId

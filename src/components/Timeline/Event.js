@@ -106,7 +106,7 @@ export const mapStateToEventProps = (state, ownProps) => {
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
         text: LoadTextFromEvent(event, eventType, ticket, engagement),
-        actions
+        actions: qualifiedActions
     }
 }
 
