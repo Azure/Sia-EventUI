@@ -6,7 +6,6 @@ import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from './Playbook/BootstrapPlaybook'
 import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
-import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
@@ -18,7 +17,6 @@ export const Event = ({
     ticketId,
     eventTypeId,
     eventTypeIsFetching,
-    eventTypeIsError,
     eventId,
     event
 }) => {
@@ -27,12 +25,9 @@ export const Event = ({
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
-
-    return eventTypeIsFetching && !eventHasValidDisplayText(event)
+    return eventTypeIsFetching && (!event || !event.data || !event.data.DisplayText)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
-        : eventTypeIsError && !eventHasValidDisplayText(event)
-            ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
-            : <div style={itemHighlight}>
+        : <div style={itemHighlight}>
         <BootstrapPlaybook
             eventId={eventId}
             eventTypeId={eventTypeId}
@@ -45,7 +40,7 @@ export const Event = ({
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
-                subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
+                subtitle={time ? time.format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
             />
@@ -66,18 +61,13 @@ Event.propTypes = {
     text: PropTypes.string.isRequired,
     time: PropTypes.instanceOf(moment),
     backgroundColor: PropTypes.string,
-    ticketId: PropTypes.string,
-    eventId: PropTypes.number,
-    eventTypeId: PropTypes.number,
-    eventTypeIsFetching: PropTypes.bool,
-    event: PropTypes.object
+    ticketId: PropTypes.string
 }
-
-const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
 
 export const mapStateToEventProps = (state, ownProps) => {
     const event = ownProps.event
     const eventType = state.eventTypes.records[event.eventTypeId]
+    const eventTypeIsFetching = state.eventTypes.fetching.includes(event.eventTypeId)
     const ticket = state.tickets.map[ownProps.ticketId]
     const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
     return {
@@ -86,8 +76,7 @@ export const mapStateToEventProps = (state, ownProps) => {
         engagement,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
-        eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
-        eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
+        eventTypeIsFetching,
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,

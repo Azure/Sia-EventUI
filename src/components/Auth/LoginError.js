@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 export const LoginError = ({error}) => {
@@ -14,10 +13,6 @@ export function mapStateToProps(state) {
     return{
         error: state.auth.error
     }
-}
-
-LoginError.propTypes = {
-    error: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps)(LoginError)

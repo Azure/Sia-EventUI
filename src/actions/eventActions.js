@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { paginationActions, updatePagination } from './actionHelpers'
 import { reduxBackedPromise } from './actionHelpers'
-import * as filterActions from './filterActions'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -16,44 +15,33 @@ export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
 
 export const pagination = paginationActions(EVENTS)
-
 export const linksHeaderName = 'links'
 
+
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-    [getEventsEndPoint(incidentId) + eventId],
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/' + eventId],
     getEventActionSet(incidentId, eventId)
 )
 
-export const fetchEvents = (filter) => reduxBackedPromise(
-        getEventsFetchArgs(filter),
-        getEventsActionSet(filter.incidentId)
-    )
+export const fetchEvents = (incidentId) => reduxBackedPromise(
+    [(incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'],
+    getEventsActionSet(incidentId)
+)
 
 export const postEvent = (incidentId, eventTypeId = 0, data= {}, occurrenceTime = moment()) => reduxBackedPromise(
-    postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
+    [
+        (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/',
+        {
+            eventTypeId,
+            occurred: occurrenceTime,
+            eventFired: occurrenceTime,
+            data
+        }
+    ],
     postEventActionSet(incidentId),
     'POST'
 )
 
-export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/': '') + 'events/'
-
-export const getEventsFetchArgs = (filter) => ([
-   getEventsEndPoint(filter.incidentId) + filterActions.serializeFiltersForUrl(filter)
-])
-
-export const getEventFetchArgs = (incidentId, eventId) => {
-    return [getEventsEndPoint(incidentId) + eventId]
-}
-
-export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime) => ([
-    getEventsEndPoint(incidentId),
-    {
-        eventTypeId,
-        occurred: occurrenceTime,
-        eventFired: occurrenceTime,
-        data
-    }
-])
 
 export const getEventActionSet = (incidentId, eventId) => ({
     try: () => ({
@@ -68,7 +56,7 @@ export const getEventActionSet = (incidentId, eventId) => ({
             event,
             id: eventId
         })
-
+        
         dispatch(updatePagination())
     },
 
@@ -138,7 +126,7 @@ export const postEventActionSet = (incidentId) => ({
             incidentId,
             event
         })
-        
+
         dispatch(updatePagination())
     },
 

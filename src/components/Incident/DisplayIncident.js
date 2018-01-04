@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 import Checkpoint from './Checkpoint'
@@ -21,14 +20,6 @@ export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, 
         IncidentEventsName()
     ],
     expandSection, dispatch)
-}
-
-DisplayIncident.propTypes = {
-    incident: PropTypes.object,
-    ticket: PropTypes.object,
-    ticketSystem: PropTypes.object,
-    expandSection: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
 }
 
 export const IncidentSummaryName = (ticketId) => {
@@ -60,18 +51,18 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
         [
             [
                 (key) =>
-                    <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key} target="_blank">
+                    <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key}>
                         {ticket.originId}
                     </a>,
                 (key) =>
                     <div key={key}>
-                        {ticket.severity}
+                        Sev 2 {ticket.severity}
                     </div>
             ],
             [
                 (key) =>
                     <div key={key}>
-                        {ticket.imName}
+                        IM: TBD {ticket.imName}
                     </div>,
                 (key) =>
                     <IconButtonStyled tooltip="Edit IM" key={key}>
@@ -95,14 +86,6 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
     return incidentSummaryArray
 }
 
-IncidentSummary.propTypes = {
-    incident: PropTypes.object,
-    ticket: PropTypes.object,
-    ticketSystem: PropTypes.object,
-    expandSection: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
-}
-
 export const IncidentProgress = (ticketId) => {
     let incidentProgressArray = [
         [
@@ -124,10 +107,6 @@ export const IncidentProgress = (ticketId) => {
     return incidentProgressArray
 }
 
-IncidentProgress.propTypes = {
-    ticketId: PropTypes.object
-}
-
 export const IncidentEvents = (ticketToIncidentIdMap) => {
     let incidentEventsArray = [
         [
@@ -145,10 +124,6 @@ export const IncidentEvents = (ticketToIncidentIdMap) => {
         ]
     ]
     return incidentEventsArray
-}
-
-IncidentEvents.propTypes = {
-    ticketToIncidentIdMap: PropTypes.object
 }
 
 export const mapStateToProps = (state, ownProps) => {

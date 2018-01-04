@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from '../elements/FlatButtonStyled'
@@ -12,7 +11,7 @@ const onSubmit = (input, history) => () => {
 }
 
 export const CreateIncident = ({input, creationError, history, dispatch}) => {
-    return <form id='incident-search' onSubmit={onSubmit(input, history)}>
+    return <form onSubmit={onSubmit(input, history)}>
                 <TextField
                     hintText='Ticket Id of primary ticket'
                     floatingLabelText='Ticket Id'
@@ -33,13 +32,6 @@ export const mapStateToProps = (state) => {
         ticketSystem: state.tickets.systems[1],
         creationError: state.incidents.creation.error ? state.incidents.creation.error.message : ''
     }
-}
-
-CreateIncident.propTypes = {
-    input: PropTypes.string,
-    creationError: PropTypes.string,
-    history: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(CreateIncident)

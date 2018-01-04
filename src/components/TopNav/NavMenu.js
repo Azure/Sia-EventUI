@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
@@ -21,13 +20,10 @@ export const NavMenu = ({dispatch, alias}) =>
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
 >
     <MenuItem primaryText={ alias }/>
-    <MenuItem primaryText={<Link to="/search" >Incident Search</Link>} />
+    <MenuItem primaryText={<Link to="/" >Incident Search</Link>} />
     <MenuItem primaryText={<Link to="/" onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
 </IconMenu>
 
-NavMenu.propTypes = {
-    dispatch: PropTypes.func,
-    alias: PropTypes.string
-}
+
 export default connect(mapStateToProps)(NavMenu)

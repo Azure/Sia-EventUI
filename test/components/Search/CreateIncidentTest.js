@@ -28,7 +28,7 @@ describe('CreateIncident', function testCreateIncident () {
         this.withInput = setup(this.testInput, '')
     })
 
-    it('Should render a form with text field and FlatButtonStyled', function createIncidentRenderForm () {
+    it('Should render a form with text field and FlatButtonStyled', function createIncidentRenderDiv () {
         expect(this.defaultCase.type).to.equal('form')
         expect(this.defaultCase.props.children[0].type).to.equal(TextField)
         expect(this.defaultCase.props.children[1].type).to.equal(FlatButtonStyled)

@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import RaisedButtonStyled from '../../components/elements/RaisedButtonStyled'
 import * as formActions from '../../actions/formActions'
@@ -64,13 +63,6 @@ export const mapStateToPropsAddEvent = (state, ownProps) => {
     eventInput: form[eventInputKey],
     eventTypeIdInput: form[eventTypeIdInputKey]
   }
-}
-
-AddEvent.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  incidentId: PropTypes.number,
-  eventInput: PropTypes.string,
-  eventTypeIdInput: PropTypes.string
 }
 
 const ConnectedAddEvent = connect(mapStateToPropsAddEvent)(AddEvent)

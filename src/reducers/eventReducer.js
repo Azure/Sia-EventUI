@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import moment from 'moment'
-import filter from './filterReducer'
-import * as filterActions from '../actions/filterActions'
 import * as eventActions from '../actions/eventActions'
-import { mergeWithOverwrite } from './reducerHelpers/merge'
-import buildFetching from './reducerHelpers/fetching'
-import buildError from './reducerHelpers/error'
+import { mergeWithOverwrite, buildFetching } from './reducerHelpers'
 
 const defaultEventCollection = []
 
@@ -24,37 +20,27 @@ export const rawList = (state = defaultEventCollection, action) => {
             return addEventsToState(state, [{...action.event, timeReceived: moment()}])
         case eventActions.RECEIVE_EVENTS:
             return addEventsToState(state, action.events)
-        case filterActions.CHANGE_EVENT_FILTER:
-            return defaultEventCollection
         default:
             return state
     }
 }
 
-const actionSet = {
-    try: eventActions.REQUEST_EVENT,
-    succeed: eventActions.RECEIVE_EVENT,
-    fail: eventActions.RECEIVE_EVENT_FAILURE
-}
-
-const fetching = buildFetching(actionSet)
-
-const error = buildError(actionSet)
-
-const pageArgs = {
+export const list = paginated(rawList, eventActions.pagination.types, {
     defaultPage: 1,
     defaultSortOrder: 'desc',
     defaultSortBy: 'occurred',
     defaultPer: 10,
     defaultFilter: '',
     defaultTotal: 0
-}
+  })
 
-export const pages = paginated(rawList, eventActions.pagination.types, pageArgs)
+export const fetching = buildFetching({
+    try: eventActions.REQUEST_EVENT,
+    succeed: eventActions.RECEIVE_EVENT,
+    fail: eventActions.RECEIVE_EVENT_FAILURE
+})
 
-export default (defaultFilter) => combineReducers({
-    fetching,
-    error,
-    pages,
-    filter: filter(defaultFilter)
+export default combineReducers({
+    list,
+    fetching
 })

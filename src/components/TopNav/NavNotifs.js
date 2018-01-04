@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import Notifications from 'material-ui/svg-icons/social/notifications'
 import SyncProblem from 'material-ui/svg-icons/notification/sync-problem'
@@ -15,11 +14,6 @@ export const NavNotifs = ({signalR, dispatch}) => {
     return  <IconButton onTouchTap={notifsAction(signalR, dispatch)}>
                 {displayButton(signalR)}
             </IconButton>
-}
-
-NavNotifs.propTypes = {
-    signalR: PropTypes.object,
-    dispatch: PropTypes.func
 }
 
 const notifsAction = (signalR, dispatch) => () => {

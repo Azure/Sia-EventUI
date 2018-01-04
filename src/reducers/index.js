@@ -9,12 +9,12 @@ import signalR from './signalRReducer'
 import forms from './formReducer'
 import eventTypes from './eventTypeReducer'
 
-const rootReducer = (filters) => combineReducers({
+const rootReducer = () => combineReducers({
     incidents,
     auth,
     tickets,
     engagements,
-    events: events(filters),
+    events,
     forms,
     expandSection,
     signalR,
