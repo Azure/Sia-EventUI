@@ -35,8 +35,10 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
   return  (
     <div className="incident-EventFilter">
       <FilterChips
-        history={history}
-        filterType={'eventType'}
+        selectSpecificFilter={'eventTypes'}
+        lookupFilterObject={'events.filter'}
+        recordLookup={'eventTypes.records'}
+        onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter,id))}
       />
       <AutoComplete
         floatingLabelText="Filter by event type"

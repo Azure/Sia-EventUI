@@ -2,45 +2,39 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Chip from 'material-ui/Chip'
-import { removeFilter, findEventTypeInRef  } from '../../actions/filterActions'
+import ByPath from 'object-path'
 
-const FilterChips = ({dispatch, filter, filterType, filterOptions, history}) => {
-    if (readyToRender(filter, filterOptions)) {
-        let selectedFilters = extractWantedFilter(filterType, filter)
-        return (
-            <div style={chipStyles.wrapper}>
-                {selectedFilters.filters.map((selectedFilter) => renderChip(dispatch, history, filter, selectedFilter, filterOptions, selectedFilters.lookupMethod))
-                }
-            </div>
-        )
+export const FilterChips = ({filter, selectSpecificFilter, records, onRequestDelete}) => {
+    let selectedFilters = ByPath.get(filter, selectSpecificFilter)
+    return selectedFilters? selectedFilters.map((selectedFilter) => hydrateChip(selectedFilter, records))
+        .map(chip => renderChip(chip.id, chip.name, onRequestDelete(filter, chip.id)))
+        :
+        <div></div>
+}
+
+export const mapStateToProps = (state, ownProps) => {
+    return {
+        ...ownProps,
+        filter: ByPath.get(state, ownProps.lookupFilterObject),
+        records: ByPath.get(state, ownProps.recordLookup)
     }
-    else {
-        return <div></div>
-    }
-
 }
 
-const renderChip = (dispatch, history, filter, filterOptions, selectedFilterType, lookupMethod) => {
-    let filterType= lookupMethod(selectedFilterType)(filterOptions)
-    return (
-            <Chip
-                key={filterType.id}
-                onRequestDelete={() => dispatch(removeFilter(history)(filter, filterType))}
-                style={chipStyles.chip}
-            >
-                {filterType.name}
-            </Chip>
-        )
-}
+export const renderChip = (id, name, onRequestDelete) => (
+    <Chip
+        key={id}
+        onRequestDelete={onRequestDelete}
+        style={chipStyles.chip}
+    >
+        {name}
+    </Chip>
+)
 
-const readyToRender = (filter, filterTypes) => {
-    return filter && filter.eventTypes && filterTypes
-}
+export const hydrateChip = (id, records) => ({
+    id: id,
+    name: records[id] ? records[id].name : 'unknown'
 
-const extractWantedFilter = (selectedFilterType, filter) => {
-    return selectedFilterType === 'eventType' ? {filters: filter.eventTypes, lookupMethod: findEventTypeInRef} : {filters: null, lookupMethod: null}
-}
-
+})
 
 const chipStyles = {
     chip: {
@@ -53,21 +47,12 @@ const chipStyles = {
 }
 
 FilterChips.propTypes = {
-    dispatch: PropTypes.func,
-    history: PropTypes.object,
-    filter: PropTypes.object,
-    filterType: PropTypes.string,
-    filterOptions: PropTypes.object
+    selectSpecificFilter: PropTypes.string,
+    lookupFilterObject: PropTypes.string,
+    recordLookup: PropTypes.string,
+    onRequestDelete: PropTypes.func
 }
 
-export const mapStateToProps = (state, ownProps) => {
-    return {
-        ...ownProps,
-        filter: state.events.filter ? state.events.filter : {},
-        filterOptions: state.eventTypes && state.eventTypes.records ? state.eventTypes.records : {},
-        history: ownProps.history,
-        filterType: ownProps.filterType
-    }
-}
+
 
 export default connect(mapStateToProps)(FilterChips)

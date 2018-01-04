@@ -2,6 +2,7 @@
 import { expect } from 'chai'
 import queryString from 'query-string'
 import * as filterActions from '../../src/actions/filterActions'
+import AddMockDispatch from '../helpers/mockDispatch'
 
 // Istanbul for test coverage, provides us with a new command nyc-mocha, which runs the tests and gives a reporter
 describe('FilterActions', function () {
@@ -9,7 +10,7 @@ describe('FilterActions', function () {
         describe('when the query string provides a single value for eventTypes', function() {
             it('should return an array with one value', function() {
                 let testQuery = '?eventTypes=1'
-    
+
                 let result = filterActions.getFilterFromUrl(testQuery)
 
                 expect(result.eventTypes).to.eql([1])
@@ -21,7 +22,7 @@ describe('FilterActions', function () {
                 let testQuery = '?eventTypes=16&eventTypes=11'
 
                 let result = filterActions.getFilterFromUrl(testQuery)
-                
+
                 expect(result.eventTypes).to.eql([16, 11])
             })
         })
@@ -30,7 +31,7 @@ describe('FilterActions', function () {
             describe('when an arbitrary key is given', function() {
                 it('should return null if the arbitrary key is of unknown type', function() {
                     let badTestQuery = '?foo=baz'
-        
+
                     let result = filterActions.getFilterFromUrl(badTestQuery)
 
                     expect(result).to.equal(null)
@@ -39,9 +40,9 @@ describe('FilterActions', function () {
             describe('when filter has no value in key-value pair', function() {
                 it('should return null', function() {
                     let badTestQuery = '?foo='
-        
+
                     let result = filterActions.getFilterFromUrl(badTestQuery)
-        
+
                     expect(result).to.equal(null)
                 })
             })
@@ -49,28 +50,28 @@ describe('FilterActions', function () {
             describe('when filter has no key in key-value pair', function() {
                 it('should return null', function () {
                     let badTestQuery = '?=foo'
-        
+
                     let result = filterActions.getFilterFromUrl(badTestQuery)
-        
+
                     expect(result).to.equal(null)
                 })
             })
-            
+
             describe('when filter has no key-value pair', function() {
                 it('should return null', function () {
                     let badTestQuery = '?'
-        
+
                     let result = filterActions.getFilterFromUrl(badTestQuery)
-        
+
                     expect(result).to.equal(null)
                 })
-            })           
-        })        
+            })
+        })
     })
 
     describe('getUrlFromFilter', function() {
         const history = []
-        
+
         const filterNoEventTypes = {ticketId: 0, foo: 'bar'}
         const filterWithEventTypes = {ticketId: 0, eventTypes: [1,2]}
 
@@ -127,26 +128,18 @@ describe('FilterActions', function () {
         const result = filterActions.changeEventFilter(history)(filter)
 
         const expectedValue = {type: 'CHANGE_EVENT_FILTER', filter: {ticketId: 0, eventTypes: [1, 2]}}
-        
+
         it('should return an object with a type and a filter', function() {
             expect(result).to.deep.equal(expectedValue)
         })
     })
 
-    describe('applyFilter', function() {
-        const history = []
-        const oldFilter = {incidentId: 0}
-        const goodNewFilter = {incidentId: 0}
-        const badNewFilter = {foo: 'bar'}
-
-        const dispatch = function(arg) {
-            return arg
-        }
-        const errorMessage = 'Need to filter on incidentId!'
-        const expectedReturn = { type: 'CHANGE_EVENT_FILTER', filter: {incidentId: 0} }
-
-        it('should throw an error when new filter has no incident id', function() {
-            expect(() => filterActions.applyFilter(history)(oldFilter, badNewFilter)(dispatch)).to.throw(errorMessage)
+    describe('removeFilter', function() {
+        beforeEach(() =>{
+            this.mockDispatchRecorder = {
+                action: null
+            }
+            this.singleState = setup(dummyState(this.mockDispatchRecorder), null)
         })
     })
 
