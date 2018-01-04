@@ -8,6 +8,7 @@ import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
 import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
+import { TestConditionSet } from '../../services/playbookService'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
 export const Event = ({
@@ -20,13 +21,16 @@ export const Event = ({
     eventTypeIsFetching,
     eventTypeIsError,
     eventId,
-    event
+    event,
+    actions
 }) => {
     const itemHighlight = (event && event.timeReceived) ? {
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
+    const isAllPlaybookInfoAvailable = actions.length > 0
+    const iconColor = isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
 
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
@@ -42,22 +46,30 @@ export const Event = ({
         <Card
             className="incident-card"
             style={{ backgroundColor }}
+            expanded={isAllPlaybookInfoAvailable ? null : false}
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
                 subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
+                iconStyle={{
+                  color: iconColor
+                }}
             />
-            <CardText expandable={true}>
+            {
+              isAllPlaybookInfoAvailable &&
+              <CardText expandable={true}>
                 Select the Actions below:
                 <Playbook
-                    eventId={eventId}
-                    eventTypeId={eventTypeId}
-                    ticketId={ticketId}
-                    incidentId={incidentId}
+                  eventId={eventId}
+                  eventTypeId={eventTypeId}
+                  ticketId={ticketId}
+                  incidentId={incidentId}
+                  actions={actions}
                 />
-            </CardText>
+              </CardText>
+            }
         </Card>
     </div>
 }
@@ -76,10 +88,20 @@ Event.propTypes = {
 const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
 
 export const mapStateToEventProps = (state, ownProps) => {
-    const event = ownProps.event
-    const eventType = state.eventTypes.records[event.eventTypeId]
-    const ticket = state.tickets.map[ownProps.ticketId]
-    const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
+  const event = ownProps.event
+  const eventType = state.eventTypes.records[event.eventTypeId]
+  const ticket = state.tickets.map[ownProps.ticketId]
+  const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
+  const actions = eventType.actions
+  var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
+  const qualifiedActions = actions.filter(
+    action => action.conditionSets.reduce(
+      (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
+        ? populatedConditionSetTest(currentConditionSet)
+        : false,
+      true
+    )
+  )
     return {
         ...ownProps,
         ticket,
@@ -91,7 +113,8 @@ export const mapStateToEventProps = (state, ownProps) => {
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
-        text: LoadTextFromEvent(event, eventType, ticket, engagement)
+        text: LoadTextFromEvent(event, eventType, ticket, engagement),
+        actions: qualifiedActions
     }
 }
 
