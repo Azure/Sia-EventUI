@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import RaisedButton from 'material-ui/RaisedButton'
 
 const styles = {
@@ -26,4 +27,11 @@ export const RaisedButtonStyled = ({label, type, primary, onTouchTap, children})
     )
 }
 
+RaisedButtonStyled.propTypes = {
+    label: PropTypes.number,
+    type: PropTypes.string,
+    primary: PropTypes.bool,
+    onTouchTap: PropTypes.func,
+    children: PropTypes.string
+}
 export default RaisedButtonStyled

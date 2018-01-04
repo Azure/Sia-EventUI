@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 import Checkpoint from './Checkpoint'
@@ -20,6 +21,14 @@ export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, 
         IncidentEventsName()
     ],
     expandSection, dispatch)
+}
+
+DisplayIncident.propTypes = {
+    incident: PropTypes.object,
+    ticket: PropTypes.object,
+    ticketSystem: PropTypes.object,
+    expandSection: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
 }
 
 export const IncidentSummaryName = (ticketId) => {
@@ -86,6 +95,14 @@ export const IncidentSummary = (incident, ticket, ticketSystem, ticketId, dispat
     return incidentSummaryArray
 }
 
+IncidentSummary.propTypes = {
+    incident: PropTypes.object,
+    ticket: PropTypes.object,
+    ticketSystem: PropTypes.object,
+    expandSection: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
+}
+
 export const IncidentProgress = (ticketId) => {
     let incidentProgressArray = [
         [
@@ -107,6 +124,10 @@ export const IncidentProgress = (ticketId) => {
     return incidentProgressArray
 }
 
+IncidentProgress.propTypes = {
+    ticketId: PropTypes.object
+}
+
 export const IncidentEvents = (ticketToIncidentIdMap) => {
     let incidentEventsArray = [
         [
@@ -124,6 +145,10 @@ export const IncidentEvents = (ticketToIncidentIdMap) => {
         ]
     ]
     return incidentEventsArray
+}
+
+IncidentEvents.propTypes = {
+    ticketToIncidentIdMap: PropTypes.object
 }
 
 export const mapStateToProps = (state, ownProps) => {
