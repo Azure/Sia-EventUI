@@ -29,8 +29,8 @@ export const Event = ({
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
     } : {}
-    const expand = actions.length > 0
-    const iconColor = expand ? 'black':'Lightgrey'
+    const isAllPlaybookInfoAvailable = actions.length > 0
+    const iconColor = isAllPlaybookInfoAvailable ? 'black':'Lightgrey'
     
 
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
@@ -48,7 +48,7 @@ export const Event = ({
         <Card
           className="incident-card"
           style={{ backgroundColor }}
-          expanded={expand ? null : false}
+          expanded={isAllPlaybookInfoAvailable ? null : false}
         >
           <CardHeader
             title={ticketId ? `${ticketId}: ${text}` : text}
@@ -60,7 +60,7 @@ export const Event = ({
             }}
           />
           {
-            expand &&
+            isAllPlaybookInfoAvailable &&
             <CardText expandable={true} >
               Select the Actions below:
                 <Playbook
