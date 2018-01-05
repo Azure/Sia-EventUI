@@ -1,8 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { BootstrapIfNeeded } from '../../../services/playbookService'
 
 export class BootstrapPlaybook extends React.Component {
+    static propTypes = {
+        bootStrapIfNeeded: PropTypes.func,
+        eventType: PropTypes.object,
+        isFetching: PropTypes.bool
+    }
+
     constructor() {
         super()
     }
