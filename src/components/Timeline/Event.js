@@ -22,16 +22,16 @@ export const Event = ({
     eventTypeIsError,
     eventId,
     event,
-    actions
+    actions,
+    engagementId
 }) => {
     const itemHighlight = (event && event.timeReceived) ? {
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
-    } : {}
-    const isAllPlaybookInfoAvailable = actions.length > 0
-    const iconColor = isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
-
+  } : {}
+    const isAllPlaybookInfoAvailable = actions && Array.isArray(actions) && actions.length > 0
+  
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
         : eventTypeIsError && !eventHasValidDisplayText(event)
@@ -46,7 +46,6 @@ export const Event = ({
         <Card
             className="incident-card"
             style={{ backgroundColor }}
-            expanded={isAllPlaybookInfoAvailable ? null : false}
         >
             <CardHeader
                 title={ticketId ? `${ticketId}: ${text}` : text}
@@ -54,7 +53,7 @@ export const Event = ({
                 actAsExpander={true}
                 showExpandableButton={true}
                 iconStyle={{
-                  color: iconColor
+                  color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
                 }}
             />
             {
@@ -67,6 +66,7 @@ export const Event = ({
                   ticketId={ticketId}
                   incidentId={incidentId}
                   actions={actions}
+                  engagementId={engagementId}
                 />
               </CardText>
             }
@@ -91,7 +91,15 @@ export const mapStateToEventProps = (state, ownProps) => {
   const event = ownProps.event
   const eventType = state.eventTypes.records[event.eventTypeId]
   const ticket = state.tickets.map[ownProps.ticketId]
-  const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
+  const auth = state.auth
+  const engagement = state.engagements.list.find(
+    engagement => engagement
+      && engagement.incidentId === ownProps.incidentId
+      && engagement.participant
+      && engagement.participant.alias === auth.userAlias
+      && engagement.participant.team === auth.userTeam
+      && engagement.participant.role === auth.userRole
+  )
   const actions = eventType.actions
   var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
   const qualifiedActions = actions.filter(
@@ -105,7 +113,7 @@ export const mapStateToEventProps = (state, ownProps) => {
     return {
         ...ownProps,
         ticket,
-        engagement,
+        engagementId: engagement? engagement.id:null,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
         eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
