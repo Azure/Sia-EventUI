@@ -5,20 +5,19 @@ import Chip from 'material-ui/Chip'
 import ByPath from 'object-path'
 
 export const FilterChips = ({filter, selectSpecificFilter, records, onRequestDelete}) => {
-    let selectedFilters = ByPath.get(filter, selectSpecificFilter)
-    return selectedFilters? selectedFilters.map((selectedFilter) => hydrateChip(selectedFilter, records))
-        .map(chip => renderChip(chip.id, chip.name, onRequestDelete(filter, chip.id)))
-        :
-        <div></div>
+    const selectedFilters = ByPath.get(filter, selectSpecificFilter)
+    return selectedFilters
+        ? selectedFilters
+            .map((selectedFilter) => hydrateChip(selectedFilter, records))
+            .map(chip => renderChip(chip.id, chip.name, onRequestDelete(filter, chip.id)))
+        : <div></div>
 }
 
-export const mapStateToProps = (state, ownProps) => {
-    return {
-        ...ownProps,
-        filter: ByPath.get(state, ownProps.lookupFilterObject),
-        records: ByPath.get(state, ownProps.recordLookup)
-    }
-}
+export const mapStateToProps = (state, ownProps) => ({
+    ...ownProps,
+    filter: ByPath.get(state, ownProps.lookupFilterObject),
+    records: ByPath.get(state, ownProps.recordLookup)
+})
 
 export const renderChip = (id, name, onRequestDelete) => (
     <Chip
@@ -41,7 +40,7 @@ const chipStyles = {
         margin: 4
     },
     wrapper: {
-        display: 'flex',
+       display: 'flex',
         flexWrap: 'wrap'
     }
 }
@@ -52,7 +51,5 @@ FilterChips.propTypes = {
     recordLookup: PropTypes.string,
     onRequestDelete: PropTypes.func
 }
-
-
 
 export default connect(mapStateToProps)(FilterChips)
