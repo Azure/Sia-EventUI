@@ -1,19 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import IconButtonStyled from '../elements/IconButtonStyled'
+import AutoCompleteMenu from '../elements/AutoCompleteMenu'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-import AutoComplete from 'material-ui/AutoComplete'
 import Chip from 'material-ui/Chip'
-import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 import * as filterActions from '../../actions/filterActions'
-
-
-export const dataSourceConfig = {
-  text: 'name',
-  value: 'id'
-}
 
 export const chipStyles = {
   chip: {
@@ -30,25 +23,20 @@ export const filterSearchForm = {
   field: 'input'
 }
 
-
 const EventFilter = ({pagination, filter, filterSearchField, eventTypes, filterTypes, dispatch, history}) =>  {
   const filterChips = filter && filter.eventTypes && eventTypes ? renderChips(history, filter, eventTypes, dispatch): null
+  // debugger
   return  (
     <div className="incident-EventFilter">
       {filterChips}
-      <AutoComplete
-        floatingLabelText="Filter by event type"
-        filter={AutoComplete.caseInsensitiveFilter}
-        dataSource={filterTypes}
-        searchText={filterSearchField || ''}
-        onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
-        onNewRequest={
-          (eventType) => {
-            dispatch(filterActions.addFilter(history)(filter, eventType))
-            dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
-          }
-        }
-        dataSourceConfig={dataSourceConfig}
+      <AutoCompleteMenu
+        dispatch={dispatch}
+        history={history}
+        label={'Filter by event type'}
+        menuOptions={filterTypes}
+        filter={filter}
+        filterSearchField={filterSearchField || ''}
+        menuFilterSearchForm={filterSearchForm}
       />
       <IconButtonStyled
         tooltip='order'
