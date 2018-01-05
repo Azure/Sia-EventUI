@@ -12,9 +12,14 @@ import { resetSignalRConnection } from '../../services/signalRService'
 import { acknowledgeMessages } from '../../actions/signalRActions'
 
 export const NavNotifs = ({signalR, dispatch}) => {
-    return  <IconButton onTouchTap={notifsAction(signalR, dispatch)}>
+    const pendingMessages = signalR.pendingMessages ? signalR.pendingMessages : 0
+    return  <IconButton tooltip={showNotifsMessage(pendingMessages)}onTouchTap={notifsAction(signalR, dispatch)}>
                 {displayButton(signalR)}
             </IconButton>
+}
+
+const showNotifsMessage = (pendingMessages) => {
+    return pendingMessages === 0 ? 'Check for new messages' : `View ${pendingMessages} messages`
 }
 
 NavNotifs.propTypes = {
