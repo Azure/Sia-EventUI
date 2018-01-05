@@ -1,5 +1,6 @@
 import queryString from 'query-string'
 import deepEquals from 'deep-equal'
+import ByPath from 'object-path'
 
 import * as eventActions from './eventActions'
 
@@ -33,18 +34,17 @@ export const addFilter = (history) => (filter, eventType) => {
     return applyFilter(history)(oldFilter, newFilter)
 }
 
-export const removeFilter = (history) => (oldFilter, eventTypeToDelete) => {
-    if (!oldFilter.eventTypes.includes(eventTypeToDelete.id)) {
+export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterToDelete) => {
+    if (!ByPath.get(oldFilter, relativeFilterPath).includes(filterToDelete)) {
         return
     }
-    const newFilter = {
-        ...oldFilter,
-        eventTypes: oldFilter.eventTypes.filter(eventType => eventTypeToDelete.id !== eventType)
-    }
+    let newFilter = { ...oldFilter }
+    const isFilterToKeep = existingFilter => filterToDelete !== existingFilter
+    ByPath.set(newFilter, relativeFilterPath, ByPath.get(oldFilter, relativeFilterPath).filter(isFilterToKeep))
     return applyFilter(history)(oldFilter, newFilter)
 }
 
-export const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
+const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
     if (!newFilter.incidentId) {
         throw new Error('Need to filter on incidentId!')
     }
@@ -106,6 +106,9 @@ export const generateUrl = (history, filter) => {
     return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
 }
 
-export const findEventTypeInRef = (eventType, referenceData) => {
-    return referenceData.hasOwnProperty(eventType) ? referenceData[eventType] : {id: eventType, name: 'unknown'}
+export const findEventTypeInRef = (referenceData) => (eventType) => {
+    return referenceData.hasOwnProperty(eventType) ?
+        referenceData[eventType]
+        :
+        {id: eventType, name: 'unknown'}
 }
