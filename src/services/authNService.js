@@ -3,7 +3,8 @@ import * as unused from './adalShim' //see file for more info
 import * as msalService from './msalService'
 import * as adalService from './adalService'
 import * as authActions from '../actions/authActions'
-import config from 'config'
+// import config from 'config'
+import config from '../../cfg/test'
 
 const authVersion = config.authVersion
 

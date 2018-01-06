@@ -1,6 +1,7 @@
 import AuthenticationContext from 'adal-angular'
 import * as authActions from '../actions/authActions'
-import config from 'config'
+// import config from 'config'
+import config from '../../cfg/test'
 
 
 export const clientId = config.clientId
