@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from '../../helpers/shallowRenderHelper'
-import { Event } from '../../../src/components/Timeline/Event'
+import { Event, mapStateToEventProps } from '../../../src/components/Timeline/Event'
 import BootstrapPlaybook from '../../../src/components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import moment from 'moment'
@@ -23,8 +23,35 @@ describe('Event', function test () {
     })
 
     it('Should render a div containing BootstrapPlaybook and a Card', () => {
-        expect(this.output.type).to.equal('div')
+      expect(this.output.type).to.equal('div')
         expect(this.output.props.children[0].type).to.equal(BootstrapPlaybook)
         expect(this.output.props.children[1].type).to.equal(Card)
     })
+
+    describe('Card', () => { 
+      it('When there is no action it does not display CardText', () => {
+        let props = {
+          text: 'test text',
+          id: 1,
+          time: moment(),
+          actions: []
+        }
+
+        let eventComponent = createComponent(Event, props)
+        expect(eventComponent.props.children[1].props.children[1]).to.eql(false)
+      })
+
+      it('When actions are present it displays CardText', () => {
+        let props = {
+          text: 'test text',
+          id: 1,
+          time: moment(),
+          actions: ['dolphin']
+        }
+
+        let eventComponent = createComponent(Event, props)
+        expect(eventComponent.props.children[1].props.children[1].type).to.eql(CardText)
+      })
+    })
+
 })
