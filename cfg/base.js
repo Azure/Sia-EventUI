@@ -98,8 +98,6 @@ const config = {
         from: `${srcPath}/extensionHooks/manifest.json`,
         transform: function(content, path) {
           let jsonContent = JSON.parse(content.toString())
-          console.log(jsonContent)
-          console.log(constants.ticketSystems)
           Object.values(constants.ticketSystems).forEach((system) =>{
             jsonContent.content_scripts[0].matches.push(`${system.ticketUriPrefix}*`)
           })
