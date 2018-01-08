@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import IconButtonStyled from '../elements/IconButtonStyled'
+import FilterChips from '../elements/FilterChips'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import AutoComplete from 'material-ui/AutoComplete'
-import Chip from 'material-ui/Chip'
 import * as formActions from '../../actions/formActions'
 import * as eventActions from '../../actions/eventActions'
 import * as filterActions from '../../actions/filterActions'
-
 
 export const dataSourceConfig = {
   text: 'name',
@@ -31,11 +31,15 @@ export const filterSearchForm = {
 }
 
 
-const EventFilter = ({pagination, filter, filterSearchField, eventTypes, filterTypes, dispatch, history}) =>  {
-  const filterChips = filter && filter.eventTypes && eventTypes ? renderChips(history, filter, eventTypes, dispatch): null
+const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
   return  (
     <div className="incident-EventFilter">
-      {filterChips}
+      <FilterChips
+        selectSpecificFilter={'eventTypes'}
+        lookupFilterObject={'events.filter'}
+        recordLookup={'eventTypes.records'}
+        onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter,id))}
+      />
       <AutoComplete
         floatingLabelText="Filter by event type"
         filter={AutoComplete.caseInsensitiveFilter}
@@ -64,38 +68,15 @@ const EventFilter = ({pagination, filter, filterSearchField, eventTypes, filterT
   )
 }
   
-  
-const renderChips = (history, filter, eventTypes, dispatch) => {
-  return (
-    <div style={chipStyles.wrapper}>
-      {filter.eventTypes.map((passedEventType) => renderChip(history, filter, eventTypes, passedEventType, dispatch))}
-    </div>
-  )
-}
-
-const renderChip = (history, filter, eventTypes, passedEventType, dispatch) => {
-  const eventType = filterActions.findEventTypeInRef(passedEventType, eventTypes)
-  return (
-    <Chip
-      key={eventType.id}
-      onRequestDelete={() => dispatch(filterActions.removeFilter(history)(filter, eventType))}
-      style={chipStyles.chip}
-    >
-      {eventType.name}
-    </Chip>
-  )
-}
-
-const mapStateToProps = (state, ownProps) => {
+  const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,
     pagination: events.pages,
     filter: events.filter,
     filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : '',
-    eventTypes: ownProps.eventTypes ? ownProps.eventTypes : null,
     filterTypes: ownProps.eventTypes ? Object.values(ownProps.eventTypes) : []
   }
 }
 
-export default connect(mapStateToProps)(EventFilter)
+export default withRouter(connect(mapStateToProps)(EventFilter))

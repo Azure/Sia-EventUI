@@ -6,11 +6,6 @@ import buildError from './reducerHelpers/error'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
 
-const persistConfig = {
-    key: 'eventType',
-    storage
-}
-
 const defaultEventTypeCollection = {}
 
 const actionSet = {
