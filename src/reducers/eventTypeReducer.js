@@ -34,7 +34,7 @@ export const records = (state = defaultEventTypeCollection, action) => {
     }
 }
 
-const persistedRecords = persistReducer(persistConfig, records)
+const persistedRecords = persistReducer({ key: 'eventType', storage }, records)
 
 export const eventTypeReducer = combineReducers({
     fetching,
