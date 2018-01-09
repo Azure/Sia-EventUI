@@ -14,7 +14,9 @@ export const Playbook = ({
     eventIsFetching,
     eventIsError,
     eventTypeIsFetching,
-    eventTypeIsError
+    eventTypeIsError,
+    actions,
+    engagementId
 }) => {
     if(eventIsFetching) {
         return LoadingMessage('Fetching event information...', eventActions.fetchEvent(incidentId, eventId))
@@ -29,10 +31,12 @@ export const Playbook = ({
         return ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
     }
     return <DisplayPlaybook
-        eventTypeId={eventTypeId}
-        eventId={eventId}
-        ticketId={ticketId}
-        incidentId={incidentId}
+      eventTypeId={eventTypeId}
+      eventId={eventId}
+      ticketId={ticketId}
+      incidentId={incidentId}
+      actions={actions}
+      engagementId={engagementId}
     />
 }
 

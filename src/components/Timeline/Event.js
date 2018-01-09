@@ -8,6 +8,7 @@ import Playbook from './Playbook/Playbook'
 import { LoadTextFromEvent } from '../../services/playbookService'
 import ErrorMessage from '../elements/ErrorMessage'
 import LoadingMessage from '../elements/LoadingMessage'
+import { TestConditionSet } from '../../services/playbookService'
 import * as eventTypeActions from '../../actions/eventTypeActions'
 
 export const Event = ({
@@ -20,14 +21,17 @@ export const Event = ({
     eventTypeIsFetching,
     eventTypeIsError,
     eventId,
-    event
+    event,
+    actions,
+    engagementId
 }) => {
     const itemHighlight = (event && event.timeReceived) ? {
         animationName: 'yellowfade',
         animationDuration: '30s',
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
-    } : {}
-
+  } : {}
+    const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
+  
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
         : eventTypeIsError && !eventHasValidDisplayText(event)
@@ -48,16 +52,24 @@ export const Event = ({
                 subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
                 actAsExpander={true}
                 showExpandableButton={true}
+                iconStyle={{
+                  color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
+                }}
             />
-            <CardText expandable={true}>
+            {
+              isAllPlaybookInfoAvailable &&
+              <CardText expandable={true}>
                 Select the Actions below:
                 <Playbook
-                    eventId={eventId}
-                    eventTypeId={eventTypeId}
-                    ticketId={ticketId}
-                    incidentId={incidentId}
+                  eventId={eventId}
+                  eventTypeId={eventTypeId}
+                  ticketId={ticketId}
+                  incidentId={incidentId}
+                  actions={actions}
+                  engagementId={engagementId}
                 />
-            </CardText>
+              </CardText>
+            }
         </Card>
     </div>
 }
@@ -76,14 +88,32 @@ Event.propTypes = {
 const eventHasValidDisplayText = (event) => event && event.data && event.data.DisplayText
 
 export const mapStateToEventProps = (state, ownProps) => {
-    const event = ownProps.event
-    const eventType = state.eventTypes.records[event.eventTypeId]
-    const ticket = state.tickets.map[ownProps.ticketId]
-    const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
+  const event = ownProps.event
+  const eventType = state.eventTypes.records[event.eventTypeId]
+  const ticket = state.tickets.map[ownProps.ticketId]
+  const auth = state.auth
+  const engagement = state.engagements.list.find(
+    engagement => engagement
+      && engagement.incidentId === ownProps.incidentId
+      && engagement.participant
+      && engagement.participant.alias === auth.userAlias
+      && engagement.participant.team === auth.userTeam
+      && engagement.participant.role === auth.userRole
+  )
+  const actions = eventType.actions
+  var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
+  const qualifiedActions = actions.filter(
+    action => action.conditionSets.reduce(
+      (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
+        ? populatedConditionSetTest(currentConditionSet)
+        : false,
+      true
+    )
+  )
     return {
         ...ownProps,
         ticket,
-        engagement,
+        engagementId: engagement? engagement.id:null,
         eventId: event.id,
         eventTypeId: event.eventTypeId,
         eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
@@ -91,7 +121,8 @@ export const mapStateToEventProps = (state, ownProps) => {
         time: moment(event.occurred ? event.occurred : event.Occurred),
         dismissed: event.dismissed,
         backgroundColor: event.backgroundColor,
-        text: LoadTextFromEvent(event, eventType, ticket, engagement)
+        text: LoadTextFromEvent(event, eventType, ticket, engagement),
+        actions: qualifiedActions
     }
 }
 
