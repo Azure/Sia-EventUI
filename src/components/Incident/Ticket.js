@@ -7,7 +7,7 @@ import DisplayIncident from './DisplayIncident'
 import LoadingMessage from '../elements/LoadingMessage'
 import ErrorMessage from '../elements/ErrorMessage'
 import * as incidentActions from '../../actions/incidentActions'
-import {fetchEventTypes} from '../../actions/eventTypeActions'
+import { fetchEventTypes } from '../../actions/eventTypeActions'
 
 class Ticket extends Component {
     static propTypes = {
@@ -23,7 +23,7 @@ class Ticket extends Component {
     }
 
     componentDidMount() {
-        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError, history } = this.props
+        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
         dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
         dispatch(fetchEventTypes())
     }

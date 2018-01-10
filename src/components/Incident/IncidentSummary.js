@@ -41,28 +41,6 @@ const HeaderRow = (ticketId) => [
 ]
 
 const TicketDetailsRow = (ticketSystem, ticket) => [
-<<<<<<< HEAD
-    [
-        (key) =>
-            <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key}>
-                {ticket.originId}
-            </a>,
-        (key) =>
-            <div key={key}>
-                Sev 2 {ticket.severity}
-            </div>
-    ],
-    [
-        (key) =>
-            <div key={key}>
-                IM: TBD {ticket.imName}
-            </div>,
-        (key) =>
-            <IconButtonStyled tooltip="Edit IM" key={key}>
-                <ModeEditIcon />
-            </IconButtonStyled>
-    ]
-=======
     BasicInfoColumn(ticketSystem, ticket),
     IncidentManagerColumn(ticket)
 ]
@@ -87,7 +65,6 @@ const IncidentManagerColumn = (ticket) => [
         <IconButtonStyled tooltip="Edit IM" key={key}>
             <ModeEditIcon />
         </IconButtonStyled>
->>>>>>> Made corrections and clarifications based on feedback in pull request.
 ]
 
 const noTitleMessage = 'No Title!'
