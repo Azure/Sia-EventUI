@@ -14,29 +14,33 @@ describe('GlobalActions', function () {
         const expectedIncidentId = 1
         const expectedTicketId = 2
 
-        it('Should output DisplayGlobalActions and pass incidentId and ticketId when any actions are provided', function () {
-            const input = {
-                incidentId: expectedIncidentId,
-                ticketId: 2,
-                actions: [{}, {}]
-            }
+        describe('When any actions are provided', function () {
+            it('Should output DisplayGlobalActions and pass incidentId and ticketId', function () {
+                const input = {
+                    incidentId: expectedIncidentId,
+                    ticketId: expectedTicketId,
+                    actions: [{}, {}]
+                }
 
-            const testResult = createComponent(GlobalActions, input)
+                const testResult = createComponent(GlobalActions, input)
 
-            expect(testResult.type).to.equal(DisplayGlobalActions)
-            expect(testResult.props.incidentId).to.equal(expectedIncidentId)
-            expect(testResult.props.ticketId).to.equal(expectedTicketId)
+                expect(testResult.type).to.equal(DisplayGlobalActions)
+                expect(testResult.props.incidentId).to.equal(expectedIncidentId)
+                expect(testResult.props.ticketId).to.equal(expectedTicketId)
+            })
         })
 
-        it('Should output BootstrapPlaybook when no actions are present', function () {
-            const input = {
-                incidentId: expectedIncidentId,
-                ticketId: expectedTicketId
-            }
+        describe('When no actions are provided', function () {
+            it('Should output BootstrapPlaybook', function () {
+                const input = {
+                    incidentId: expectedIncidentId,
+                    ticketId: expectedTicketId
+                }
 
-            const testResult = createComponent(GlobalActions, input)
+                const testResult = createComponent(GlobalActions, input)
 
-            expect(testResult.type).to.equal(BootstrapGlobalActions)
+                expect(testResult.type).to.equal(BootstrapGlobalActions)
+            })
         })
     })
 

@@ -11,7 +11,7 @@ export const DisplayGlobalActions = ({
 }) => {
     let localKey = 0
     return <div>
-        {actions && Array.isArray(actions) && actions.length
+        { AreAnyActionsAvailable(actions)
             ? actions.map(action => DisplayGlobalAction(
                     action,
                     ticketId,
@@ -22,6 +22,9 @@ export const DisplayGlobalActions = ({
             : null}
     </div>
 }
+
+const AreAnyActionsAvailable = (actions) =>
+    actions && Array.isArray(actions) && actions.length
 
 export const DisplayGlobalAction = (
     action,
@@ -43,17 +46,8 @@ export const DisplayGlobalAction = (
 </div>
 
 export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
-    const auth = state.auth
-
     const ticket = state.tickets.map[ownProps.ticketId]
-    const engagement = state.engagements.list.find(
-        engagement => engagement
-        && engagement.incidentId === ownProps.incidentId
-        && engagement.participant
-        && engagement.participant.alias === auth.userAlias
-        && engagement.participant.team === auth.userTeam
-        && engagement.participant.role === auth.userRole
-    )
+    const engagement = FindCurrentUserEngagement(state, ownProps.incidentId)
 
     const actions = Object.values(state.globalActions)
     var populatedConditionSetTest = TestConditionSet(null, ticket, null, engagement)
@@ -72,5 +66,14 @@ export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
         ...ownProps
     }
 }
+
+const FindCurrentUserEngagement = (state, incidentId) => state.engagements.list.find(
+    engagement => engagement
+    && engagement.incidentId === incidentId
+    && engagement.participant
+    && engagement.participant.alias === state.auth.userAlias
+    && engagement.participant.team === state.auth.userTeam
+    && engagement.participant.role === state.auth.userRole
+)
 
 export default connect(mapStateToDisplayGlobalActionsProps)(DisplayGlobalActions)

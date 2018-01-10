@@ -18,7 +18,7 @@ IncidentSummary.propTypes = {
     dispatch: PropTypes.func.isRequired
 }
 
-export const IncidentSummary = (incident, ticket, ticketSystem, ticketOriginId, dispatch) =>
+export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId, dispatch}) =>
 [
     HeaderRow(ticketOriginId),
     TicketDetailsRow(ticketSystem, ticket),
@@ -41,6 +41,7 @@ const HeaderRow = (ticketId) => [
 ]
 
 const TicketDetailsRow = (ticketSystem, ticket) => [
+<<<<<<< HEAD
     [
         (key) =>
             <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key}>
@@ -61,23 +62,53 @@ const TicketDetailsRow = (ticketSystem, ticket) => [
                 <ModeEditIcon />
             </IconButtonStyled>
     ]
+=======
+    BasicInfoColumn(ticketSystem, ticket),
+    IncidentManagerColumn(ticket)
+]
+
+const BasicInfoColumn = (ticketSystem, ticket) => [
+    (key) =>
+        <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key} target="_blank">
+            {ticket.originId}
+        </a>,
+    (key) =>
+        <div key={key}>
+            {ticket.severity}
+        </div>
+]
+
+const IncidentManagerColumn = (ticket) => [
+    (key) =>
+        <div key={key}>
+            {ticket.imName}
+        </div>,
+    (key) =>
+        <IconButtonStyled tooltip="Edit IM" key={key}>
+            <ModeEditIcon />
+        </IconButtonStyled>
+>>>>>>> Made corrections and clarifications based on feedback in pull request.
 ]
 
 const noTitleMessage = 'No Title!'
 
 const TitleRow = (incident) => [
     <div>
-        {incident && incident.title
-            ? incident.title
-            : incident.primaryTicket
-                ? incident.primaryTicket.title
-                    ? incident.primaryTicket.title
-                    : incident.primaryTicket.data && incident.primaryTicket.data.Title
-                        ? incident.primaryTicket.data.Title
-                        : noTitleMessage
-                : noTitleMessage}
+        {DoesIncidentHaveTitle(incident) ? incident.title
+        : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
+        : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.Title
+        : noTitleMessage}
     </div>
 ]
+
+const DoesIncidentHaveTitle = (incident) =>
+    incident && incident.title
+
+const DoesPrimaryTicketHaveNativeTitle = (incident) =>
+    incident && incident.primaryTicket && incident.primaryTicket.title
+
+const DoesPrimaryTicketHaveDataTitle = (incident) =>
+    incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.Title
 
 const EngagementsRow = (incident, dispatch) => [
     <Engagements
