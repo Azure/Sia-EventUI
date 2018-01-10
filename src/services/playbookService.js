@@ -96,7 +96,8 @@ export const testableTestConditionSet = (select, testCondition) => (event, ticke
         case 2: //noneOf
             return metConditionsCount === 0
         default: //Not All Of
-            return metConditionsCount < conditionsWithValue.length    }
+            return metConditionsCount < conditionsWithValue.length
+    }
 }
 
 export const TestConditionSet = testableTestConditionSet(selectSourceObject, TestCondition)
