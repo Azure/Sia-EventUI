@@ -2,7 +2,9 @@ import { connect } from 'react-redux'
 
 import PropTypes from 'prop-types'
 import { CollapsibleGridSet } from '../elements/CollapsibleGrid'
-import { IncidentSummary, IncidentEvents, IncidentSummaryName, IncidentEventsName, mapStateToProps } from './DisplayIncident'
+import {  mapStateToProps } from './DisplayIncident'
+import { IncidentSummary, IncidentSummaryName } from './IncidentSummary'
+import { IncidentEvents, IncidentEventsName } from './IncidentEvents'
 
 export const CompareIncidents = ({firstIncident, firstTicket, firstTicketSystem, secondIncident, secondTicket, secondTicketSystem, expandSection, dispatch}) => {
     const ticketIdToIncidentIdMap = [[firstTicket.originId, firstIncident.id], [secondTicket.originId, secondIncident.id]]

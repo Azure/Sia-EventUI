@@ -28,7 +28,6 @@ export const RaisedButtonStyled = ({label, type, primary, onTouchTap, children})
 }
 
 RaisedButtonStyled.propTypes = {
-    label: PropTypes.number,
     type: PropTypes.string,
     primary: PropTypes.bool,
     onTouchTap: PropTypes.func,

@@ -10,13 +10,6 @@ export const IncidentSummaryName = (ticketId) => {
     return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
 }
 
-IncidentSummary.propTypes = {
-    incident: PropTypes.object,
-    ticket: PropTypes.object,
-    ticketSystem: PropTypes.object,
-    expandSection: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
-}
 
 export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId, dispatch}) =>
 [
@@ -26,6 +19,13 @@ export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId,
     GlobalActionsRow(incident, ticketOriginId),
     EngagementsRow(incident, dispatch)
 ]
+IncidentSummary.propTypes = {
+    incident: PropTypes.object,
+    ticket: PropTypes.object,
+    ticketSystem: PropTypes.object,
+    expandSection: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
+}
 
 const HeaderRow = (ticketId) => [
     [

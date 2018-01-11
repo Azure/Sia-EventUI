@@ -1,5 +1,5 @@
 import * as globalActionActions from '../actions/globalActionActions'
-import { mergeToStateById } from './reducerHelpers'
+import { mergeToStateById } from './reducerHelpers/merge'
 
 const defaultGlobalActionCollection = {}
 
