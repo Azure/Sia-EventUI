@@ -8,6 +8,7 @@ import expandSection from './expandSectionReducer'
 import signalR from './signalRReducer'
 import forms from './formReducer'
 import eventTypes from './eventTypeReducer'
+import globalActions from './globalActionReducer'
 
 const rootReducer = (filters) => combineReducers({
     incidents,
@@ -18,7 +19,8 @@ const rootReducer = (filters) => combineReducers({
     forms,
     expandSection,
     signalR,
-    eventTypes
+    eventTypes,
+    globalActions
 })
 
 export default rootReducer
