@@ -52,9 +52,11 @@ const pageArgs = {
 
 export const pages = paginated(rawList, eventActions.pagination.types, pageArgs)
 
-export default (defaultFilter) => combineReducers({
-    fetching,
-    error,
-    pages,
-    filter: filter(defaultFilter)
+export const buildReducersObject = (defaultFilter) => (fetchingReducer, errorReducer, pagesReducer, filterReducer) => ({
+    fetching: fetchingReducer,
+    error: errorReducer,
+    pages: pagesReducer,
+    filter: filterReducer(defaultFilter)
 })
+
+export default (defaultFilter) => combineReducers(buildReducersObject(defaultFilter)(fetching, error, pages, filter))

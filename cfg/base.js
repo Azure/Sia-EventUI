@@ -7,7 +7,7 @@ let constants
 try {
   constants = require(`./${env}.const`)
 } catch (ex) { // TODO: Catch only file not found.
-  console.log(`${env}.const not found.`, ex)
+  // console.log(`${env}.const not found.`, ex)
   constants = require('./defaultConstants')
 }
 
