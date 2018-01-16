@@ -1,26 +1,26 @@
 import { combineReducers } from 'redux'
-import tickets from './ticketReducers'
-import auth from './authReducer'
-import incidents from './incidentReducers'
-import engagements from './engagementReducer'
-import events from './eventReducer'
-import expandSection from './expandSectionReducer'
-import signalR from './signalRReducer'
-import forms from './formReducer'
-import eventTypes from './eventTypeReducer'
-import globalActions from './globalActionReducer'
+import tickets from 'reducers/ticketReducers'
+import auth from 'reducers/authReducer'
+import incidents from 'reducers/incidentReducers'
+import engagements from 'reducers/engagementReducer'
+import events from 'reducers/eventReducer'
+import expandSection from 'reducers/expandSectionReducer'
+import signalR from 'reducers/signalRReducer'
+import forms from 'reducers/formReducer'
+import eventTypes from 'reducers/eventTypeReducer'
+import globalActions from 'reducers/globalActionReducer'
 
 const rootReducer = (filters) => combineReducers({
-    incidents,
-    auth,
-    tickets,
-    engagements,
-    events: events(filters),
-    forms,
-    expandSection,
-    signalR,
-    eventTypes,
-    globalActions
+  incidents,
+  auth,
+  tickets,
+  engagements,
+  events: events(filters),
+  forms,
+  expandSection,
+  signalR,
+  eventTypes,
+  globalActions
 })
 
 export default rootReducer

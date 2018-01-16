@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import IconButtonStyled from '../elements/IconButtonStyled'
-import FilterChips from '../elements/FilterChips'
+import IconButtonStyled from 'components/elements/IconButtonStyled'
+import FilterChips from 'components/elements/FilterChips'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 import AutoComplete from 'material-ui/AutoComplete'
-import * as formActions from '../../actions/formActions'
-import * as eventActions from '../../actions/eventActions'
-import * as filterActions from '../../actions/filterActions'
+import * as formActions from 'actions/formActions'
+import * as eventActions from 'actions/eventActions'
+import * as filterActions from 'actions/filterActions'
 
 export const dataSourceConfig = {
   text: 'name',
@@ -30,18 +30,17 @@ export const filterSearchForm = {
   field: 'input'
 }
 
-
-const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) =>  {
-  return  (
-    <div className="incident-EventFilter">
+const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispatch, history}) => {
+  return (
+    <div className='incident-EventFilter'>
       <FilterChips
         selectSpecificFilter={'eventTypes'}
         lookupFilterObject={'events.filter'}
         recordLookup={'eventTypes.records'}
-        onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter,id))}
+        onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter, id))}
       />
       <AutoComplete
-        floatingLabelText="Filter by event type"
+        floatingLabelText='Filter by event type'
         filter={AutoComplete.caseInsensitiveFilter}
         dataSource={filterTypes}
         searchText={filterSearchField || ''}
@@ -60,15 +59,15 @@ const EventFilter = ({pagination, filter, filterSearchField, filterTypes, dispat
       >
         {
           pagination && pagination.order === 'desc'
-          ? <ArrowDown/>
-          : <ArrowUp/>
+          ? <ArrowDown />
+          : <ArrowUp />
         }
       </IconButtonStyled>
     </div>
   )
 }
-  
-  const mapStateToProps = (state, ownProps) => {
+
+const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {
     ...ownProps,

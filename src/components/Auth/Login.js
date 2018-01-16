@@ -1,31 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { login } from '../../services/authNService'
+import { login } from 'services/authNService'
 
 export class Login extends React.Component {
-    static propTypes = {
-        dispatch: PropTypes.func.isRequired,
-        login: PropTypes.func,
-        isLoggedIn: PropTypes.bool.isRequired,
-        signInAutomatically: PropTypes.bool.isRequired
-    }
-    
-    constructor() {
-        super()
-    }
-    
-    componentDidMount() {
-        //exported separately for testing
-        LoginComponentDidMount(this.props)
-    }
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    login: PropTypes.func,
+    isLoggedIn: PropTypes.bool.isRequired,
+    signInAutomatically: PropTypes.bool.isRequired
+  }
 
-    render() {
-        const { dispatch } = this.props
-        return (
-                <button id="SignIn" onClick={() => dispatch(login)}>Sign In</button>
-        )
-    }
+  componentDidMount () {
+        // exported separately for testing
+    LoginComponentDidMount(this.props)
+  }
+
+  render () {
+    const { dispatch } = this.props
+    return (
+      <button id='SignIn' onClick={() => dispatch(login)}>Sign In</button>
+    )
+  }
 }
 
 export const LoginComponentDidMount = ({
@@ -34,15 +30,15 @@ export const LoginComponentDidMount = ({
     signInAutomatically,
     dispatch
 }) => {
-    if(!isLoggedIn && !loginInProgress && signInAutomatically) {
-        dispatch(login)
-    }
+  if (!isLoggedIn && !loginInProgress && signInAutomatically) {
+    dispatch(login)
+  }
 }
 
 export const mapStateToProps = (state) => {
-    return {
-        ...state.auth
-    }
+  return {
+    ...state.auth
+  }
 }
 
 export default connect(mapStateToProps)(Login)

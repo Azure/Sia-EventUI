@@ -1,14 +1,14 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import EventFilter from './EventFilter'
-import Footer from './EventFooter'
-import AddEventCard from './AddEventCard'
+import EventFilter from 'components/Timeline/EventFilter'
+import Footer from 'components/Timeline/EventFooter'
+import AddEventCard from 'components/Timeline/AddEventCard'
 import PropTypes from 'prop-types'
-import Events from './Events'
-import * as eventActions from '../../actions/eventActions'
-import * as eventTypeActions from '../../actions/eventTypeActions'
-import * as filterActions from '../../actions/filterActions'
+import Events from 'components/Timeline/Events'
+import * as eventActions from 'actions/eventActions'
+import * as eventTypeActions from 'actions/eventTypeActions'
+import * as filterActions from 'actions/filterActions'
 
 class Timeline extends Component {
   static propTypes = {
@@ -20,31 +20,30 @@ class Timeline extends Component {
     filter: PropTypes.object
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
     updatePagination(incidentId, dispatch)
     fetchMissingEventTypes(eventTypes, events, dispatch)
-    if (incidentId)
-    {
+    if (incidentId) {
       dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
     }
   }
 
-  render() {
+  render () {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
     return (
       <div>
         {AddEventCard(incidentId)}
-        <EventFilter history={history} eventTypes={eventTypes}/>
+        <EventFilter history={history} eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
-        <Footer pagination={events} dispatch={dispatch}/>
+        <Footer pagination={events} dispatch={dispatch} />
       </div>
     )
   }
 }
- 
+
 const updatePagination = (incidentId, dispatch) => {
-    dispatch(eventActions.pagination.filter(incidentId.toString()))
+  dispatch(eventActions.pagination.filter(incidentId.toString()))
 }
 
 const fetchMissingEventTypes = (eventTypes, events, dispatch) => {

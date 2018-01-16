@@ -1,9 +1,8 @@
-import { reduxBackedPromise } from './actionHelpers'
+import { reduxBackedPromise } from 'actions/actionHelpers'
 
 export const TRY_GET_GLOBAL_ACTIONS = 'TRY_GET_GLOBAL_ACTIONS'
 export const GET_GLOBAL_ACTIONS_SUCCESS = 'GET_GLOBAL_ACTIONS_SUCCESS'
 export const GET_GLOBAL_ACTIONS_FAILURE = 'GET_GLOBAL_ACTIONS_FAILURE'
-
 
 export const fetchGlobalActions = () => reduxBackedPromise(
     ['globalActions/'],
@@ -11,17 +10,17 @@ export const fetchGlobalActions = () => reduxBackedPromise(
 )
 
 export const getGlobalActionsActionSet = ({
-    try: () => ({
-        type: TRY_GET_GLOBAL_ACTIONS
-    }),
+  try: () => ({
+    type: TRY_GET_GLOBAL_ACTIONS
+  }),
 
-    succeed: (globalActions) => ({
-        type: GET_GLOBAL_ACTIONS_SUCCESS,
-        globalActions
-    }),
+  succeed: (globalActions) => ({
+    type: GET_GLOBAL_ACTIONS_SUCCESS,
+    globalActions
+  }),
 
-    fail: (failureReason) => ({
-        type: GET_GLOBAL_ACTIONS_FAILURE,
-        failureReason
-    })
+  fail: (failureReason) => ({
+    type: GET_GLOBAL_ACTIONS_FAILURE,
+    failureReason
+  })
 })

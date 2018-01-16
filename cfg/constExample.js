@@ -8,11 +8,9 @@ let defaultConstants = require('./defaultConstants')
 You'll probably want this if you commit your code to a public repo.
 */
 module.exports = Object.assign({}, defaultConstants, {
-    baseUrl: JSON.stringify("http://localhost:60000/"), //Host on a different port
-    retries: 4 //retry failed requests more times before giving up
+  baseUrl: JSON.stringify('http://localhost:60000/'), // Host on a different port
+  retries: 4 // retry failed requests more times before giving up
 })
-
-
 
 /* Defaults Only:  Copy this to a new file to create const file that just uses default constants.
 let defaultConstants = require('./defaultConstants')
