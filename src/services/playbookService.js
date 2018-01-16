@@ -5,8 +5,7 @@ import * as eventActions from '../actions/eventActions'
 
 export const IsBootstrapNeeded = (eventType, isFetching, isError) =>
     !eventType
-    && !isFetching
-    && !isError
+    && !(isFetching || isError)
 
 export const BootstrapIfNeeded = ({eventTypeId, eventType, isFetching, isError, dispatch}) => {
     if(IsBootstrapNeeded(eventType, isFetching, isError))
@@ -127,23 +126,23 @@ export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
     : HasValidData(event) ? JSON.stringify(event.data)
     :'This event has no text'
   }
-  
+
   const HasValidDisplayTemplatePattern = (eventType) => {
     return eventType && eventType.displayTemplate && eventType.displayTemplate.pattern && eventType.displayTemplate.pattern.length > 0
   }
-  
+
   const HasValidDisplayText = (data) => {
     return data && data.DisplayText && data.DisplayText.length > 0
   }
-  
+
   const HasValidName = (eventType) => {
     return eventType && eventType.name && eventType.name.length > 0
   }
-  
+
   const HasValidData = (event) => {
     return !!(event.data)
   }
-  
+
 export const publishEvent = (incidentId, filledTemplate) => () => (dispatch) => {
     const parsedTemplate = JSON.parse(filledTemplate)
     dispatch(eventActions.postEvent(incidentId, parsedTemplate.id, parsedTemplate.data))

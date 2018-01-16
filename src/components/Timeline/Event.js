@@ -31,7 +31,7 @@ export const Event = ({
         animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
   } : {}
     const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
-  
+
     return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
         : eventTypeIsError && !eventHasValidDisplayText(event)
@@ -100,16 +100,17 @@ export const mapStateToEventProps = (state, ownProps) => {
       && engagement.participant.team === auth.userTeam
       && engagement.participant.role === auth.userRole
   )
-  const actions = eventType.actions
+  const actions = eventType ? eventType.actions : null
   var populatedConditionSetTest = TestConditionSet(event, ticket, eventType, engagement)
-  const qualifiedActions = actions.filter(
-    action => action.conditionSets.reduce(
-      (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
-        ? populatedConditionSetTest(currentConditionSet)
-        : false,
-      true
-    )
-  )
+  const qualifiedActions = actions
+    ? actions.filter(
+        action => action.conditionSets.reduce(
+            (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
+            ? populatedConditionSetTest(currentConditionSet)
+            : false,
+             true
+        )
+    ) : []
     return {
         ...ownProps,
         ticket,
