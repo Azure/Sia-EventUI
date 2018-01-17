@@ -1,4 +1,4 @@
-import { reduxBackedPromise } from './actionHelpers'
+import { reduxBackedPromise } from 'actions/actionHelpers'
 
 export const TRY_GET_EVENT_TYPE = 'TRY_GET_EVENT_TYPE'
 export const GET_EVENT_TYPE_SUCCESS = 'GET_EVENT_TYPE_SUCCESS'
@@ -18,36 +18,36 @@ export const fetchEventTypes = () => reduxBackedPromise(
 )
 
 export const getEventTypeActionSet = (eventTypeId) => ({
-    try: () => ({
-        type: TRY_GET_EVENT_TYPE,
-        id: eventTypeId
-    }),
+  try: () => ({
+    type: TRY_GET_EVENT_TYPE,
+    id: eventTypeId
+  }),
 
-    succeed: (eventType) => ({
-        type: GET_EVENT_TYPE_SUCCESS,
-        id: eventTypeId,
-        eventType
-    }),
+  succeed: (eventType) => ({
+    type: GET_EVENT_TYPE_SUCCESS,
+    id: eventTypeId,
+    eventType
+  }),
 
-    fail: (failureReason) => ({
-        type: GET_EVENT_TYPE_FAILURE,
-        id: eventTypeId,
-        failureReason
-    })
+  fail: (failureReason) => ({
+    type: GET_EVENT_TYPE_FAILURE,
+    id: eventTypeId,
+    failureReason
+  })
 })
 
 export const getEventTypesActionSet = ({
-    try: () => ({
-        type: TRY_GET_EVENT_TYPES
-    }),
+  try: () => ({
+    type: TRY_GET_EVENT_TYPES
+  }),
 
-    succeed: (eventTypes) => ({
-        type: GET_EVENT_TYPES_SUCCESS,
-        eventTypes
-    }),
+  succeed: (eventTypes) => ({
+    type: GET_EVENT_TYPES_SUCCESS,
+    eventTypes
+  }),
 
-    fail: (failureReason) => ({
-        type: GET_EVENT_TYPES_FAILURE,
-        failureReason
-    })
+  fail: (failureReason) => ({
+    type: GET_EVENT_TYPES_FAILURE,
+    failureReason
+  })
 })

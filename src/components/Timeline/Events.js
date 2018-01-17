@@ -1,5 +1,5 @@
 import React from 'react'
-import Event from './Event'
+import Event from 'components/Timeline/Event'
 
 export const Events = ({events, ticketId, incidentId}) => {
   return (<div>{

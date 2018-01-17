@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": "./",
+      "paths": {
+        "*": ["src/*"],
+        "test/*": ["test/*"],
+        "cfg/*": ["cfg/*"]
+      },
+      "experimentalDecorators": true,
+      "noFallthroughCasesInSwitch": true,
+      "target": "esnext"
+  },
+  "exclude": [
+    "dist/*",
+    "coverage/*",
+    "temp/*"
+  ]
+}

@@ -3,33 +3,33 @@ import { Redirect } from 'react-router'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import DisplayIncident from './DisplayIncident'
-import LoadingMessage from '../elements/LoadingMessage'
-import ErrorMessage from '../elements/ErrorMessage'
-import * as incidentActions from '../../actions/incidentActions'
-import { fetchEventTypes } from '../../actions/eventTypeActions'
+import DisplayIncident from 'components/Incident/DisplayIncident'
+import LoadingMessage from 'components/elements/LoadingMessage'
+import ErrorMessage from 'components/elements/ErrorMessage'
+import * as incidentActions from 'actions/incidentActions'
+import { fetchEventTypes } from 'actions/eventTypeActions'
 
 class Ticket extends Component {
-    static propTypes = {
-        incidentId: PropTypes.number,
-        incident: PropTypes.object,
-        incidentIsFetching: PropTypes.bool,
-        incidentIsError: PropTypes.bool,
-        ticket: PropTypes.object,
-        ticketId: PropTypes.number,
-        ticketSystem: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
-        preferences: PropTypes.object.isRequired
-    }
+  static propTypes = {
+    incidentId: PropTypes.number,
+    incident: PropTypes.object,
+    incidentIsFetching: PropTypes.bool,
+    incidentIsError: PropTypes.bool,
+    ticket: PropTypes.object,
+    ticketId: PropTypes.number,
+    ticketSystem: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    preferences: PropTypes.object.isRequired
+  }
 
-    componentDidMount() {
-        const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
-        dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
-        dispatch(fetchEventTypes())
-    }
+  componentDidMount () {
+    const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
+    dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
+    dispatch(fetchEventTypes())
+  }
 
-    render() {
-        const {
+  render () {
+    const {
             incident,
             ticket,
             ticketId,
@@ -38,56 +38,52 @@ class Ticket extends Component {
             incidentIsError
         } = this.props
 
-        if(incidentIsFetching)
-        {
-            return CurrentlyLoadingIncident(incident, ticketId)
-        }
-        if(incidentIsError)
-        {
-            return ErrorLoadingIncident(incident, ticketId)
-        }
-        if(!incident || !incident.primaryTicket || !ticket || incident.error)
-        {
-            return UnexpectedFailureToLoadIncident()
-        }
-        if(incident.primaryTicket.originId && incident.primaryTicket.originId === ticket.originId)
-        {
-            return <DisplayIncident
-                incident={incident}
-                ticket={ticket}
-                ticketSystem={ticketSystem}
-             />
-        }
-        return (
-            <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>
-                <Route path='/tickets/:ticketId' component={connectedTicket}/>
-            </Redirect>
-        )
+    if (incidentIsFetching) {
+      return CurrentlyLoadingIncident(incident, ticketId)
     }
+    if (incidentIsError) {
+      return ErrorLoadingIncident(incident, ticketId)
+    }
+    if (!incident || !incident.primaryTicket || !ticket || incident.error) {
+      return UnexpectedFailureToLoadIncident()
+    }
+    if (incident.primaryTicket.originId && incident.primaryTicket.originId === ticket.originId) {
+      return <DisplayIncident
+        incident={incident}
+        ticket={ticket}
+        ticketSystem={ticketSystem}
+             />
+    }
+    return (
+      <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>
+        <Route path='/tickets/:ticketId' component={connectedTicket} />
+      </Redirect>
+    )
+  }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const ticketId = parseInt(ownProps.match.params.ticketId)
-    return {
-        ...getInfoByTicketId(state, ticketId),
-        preferences: state.tickets.preferences
-    }
+  const ticketId = parseInt(ownProps.match.params.ticketId)
+  return {
+    ...getInfoByTicketId(state, ticketId),
+    preferences: state.tickets.preferences
+  }
 }
 
 export const getInfoByTicketId = (state, ticketId) => {
-    const { incidents, tickets } = state
-    const ticket = tickets.map[ticketId]
-    const incident = getIncident(ticket, incidents)
-    return {
-        incident,
-        ticket,
-        ticketId,
-        ticketSystem: tickets.systems[getTicketSystemId(ticket)],
-        incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
+  const { incidents, tickets } = state
+  const ticket = tickets.map[ticketId]
+  const incident = getIncident(ticket, incidents)
+  return {
+    incident,
+    ticket,
+    ticketId,
+    ticketSystem: tickets.systems[getTicketSystemId(ticket)],
+    incidentIsFetching: incidents.fetchingByTicketId.includes(ticketId) ||
             (incident && incident.id && incidents.fetchingByIncidentId.includes(incident.id)),
-        incidentIsError: incidents.errorByTicketId.includes(ticketId) ||
+    incidentIsError: incidents.errorByTicketId.includes(ticketId) ||
             (incident && incident.id && incidents.errorByIncidentId.includes(incident.id))
-    }
+  }
 }
 
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
@@ -115,5 +111,3 @@ const DetermineRetryAction = (incident, ticketId) => (incident && incident.id)
 
 const connectedTicket = connect(mapStateToProps)(Ticket)
 export default connectedTicket
-
-

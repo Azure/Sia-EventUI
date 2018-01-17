@@ -1,0 +1,4 @@
+test/**/*.js
+--require babel-polyfill
+--require babel-core/register
+--colors
