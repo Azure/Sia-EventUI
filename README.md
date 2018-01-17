@@ -1,7 +1,7 @@
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Azure/Sia-EventUI/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/Azure/Sia-EventUI.svg?branch=master)](https://travis-ci.org/Azure/Sia-EventUI)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/10fae239209f4123b8277ef78fbcd195)](https://www.codacy.com/app/SIA/Azure-Sia-EventUI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Azure/Sia-EventUI&amp;utm_campaign=Badge_Grade)
-[![Coverage Status](https://coveralls.io/repos/github/Azure/Sia-EventUI/badge.svg?branch=master)](https://coveralls.io/github/Azure/Sia-EventUI?branch=master)
+[![Build Status](https://travis-ci.org/macrobug/Sia-EventUI.svg?branch=master)](https://travis-ci.org/macrobug/Sia-EventUI)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/727b32adde774082b1e87c8c62da69ad)](https://www.codacy.com/app/macrobug/macrobug-Sia-EventUI?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=macrobug/Sia-EventUI&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/macrobug/Sia-EventUI/badge.svg?branch=master)](https://coveralls.io/github/macrobug/Sia-EventUI?branch=master)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Azure/Sia-Root/blob/master/HOWTOCONTRIBUTE.md)
 
