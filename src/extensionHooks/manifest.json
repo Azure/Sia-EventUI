@@ -1,15 +1,14 @@
 {
   "name": "SIA",
   "description": "SIA",
-  "version": "0.0.0.2",
+  "version": "0.0.0.3",
   "manifest_version": 2,
   "browser_action": {
       "default_popup": "extension.html"
     },
     "content_scripts" : [{
       "matches": [],
-      "js":["ticketHook.js"],
-      "css":["ticketHook.css"]
+      "js":["ticketHook.js"]
     }],
     "background": {
       "scripts":["messager.js"]

@@ -16,13 +16,17 @@ const srcPath = path.join(__dirname, '/../src')
 const publicPath = '/assets/'
 
 const config = {
-  entry: [
+  entry: { 
+    app: [
     'babel-polyfill'
-  ],
+      ],
+    ticketHook: path.join(__dirname, '../src/extensionHooks/ticketHook'),
+    messager: path.join(__dirname, '../src/extensionHooks/messager'),
+  },
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
-    filename: 'app.js',
+    filename: '[name].js',
     publicPath: publicPath
   },
   devServer: {

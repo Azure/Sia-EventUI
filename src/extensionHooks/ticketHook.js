@@ -1,3 +1,4 @@
+require('./ticketHook.css')
 let banner = document.createElement('div')
 banner.id = 'trackInSia'
 let track = document.createElement('h3')
