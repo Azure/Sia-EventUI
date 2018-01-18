@@ -10,7 +10,7 @@ import * as auth from '../../services/authNService'
 
 
 
-export const NavMenu = dispatch =>
+export const NavMenu = ({ dispatch }) =>
 <IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
