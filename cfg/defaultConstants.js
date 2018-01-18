@@ -1,5 +1,7 @@
 module.exports = {
 
+  appEnv: 'test',
+
   baseUrl: 'http://localhost:50000/',
 
   authRedirectUri: 'http://localhost:3000/',
@@ -14,7 +16,7 @@ module.exports = {
 
   ticketRefreshIntervalInSeconds: 300,
 
-  authVersion: 'ADAL',
+  authVersion: 'TEST',
 
   //   Leave this as is if your code is in a public repo (or delete it if you want).
   // You can override the defaults with the real information in your cfg/$env.const.js file.

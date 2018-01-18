@@ -1,18 +1,17 @@
 import React from 'react'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
-import AddEvent from './AddEvent'
+import AddEvent from 'components/Timeline/AddEvent'
 
 export const AddEventCard = (incidentId) => <Card>
-    <CardHeader
-        title={'Add Event'}
-        actAsExpander={true}
-        showExpandableButton={true}
+  <CardHeader
+    title={'Add Event'}
+    actAsExpander
+    showExpandableButton
     />
-    
-    <CardText expandable={true}>
-        <AddEvent incidentId={incidentId} />
-    </CardText>
+
+  <CardText expandable>
+    <AddEvent incidentId={incidentId} />
+  </CardText>
 </Card>
 
 export default AddEventCard
-

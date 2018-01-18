@@ -5,23 +5,23 @@ export const SCREEN_SIZE_LARGE = 'SCREEN_SIZE_LARGE'
 export const SCREEN_SIZE_FULL = 'SCREEN_SIZE_FULL'
 
 export const buttonFontEnlarge = () => ({
-    type: BUTTON_FONT_ENLARGE
+  type: BUTTON_FONT_ENLARGE
 })
 
 export const screenSizeSmall = () => ({
-    type: SCREEN_SIZE_SMALL
+  type: SCREEN_SIZE_SMALL
 })
 
 export const screenSizeMedium = () => ({
-    type: SCREEN_SIZE_MEDIUM
+  type: SCREEN_SIZE_MEDIUM
 })
 
 export const screenSizeLarge = () => ({
-    type: SCREEN_SIZE_LARGE
+  type: SCREEN_SIZE_LARGE
 })
 
 export const screenSizeFull = () => ({
-    type: SCREEN_SIZE_FULL
+  type: SCREEN_SIZE_FULL
 })
 
 const mediaQueriesToActions = [
@@ -32,14 +32,13 @@ const mediaQueriesToActions = [
 ]
 
 const CreateScreenSizeListeners = (mediaQueriesToActions) => (window, store) => {
-    mediaQueriesToActions.map(mqta => CreateScreenSizeListener(mqta[0], mqta[1], window, store))
+  mediaQueriesToActions.map(mqta => CreateScreenSizeListener(mqta[0], mqta[1], window, store))
 }
 
 const CreateScreenSizeListener = (mediaQuery, action, window, store) => {
-    const listener = window.matchMedia(mediaQuery)
-    if( listener.matches ) { store.dispatch(action) }
-    listener.onchange = ls => { if(ls.matches) { store.dispatch(action) } }
+  const listener = window.matchMedia(mediaQuery)
+  if (listener.matches) { store.dispatch(action) }
+  listener.onchange = ls => { if (ls.matches) { store.dispatch(action) } }
 }
-
 
 export const ListenForScreenSize = CreateScreenSizeListeners(mediaQueriesToActions)

@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import establishSignalRConnection from './services/signalRService'
-import { ListenForScreenSize } from './actions/styleActions'
-import incidentApp from './reducers'
+import establishSignalRConnection from 'services/signalRService'
+import { ListenForScreenSize } from 'actions/styleActions'
+import incidentApp from 'reducers'
 import { persistStore } from 'redux-persist'
-import { getFilterFromUrl } from './actions/filterActions'
+import { getFilterFromUrl } from 'actions/filterActions'
 
 const urlFilter = getFilterFromUrl(window.location.search)
 const reducer = incidentApp(urlFilter)
@@ -16,4 +16,3 @@ export const persistor = persistStore(store)
 establishSignalRConnection(store.dispatch)
 
 ListenForScreenSize(window, store)
-

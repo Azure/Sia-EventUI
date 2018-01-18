@@ -1,23 +1,23 @@
-var webpackCfg = require('./cfg/test');
+var webpackCfg = require('./cfg/test')
 
 // Set node environment to testing
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'test'
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: '',
     browsers: [ 'PhantomJS' ],
     files: [
       'test/loadtests.js',
       {pattern: 'test/**/*Test.js', included: false},
-      {pattern: 'test/**/*Helper.js', included: false},
-      //{pattern: 'src/**/*.js', included: false},
-      //'_karma_webpack_/loadtests.js',
-      //'_karma_webpack_/**/*Test.js',
-      //'_karma_webpack_/**/*Helper.js',
-      //'test/loadtests.processed.js',
-      //'test/**/*Test.processed.js',
-      //'test/**/*Helper.processed.js'
+      {pattern: 'test/**/*Helper.js', included: false}
+      // {pattern: 'src/**/*.js', included: false},
+      // '_karma_webpack_/loadtests.js',
+      // '_karma_webpack_/**/*Test.js',
+      // '_karma_webpack_/**/*Helper.js',
+      // 'test/loadtests.processed.js',
+      // 'test/**/*Test.processed.js',
+      // 'test/**/*Helper.processed.js'
     ],
     exclude: [
       'src/index.js'
@@ -46,5 +46,5 @@ module.exports = function(config) {
         { type: 'text' }
       ]
     }
-  });
-};
+  })
+}

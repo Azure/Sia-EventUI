@@ -1,8 +1,8 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import createComponent from '../../helpers/shallowRenderHelper'
-import { NavMenu } from '../../../src/components/TopNav/NavMenu'
+import createComponent from 'test/helpers/shallowRenderHelper'
+import { NavMenu } from 'components/TopNav/NavMenu'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
@@ -12,12 +12,12 @@ import { Link } from 'react-router-dom'
 
 function mockDispatch (object) { }
 
+
 function setup() {
     let props = {
         dispatch: mockDispatch
     }
-
-    return createComponent(NavMenu, props)
+  return createComponent(NavMenu, props)
 }
 
 describe('NavMenu', function test () {

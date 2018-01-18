@@ -6,14 +6,14 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
-import CreateIncident from './Search/CreateIncident'
-import Ticket from './Incident/Ticket'
-import CompareTickets from './Incident/CompareTickets'
-import EnsureLoggedInContainer from './Auth/EnsureLoggedIn'
-import incidentRedirect from './Incident/incidentRedirect'
-import Home from './Home'
-import TopNav from './TopNav/TopNav'
-import Debug from './Debug'
+import CreateIncident from 'components/Search/CreateIncident'
+import Ticket from 'components/Incident/Ticket'
+import CompareTickets from 'components/Incident/CompareTickets'
+import EnsureLoggedInContainer from 'components/Auth/EnsureLoggedIn'
+import incidentRedirect from 'components/Incident/incidentRedirect'
+import Home from 'components/Home'
+import TopNav from 'components/TopNav/TopNav'
+import Debug from 'components/Debug'
 
 const history = createBrowserHistory()
 
@@ -28,13 +28,13 @@ export default class MainComponent extends React.Component {
                 <Router history={history} >
                   <div>
                     <TopNav />
-                    <Route exact path="/" component={Home} />
-                    <Route exact path="/extension.html" component={Home} />
-                    <Route path="/search" component={CreateIncident} />
-                    <Route path="/tickets/:ticketId" component={Ticket} />
-                    <Route path="/tickets/:firstTicketId/compare/:secondTicketId" component={CompareTickets} />
-                    <Route path="/incidents/:incidentId" component={incidentRedirect} />
-                    <Route path="/debug" render={() => <Debug />}/>
+                    <Route exact path='/' component={Home} />
+                    <Route exact path='/extension.html' component={Home} />
+                    <Route path='/search' component={CreateIncident} />
+                    <Route path='/tickets/:ticketId' component={Ticket} />
+                    <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
+                    <Route path='/incidents/:incidentId' component={incidentRedirect} />
+                    <Route path='/debug' render={() => <Debug />} />
                   </div>
                 </Router>
               </EnsureLoggedInContainer>

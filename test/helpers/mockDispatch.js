@@ -1,5 +1,4 @@
-import { isObject } from "util";
-
+import { isObject } from 'util'
 
 export const AddMockDispatch = (state) => (mockDispatchRecorder) => {
     /*
@@ -11,17 +10,17 @@ export const AddMockDispatch = (state) => (mockDispatchRecorder) => {
             a second action turns .action into an array.
             Subsequent actions are added to the array.
     */
-    const dispatch = (action) => isObject(action)
+  const dispatch = (action) => isObject(action)
     ? mockDispatchRecorder.action
         ? Array.isArray(mockDispatchRecorder.action)
             ? mockDispatchRecorder.action.push(action)
             : mockDispatchRecorder.action = [mockDispatchRecorder.action, action]
         : mockDispatchRecorder.action = action
     : action(dispatch)
-    return {
-        ...state,
-        dispatch
-    }
+  return {
+    ...state,
+    dispatch
+  }
 }
 
 export default AddMockDispatch
