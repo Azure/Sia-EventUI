@@ -8,24 +8,20 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import * as auth from 'services/authNService'
 
-
-
-
 export const NavMenu = ({ dispatch }) =>
-<IconMenu
+  <IconMenu
 
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
 >
 
-    <MenuItem primaryText={<Link to="/search" >Incident Search</Link>} />
-    <MenuItem primaryText={<Link to="/" onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
-    <MenuItem primaryText={<Link to="/debug" >Debug</Link>} />
-</IconMenu>
+    <MenuItem primaryText={<Link to='/search' >Incident Search</Link>} />
+    <MenuItem primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
+    <MenuItem primaryText={<Link to='/debug' >Debug</Link>} />
+  </IconMenu>
 
 NavMenu.propTypes = {
-    dispatch: PropTypes.func
+  dispatch: PropTypes.func
 }
 export default connect()(NavMenu)
-
