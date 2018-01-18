@@ -3,14 +3,8 @@
     ["env"],
     "react"
   ],
-  "env": {
-    "test": {
-      "plugins": [
-        "istanbul"
-      ]
-    }
-  },
   "plugins": [
+    "istanbul",
     "transform-object-rest-spread",
     "syntax-class-properties",
     "transform-class-properties",
