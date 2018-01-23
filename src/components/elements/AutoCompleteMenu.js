@@ -28,7 +28,7 @@ export const onNewRequest = (dataSource, selectMethod, clearMethod) => (input) =
         clearMethod()
         return
     }
-    
+
     let inputResult = input.name ? input.name.toLowerCase() : input.trim().toLowerCase()
     let possibleSelections = 0
     let possibleItems = []
@@ -50,7 +50,7 @@ export const onNewRequest = (dataSource, selectMethod, clearMethod) => (input) =
         return
     }
     else {
-        selectMethod(possibleItems[0])
+       selectMethod(possibleItems[0])
     }
 }
 
