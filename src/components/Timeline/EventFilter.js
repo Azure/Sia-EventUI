@@ -6,10 +6,10 @@ import FilterChips from 'components/elements/FilterChips'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 
-import AutoCompleteMenu from '../../components/elements/AutoCompleteMenu'
-import * as formActions from '../../actions/formActions'
-import * as eventActions from '../../actions/eventActions'
-import * as filterActions from '../../actions/filterActions'
+import AutoCompleteMenu from 'components/elements/AutoCompleteMenu'
+import * as formActions from 'actions/formActions'
+import * as eventActions from 'actions/eventActions'
+import * as filterActions from 'actions/filterActions'
 
 export const dataSourceConfig = {
   text: 'name',
