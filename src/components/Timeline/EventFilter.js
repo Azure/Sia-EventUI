@@ -16,8 +16,6 @@ export const dataSourceConfig = {
   value: 'id'
 }
 
-import AutoCompleteMenu from '../elements/AutoCompleteMenu'
-
 export const chipStyles = {
   chip: {
     margin: 4
@@ -33,13 +31,11 @@ export const filterSearchForm = {
   field: 'input'
 }
 
-
-
-const EventFilter = (props) =>  {
+const EventFilter = (props) => {
   const { pagination, filter, filterSearchField, eventTypes, dispatch, history } = props
   const filterTypes = eventTypes ? Object.values(props.eventTypes) : []
-  return  (
-    <div className="incident-EventFilter">
+  return (
+    <div className='incident-EventFilter'>
       <FilterChips
         selectSpecificFilter={'eventTypes'}
         lookupFilterObject={'events.filter'}
@@ -70,7 +66,7 @@ const EventFilter = (props) =>  {
   )
 }
 
-  const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state, ownProps) => {
   const { events } = state
   let filterFormField = state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
   return {
