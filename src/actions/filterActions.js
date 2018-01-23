@@ -14,7 +14,7 @@ export const changeEventFilter = (history) => (filter) => {
     }
 }
 
-export const addFilter = (history) => (filter, eventType) => {
+export const addFilter = (history) => (filter) => (eventType) => {
     let newFilter = {}
     let oldFilter = filter
     if (!eventType || !eventType.id) {
