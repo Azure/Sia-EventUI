@@ -14,19 +14,20 @@ export const changeEventFilter = (history) => (filter) => {
   }
 }
 
-export const addFilter = (history) => (filter, eventType) => {
-  let newFilter = {}
-  let oldFilter = filter
-  if (!eventType || !eventType.id) {
-    return
-  }
-  if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
-    newFilter = {...oldFilter}
-  } else {
-    newFilter = {
-      ...oldFilter,
-      eventTypes: oldFilter.eventTypes
-            ? oldFilter.eventTypes.concat(eventType.id)
+export const addFilter = (history) => (filter) => (eventType) => {
+    let newFilter = {}
+    let oldFilter = filter
+    if (!eventType || !eventType.id) {
+        return
+    }
+    if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
+        newFilter = {...oldFilter}
+    }
+    else {
+        newFilter = {
+            ...oldFilter,
+            eventTypes: oldFilter.eventTypes ?
+            oldFilter.eventTypes.concat(eventType.id)
             : [eventType.id]
     }
   }

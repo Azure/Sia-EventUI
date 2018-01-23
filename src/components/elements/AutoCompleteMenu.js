@@ -6,7 +6,7 @@ const dataSourceConfig = (textInput, valueInput) => ({
     value: valueInput
 })
 
-const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, dataSource, searchText, onUpdateInput, onNewRequest}) => {
+const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, dataSource, searchText, onUpdateInput, selectMethod, clearMethod}) => {
     return (
         <div>
             <AutoComplete
@@ -15,10 +15,43 @@ const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, dataSource, s
                 dataSource={dataSource}
                 searchText={searchText}
                 onUpdateInput={(searchInput) => onUpdateInput(searchInput)}
-                onNewRequest={(selectedItem) => onNewRequest(selectedItem)}
+                onNewRequest={(selectedItem) => onNewRequest(dataSource, selectMethod, clearMethod)(selectedItem)}
                 dataSourceConfig={dataSourceConfig(dataConfigText, dataConfigValue)}
             />
         </div>
     )
 }
+
+export const onNewRequest = (dataSource, selectMethod, clearMethod) => (input) => {
+    const numMenuOptions = dataSource.length
+    if (numMenuOptions === 0 || input.length === 0) {
+        clearMethod()
+        return
+    }
+    
+    let inputResult = input.name ? input.name.toLowerCase() : input.trim().toLowerCase()
+    let possibleSelections = 0
+    let possibleItems = []
+
+    for (let i = 0; i < numMenuOptions; i++) {
+        const menuItem = dataSource[i] && dataSource[i].name ? dataSource[i].name.toLowerCase() : null
+        if (inputResult === menuItem) {
+            clearMethod()
+            selectMethod(dataSource[i])
+        }
+        if (menuItem && menuItem.indexOf(inputResult) > -1) {
+            possibleSelections += 1
+            possibleItems.push(dataSource[i])
+        }
+    }
+    clearMethod()
+
+    if (possibleSelections !== 1) {
+        return
+    }
+    else {
+        selectMethod(possibleItems[0])
+    }
+}
+
 export default AutoCompleteMenu

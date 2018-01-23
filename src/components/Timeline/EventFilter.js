@@ -52,14 +52,9 @@ const EventFilter = (props) =>  {
         dataConfigValue={'id'}
         dataSource={filterTypes}
         searchText={filterSearchField || ''}
-        onUpdateInput={(searchText) => {
-          dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))
-        }
-        }
-        onNewRequest={(menuSelection) => {
-          dispatch(filterActions.addFilter(history)(filter, menuSelection))
-          dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
-        }}
+        onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
+        selectMethod={(menuSelection) => dispatch(filterActions.addFilter(history)(filter)(menuSelection))}
+        clearMethod={() => dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))}
       />
       <IconButtonStyled
         tooltip='order'
