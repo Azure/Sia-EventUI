@@ -29,121 +29,200 @@ const setup = (mockProps) => {
 }
 
 describe('AutoCompleteMenu', function() {
-    describe('testing SPIES', function() {
+  describe('Component', function() {
+    describe('when it receives all required information', function () {
+      beforeEach(function () {
+          this.output = setup(mockProps)
+      })
 
-        it('should spy on our method and let us know it has been called', function() {
-            function callback () {
-                return 42
-              }
+      it('should return a div', function () {
+          expect(this.output.type).to.equal('div')
+      })
 
-              const callbackSpy = chai.spy(callback);
+      it('the div should contain an AutoComplete', function () {
+          expect(this.output.props.children.type).to.equal(AutoComplete)
+      })
 
-              const result = onNewRequest([], callback, callbackSpy)('peep')
-              expect(callbackSpy).to.have.been.called.once;
+      it('the Autocomplete should have the label we passed in', function () {
+          expect(this.output.props.children.props.floatingLabelText).to.equal(mockProps.label)
+      })
+
+      it('the Autocomplete should have the searchText we passed in', function () {
+          expect(this.output.props.children.props.searchText).to.equal(mockProps.searchText)
+      })
+
+      it('the Autocomplete should have the menuOptions we passed in', function () {
+          expect(this.output.props.children.props.dataSource).to.equal(mockProps.dataSource)
+      })
+
+      it('the Autocomplete should a data config object using info we passed in', function () {
+          expect(this.output.props.children.props.dataSourceConfig).to.deep.equal({ text: mockProps.dataConfigText, value: mockProps.dataConfigValue })
+      })
+
+      it('the Autocomplete should have an onUpdateInput fx just like the fx we passed in', function () {
+          expect(this.output.props.children.props.onUpdateInput()).to.equal(mockProps.onUpdateInput())
+      })
+    })
+  })
+
+  describe('onNewRequest', function() {
+    const selectMethod = (input) => input
+    const clearMethod = () => console.log('')
+
+    context('when the input is valid', function() {
+      const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
+      const input = 'k'
+      const clearSpy = chai.spy(clearMethod)
+      const selectSpy = chai.spy(selectMethod)
+
+      onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+      it('should call the clear method once', function() {
+        expect(clearSpy).to.have.been.called.once
+      })
+
+      it('should call the select method once', function() {
+        expect(selectSpy).to.have.been.called.once
+      })
+
+      describe('when the input has trailing spaces but matches an item in the data source', function() {
+        const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
+        const input = 'Kermit   '
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
         })
+
+        it('should call the select method once', function () {
+          expect(selectSpy).to.have.been.called.once
+        })
+      })
+
+      describe('when the input is a different case but matches an item in the data source', function () {
+        const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
+        const input = 'KERMIT'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should call the select method once', function () {
+          expect(selectSpy).to.have.been.called.once
+        })
+      })
+
+      describe('when the input exactly matches an item in the data source', function() {
+        const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
+        const input = 'Kermit'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should call the select method once', function () {
+          expect(selectSpy).to.have.been.called.once
+        })
+      })
 
     })
 
-    describe('Component', function() {
-        describe('when it receives all required information', function () {
+    context('when the input is invalid', function() {
+      describe('when the input is an empty string', function () {
+        const dataSource = [{ title: 'Kermit' }, { title: 'Fozzie' }]
+        const input = ''
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
 
-            beforeEach(function () {
-                this.output = setup(mockProps)
-            })
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
 
-            it('should return a div', function () {
-                expect(this.output.type).to.equal('div')
-            })
-
-            it('the div should contain an AutoComplete', function () {
-                expect(this.output.props.children.type).to.equal(AutoComplete)
-            })
-
-            it('the Autocomplete should have the label we passed in', function () {
-                expect(this.output.props.children.props.floatingLabelText).to.equal(mockProps.label)
-            })
-
-            it('the Autocomplete should have the searchText we passed in', function () {
-                expect(this.output.props.children.props.searchText).to.equal(mockProps.searchText)
-            })
-
-            it('the Autocomplete should have the menuOptions we passed in', function () {
-                expect(this.output.props.children.props.dataSource).to.equal(mockProps.dataSource)
-            })
-
-            it('the Autocomplete should a data config object using info we passed in', function () {
-                expect(this.output.props.children.props.dataSourceConfig).to.deep.equal({ text: mockProps.dataConfigText, value: mockProps.dataConfigValue })
-            })
-
-            it('the Autocomplete should have an onUpdateInput fx just like the fx we passed in', function () {
-                expect(this.output.props.children.props.onUpdateInput()).to.equal(mockProps.onUpdateInput())
-            })
+        it('it should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
         })
 
+        it('should not call the select method', function () {
+          expect(selectSpy).to.not.have.been.called
+        })
+      })
+
+      describe('when the input entered matches more than one item in the data source', function() {
+        const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }, {name: 'Fonzie'}]
+        const input = 'fo'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should not call the select method', function () {
+          expect(selectSpy).to.not.have.been.called
+        })
+      })
+
+      describe('when the input entered is not in the data source', function () {
+        const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
+        const input = 'l'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should not call the select method', function () {
+          expect(selectSpy).to.not.have.been.called
+        })
+      })
+
+      describe('when the data source is empty', function () {
+        const dataSource = []
+        const input = 'l'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('it should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should not call the select method', function () {
+          expect(selectSpy).to.not.have.been.called
+        })
+      })
+
+      describe('when the data source has invalid data', function () {
+        const dataSource = [{ title: 'Kermit' }, { title: 'Fozzie' }]
+        const input = 'k'
+        const clearSpy = chai.spy(clearMethod)
+        const selectSpy = chai.spy(selectMethod)
+
+        onNewRequest(dataSource, selectSpy, clearSpy)(input)
+
+        it('it should call the clear method once', function () {
+          expect(clearSpy).to.have.been.called.once
+        })
+
+        it('should not call the select method', function () {
+          expect(selectSpy).to.not.have.been.called
+        })
+      })
     })
-
-    describe('onNewRequest', function() {
-        const selectMethod = (input) => input
-        const clearMethod = () => console.log('')
-
-        context('when the input is valid', function() {
-            const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
-            const input = 'k'
-            const clearSpy = chai.spy(clearMethod)
-            const selectSpy = chai.spy(selectMethod)
-
-            const result = onNewRequest(dataSource, selectSpy, clearSpy)(input)
-
-            it('should call the clear method once', function() {
-                expect(clearSpy).to.have.been.called.once
-            })
-
-            it('should call the select method once', function() {
-                expect(selectSpy).to.have.been.called.once
-            })
-
-        })
-
-        context('when the input is invalid', function() {
-            describe('when the input entered matches more than one item in the data source', function() {
-                const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }, {name: 'Fonzie'}]
-                const input = 'fo'
-                const clearSpy = chai.spy(clearMethod)
-                const selectSpy = chai.spy(selectMethod)
-
-                const result = onNewRequest(dataSource, selectMethod, clearMethod)(input)
-
-                it('it should return', function () {
-                    expect(result).to.be.undefined
-                })
-            })
-
-            describe('when the input entered is not in the data source', function () {
-                const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
-                const input = 'l'
-                const clearSpy = chai.spy(clearMethod)
-                const selectSpy = chai.spy(selectMethod)
-
-                const result = onNewRequest(dataSource, selectMethod, clearMethod)(input)
-
-                it('it should return', function () {
-                    expect(result).to.be.undefined
-                })
-            })
-
-            describe('when the data source is  empty', function () {
-                const dataSource = []
-                const input = 'l'
-                const clearSpy = chai.spy(clearMethod)
-                const selectSpy = chai.spy(selectMethod)
-
-                it('it should return', function () {
-                    onNewRequest(dataSource, undefined, clearSpy)(input)
-
-                    expect(clearSpy).to.have.been.called.once
-                })
-            })
-        })
-
-    })
+  })
 })
