@@ -112,7 +112,7 @@
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "adal-angular": "^1.0.16",
-     "chai-spies": "^1.0.0",
+    "chai-spies": "^1.0.0",
     "deep-equal": "^1.0.1",
     "express": "^4.16.2",
     "material-ui": "^0.20.0",
