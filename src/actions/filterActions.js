@@ -22,8 +22,7 @@ export const addFilter = (history) => (filter) => (eventType) => {
   }
   if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
     newFilter = { ...oldFilter }
-  }
-  else {
+  } else {
     newFilter = {
       ...oldFilter,
       eventTypes: oldFilter.eventTypes

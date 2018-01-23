@@ -42,7 +42,7 @@ export const onNewRequest = (dataSource, selectMethod, clearMethod) => (input) =
     if (menuItem && menuItem.indexOf(inputResult) > -1) {
       possibleSelections += 1
       possibleItems.push(dataSource[i])
-      
+
       if (possibleSelections > 1) {
         clearMethod()
         return
