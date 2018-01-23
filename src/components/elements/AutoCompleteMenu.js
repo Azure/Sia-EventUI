@@ -6,13 +6,13 @@ const dataSourceConfig = (textInput, valueInput) => ({
     value: valueInput
 })
 
-const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, menuOptions, searchText, onUpdateInput, onNewRequest}) => { 
+const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, dataSource, searchText, onUpdateInput, onNewRequest}) => {
     return (
         <div>
             <AutoComplete
                 floatingLabelText={label}
                 filter={AutoComplete.caseInsensitiveFilter}
-                dataSource={menuOptions}
+                dataSource={dataSource}
                 searchText={searchText}
                 onUpdateInput={(searchInput) => onUpdateInput(searchInput)}
                 onNewRequest={(selectedItem) => onNewRequest(selectedItem)}

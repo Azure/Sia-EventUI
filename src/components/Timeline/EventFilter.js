@@ -5,10 +5,11 @@ import IconButtonStyled from 'components/elements/IconButtonStyled'
 import FilterChips from 'components/elements/FilterChips'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-import AutoComplete from 'material-ui/AutoComplete'
-import * as formActions from 'actions/formActions'
-import * as eventActions from 'actions/eventActions'
-import * as filterActions from 'actions/filterActions'
+
+import AutoCompleteMenu from '../../components/elements/AutoCompleteMenu'
+import * as formActions from '../../actions/formActions'
+import * as eventActions from '../../actions/eventActions'
+import * as filterActions from '../../actions/filterActions'
 
 export const dataSourceConfig = {
   text: 'name',
@@ -16,11 +17,6 @@ export const dataSourceConfig = {
 }
 
 import AutoCompleteMenu from '../elements/AutoCompleteMenu'
-import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
-import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
-import Chip from 'material-ui/Chip'
-import * as eventActions from '../../actions/eventActions'
-import * as filterActions from '../../actions/filterActions'
 
 export const chipStyles = {
   chip: {
@@ -40,9 +36,8 @@ export const filterSearchForm = {
 
 
 const EventFilter = (props) =>  {
-  const { pagination, filter, filterSearchField, filterSearchForm, eventTypes, dispatch, history } = this.props
-  let filterTypes = eventTypes ? Object.values(ownProps.eventTypes) : []
-
+  const { pagination, filter, filterSearchField, eventTypes, dispatch, history } = props
+  const filterTypes = eventTypes ? Object.values(props.eventTypes) : []
   return  (
     <div className="incident-EventFilter">
       <FilterChips
@@ -55,9 +50,12 @@ const EventFilter = (props) =>  {
         label={'Filter by event type'}
         dataConfigText={'name'}
         dataConfigValue={'id'}
-        menuOptions={filterTypes}
+        dataSource={filterTypes}
         searchText={filterSearchField || ''}
-        onUpdateInput={(searchText) => formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText)}
+        onUpdateInput={(searchText) => {
+          dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))
+        }
+        }
         onNewRequest={(menuSelection) => {
           dispatch(filterActions.addFilter(history)(filter, menuSelection))
           dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))
@@ -78,13 +76,14 @@ const EventFilter = (props) =>  {
 }
 
   const mapStateToProps = (state, ownProps) => {
-    const { events } = state
-    return {
-      ...ownProps,
-      pagination: events.pages,
-      filter: events.filter,
-      filterSearchField: state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
-    }
+  const { events } = state
+  let filterFormField = state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
+  return {
+    ...ownProps,
+    pagination: events.pages,
+    filter: events.filter,
+    filterSearchField: filterFormField
+  }
 }
 
 export default withRouter(connect(mapStateToProps)(EventFilter))
