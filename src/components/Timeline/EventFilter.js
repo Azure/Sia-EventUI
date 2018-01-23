@@ -16,6 +16,8 @@ export const dataSourceConfig = {
   value: 'id'
 }
 
+import AutoCompleteMenu from '../elements/AutoCompleteMenu'
+
 export const chipStyles = {
   chip: {
     margin: 4
