@@ -1,8 +1,13 @@
 language: node_js
+
 node_js:
   - "lts/*"
+
 after_success:
   - npm install -g codecov codacy-coverage coveralls
   - codecov
   - cat ./coverage/lcov.info | codacy-coverage
   - cat ./coverage/lcov.info | coveralls
+
+notifications:
+  webhooks: https://outlook.office.com/webhook/272d5396-e792-4d76-9d88-9c39fec61689@72f988bf-86f1-41af-91ab-2d7cd011db47/TravisCI/d5507e19665441af827a6657b7da71a5/d616bd58-0772-42e2-afff-e175efa36eea
