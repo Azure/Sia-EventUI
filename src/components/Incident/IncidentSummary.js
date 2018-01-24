@@ -73,7 +73,7 @@ const TitleRow = (incident) => [
   <div>
     {DoesIncidentHaveTitle(incident) ? incident.title
         : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
-        : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.Title
+        : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.title
         : noTitleMessage}
   </div>
 ]
@@ -85,7 +85,7 @@ const DoesPrimaryTicketHaveNativeTitle = (incident) =>
     incident && incident.primaryTicket && incident.primaryTicket.title
 
 const DoesPrimaryTicketHaveDataTitle = (incident) =>
-    incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.Title
+    incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
 
 const EngagementsRow = (incident, dispatch) => [
   <Engagements
