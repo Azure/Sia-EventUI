@@ -42,33 +42,35 @@ describe('AutoCompleteMenu', function() {
           expect(this.output.props.children.type).to.equal(AutoComplete)
       })
 
-      it('the Autocomplete should have the label we passed in', function () {
+      describe('AutoComplete', function() {
+        it('should have the label we passed in', function () {
           expect(this.output.props.children.props.floatingLabelText).to.equal(mockProps.label)
-      })
+        })
 
-      it('the Autocomplete should have the searchText we passed in', function () {
+        it('should have the searchText we passed in', function () {
           expect(this.output.props.children.props.searchText).to.equal(mockProps.searchText)
-      })
+        })
 
-      it('the Autocomplete should have the menuOptions we passed in', function () {
+        it('should have the menuOptions we passed in', function () {
           expect(this.output.props.children.props.dataSource).to.equal(mockProps.dataSource)
-      })
+        })
 
-      it('the Autocomplete should a data config object using info we passed in', function () {
+        it('should a data config object using info we passed in', function () {
           expect(this.output.props.children.props.dataSourceConfig).to.deep.equal({ text: mockProps.dataConfigText, value: mockProps.dataConfigValue })
-      })
+        })
 
-      it('the Autocomplete should have an onUpdateInput fx just like the fx we passed in', function () {
+        it('should have an onUpdateInput fx just like the fx we passed in', function () {
           expect(this.output.props.children.props.onUpdateInput()).to.equal(mockProps.onUpdateInput())
+        })
       })
     })
   })
 
   describe('onNewRequest', function() {
     const selectMethod = (input) => input
-    const clearMethod = () => console.log('')
+    const clearMethod = () => null
 
-    context('when the input is valid', function() {
+    context('when a clear autocomplete match can be found', function() {
       const dataSource = [{ name: 'Kermit' }, { name: 'Fozzie' }]
       const input = 'k'
       const clearSpy = chai.spy(clearMethod)
@@ -137,7 +139,7 @@ describe('AutoCompleteMenu', function() {
 
     })
 
-    context('when the input is invalid', function() {
+    context('when a clear autocomplete match cannot be found', function() {
       describe('when the input is an empty string', function () {
         const dataSource = [{ title: 'Kermit' }, { title: 'Fozzie' }]
         const input = ''
@@ -206,7 +208,7 @@ describe('AutoCompleteMenu', function() {
         })
       })
 
-      describe('when the data source has invalid data', function () {
+      describe('when the data source objects do not have an id property', function () {
         const dataSource = [{ title: 'Kermit' }, { title: 'Fozzie' }]
         const input = 'k'
         const clearSpy = chai.spy(clearMethod)
