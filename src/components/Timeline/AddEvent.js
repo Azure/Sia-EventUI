@@ -51,7 +51,7 @@ const EventTypeIdInput = (eventTypeIdInput, updateEventTypeIdInput) => <label>
     type='text'
     style={{width: '74%'}}
     onChange={updateEventTypeIdInput}
-    value={eventTypeIdInput || 0}
+    value={eventTypeIdInput || ''}
   />
 </label>
 

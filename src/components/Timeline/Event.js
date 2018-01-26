@@ -19,6 +19,7 @@ export const Event = ({
     eventTypeId,
     eventTypeIsFetching,
     eventTypeIsError,
+    missingEventTypeId,
     eventId,
     event,
     actions,
@@ -30,11 +31,11 @@ export const Event = ({
     animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
   } : {}
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
-
+  const missingId = eventTypeId ? eventTypeId : null
   return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
         : eventTypeIsError && !eventHasValidDisplayText(event)
-            ? ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+      ? ErrorMessage(`Error fetching eventType: ${missingId}`, backgroundColor, time, eventTypeActions.fetchEventType(eventTypeId))
             : <div style={itemHighlight}>
               <BootstrapPlaybook
                 eventId={eventId}
