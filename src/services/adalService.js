@@ -1,25 +1,18 @@
 import AuthenticationContext from 'adal-angular'
-import * as authActions from '../actions/authActions'
+import * as authActions from 'actions/authActions'
 import config from 'config'
-
 
 export const clientId = config.clientId
 
-
-
 export const authVersion = 'adal'
-
-
 
 let context
 
 export const getAuthContext = (dispatch) => {
-  if(!context)
-  {
-    context = createContext((chrome && chrome.identity)) // eslint-disable-line no-undef
+  if (!context) {
+    context = createContext((chrome && chrome.identity))
   }
-  if(dispatch)
-  {
+  if (dispatch) {
     context.callback = (err) => {
       err
         ? dispatch(authActions.userLoginError(err))
@@ -31,13 +24,10 @@ export const getAuthContext = (dispatch) => {
 }
 
 export const login = (dispatch) => {
-  if(typeof window !== 'undefined' && !!window)
-  {
-      getAuthContext(dispatch).login()
-  }
-  else
-  {
-      dispatch(authActions.userLoginError('Window is undefined, so ADAL cannot function!'))
+  if (typeof window !== 'undefined' && !!window) {
+    getAuthContext(dispatch).login()
+  } else {
+    dispatch(authActions.userLoginError('Window is undefined, so ADAL cannot function!'))
   }
 }
 
@@ -83,21 +73,20 @@ const callbackBridge = (resolve, reject) => (errDesc, token) => errDesc
   ? reject(errDesc)
   : resolve(token)
 
-function createContext(chromeExtension) {
+function createContext (chromeExtension) {
   let newContext = new AuthenticationContext({
     instance: config.aadInstance,
     tenant: config.aadTenant,
-    redirectUri: (chromeExtension) ? chrome.identity.getRedirectURL('/extension.html') : config.redirectUri, // eslint-disable-line no-undef
+    redirectUri: (chromeExtension) ? chrome.identity.getRedirectURL('/extension.html') : config.redirectUri,
     clientId: clientId,
     popUp: true,
     cacheLocation: 'localStorage'
   })
 
-  //if in chrome extension configure auth accordingly
-  if (chromeExtension)  // eslint-disable-line no-undef
-  {
+  // if in chrome extension configure auth accordingly
+  if (chromeExtension) {
     newContext.config.displayCall = (url) => {
-      chrome.identity.launchWebAuthFlow({url: url, interactive: true}, (resp) => { // eslint-disable-line no-undef
+      chrome.identity.launchWebAuthFlow({url: url, interactive: true}, (resp) => {
         newContext.handleWindowCallback(resp.split('#')[1])
       })
     }

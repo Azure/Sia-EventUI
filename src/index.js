@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import { AppContainer as HotContainer } from 'react-hot-loader'
 
-import { store, persistor } from './configureStore'
-import MainComponent from './components/MainComponent'
+import { store, persistor } from 'configureStore'
+import MainComponent from 'components/MainComponent'
 
 require('./styles/App.css')
 

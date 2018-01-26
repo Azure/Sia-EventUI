@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import DisplayGlobalActions from './DisplayGlobalActions'
-import BootstrapGlobalActions from './BootstrapGlobalActions'
+import DisplayGlobalActions from 'components/Timeline/Playbook/DisplayGlobalActions'
+import BootstrapGlobalActions from 'components/Timeline/Playbook/BootstrapGlobalActions'
 
 export const GlobalActions = ({
     incidentId,
@@ -9,14 +9,14 @@ export const GlobalActions = ({
     actions
 }) => actions && actions.length
     ? <DisplayGlobalActions
-        incidentId={incidentId}
-        ticketId={ticketId}
+      incidentId={incidentId}
+      ticketId={ticketId}
     />
     : <BootstrapGlobalActions />
 
 export const mapStateToGlobalActionsProps = (state, ownProps) => ({
-    ...ownProps,
-    actions: Object.values(state.globalActions)
+  ...ownProps,
+  actions: Object.values(state.globalActions)
 })
 
 export default connect(mapStateToGlobalActionsProps)(GlobalActions)

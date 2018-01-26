@@ -44,18 +44,12 @@ const config = {
       sources: `${srcPath}/sources/`,
       stores: `${srcPath}/stores/`,
       styles: `${srcPath}/styles/`,
-      config: `${srcPath}/config/${env}`,
+      config: `${srcPath}/config/`,
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },
   module: {
     rules: [
-      {
-        enforce: 'pre',
-        test: /\.(js|jsx)$/,
-        include: srcPath,
-        loader: 'eslint-loader'
-      },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',

@@ -3,11 +3,13 @@
 $s = "let baseConstants = require('./defaultConstants')
 
 module.exports = Object.assign({}, baseConstants, {
+  appEnv: 'dist',
   aadInstance: '${env:aadInstance}',
   aadTenant: '$env:aadTenant',
   clientId: '$env:clientId',
   baseUrl: '$env:baseUrl',
   authRedirectUri: '$env:authRedirectUri',
+  authVersion: 'ADAL', // TODO: Add env var
   ticketSystems: {
     1: {
       id: 1,

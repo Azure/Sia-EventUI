@@ -15,7 +15,7 @@ const config = Object.assign({}, baseConfig, {
   }
 })
 
-config.entry.push('./test/loadtests.js')
+config.entry.app.push('./test/loadtests.js')
 
 config.plugins.push(new WebpackShellPlugin({
   onBuildExit: 'mocha --colors temp/testBundle.js'

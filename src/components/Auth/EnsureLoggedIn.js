@@ -1,17 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Login from './Login'
-import LoginError from './LoginError'
+import Login from 'components/Auth/Login'
+import LoginError from 'components/Auth/LoginError'
 
 export const EnsureLoggedInContainer = ({error, isLoggedIn, children}) => {
   if (error) {
-    return <LoginError/>
+    return <LoginError />
   }
   if (isLoggedIn) {
     return children
   }
-  return <Login/>
+  return <Login />
 }
 
 EnsureLoggedInContainer.propTypes = {

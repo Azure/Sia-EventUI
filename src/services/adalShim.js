@@ -22,14 +22,12 @@ ADAL itself is fixed.
 */
 
 let shimStatement
-if(typeof(window) !== 'undefined')
-{
-    shimStatement = ''
-}
-else
-{
-    shimStatement = 'var window = {location:{href:"http://localhost"}}; var chrome = {}'
+if (typeof (window) !== 'undefined') {
+  shimStatement = ''
+} else {
+  shimStatement = 'var window = {location:{href:"http://localhost"}}; var chrome = {}'
 }
 
-var geval = eval //force eval to use global scope
+// eslint-disable-next-line no-eval
+var geval = eval // force eval to use global scope
 geval(shimStatement)

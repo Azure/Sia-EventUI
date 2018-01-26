@@ -1,12 +1,20 @@
 {
   "presets": [
-    ["env", { "modules": false }],
+    ["env"],
     "react"
   ],
   "plugins": [
+    "istanbul",
     "transform-object-rest-spread",
     "syntax-class-properties",
     "transform-class-properties",
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "cfg": "./cfg",
+        "test": "./test"
+      }
+    }]
   ]
 }

@@ -5,51 +5,51 @@ import Chip from 'material-ui/Chip'
 import ByPath from 'object-path'
 
 export const FilterChips = ({filter, selectSpecificFilter, records, onRequestDelete}) => {
-    const selectedFilters = ByPath.get(filter, selectSpecificFilter)
-    return selectedFilters
+  const selectedFilters = ByPath.get(filter, selectSpecificFilter)
+  return selectedFilters
         ? selectedFilters
             .map((selectedFilter) => hydrateChip(selectedFilter, records))
             .map(chip => renderChip(chip.id, chip.name, onRequestDelete(filter, chip.id)))
-        : <div></div>
+        : <div />
 }
 
 export const mapStateToProps = (state, ownProps) => ({
-    ...ownProps,
-    filter: ByPath.get(state, ownProps.lookupFilterObject),
-    records: ByPath.get(state, ownProps.recordLookup)
+  ...ownProps,
+  filter: ByPath.get(state, ownProps.lookupFilterObject),
+  records: ByPath.get(state, ownProps.recordLookup)
 })
 
 export const renderChip = (id, name, onRequestDelete) => (
-    <Chip
-        key={id}
-        onRequestDelete={onRequestDelete}
-        style={chipStyles.chip}
+  <Chip
+    key={id}
+    onRequestDelete={onRequestDelete}
+    style={chipStyles.chip}
     >
-        {name}
-    </Chip>
+    {name}
+  </Chip>
 )
 
 export const hydrateChip = (id, records) => ({
-    id: id,
-    name: records[id] ? records[id].name : 'unknown'
+  id: id,
+  name: records[id] ? records[id].name : 'unknown'
 
 })
 
 const chipStyles = {
-    chip: {
-        margin: 4
-    },
-    wrapper: {
-       display: 'flex',
-        flexWrap: 'wrap'
-    }
+  chip: {
+    margin: 4
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  }
 }
 
 FilterChips.propTypes = {
-    selectSpecificFilter: PropTypes.string,
-    lookupFilterObject: PropTypes.string,
-    recordLookup: PropTypes.string,
-    onRequestDelete: PropTypes.func
+  selectSpecificFilter: PropTypes.string,
+  lookupFilterObject: PropTypes.string,
+  recordLookup: PropTypes.string,
+  onRequestDelete: PropTypes.func
 }
 
 export default connect(mapStateToProps)(FilterChips)

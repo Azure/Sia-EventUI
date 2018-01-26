@@ -1,20 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { fetchGlobalActions } from '../../../actions/globalActionActions'
-import LoadingMessage from '../../elements/LoadingMessage'
+import { fetchGlobalActions } from 'actions/globalActionActions'
+import LoadingMessage from 'components/elements/LoadingMessage'
 
 export class BootstrapGlobalActions extends React.Component {
-    constructor() {
-        super()
-    }
-    
-    componentDidMount() {
-        this.props.dispatch(fetchGlobalActions())
-    }
+  componentDidMount () {
+    this.props.dispatch(fetchGlobalActions())
+  }
 
-    render() {
-        return LoadingMessage('Loading incident actions', fetchGlobalActions())
-    }
+  render () {
+    return LoadingMessage('Loading incident actions', fetchGlobalActions())
+  }
 }
 
 export default connect()(BootstrapGlobalActions)

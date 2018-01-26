@@ -2,6 +2,4 @@
 import { expect } from 'chai'
 import React from 'react'
 import moment from 'moment'
-import * as playbook from '../../../../src/components/Timeline/Playbook/Playbook'
-
-
+import * as playbook from 'components/Timeline/Playbook/Playbook'
