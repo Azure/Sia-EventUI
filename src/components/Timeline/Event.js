@@ -31,7 +31,7 @@ export const Event = ({
     animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
   } : {}
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
-  const missingId = eventTypeId ? eventTypeId : null
+  const missingId = eventTypeId
   return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
         : eventTypeIsError && !eventHasValidDisplayText(event)
