@@ -19,7 +19,6 @@ export const Event = ({
     eventTypeId,
     eventTypeIsFetching,
     eventTypeIsError,
-    missingEventTypeId,
     eventId,
     event,
     actions,
