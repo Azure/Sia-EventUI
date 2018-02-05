@@ -26,12 +26,15 @@ export const getAuthContext = (dispatch) => {
 export const login = (dispatch) => {
   if (typeof window !== 'undefined' && !!window) {
     getAuthContext(dispatch).login()
+
+    appInsights.trackEvent("SIA Login")
   } else {
     dispatch(authActions.userLoginError('Window is undefined, so ADAL cannot function!'))
   }
 }
 
 export const logOut = (dispatch) => {
+  appInsights.trackEvent("SIA Logout")
   getAuthContext(dispatch).logOut()
   dispatch(authActions.userLoggedOut())
 }

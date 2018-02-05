@@ -3,14 +3,22 @@ export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR'
 
+var registerAuthenticatedId = (signInId) => {
+  var validatedId = signInId.replace(/[,;=| ]+/g, "_");
+  appInsights.setAuthenticatedUserContext(validatedId, null, true);
+}
+
 export const loginInProgress = () => ({
   type: LOGIN_IN_PROGRESS
 })
 
-export const userLoggedIn = (user) => ({
-  type: USER_LOGGED_IN,
-  user
-})
+export const userLoggedIn = (user) =>{
+  registerAuthenticatedId(user.userName)
+  return ({
+    type: USER_LOGGED_IN,
+    user
+  })
+}
 
 export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
