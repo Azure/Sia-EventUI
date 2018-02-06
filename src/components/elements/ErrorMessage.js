@@ -4,7 +4,7 @@ import ErrorIcon from 'material-ui/svg-icons/alert/error'
 import { Card, CardHeader } from 'material-ui/Card'
 import { RetryButton } from 'components/elements/Buttons'
 
-const ErrorMessage = (message, actionForRetry, time=null, backgroundColor = null) => {
+const ErrorMessage = (message, actionForRetry, time = null, backgroundColor = null) => {
   const errorMessageTime = time && time instanceof moment ? time.local().format('LTS') : null
 
   return <div>
