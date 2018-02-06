@@ -41,12 +41,25 @@ class Ticket extends Component {
     if (incidentIsFetching) {
       return CurrentlyLoadingIncident(incident, ticketId)
     }
+
     if (incidentIsError) {
       return ErrorLoadingIncident(incident, ticketId)
     }
+
+    if (!incident && ticket) {
+      var currentIncident = { id: ticket.incidentId, engagements:[] }
+
+      return <DisplayIncident
+        incident={currentIncident}
+        ticket={ticket}
+        ticketSystem={ticketSystem}
+             />
+    }
+
     if (!incident || !incident.primaryTicket || !ticket || incident.error) {
       return UnexpectedFailureToLoadIncident()
     }
+
     if (incident.primaryTicket.originId && incident.primaryTicket.originId === ticket.originId) {
       return <DisplayIncident
         incident={incident}

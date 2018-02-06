@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
@@ -9,30 +10,13 @@ import IconButton from 'material-ui/IconButton'
 import * as auth from 'services/authNService'
 import { _ } from 'underscore'
 
-const Tickets = () => {
-  var persistedTickets  = JSON.parse(localStorage['persist:ticket'])
-  var currentTicketId   = window.location.pathname.match(/(\d+)/)[1]
+var transformIdToTicketLink = (id, index) =>
+  <MenuItem
+    key={'ticket-' + id + "-index-" + index}
+    primaryText={<Link to={'/tickets/' + id} >{"Ticket " + id}</Link>}
+  />
 
-  var idIsNumericalAndNotCurrentTicket  = (id) => /\d+/.test(id) && id != currentTicketId
-  var addCurrentPageToHistory           = () => { history.push(this.to) }
-  var transformIdToTicketLink           = (id) =>
-    <MenuItem
-      key={'ticket-' + id}
-      primaryText={
-        <Link
-          to={'/tickets/' + id}
-          onClick={ addCurrentPageToHistory }>
-          Ticket {id}
-        </Link>
-      }
-    />
-
-  var ticketIds = _.select(Object.keys(persistedTickets), idIsNumericalAndNotCurrentTicket)
-
-  return ticketIds.map(transformIdToTicketLink)
-}
-
-export const NavMenu = (dispatch) => {
+export const NavMenu = ({ dispatch, history,  ticketIds }) => {
   return (<IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -40,13 +24,23 @@ export const NavMenu = (dispatch) => {
   >
     <MenuItem key='search' primaryText={<Link to='/search' >Incident Search</Link>} />
     <MenuItem key='logout' primaryText={<Link to='/' onClick={ () => dispatch(auth.logOut)}>LogOut</Link> } />
-
-    { Tickets() }
+    { ticketIds.map(transformIdToTicketLink) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
   </IconMenu>)
 }
 
 NavMenu.propTypes = {
-  dispatch: PropTypes.func
+  dispatch: PropTypes.func,
+  ticketIds: PropTypes.array
 }
-export default connect()(NavMenu)
+
+const mapStateToProps = (state, ownProps) => {
+  var pathname  = ownProps.location.pathname
+  var currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
+  return {
+    ...ownProps,
+    ticketIds: Object.keys(state.tickets.map).filter(id => id !== currentId)
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(NavMenu))
