@@ -7,7 +7,7 @@ import { Card, CardHeader } from 'material-ui/Card'
 import ErrorIcon from 'material-ui/svg-icons/alert/error'
 import { RetryButton } from 'components/elements/Buttons'
 
-describe.only('ErrorMessage', function () {
+describe('ErrorMessage', function () {
   context('when inputs are valid', function() {
     describe('when given only a message', function () {
       const testObject = ErrorMessage('TestMessage')
