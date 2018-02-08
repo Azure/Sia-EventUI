@@ -41,5 +41,7 @@ module.exports = {
     }
   },
 
-  instrumentationKey: 'APP INSIGHT GOES HERE'
+  instrumentationKey: 'APP INSIGHT GOES HERE',
+  
+  useAppInsight: true
 }

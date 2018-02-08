@@ -2,9 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from 'services/playbookService'
+import config from 'config'
 
 var trackLinkClick = (name) => {
-  appInsights.trackEvent(name + 'Clicked')
+  if(config.useAppInsight){
+    appInsights.trackEvent(name + 'Clicked')
+  }
 }
 
 export const Play = ({incidentId, isUrl, filledTemplate, name}) => {

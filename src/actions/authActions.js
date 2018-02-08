@@ -1,19 +1,19 @@
+import config from 'config'
+
 export const LOGIN_IN_PROGRESS = 'LOGIN_IN_PROGRESS'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
 export const USER_LOGGED_OUT = 'USER_LOGGED_OUT'
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR'
 
-var registerAuthenticatedId = (signInId) => {
-  var validatedId = signInId.replace(/[,;=| ]+/g, "_");
-  appInsights.setAuthenticatedUserContext(validatedId, null, true);
-}
 
 export const loginInProgress = () => ({
   type: LOGIN_IN_PROGRESS
 })
 
 export const userLoggedIn = (user) =>{
-  registerAuthenticatedId(user.userName)
+  if(config.useAppInsight){
+    appInsights.setAuthenticatedUserContext(user.userName.replace(/[,;=| ]+/g, "_"), null, true);
+  }
   return ({
     type: USER_LOGGED_IN,
     user

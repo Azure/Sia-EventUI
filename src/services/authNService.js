@@ -14,6 +14,9 @@ const testAlias = 'Test@test.test'
 const testToken = 'testToken'
 
 export const login = (dispatch) => {
+  if(config.useAppInsight){
+    appInsights.trackEvent("SIA Login")
+  }
   dispatch(authActions.loginInProgress())
   switch (authVersion) {
     case testAuthVersion:
@@ -28,6 +31,9 @@ export const login = (dispatch) => {
 }
 
 export const logOut = (dispatch) => {
+  if(config.useAppInsight){
+    appInsights.trackEvent("SIA Logout")
+  }
   switch (authVersion) {
     case testAuthVersion:
       dispatch(testLogOutAction)

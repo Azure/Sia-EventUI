@@ -19,7 +19,9 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
   return fetch(baseUrl + relativeUrl, init)
         .then(response => {
           var timeUsed = new Date() - startTime
-          appInsights.trackDependency("myAjaxCall", init.method? init.method: "GET",  [baseUrl + relativeUrl], relativeUrl, timeUsed, response.ok, response.status)
+          if(config.useAppInsight){
+            appInsights.trackDependency("myAjaxCall", init.method? init.method: "GET",  [baseUrl + relativeUrl], relativeUrl, timeUsed, response.ok, response.status)
+          }
           const localResponse = response
           dispatch(rawHttpResponse(response)) 
           if (httpResponseNeedsRetry(response)) {
