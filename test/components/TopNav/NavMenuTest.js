@@ -1,7 +1,8 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import createComponent from 'test/helpers/shallowRenderHelper'
+import { shallow } from 'enzyme'
+require('test/helpers/configureEnzyme')
 import { NavMenu } from 'components/TopNav/NavMenu'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
@@ -12,34 +13,42 @@ import { Link } from 'react-router-dom'
 
 function mockDispatch (object) { }
 
-
 function setup() {
-    let props = {
-        dispatch: mockDispatch
-    }
-  return createComponent(NavMenu, props)
+  return shallow(<NavMenu dispatch={mockDispatch} ticketIds={['1111', '2222', '3333']}/>)
 }
 
 describe('NavMenu', function test () {
-    beforeEach( () => {
-        this.output = setup()
-    })
+  beforeEach( () => {
+    this.wrapper = setup()
+  })
 
-    it('Should render an IconMenu with an icon button', () => {
-        expect(this.output.type).to.equal(IconMenu)
-        expect(this.output.props.iconButtonElement.type).to.equal(IconButton)
-    })
+  it('Should render an IconMenu with an icon button', () => {
+    expect(this.wrapper.type()).to.equal(IconMenu)
+    expect(this.wrapper.props().iconButtonElement.type).to.equal(IconButton)
+  })
 
-    it('Should render an Incident Search link', () => {
-        expect(this.output.props.children[0].type).to.equal(MenuItem)
-        expect(this.output.props.children[0].props.primaryText.type).to.equal(Link)
-        expect(this.output.props.children[0].props.primaryText.props.to).to.equal('/search')
-    })
+  it('Should render an Incident Search link', () => {
+    let link = this.wrapper.props().children[0]
 
-    it('Should render a log out link', () => {
-        expect(this.output.props.children[1].type).to.equal(MenuItem)
-        expect(this.output.props.children[1].props.primaryText.type).to.equal(Link)
-        expect(this.output.props.children[1].props.primaryText.props.to).to.equal('/')
-        expect(this.output.props.children[1].props.primaryText.props.onClick).to.exist
+    expect(link.type).to.equal(MenuItem)
+    expect(link.props.primaryText.type).to.equal(Link)
+    expect(link.props.primaryText.props.to).to.equal('/search')
+  })
+
+  it('Should render a log out link', () => {
+    let link = this.wrapper.props().children[1]
+
+    expect(link.type).to.equal(MenuItem)
+    expect(link.props.primaryText.type).to.equal(Link)
+    expect(link.props.primaryText.props.to).to.equal('/')
+    expect(link.props.primaryText.props.onClick).to.exist
+  })
+
+  it('Should render links to previously visited tickets', () => {
+    let links = this.wrapper.props().children[2]
+
+    expect(links[0].props.primaryText.props.to).to.equal('/tickets/1111')
+    expect(links[1].props.primaryText.props.to).to.equal('/tickets/2222')
+    expect(links[2].props.primaryText.props.to).to.equal('/tickets/3333')
     })
 })
