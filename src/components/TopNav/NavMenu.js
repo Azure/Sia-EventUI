@@ -32,7 +32,7 @@ NavMenu.propTypes = {
   ticketIds: PropTypes.array
 }
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   var pathname = ownProps.location.pathname
   var currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
   return {

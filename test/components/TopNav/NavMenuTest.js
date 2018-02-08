@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import React from 'react'
 import { shallow } from 'enzyme'
 require('test/helpers/configureEnzyme')
-import { NavMenu } from 'components/TopNav/NavMenu'
+import { NavMenu, mapStateToProps } from 'components/TopNav/NavMenu'
 import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
@@ -51,4 +51,19 @@ describe('NavMenu', function test () {
     expect(links[1].props.primaryText.props.to).to.equal('/tickets/2222')
     expect(links[2].props.primaryText.props.to).to.equal('/tickets/3333')
     })
+})
+
+describe('mapStateToProps', function test () {
+  let state = { tickets: { map: { '12345': 'value', '67890': 'unused' }}}
+  let ownProps = { location: { pathname: '/tickets/4444' } }
+
+  beforeEach(() => { this.result = mapStateToProps(state, ownProps)})
+
+  it('passes ownProps data through', () => {
+    expect(this.result).to.contain(ownProps)
+  })
+
+  it('transforms the tickets.map into ticketIds', () => {
+    expect(this.result.ticketIds).to.contain('12345', '67890')
+  })
 })
