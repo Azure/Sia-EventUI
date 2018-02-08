@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from 'services/playbookService'
 import config from 'config'
+import appInsights from 'services/appInsightsService'
 
 var trackLinkClick = (name) => {
   if(config.useAppInsight){
