@@ -20,6 +20,7 @@ const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defa
         .then(response => {
           var timeUsed = new Date() - startTime
           if(config.useAppInsight){
+            // eslint-disable-next-line no-undef
             appInsights.trackDependency("myAjaxCall", init.method? init.method: "GET",  [baseUrl + relativeUrl], relativeUrl, timeUsed, response.ok, response.status)
           }
           const localResponse = response

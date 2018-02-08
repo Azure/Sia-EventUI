@@ -15,6 +15,7 @@ const testToken = 'testToken'
 
 export const login = (dispatch) => {
   if(config.useAppInsight){
+    // eslint-disable-next-line no-undef
     appInsights.trackEvent("SIA Login")
   }
   dispatch(authActions.loginInProgress())
@@ -32,6 +33,7 @@ export const login = (dispatch) => {
 
 export const logOut = (dispatch) => {
   if(config.useAppInsight){
+    // eslint-disable-next-line no-undef
     appInsights.trackEvent("SIA Logout")
   }
   switch (authVersion) {

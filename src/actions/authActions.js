@@ -12,6 +12,7 @@ export const loginInProgress = () => ({
 
 export const userLoggedIn = (user) =>{
   if(config.useAppInsight){
+    // eslint-disable-next-line no-undef
     appInsights.setAuthenticatedUserContext(user.userName.replace(/[,;=| ]+/g, "_"), null, true);
   }
   return ({

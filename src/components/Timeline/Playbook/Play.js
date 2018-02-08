@@ -6,6 +6,7 @@ import config from 'config'
 
 var trackLinkClick = (name) => {
   if(config.useAppInsight){
+    // eslint-disable-next-line no-undef
     appInsights.trackEvent(name + 'Clicked')
   }
 }
