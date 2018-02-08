@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const env = process.env.REACT_WEBPACK_ENV
 
@@ -11,17 +12,19 @@ try {
   constants = require('./defaultConstants')
 }
 
-const srcPath = path.join(__dirname, '/../src')
+const siaRoot = path.join(__dirname, '..')
 const publicPath = '/assets/'
 
 const config = {
-  entry: [
-    'babel-polyfill'
-  ],
+  entry: {
+    app: ['babel-polyfill'],
+    ticketHook: path.join(__dirname, '../src/extensionHooks/ticketHook'),
+    messager: path.join(__dirname, '../src/extensionHooks/messager')
+  },
   devtool: 'eval',
   output: {
-    path: path.join(__dirname, '/../dist/assets'),
-    filename: 'app.js',
+    path: path.join(siaRoot, 'dist/assets'),
+    filename: '[name].js',
     publicPath: publicPath
   },
   devServer: {
@@ -32,16 +35,7 @@ const config = {
     noInfo: false
   },
   resolve: {
-    extensions: ['.js'],
-    alias: {
-      actions: `${srcPath}/actions/`,
-      components: `${srcPath}/components/`,
-      sources: `${srcPath}/sources/`,
-      stores: `${srcPath}/stores/`,
-      styles: `${srcPath}/styles/`,
-      config: `${srcPath}/config/`,
-      'react/lib/ReactMount': 'react-dom/lib/ReactMount'
-    }
+    extensions: ['.js']
   },
   module: {
     rules: [
@@ -85,7 +79,23 @@ const config = {
       'process.env.NODE_ENV': `"${env}"`,
       'constants': JSON.stringify(constants)
     }),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(siaRoot, 'src/extensionHooks/manifest.json'),
+        to: path.join(siaRoot, 'dist'),
+        transform: function (content, path) {
+          let jsonContent = JSON.parse(content.toString())
+          Object.values(constants.ticketSystems).forEach((system) => {
+            jsonContent.content_scripts[0].matches.push(`${system.ticketUriPrefix}*`)
+          })
+          return Buffer.from(JSON.stringify(jsonContent))
+        }
+      },
+      { from: path.join(siaRoot, 'src/extensionHooks/extension.html'), to: path.join(siaRoot, 'dist') },
+      { from: path.join(siaRoot, 'src/index.html'), to: path.join(siaRoot, 'dist') }
+    ],
+    { copyUnmodified: true })
   ]
 }
 
