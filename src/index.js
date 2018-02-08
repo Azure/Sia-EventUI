@@ -5,7 +5,8 @@ import { AppContainer as HotContainer } from 'react-hot-loader'
 
 import { store, persistor } from 'configureStore'
 import MainComponent from 'components/MainComponent'
-import appInsights from 'src/appInsights'
+//import appInsights from 'src/appInsights'
+import appInsights from './appInsights'
 
 require('./styles/App.css')
 

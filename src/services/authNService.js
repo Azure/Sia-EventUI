@@ -4,7 +4,8 @@ import * as msalService from 'services/msalService'
 import * as adalService from 'services/adalService'
 import * as authActions from 'actions/authActions'
 import config from 'config'
-import appInsights from 'src/appInsights'
+//import appInsights from 'src/appInsights'
+import appInsights from '../appInsights'
 
 const authVersion = config.authVersion
 
