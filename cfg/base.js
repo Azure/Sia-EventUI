@@ -36,11 +36,11 @@ const config = {
     extensions: ['.js'],
     alias: {
       actions: `${srcPath}/actions/`,
-      components: `${srcPath}/components/`,
       sources: `${srcPath}/sources/`,
       stores: `${srcPath}/stores/`,
       styles: `${srcPath}/styles/`,
       config: `${srcPath}/config/`,
+      src: `${srcPath}/`,
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },

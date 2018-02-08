@@ -1,5 +1,5 @@
 import config from 'config'
-import appInsights from 'services/appInsightsService'
+import appInsights from 'src/appInsights'
 
 export const LOGIN_IN_PROGRESS = 'LOGIN_IN_PROGRESS'
 export const USER_LOGGED_IN = 'USER_LOGGED_IN'
@@ -12,10 +12,7 @@ export const loginInProgress = () => ({
 })
 
 export const userLoggedIn = (user) =>{
-  if(config.useAppInsight){
-    // eslint-disable-next-line no-undef
-    appInsights.setAuthenticatedUserContext(user.userName.replace(/[,;=| ]+/g, "_"), null, true);
-  }
+  appInsights.setAuthenticatedUserContext(user.userName.replace(/[,;=| ]+/g, "_"), null, true);
   return ({
     type: USER_LOGGED_IN,
     user

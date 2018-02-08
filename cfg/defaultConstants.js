@@ -43,5 +43,5 @@ module.exports = {
 
   instrumentationKey: 'APP INSIGHT GOES HERE',
   
-  useAppInsight: true
+  useAppInsights: true
 }

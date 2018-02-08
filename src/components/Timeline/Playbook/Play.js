@@ -3,13 +3,10 @@ import { connect } from 'react-redux'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from 'services/playbookService'
 import config from 'config'
-import appInsights from 'services/appInsightsService'
+import appInsights from 'src/appInsights'
 
 var trackLinkClick = (name) => {
-  if(config.useAppInsight){
-    // eslint-disable-next-line no-undef
-    appInsights.trackEvent(name + 'Clicked')
-  }
+  appInsights.trackEvent(name + 'Clicked')
 }
 
 export const Play = ({incidentId, isUrl, filledTemplate, name}) => {

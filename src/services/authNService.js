@@ -4,7 +4,7 @@ import * as msalService from 'services/msalService'
 import * as adalService from 'services/adalService'
 import * as authActions from 'actions/authActions'
 import config from 'config'
-import appInsights from 'services/appInsightsService'
+import appInsights from 'src/appInsights'
 
 const authVersion = config.authVersion
 
@@ -15,10 +15,7 @@ const testAlias = 'Test@test.test'
 const testToken = 'testToken'
 
 export const login = (dispatch) => {
-  if(config.useAppInsight){
-    // eslint-disable-next-line no-undef
-    appInsights.trackEvent("SIA Login")
-  }
+  appInsights.trackEvent("SIA Login")
   dispatch(authActions.loginInProgress())
   switch (authVersion) {
     case testAuthVersion:
@@ -33,10 +30,7 @@ export const login = (dispatch) => {
 }
 
 export const logOut = (dispatch) => {
-  if(config.useAppInsight){
-    // eslint-disable-next-line no-undef
-    appInsights.trackEvent("SIA Logout")
-  }
+  appInsights.trackEvent("SIA Logout")
   switch (authVersion) {
     case testAuthVersion:
       dispatch(testLogOutAction)
