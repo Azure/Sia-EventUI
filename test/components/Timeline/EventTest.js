@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from 'test/helpers/shallowRenderHelper'
-import { Event, mapStateToEventProps } from 'components/Timeline/Event'
+import { Event, mapStateToEventProps, timeFormattedToMultipleZones } from 'components/Timeline/Event'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { DateTime } from 'luxon';
@@ -51,6 +51,15 @@ describe('Event', function test () {
 
       let eventComponent = createComponent(Event, props)
       expect(eventComponent.props.children[1].props.children[1].type).to.eql(CardText)
+    })
+  })
+
+  describe('#timeFormattedToMultipleZones', () => {
+    it('defaults to displaying time in Pacific, India Standard, and GMT', () => {
+      const time = DateTime.utc(1970, 1, 1, 0, 0)
+      const expected = '1969-12-31 16:00:00 PT; 1970-1-1 05:30:00 IST; 1970-1-1 00:00:00 GMT'
+
+      expect(timeFormattedToMultipleZones(time)).to.eql(expected)
     })
   })
 })

@@ -10,10 +10,6 @@ import ErrorMessage from 'components/elements/ErrorMessage'
 import LoadingMessage from 'components/elements/LoadingMessage'
 import * as eventTypeActions from 'actions/eventTypeActions'
 
-function timeFormattedToPstIstAndGmt (time) {
-  return time ? time.toLocal().toFormat(DateTime.TIME_WITH_SECONDS) : 'Time unknown!'
-}
-
 export const Event = ({
     text,
     time,
@@ -52,7 +48,7 @@ export const Event = ({
         >
                 <CardHeader
                   title={ticketId ? `${ticketId}: ${text}` : text}
-                  subtitle={timeFormattedToPstIstAndGmt(time)}
+                  subtitle={timeFormattedToMultipleZones(time)}
                   actAsExpander
                   showExpandableButton
                   iconStyle={{
@@ -128,6 +124,26 @@ export const mapStateToEventProps = (state, ownProps) => {
     text: LoadTextFromEvent(event, eventType, ticket, engagement),
     actions: qualifiedActions
   }
+}
+
+const zones = [
+  { shortname: 'PT', iana_zone: 'America/Los_Angeles'},  // PST https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  { shortname: 'IST', iana_zone: 'Asia/Kolkata'},         // India's IANA zone https://en.wikipedia.org/wiki/Time_in_India
+  { shortname: 'GMT', iana_zone: 'Etc/GMT'}
+]
+
+const format = Object.assign(DateTime.DATE_SHORT, DateTime.TIME_24_WITH_SECONDS)
+
+
+export const timeFormattedToMultipleZones = function (time, timezones = zones) {
+  let timeInMultipleZones = timezones.map((timezone) => {
+    let formatted_time = time.setZone(timezone.iana_zone)
+                             .toLocaleString(format)
+
+    return formatted_time + ' ' + timezone.shortname
+  }).join('; ')
+
+  return timeInMultipleZones
 }
 
 export default connect(mapStateToEventProps)(Event)
