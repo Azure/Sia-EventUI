@@ -40,7 +40,6 @@ const config = {
       stores: `${srcPath}/stores/`,
       styles: `${srcPath}/styles/`,
       config: `${srcPath}/config/`,
-      src: `${srcPath}/`,
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },
