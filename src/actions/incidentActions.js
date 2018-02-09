@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { reduxBackedPromise } from 'actions/actionHelpers'
 import * as ticketActions from 'actions/ticketActions'
 
@@ -94,7 +94,7 @@ isTicketInfoRecent(ticket, preferences)
 
 const isTicketInfoRecent = (ticket, preferences) => ticket &&
 ticket.lastRefresh &&
-moment(ticket.lastRefresh).isAfter(moment().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
+DateTime.local(ticket.lastRefresh).isAfter(DateTime.local().subtract(preferences.refreshIntervalInSeconds, 'seconds'))
 
 export const getIncidentsActionSet = ({
   try: () => ({
@@ -104,7 +104,7 @@ export const getIncidentsActionSet = ({
   succeed: (incidents) => ({
     type: RECEIVE_INCIDENTS,
     incidents,
-    receivedAt: moment()
+    receivedAt: DateTime.local()
   }),
 
   fail: (error) => ({

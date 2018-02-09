@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { combineReducers } from 'redux'
 import { UPDATE_TICKET_QUERY } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
@@ -30,7 +30,7 @@ const parseTicketFromIncident = (incident) => (ticket) => {
     ticket.status = 'Active'
     ticket.title = incident.title
     ticket.primaryTicketId = incident.primaryTicket.id
-    ticket.lastRefresh = moment().toISOString()
+    ticket.lastRefresh = DateTime.local().toString()
   }
 }
 

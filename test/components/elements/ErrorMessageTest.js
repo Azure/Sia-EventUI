@@ -1,6 +1,6 @@
 'use strict'
 import { expect } from 'chai'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 import createComponent from 'test/helpers/shallowRenderHelper'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import { Card, CardHeader } from 'material-ui/Card'
@@ -36,11 +36,11 @@ describe('ErrorMessage', function () {
 
     describe('when given a time', function () {
       const backgroundColor = 'Purple'
-      const testTime = moment()
+      const testTime = DateTime.local()
       const testObject = ErrorMessage(null, null, testTime)
 
       it('should render a card with a CardHeader with the given time as a subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.equal(testTime.local().format('LTS'))
+        expect(testObject.props.children.props.children[1].props.subtitle).to.equal( testTime.toLocal().toFormat(DateTime.TIME_WITH_SECONDS))
       })
     })
 

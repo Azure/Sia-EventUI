@@ -1,4 +1,4 @@
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { reduxBackedPromise, paginationActions } from 'actions/actionHelpers'
 
 export const TRY_ENGAGE = 'TRY_ENGAGE'
@@ -9,14 +9,14 @@ export const DISENGAGE_SUCCESS = 'DISENGAGE_SUCCESS'
 export const DISENGAGE_FAILURE = 'DISENGAGE_FAILURE'
 export const ENGAGEMENTS = 'ENGAGEMENTS'
 
-export const engage = (incidentId, participant, timeEngaged = moment()) =>
+export const engage = (incidentId, participant, timeEngaged = DateTime.local()) =>
 reduxBackedPromise(
     ['incidents/' + incidentId + '/engagements/', {participant}],
     engageActionSet(incidentId, participant, timeEngaged),
     'POST'
 )
 
-export const disengage = (participant, engagement, timeDisengaged = moment()) =>
+export const disengage = (participant, engagement, timeDisengaged = DateTime.local()) =>
 reduxBackedPromise(
   [
     'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,

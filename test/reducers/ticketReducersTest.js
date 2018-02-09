@@ -1,5 +1,5 @@
 'use strict'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 import { expect } from 'chai'
 import * as ticketActions from 'actions/ticketActions.js'
 import * as incidentActions from 'actions/incidentActions.js'
@@ -63,7 +63,7 @@ const receiveIncident = incident => ({
 const receiveIncidents = incidents => ({
   type: incidentActions.RECEIVE_INCIDENTS,
   incidents,
-  receivedAt: moment()
+  receivedAt: DateTime.local()
 })
 
 const createIncident = incident => ({

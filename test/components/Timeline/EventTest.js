@@ -5,13 +5,13 @@ import createComponent from 'test/helpers/shallowRenderHelper'
 import { Event, mapStateToEventProps } from 'components/Timeline/Event'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 
 const setup = () => {
   let props = {
     text: 'test text',
     id: 1,
-    time: moment()
+    time: DateTime.local()
   }
 
   return createComponent(Event, props)
@@ -33,7 +33,7 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: moment(),
+        time: DateTime.local(),
         actions: []
       }
 
@@ -45,7 +45,7 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: moment(),
+        time: DateTime.local(),
         actions: ['dolphin']
       }
 
