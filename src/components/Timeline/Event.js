@@ -9,6 +9,7 @@ import { LoadTextFromEvent, TestConditionSet } from 'services/playbookService'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import LoadingMessage from 'components/elements/LoadingMessage'
 import * as eventTypeActions from 'actions/eventTypeActions'
+import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 export const Event = ({
     text,
@@ -118,32 +119,12 @@ export const mapStateToEventProps = (state, ownProps) => {
     eventTypeId: event.eventTypeId,
     eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
     eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
-    time: DateTime.local(event.occurred ? event.occurred : event.Occurred),
+    time: DateTime.fromISO(event.occurred ? event.occurred : event.Occurred),
     dismissed: event.dismissed,
     backgroundColor: event.backgroundColor,
     text: LoadTextFromEvent(event, eventType, ticket, engagement),
     actions: qualifiedActions
   }
-}
-
-const zones = [
-  { shortname: 'PT', iana_zone: 'America/Los_Angeles'},  // PST https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-  { shortname: 'IST', iana_zone: 'Asia/Kolkata'},         // India's IANA zone https://en.wikipedia.org/wiki/Time_in_India
-  { shortname: 'GMT', iana_zone: 'Etc/GMT'}
-]
-
-const format = Object.assign(DateTime.DATE_SHORT, DateTime.TIME_24_WITH_SECONDS)
-
-
-export const timeFormattedToMultipleZones = function (time, timezones = zones) {
-  let timeInMultipleZones = timezones.map((timezone) => {
-    let formatted_time = time.setZone(timezone.iana_zone)
-                             .toLocaleString(format)
-
-    return formatted_time + ' ' + timezone.shortname
-  }).join('; ')
-
-  return timeInMultipleZones
 }
 
 export default connect(mapStateToEventProps)(Event)

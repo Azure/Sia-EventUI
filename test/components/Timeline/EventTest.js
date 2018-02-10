@@ -2,10 +2,11 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from 'test/helpers/shallowRenderHelper'
-import { Event, mapStateToEventProps, timeFormattedToMultipleZones } from 'components/Timeline/Event'
+import { Event, mapStateToEventProps } from 'components/Timeline/Event'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { DateTime } from 'luxon';
+import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 const setup = () => {
   let props = {
