@@ -4,6 +4,8 @@ import ErrorIcon from 'material-ui/svg-icons/alert/error'
 import { Card, CardHeader } from 'material-ui/Card'
 import { RetryButton } from 'components/elements/Buttons'
 
+import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
+
 const ErrorMessage = (message, actionForRetry, time = null, backgroundColor = null) => {
   const errorMessageTime = time && time instanceof DateTime ? time.toLocal().toFormat(DateTime.TIME_WITH_SECONDS) : null
 
@@ -15,7 +17,7 @@ const ErrorMessage = (message, actionForRetry, time = null, backgroundColor = nu
       <ErrorIcon />
       <CardHeader
         title={message}
-        subtitle={errorMessageTime}
+        subtitle={timeFormattedToMultipleZones(errorMessageTime)}
       />
       { actionForRetry ? <RetryButton actionForRetry={actionForRetry} /> : null }
     </Card>

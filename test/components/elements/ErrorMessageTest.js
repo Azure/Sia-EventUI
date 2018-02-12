@@ -20,8 +20,8 @@ describe('ErrorMessage', function () {
         expect(testObject.props.children.props.children[1].props.title).to.equal('TestMessage')
       })
 
-      it('should render a card with a CardHeader with a null subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should render a card with a CardHeader with an empty subtitle', function () {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
 
@@ -59,8 +59,8 @@ describe('ErrorMessage', function () {
       const testTime = undefined
       const testObject = ErrorMessage(null, null, testTime)
 
-      it('should return a null subtitle', function() {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should return an empty subtitle', function() {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
 
@@ -68,8 +68,8 @@ describe('ErrorMessage', function () {
       const testTime = undefined
       const testObject = ErrorMessage(null, null, null)
 
-      it('should return a null subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should return an empty subtitle', function () {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
   })
