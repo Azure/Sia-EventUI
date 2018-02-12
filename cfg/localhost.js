@@ -8,7 +8,7 @@ const config = Object.assign({}, baseConfig, {
   devtool: 'eval-source-map'
 })
 
-config.entry.push(...[
+config.entry.app.push(...[
   'react-hot-loader/patch',
   'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
   path.join(__dirname, '../src/index')

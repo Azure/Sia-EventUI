@@ -15,13 +15,14 @@ const srcPath = path.join(__dirname, '/../src')
 const publicPath = '/assets/'
 
 const config = {
-  entry: [
-    'babel-polyfill'
-  ],
+  entry: {
+    app: ['babel-polyfill'],
+    appInsights: path.join(srcPath, 'appInsights')
+  },
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
-    filename: 'app.js',
+    filename: '[name].js',
     publicPath: publicPath
   },
   devServer: {
@@ -35,7 +36,6 @@ const config = {
     extensions: ['.js'],
     alias: {
       actions: `${srcPath}/actions/`,
-      components: `${srcPath}/components/`,
       sources: `${srcPath}/sources/`,
       stores: `${srcPath}/stores/`,
       styles: `${srcPath}/styles/`,
