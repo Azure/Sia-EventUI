@@ -16,6 +16,7 @@ const ErrorMessage = (message, actionForRetry, time = null, backgroundColor = nu
     >
       <ErrorIcon />
       <CardHeader
+
         title={message}
         subtitle={timeFormattedToMultipleZones(errorMessageTime)}
       />

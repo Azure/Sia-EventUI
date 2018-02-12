@@ -14,11 +14,12 @@ const dateFormat = {
   month: '2-digit',
   day: '2-digit'
 }
+
 const timeAndDateformat = Object.assign(dateFormat, DateTime.TIME_24_WITH_SECONDS)
 
 export const timeFormattedToMultipleZones = (time, timezones = zones) => {
   if (!time) { return '' }
-  let dateGroupFormat = { year: 'numeric', month: 'numeric', day: 'numeric' }
+
   let convertTimeToZone = (timepoint) => {
     timepoint.timeInZone = time.setZone(timepoint.ianaZone)
     return timepoint
@@ -30,12 +31,13 @@ export const timeFormattedToMultipleZones = (time, timezones = zones) => {
     return timepoint.timeInZone.toLocaleString(format) + ' ' + timepoint.shortname
   }
 
-  let functionName = (dateGroup) => _.map(dateGroup, timeAndDate).join(', ')
+  let transformToTimeAndDateString = (dateGroup) => _.map(dateGroup, timeAndDate).join(', ')
+  let dateForTimepoint = (timepoint) => timepoint.timeInZone.toLocaleString(DateTime.DATE_SHORT)
 
   let timeInMultipleZones = _.chain(timezones)
       .map(convertTimeToZone)
-      .groupBy((timepoint) => timepoint.timeInZone.toLocaleString(dateGroupFormat))
-      .map(functionName)
+      .groupBy(dateForTimepoint)
+      .map(transformToTimeAndDateString)
       .compact()
       .value()
       .join('; ')
