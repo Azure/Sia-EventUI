@@ -17,10 +17,10 @@
     "serve": "node server.js --env=dev",
     "serve:dist": "cross-env NODE_ENV=dist node server.js",
     "start": "node server.js --env=localhost",
-    "test": "nyc cross-env NODE_ENV=test mocha",
-    "test:nocov": "mocha --compilers js:babel-core/register",
-    "test:debug": "mocha --inspect-brk --compilers js:babel-core/register",
-    "test:watch": "karma start --autoWatch=true --singleRun=false"
+    "test": "mocha",
+    "test:debug": "mocha --inspect-brk",
+    "test:watch": "mocha --watch",
+    "test:coverage": "cross-env NODE_ENV=coverage nyc mocha"
   },
   "nyc": {
     "reporter": [
