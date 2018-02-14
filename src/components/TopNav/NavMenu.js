@@ -8,11 +8,15 @@ import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import * as auth from 'services/authNService'
 
-var transformIdToTicketLink = (id, index) =>
-  <MenuItem
-    key={'ticket-' + id + '-index-' + index}
-    primaryText={<Link to={'/tickets/' + id} >{'Ticket ' + id}</Link>}
-  />
+var transformIdToTicketLink = (id, index) => {
+  let addCurrentPageToHistory = () => { history.push(this.to) /* global history */ }
+
+  let link = <Link to={'/tickets/' + id} onClick={addCurrentPageToHistory}>
+    {'Ticket ' + id}
+  </Link>
+
+  return <MenuItem primaryText={link} key={'ticket-' + id + '-index-' + index} />
+}
 
 export const NavMenu = ({ dispatch, history, ticketIds }) => {
   return (<IconMenu
