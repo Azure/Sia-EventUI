@@ -94,7 +94,7 @@ isTicketInfoRecent(ticket, preferences)
 
 const isTicketInfoRecent = (ticket, preferences) => ticket &&
 ticket.lastRefresh &&
-DateTime.fromISO(ticket.lastRefresh).isAfter(DateTime.local().diff(preferences.refreshIntervalInSeconds, 'seconds'))
+DateTime.fromISO(ticket.lastRefresh).isAfter(DateTime.utc().diff(preferences.refreshIntervalInSeconds, 'seconds'))
 
 export const getIncidentsActionSet = ({
   try: () => ({
@@ -104,7 +104,7 @@ export const getIncidentsActionSet = ({
   succeed: (incidents) => ({
     type: RECEIVE_INCIDENTS,
     incidents,
-    receivedAt: DateTime.local()
+    receivedAt: DateTime.utc()
   }),
 
   fail: (error) => ({

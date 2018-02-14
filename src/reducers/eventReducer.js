@@ -21,7 +21,7 @@ export const rawList = (state = defaultEventCollection, action) => {
   switch (action.type) {
     case eventActions.RECEIVE_EVENT:
     case eventActions.POST_EVENT_SUCCEED:
-      return addEventsToState(state, [{...action.event, timeReceived: DateTime.local()}])
+      return addEventsToState(state, [{...action.event, timeReceived: DateTime.utc()}])
     case eventActions.RECEIVE_EVENTS:
       return addEventsToState(state, action.events)
     case filterActions.CHANGE_EVENT_FILTER:

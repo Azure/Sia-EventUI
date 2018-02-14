@@ -9,14 +9,14 @@ export const DISENGAGE_SUCCESS = 'DISENGAGE_SUCCESS'
 export const DISENGAGE_FAILURE = 'DISENGAGE_FAILURE'
 export const ENGAGEMENTS = 'ENGAGEMENTS'
 
-export const engage = (incidentId, participant, timeEngaged = DateTime.local()) =>
+export const engage = (incidentId, participant, timeEngaged = DateTime.utc()) =>
 reduxBackedPromise(
     ['incidents/' + incidentId + '/engagements/', {participant}],
     engageActionSet(incidentId, participant, timeEngaged),
     'POST'
 )
 
-export const disengage = (participant, engagement, timeDisengaged = DateTime.local()) =>
+export const disengage = (participant, engagement, timeDisengaged = DateTime.utc()) =>
 reduxBackedPromise(
   [
     'incidents/' + engagement.incidentId + '/engagements/' + engagement.id,

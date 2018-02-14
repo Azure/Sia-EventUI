@@ -6,7 +6,7 @@ import _ from 'underscore'
 const zones = [
   { shortname: 'PT', ianaZone: 'America/Los_Angeles' },
   { shortname: 'IST', ianaZone: 'Asia/Kolkata' },
-  { shortname: 'GMT', ianaZone: 'Etc/GMT' }
+  { shortname: 'UTC', ianaZone: 'Etc/GMT' }
 ]
 
 const dateFormat = {

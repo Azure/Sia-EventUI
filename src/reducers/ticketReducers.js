@@ -30,7 +30,7 @@ const parseTicketFromIncident = (incident) => (ticket) => {
     ticket.status = 'Active'
     ticket.title = incident.title
     ticket.primaryTicketId = incident.primaryTicket.id
-    ticket.lastRefresh = DateTime.local().toString()
+    ticket.lastRefresh = DateTime.utc().toString()
   }
 }
 

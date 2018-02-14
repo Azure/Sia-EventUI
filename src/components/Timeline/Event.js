@@ -28,7 +28,7 @@ export const Event = ({
   const itemHighlight = (event && event.timeReceived) ? {
     animationName: 'yellowfade',
     animationDuration: '30s',
-    animationDelay: -(DateTime.local().diff(event.timeReceived, 'seconds')) + 's'
+    animationDelay: -(DateTime.utc().diff(event.timeReceived, 'seconds')) + 's'
   } : {}
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
   const missingId = eventTypeId

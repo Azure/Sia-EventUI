@@ -36,7 +36,7 @@ describe('ErrorMessage', function () {
 
     describe('when given a time', function () {
       const backgroundColor = 'Purple'
-      const testTime = DateTime.local()
+      const testTime = DateTime.utc()
       const testObject = ErrorMessage(null, null, testTime)
 
       it('should render a card with a CardHeader with the given time as a subtitle', function () {

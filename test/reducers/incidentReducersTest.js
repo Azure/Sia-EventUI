@@ -115,7 +115,7 @@ const receiveIncident = incident => ({
 const receiveIncidents = incidents => ({
   type: incidentActions.RECEIVE_INCIDENTS,
   incidents,
-  receivedAt: DateTime.local()
+  receivedAt: DateTime.utc()
 })
 
 const createIncident = incident => ({

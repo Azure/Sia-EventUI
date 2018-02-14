@@ -12,7 +12,7 @@ const setup = () => {
   let props = {
     text: 'test text',
     id: 1,
-    time: DateTime.local()
+    time: DateTime.utc()
   }
 
   return createComponent(Event, props)
@@ -34,7 +34,7 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: DateTime.local(),
+        time: DateTime.utc(),
         actions: []
       }
 
@@ -46,7 +46,7 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: DateTime.local(),
+        time: DateTime.utc(),
         actions: ['dolphin']
       }
 
@@ -56,9 +56,9 @@ describe('Event', function test () {
   })
 
   describe('#timeFormattedToMultipleZones', () => {
-    it('defaults to displaying time in Pacific, India Standard, and GMT', () => {
+    it('defaults to displaying time in Pacific, India Standard, and UTC', () => {
       const time = DateTime.utc(1970, 1, 1, 0, 0)
-      const expected = '1969-12-31 16:00:00 PT; 1970-01-01 05:30:00 IST, 00:00:00 GMT'
+      const expected = '1969-12-31 16:00:00 PT; 1970-01-01 05:30:00 IST, 00:00:00 UTC'
 
       expect(timeFormattedToMultipleZones(time)).to.eql(expected)
     })

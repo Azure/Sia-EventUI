@@ -28,7 +28,7 @@ export const fetchEvents = (filter) => reduxBackedPromise(
         getEventsActionSet(filter.incidentId)
     )
 
-export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.local()) => reduxBackedPromise(
+export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.utc()) => reduxBackedPromise(
     postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
     postEventActionSet(incidentId),
     'POST'
