@@ -5,13 +5,14 @@ import createComponent from 'test/helpers/shallowRenderHelper'
 import { Event, mapStateToEventProps } from 'components/Timeline/Event'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
-import moment from 'moment'
+import { DateTime } from 'luxon'
+import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 const setup = () => {
   let props = {
     text: 'test text',
     id: 1,
-    time: moment()
+    time: DateTime.utc()
   }
 
   return createComponent(Event, props)
@@ -33,7 +34,7 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: moment(),
+        time: DateTime.utc(),
         actions: []
       }
 
@@ -45,12 +46,21 @@ describe('Event', function test () {
       let props = {
         text: 'test text',
         id: 1,
-        time: moment(),
+        time: DateTime.utc(),
         actions: ['dolphin']
       }
 
       let eventComponent = createComponent(Event, props)
       expect(eventComponent.props.children[1].props.children[1].type).to.eql(CardText)
+    })
+  })
+
+  describe('#timeFormattedToMultipleZones', () => {
+    it('defaults to displaying time in Pacific, India Standard, and UTC', () => {
+      const time = DateTime.utc(1970, 1, 1, 0, 0)
+      const expected = '1969-12-31 16:00:00 PT; 1970-01-01 05:30:00 IST, 00:00:00 UTC'
+
+      expect(timeFormattedToMultipleZones(time)).to.eql(expected)
     })
   })
 })

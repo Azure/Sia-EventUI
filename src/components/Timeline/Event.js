@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import Playbook from 'components/Timeline/Playbook/Playbook'
@@ -9,6 +9,7 @@ import { LoadTextFromEvent, TestConditionSet } from 'services/playbookService'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import LoadingMessage from 'components/elements/LoadingMessage'
 import * as eventTypeActions from 'actions/eventTypeActions'
+import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 export const Event = ({
     text,
@@ -27,7 +28,7 @@ export const Event = ({
   const itemHighlight = (event && event.timeReceived) ? {
     animationName: 'yellowfade',
     animationDuration: '30s',
-    animationDelay: -(moment().diff(event.timeReceived, 'seconds')) + 's'
+    animationDelay: -(DateTime.utc().diff(event.timeReceived, 'seconds')) + 's'
   } : {}
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
   const missingId = eventTypeId
@@ -48,7 +49,7 @@ export const Event = ({
         >
                 <CardHeader
                   title={ticketId ? `${ticketId}: ${text}` : text}
-                  subtitle={time ? time.local().format('LTS') : 'Time unknown!'}
+                  subtitle={timeFormattedToMultipleZones(time)}
                   actAsExpander
                   showExpandableButton
                   iconStyle={{
@@ -75,7 +76,7 @@ export const Event = ({
 
 Event.propTypes = {
   text: PropTypes.string.isRequired,
-  time: PropTypes.instanceOf(moment),
+  time: PropTypes.instanceOf(DateTime),
   backgroundColor: PropTypes.string,
   ticketId: PropTypes.string,
   eventId: PropTypes.number,
@@ -118,7 +119,7 @@ export const mapStateToEventProps = (state, ownProps) => {
     eventTypeId: event.eventTypeId,
     eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
     eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
-    time: moment(event.occurred ? event.occurred : event.Occurred),
+    time: DateTime.fromISO(event.occurred ? event.occurred : event.Occurred),
     dismissed: event.dismissed,
     backgroundColor: event.backgroundColor,
     text: LoadTextFromEvent(event, eventType, ticket, engagement),
