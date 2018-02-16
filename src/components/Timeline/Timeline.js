@@ -29,17 +29,12 @@ class Timeline extends Component {
     }
   }
 
-  shouldComponentUpdate (newProps) {
-    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = newProps
-    if (this.props.ticketId !== newProps.ticketId) {
+  componentDidUpdate (oldProps) {
+    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
+    if (oldProps.incidentId !== incidentId) {
+      dispatch(eventActions.fetchEvents({ ticketId: ticketId, incidentId: incidentId }))
       updatePagination(incidentId, dispatch)
-      fetchMissingEventTypes(eventTypes, events, dispatch)
-      if (incidentId) {
-        dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
-      }
     }
-
-    return true
   }
 
   render () {
@@ -68,12 +63,13 @@ const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { events } = state
+  const { events, eventTypes } = state
+
   return {
     ...ownProps,
     events: events.pages,
     filter: events.filter,
-    eventTypes: state.eventTypes.records
+    eventTypes: eventTypes.records
   }
 }
 
