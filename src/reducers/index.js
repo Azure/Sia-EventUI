@@ -9,6 +9,7 @@ import signalR from 'reducers/signalRReducer'
 import forms from 'reducers/formReducer'
 import eventTypes from 'reducers/eventTypeReducer'
 import globalActions from 'reducers/globalActionReducer'
+import notifications from 'reducers/notificationReducer'
 
 const rootReducer = (filters) => combineReducers({
   incidents,
@@ -20,7 +21,8 @@ const rootReducer = (filters) => combineReducers({
   expandSection,
   signalR,
   eventTypes,
-  globalActions
+  globalActions,
+  notifications
 })
 
 export default rootReducer

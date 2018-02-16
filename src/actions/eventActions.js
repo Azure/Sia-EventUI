@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
+
 import { paginationActions, updatePagination, reduxBackedPromise } from 'actions/actionHelpers'
 import * as filterActions from 'actions/filterActions'
+import * as notificationActions from 'actions/notificationActions'
 
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
@@ -62,6 +64,11 @@ export const getEventActionSet = (incidentId, eventId) => ({
   }),
 
   succeed: (event) => (dispatch) => {
+    dispatch(notificationActions.emitNotification({
+      event,
+      incidentId: event.incidentId
+    }))
+
     dispatch({
       type: RECEIVE_EVENT,
       event,
