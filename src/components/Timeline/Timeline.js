@@ -30,7 +30,7 @@ class Timeline extends Component {
   }
 
   componentDidUpdate (oldProps) {
-    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
+    const { dispatch, incidentId, ticketId } = this.props
     if (oldProps.incidentId !== incidentId) {
       dispatch(eventActions.fetchEvents({ ticketId: ticketId, incidentId: incidentId }))
       updatePagination(incidentId, dispatch)
