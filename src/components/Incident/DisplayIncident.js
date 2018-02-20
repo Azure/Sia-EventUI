@@ -19,12 +19,4 @@ export const DisplayIncident = ({children, ...props}) => <CollapsibleGridSet
   {PassPropsToChildren(children, props)}
 </CollapsibleGridSet>
 
-
-/*[
-    IncidentSummary({incident, ticket, ticketSystem, ticketOriginId: ticket.originId, dispatch}),
-    IncidentEvents([[ticket.originId, incident.id]])
-  ]*/
-
-
-
 export default DisplayIncident

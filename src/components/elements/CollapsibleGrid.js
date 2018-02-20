@@ -36,10 +36,6 @@ export const CollapsibleGridSet = ({containerClass, rowClass, columnClass, child
   </GridSet>
 }
 
-/*
-
-*/
-
 export const mapStateToCollapsibleGridSetProps = (state, ownProps) => ({
   collapseStatus: ownProps.collapseNames.map(name => state.expandSection[name]),
   ...ownProps
