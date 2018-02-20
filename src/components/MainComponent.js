@@ -7,7 +7,6 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import CreateIncident from 'components/Search/CreateIncident'
-import Ticket from 'components/Incident/Ticket'
 import CompareTickets from 'components/Incident/CompareTickets'
 import EnsureLoggedInContainer from 'components/Auth/EnsureLoggedIn'
 import incidentRedirect from 'components/Incident/incidentRedirect'

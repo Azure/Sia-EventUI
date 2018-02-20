@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Ticket from 'components/Incident/Ticket'
 import LoadGate from 'components/elements/LoadGate'
 import { fetchIncidentsByTicketId, fetchIncident } from 'actions/incidentActions'
 import DisplayIncident from 'components/Incident/DisplayIncident'

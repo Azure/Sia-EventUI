@@ -1,87 +1,6 @@
-import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
-import { Route } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import DisplayIncident from 'components/Incident/DisplayIncident'
 import LoadingMessage from 'components/elements/LoadingMessage'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import * as incidentActions from 'actions/incidentActions'
-import { fetchEventTypes } from 'actions/eventTypeActions'
-
-class Ticket extends Component {
-  static propTypes = {
-    incidentId: PropTypes.number,
-    incident: PropTypes.object,
-    incidentIsFetching: PropTypes.bool,
-    incidentIsError: PropTypes.bool,
-    ticket: PropTypes.object,
-    ticketId: PropTypes.number,
-    ticketSystem: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    preferences: PropTypes.object.isRequired
-  }
-
-  componentDidMount () {
-    const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
-    dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
-    dispatch(fetchEventTypes())
-  }
-
-  render () {
-    const {
-            incident,
-            ticket,
-            ticketId,
-            ticketSystem,
-            incidentIsFetching,
-            incidentIsError
-        } = this.props
-
-    if (incidentIsFetching) {
-      return CurrentlyLoadingIncident(incident, ticketId)
-    }
-
-    if (incidentIsError) {
-      return ErrorLoadingIncident(incident, ticketId)
-    }
-
-    if (!incident && ticket) {
-      var currentIncident = { id: ticket.incidentId, engagements: [] }
-
-      return <DisplayIncident
-        incident={currentIncident}
-        ticket={ticket}
-        ticketSystem={ticketSystem}
-             />
-    }
-
-    if (!incident || !incident.primaryTicket || !ticket || incident.error) {
-      return UnexpectedFailureToLoadIncident()
-    }
-
-    if (incident.primaryTicket.originId && incident.primaryTicket.originId === ticket.originId) {
-      return <DisplayIncident
-        incident={incident}
-        ticket={ticket}
-        ticketSystem={ticketSystem}
-             />
-    }
-    return (
-      <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>
-        <Route path='/tickets/:ticketId' component={connectedTicket} />
-      </Redirect>
-    )
-  }
-}
-
-const mapStateToProps = (state, ownProps) => {
-  const ticketId = parseInt(ownProps.match.params.ticketId)
-  return {
-    ...getInfoByTicketId(state, ticketId),
-    preferences: state.tickets.preferences
-  }
-}
 
 export const getInfoByTicketId = (state, ticketId) => {
   const { incidents, tickets } = state
@@ -121,6 +40,3 @@ const DetermineRetryAction = (incident, ticketId) => (incident && incident.id)
     : ticketId
         ? incidentActions.fetchIncidentsByTicketId(ticketId)
         : incidentActions.fetchIncidents()
-
-const connectedTicket = connect(mapStateToProps)(Ticket)
-export default connectedTicket
