@@ -129,6 +129,6 @@ const incidentReducer = combineReducers({
 
 export default incidentReducer
 
-//Selectors
+// Selectors
 
 export const getIncident = (state) => (incidentId) => state.incidents.map[incidentId]

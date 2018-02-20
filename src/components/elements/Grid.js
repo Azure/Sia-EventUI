@@ -46,16 +46,14 @@ export const Grid = ({rowClass, columnClass, mapRows, mapColumns, children, ...p
       const newGrandChild = mapRows ? mapRows(index, grandChild) : grandChild
       return newGrandChild
         ? <div className={rowClass} key={index}>
-            <GridRow columnClass={columnClass} mapColumns={mapColumns ? mapColumns(index) : null}>
-              {newGrandChild}
-            </GridRow>
-          </div>
+          <GridRow columnClass={columnClass} mapColumns={mapColumns ? mapColumns(index) : null}>
+            {newGrandChild}
+          </GridRow>
+        </div>
         : null
     }
   )
 )
-
-
 
 Grid.propTypes = {
   rowClass: PropTypes.string.isRequired,

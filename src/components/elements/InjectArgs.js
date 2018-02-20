@@ -1,8 +1,6 @@
-import React from 'react'
 import { connect } from 'react-redux'
 
-import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren';
-import { mapStateToBootstrapPlaybookProps } from 'components/Timeline/Playbook/BootstrapPlaybook';
+import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
 
 export const InjectArgs = ({children, injectUsing, ...props}) => PassPropsToChildren(
   children,

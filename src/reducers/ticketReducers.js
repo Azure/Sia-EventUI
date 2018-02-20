@@ -102,7 +102,7 @@ const ticketReducer = combineReducers({
 
 export default ticketReducer
 
-//Selectors
+// Selectors
 
 export const getTicketingSystem = (
   state

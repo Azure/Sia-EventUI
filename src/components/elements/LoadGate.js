@@ -28,7 +28,7 @@ export const LoadGate = ({
   ...props
 }) => isAvailable ? PassPropsToChildren(children, props)
   : isLoading ? LoadingMessage(loadMessage(props), loadByDispatching(props))
-  : isError ? ErrogMessage(errorMessage(props), loadByDispatching(props))
+  : isError ? ErrorMessage(errorMessage(props), loadByDispatching(props))
   : <Loader loadByDispatching={loadByDispatching} dispatchProps={props} />
 
 export const mapStateToLoadGateProps = (state, {

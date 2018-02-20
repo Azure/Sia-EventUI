@@ -1,16 +1,9 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 
 import IconButtonStyled from 'components/elements/IconButtonStyled'
-import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
-import {
-  getTicketingSystem,
-  getTicket
-} from 'reducers/ticketReducers'
 import Passthrough from 'components/elements/Passthrough'
-
 
 export const IncidentSummaryName = (ticketId) => {
   return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
@@ -50,20 +43,19 @@ export const EditIncidentManager = () => <IconButtonStyled tooltip='Edit IM'><Mo
 const noTitleMessage = 'No Title!'
 
 export const Title = ({incident}) => <div>
-    {DoesIncidentHaveTitle(incident) ? incident.title
-        : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
-        : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.title
-        : noTitleMessage}
+  {DoesIncidentHaveTitle(incident) ? incident.title
+  : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
+  : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.title
+  : noTitleMessage}
   </div>
 
-
 const DoesIncidentHaveTitle = (incident) =>
-    incident && incident.title
+  incident && incident.title
 
 const DoesPrimaryTicketHaveNativeTitle = (incident) =>
-    incident && incident.primaryTicket && incident.primaryTicket.title
+  incident && incident.primaryTicket && incident.primaryTicket.title
 
 const DoesPrimaryTicketHaveDataTitle = (incident) =>
-    incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
+  incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
 
 export default IncidentSummary

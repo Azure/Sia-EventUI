@@ -12,12 +12,11 @@ import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren
 const dispatchOnTouchTap = (collapseName, dispatch) => () => dispatch(expandSectionActions.toggleCollapse(collapseName))
 
 export const CollapsibleGridSet = ({containerClass, rowClass, columnClass, children, collapseNames, collapseStatus, dispatch, ...props}) => {
-  let collapseKey = 0
   return <GridSet
     containerClass={containerClass}
     rowClass={rowClass}
     columnClass={columnClass}
-    mapRows={(sectionIndex) => (rowIndex, component) => !rowIndex //if first row
+    mapRows={(sectionIndex) => (rowIndex, component) => !rowIndex // if first row
       ? AppendChild(
         component,
         <IconButtonStyled
@@ -27,7 +26,7 @@ export const CollapsibleGridSet = ({containerClass, rowClass, columnClass, child
           {collapseStatus[sectionIndex] ? <ArrowDropDownCircleIcon /> : <ArrowDropDownIcon />}
         </IconButtonStyled>
       )
-      : collapseStatus[sectionIndex] //is collapsed
+      : collapseStatus[sectionIndex] // is collapsed
         ? null
         : component
     }

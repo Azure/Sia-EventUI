@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-
 import Passthrough from 'components/elements/Passthrough'
 
 export const IncidentEventsName = () => {
@@ -18,6 +17,5 @@ IncidentEvents.propTypes = {
 export const TimelineTitle = () => <div>
   <strong>Incident Timeline:</strong>
 </div>
-
 
 export default IncidentEvents

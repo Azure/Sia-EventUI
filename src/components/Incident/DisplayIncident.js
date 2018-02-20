@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 import CollapsibleGridSet from 'components/elements/CollapsibleGrid'
-import { IncidentSummary, IncidentSummaryName } from 'components/Incident/IncidentSummary'
-import { IncidentEvents, IncidentEventsName } from 'components/Incident/IncidentEvents'
+import { IncidentSummaryName } from 'components/Incident/IncidentSummary'
+import { IncidentEventsName } from 'components/Incident/IncidentEvents'
 import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
 
 export const DisplayIncident = ({children, ...props}) => <CollapsibleGridSet
