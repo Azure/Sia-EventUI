@@ -6,22 +6,22 @@ export const IncidentEventsName = () => {
   return 'IncidentEvents'
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap) => [
-  [
-    [
-      (key) => <strong key={key}>
-                Incident Timeline:
-            </strong>
-    ]
-  ],
-  [
-    <Timeline
-      ticketId={ticketToIncidentIdMap[0][0]}
-      incidentId={ticketToIncidentIdMap[0][1]}
-        />
-  ]
-]
+export const IncidentEvents = ({ticketId, incidentId}) =>
+  <div>
+    <div>
+       <strong>Incident Timeline:</strong>
+    </div>
+    <div>
+      <Timeline
+        ticketId={ticketId}
+        incidentId={incidentId}
+      />
+    </div>
+  </div>
 
 IncidentEvents.propTypes = {
-  ticketToIncidentIdMap: PropTypes.object
+  ticketId: PropTypes.number,
+  incidentId: PropTypes.number
 }
+
+export default IncidentEvents

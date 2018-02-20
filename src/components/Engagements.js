@@ -6,9 +6,12 @@ import PeopleIcon from 'material-ui/svg-icons/social/people'
 import AddCircleOutlineIcon from 'material-ui/svg-icons/content/add-circle-outline'
 import RemoveCircleOutlineIcon from 'material-ui/svg-icons/content/remove-circle-outline'
 
+import { getIncident } from 'reducers/incidentReducers'
+
 export const mapStateToPropsEngagements = (state, ownProps) => {
   return {
     ...ownProps,
+    engagements: getIncident(state)(ownProps.incidentId),
     user: {
       alias: state.auth.userAlias,
       team: state.auth.userTeam,

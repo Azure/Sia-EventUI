@@ -1,32 +1,30 @@
+import React from 'react'
 import PropTypes from 'prop-types'
-import { CollapsibleGridSet } from 'components/elements/CollapsibleGrid'
 import { connect } from 'react-redux'
+
+import CollapsibleGridSet from 'components/elements/CollapsibleGrid'
 import { IncidentSummary, IncidentSummaryName } from 'components/Incident/IncidentSummary'
 import { IncidentEvents, IncidentEventsName } from 'components/Incident/IncidentEvents'
+import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
 
-export const DisplayIncident = ({incident, ticket, ticketSystem, expandSection, dispatch}) => {
-  return CollapsibleGridSet('incident-container', 'incident-row', 'incident-col', [
+export const DisplayIncident = ({children, ...props}) => <CollapsibleGridSet
+  containerClass={'incident-container'}
+  rowClass={'incident-row'}
+  columnClass={'incident-col'}
+  collapseNames={[
+    IncidentSummaryName(),
+    IncidentEventsName()
+  ]}
+>
+  {PassPropsToChildren(children, props)}
+</CollapsibleGridSet>
+
+
+/*[
     IncidentSummary({incident, ticket, ticketSystem, ticketOriginId: ticket.originId, dispatch}),
     IncidentEvents([[ticket.originId, incident.id]])
-  ],
-    [
-      IncidentSummaryName(),
-      IncidentEventsName()
-    ],
-    expandSection, dispatch)
-}
+  ]*/
 
-DisplayIncident.propTypes = {
-  incident: PropTypes.object,
-  ticket: PropTypes.object,
-  ticketSystem: PropTypes.object,
-  expandSection: PropTypes.object,
-  dispatch: PropTypes.func.isRequired
-}
 
-export const mapStateToProps = (state, ownProps) => ({
-  ...ownProps,
-  expandSection: state.expandSection
-})
 
-export default connect(mapStateToProps)(DisplayIncident)
+export default DisplayIncident

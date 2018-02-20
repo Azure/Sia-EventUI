@@ -14,6 +14,7 @@ import incidentRedirect from 'components/Incident/incidentRedirect'
 import Home from 'components/Home'
 import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
+import App from 'components/App'
 
 const history = createBrowserHistory()
 
@@ -31,7 +32,7 @@ export default class MainComponent extends React.Component {
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
-                    <Route path='/tickets/:ticketId' component={Ticket} />
+                    <Route path='/tickets/:ticketId' component={App} />
                     <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />

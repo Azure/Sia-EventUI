@@ -101,3 +101,13 @@ const ticketReducer = combineReducers({
 })
 
 export default ticketReducer
+
+//Selectors
+
+export const getTicketingSystem = (
+  state
+) => (ticketingSystemId) => state.tickets.systems[ticketingSystemId]
+
+export const getTicket = (
+  state
+) => (ticketId) => state.tickets.map[ticketId]
