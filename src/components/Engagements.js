@@ -11,7 +11,7 @@ import { getIncident } from 'reducers/incidentReducers'
 export const mapStateToPropsEngagements = (state, ownProps) => {
   return {
     ...ownProps,
-    engagements: getIncident(state)(ownProps.incidentId),
+    engagements: getIncident(state)(ownProps.incidentId).engagements,
     user: {
       alias: state.auth.userAlias,
       team: state.auth.userTeam,
@@ -27,17 +27,17 @@ export const Engagements = ({dispatch, incidentId, engagements, user}) => {
         <IconButtonStyled tooltip='Engagement'>
           <PeopleIcon />
         </IconButtonStyled>
-                &nbsp;
+        &nbsp;
         {Array
-                    .from(engagements.filter(engagement => !engagement.timeDisengaged))
-                    .map(engagement =>
-                      <Engagement
-                        key={'engagement' + engagement.id}
-                        engagement={engagement}
-                        user={user}
-                        dispatch={dispatch}
-                        />)
-                }
+          .from(engagements.filter(engagement => !engagement.timeDisengaged))
+          .map(engagement =>
+            <Engagement
+              key={'engagement' + engagement.id}
+              engagement={engagement}
+              user={user}
+              dispatch={dispatch}
+              />)
+        }
       </span>
       <Engage dispatch={dispatch} incidentId={incidentId} user={user} />
     </div>

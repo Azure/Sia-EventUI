@@ -2,7 +2,17 @@ import React from 'react'
 
 const PassPropsToChildren = (children, props) => React.Children.map(
   children,
-  child => React.cloneElement(child, props)
+  child => child.type && child.type !== 'div'
+    ? React.cloneElement(child, props)
+    : React.cloneElement(
+      child,
+      {
+        children: PassPropsToChildren(
+          child.props.children,
+          props
+        )
+      }
+    )
 )
 
 export default PassPropsToChildren

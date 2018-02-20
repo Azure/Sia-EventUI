@@ -4,8 +4,6 @@ import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 
 import IconButtonStyled from 'components/elements/IconButtonStyled'
-import Engagements from 'components/Engagements'
-import GlobalActions from 'components/Timeline/Playbook/GlobalActions'
 import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
 import {
   getTicketingSystem,
@@ -13,37 +11,13 @@ import {
 } from 'reducers/ticketReducers'
 import Passthrough from 'components/elements/Passthrough'
 
+
 export const IncidentSummaryName = (ticketId) => {
   return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
 }
 
-export const IncidentSummary = <Passthrough>
-    <IncidentHeader>
-      <SummaryStatement />
-    </IncidentHeader>
+export const IncidentSummary = Passthrough
 
-  </Passthrough>
-/*
-    <TicketDetails >
-      <BasicInfo>
-        <TicketLink />
-        <TicketSeverity />
-      </BasicInfo>
-      <IncidentManager>
-        <IncidentManagerName />
-        <EditIncidentManager />
-      </IncidentManager>
-    </TicketDetails>
-    <Passthrough>
-      <Title />
-    </Passthrough>
-    <Passthrough>
-      <GlobalActions />
-    </Passthrough>
-    <Passthrough>
-      <Engagements />
-    </Passthrough>
-*/
 export const IncidentHeader = Passthrough
 
 export const SummaryStatement = ({ticketId}) => <strong>

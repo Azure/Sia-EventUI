@@ -2,6 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 
+import WrapChildren from 'components/elements/helpers/WrapChildren'
+import PassPropsToChildren from 'components/elements/helpers/PassPropsToChildren'
+
 export const GridSet = ({
   containerClass,
   rowClass,
@@ -9,13 +12,14 @@ export const GridSet = ({
   mapPapers,
   mapRows,
   mapColumns,
-  children
+  children,
+  ...props
 }) => {
   let key = -1
   return (
     <div className={containerClass}>
       {React.Children.map(
-        children,
+        PassPropsToChildren(children, props),
         child => {
           key++
           return <Paper zDepth={2} key={key}>
@@ -34,20 +38,24 @@ export const GridSet = ({
   )
 }
 
-export const Grid = ({rowClass, columnClass, mapRows, mapColumns, children}) => {
-  let rowKey = -1
-  return React.Children.map(
-    children,
-    child => {
-      rowKey++
-      return <div className={rowClass} key={rowKey}>
-        <GridRow columnClass={columnClass} mapColumns={mapColumns ? mapColumns(rowKey) : null}>
-          {mapRows ? mapRows(rowKey, child) : child}
-        </GridRow>
-      </div>
+export const Grid = ({rowClass, columnClass, mapRows, mapColumns, children, ...props}) => React.Children.map(
+  PassPropsToChildren(children, props),
+  (child) => WrapChildren(
+    child,
+    (grandChild, index) => {
+      const newGrandChild = mapRows ? mapRows(index, grandChild) : grandChild
+      return newGrandChild
+        ? <div className={rowClass} key={index}>
+            <GridRow columnClass={columnClass} mapColumns={mapColumns ? mapColumns(index) : null}>
+              {newGrandChild}
+            </GridRow>
+          </div>
+        : null
     }
   )
-}
+)
+
+
 
 Grid.propTypes = {
   rowClass: PropTypes.string.isRequired,
@@ -55,10 +63,10 @@ Grid.propTypes = {
   children: PropTypes.any.isRequired
 }
 
-export const GridRow = ({columnClass, mapColumns, children}) => {
+export const GridRow = ({columnClass, mapColumns, children, ...props}) => {
   let columnKey = -1
   return React.Children.map(
-    children,
+    PassPropsToChildren(children, props),
     child => {
       columnKey++
       return <div className={columnClass} key={columnKey}>

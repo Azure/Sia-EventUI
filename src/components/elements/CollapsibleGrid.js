@@ -17,13 +17,6 @@ export const CollapsibleGridSet = ({containerClass, rowClass, columnClass, child
     containerClass={containerClass}
     rowClass={rowClass}
     columnClass={columnClass}
-
-  >
-    {PassPropsToChildren(children, props)}
-  </GridSet>
-}
-
-/*
     mapRows={(sectionIndex) => (rowIndex, component) => !rowIndex //if first row
       ? AppendChild(
         component,
@@ -38,6 +31,13 @@ export const CollapsibleGridSet = ({containerClass, rowClass, columnClass, child
         ? null
         : component
     }
+  >
+    {PassPropsToChildren(children, props)}
+  </GridSet>
+}
+
+/*
+
 */
 
 export const mapStateToCollapsibleGridSetProps = (state, ownProps) => ({
