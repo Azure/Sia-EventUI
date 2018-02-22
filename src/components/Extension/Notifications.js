@@ -40,7 +40,7 @@ class Notifications extends Component {
         const eventType = eventTypes[notification.event.eventTypeId]
         const actions = eventType ? eventType.actions : null
         const ticket = incidents[notification.incidentId].primaryTicket
-        const engagement = null // TODO: engagements.find(engagement => engagement.id === ownProps.engagementId)
+        const engagement = null // TODO
 
         return <Notification
           key={notification.event.id}

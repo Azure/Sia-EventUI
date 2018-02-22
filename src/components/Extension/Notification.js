@@ -5,7 +5,7 @@ import config from 'config'
 import { fillTemplate, LoadTextFromEvent } from 'services/playbookService'
 import { notificationEmitted } from 'actions/notificationActions'
 
-class Notification extends Component {
+export class Notification extends Component {
   componentDidMount () {
     if (!this.props.isEmitted) {
       this.createNotification()
@@ -33,8 +33,6 @@ class Notification extends Component {
     const { notificationEmitted, event } = this.props
     const buttonActions = this.createButtonActions()
     const notificationBody = this.createNotificationBody(buttonActions)
-    const msg = `############## EventId: ${this.props.event.id} -- createNotification.`
-    console.log('%c' + msg, 'color:Green;font-weight:bold;', JSON.stringify(event, null, 2), JSON.stringify(notificationBody, null, 2), this.props)
     chrome.notifications.create(notificationBody, (notificationId) => {
       notificationEmitted(event.id, notificationId, buttonActions)
     })
@@ -44,7 +42,6 @@ class Notification extends Component {
     const { event, ticket, eventType, engagement } = this.props
     const severity = ticket.data ? ticket.data.severity : null
     const title = ticket.data ? ticket.data.title : null
-
     return {
       type: 'basic',
       iconUrl: `/static/sia-blue-icon-128.png`,
@@ -61,9 +58,7 @@ class Notification extends Component {
 
   createButtonActions () {
     const { actions, event, ticket, eventType, engagement } = this.props
-
     const ticketSystem = config.ticketSystems[ticket.ticketSystemId || 1]
-
     const defaultActions = [{
       title: 'Open in SIA',
       url: `${config.eventUiUrl}tickets/${ticket.originId}`,
