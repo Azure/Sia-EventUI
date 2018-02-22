@@ -54,7 +54,7 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
-  const newFilter = Object.assign({ incidentId: incidentId, ticketId: ticketId }, filter)
+  const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId })
   return applyFilter(history)(filter, newFilter)
 }
 
