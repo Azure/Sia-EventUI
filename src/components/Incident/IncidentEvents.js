@@ -1,27 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Timeline from 'components/Timeline/Timeline'
+
+import Passthrough from 'components/elements/Passthrough'
 
 export const IncidentEventsName = () => {
   return 'IncidentEvents'
 }
 
-export const IncidentEvents = (ticketToIncidentIdMap) => [
-  [
-    [
-      (key) => <strong key={key}>
-                Incident Timeline:
-            </strong>
-    ]
-  ],
-  [
-    <Timeline
-      ticketId={ticketToIncidentIdMap[0][0]}
-      incidentId={ticketToIncidentIdMap[0][1]}
-        />
-  ]
-]
+export const IncidentEvents = Passthrough
 
 IncidentEvents.propTypes = {
-  ticketToIncidentIdMap: PropTypes.object
+  ticketId: PropTypes.number,
+  incidentId: PropTypes.number
 }
+
+export const TimelineTitle = () => <div>
+  <strong>Incident Timeline:</strong>
+</div>
+
+export default IncidentEvents

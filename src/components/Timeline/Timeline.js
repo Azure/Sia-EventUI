@@ -14,7 +14,7 @@ class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    ticketId: PropTypes.string.isRequired,
+    ticketId: PropTypes.number.isRequired,
     incidentId: PropTypes.number.isRequired,
     eventTypes: PropTypes.object.isRequired,
     filter: PropTypes.object

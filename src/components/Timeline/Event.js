@@ -78,7 +78,7 @@ Event.propTypes = {
   text: PropTypes.string.isRequired,
   time: PropTypes.instanceOf(DateTime),
   backgroundColor: PropTypes.string,
-  ticketId: PropTypes.string,
+  ticketId: PropTypes.number,
   eventId: PropTypes.number,
   eventTypeId: PropTypes.number,
   eventTypeIsFetching: PropTypes.bool,
