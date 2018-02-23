@@ -61,11 +61,11 @@ export class Notification extends Component {
     const ticketSystem = config.ticketSystems[ticket.ticketSystemId || 1]
     const defaultActions = [{
       title: 'Open in SIA',
-      url: `${config.eventUiUrl}tickets/${ticket.originId}`,
-      default: true
+      url: `${config.eventUiUrl}tickets/${ticket.originId}`
     }, {
       title: `Open in ${ticketSystem.name}`,
-      url: `${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`
+      url: `${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`,
+      default: true
     }]
     const playbookActions = actions
       ? actions.filter(action => action.actionTemplate.isUrl)
