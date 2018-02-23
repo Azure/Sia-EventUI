@@ -18,6 +18,8 @@ if (process.env.NODE_ENV !== 'dist') {
     historyApiFallback: true
   }))
 
+  app.use('/favicon.ico', express.static(path.join(__dirname, 'src/static/favicon.ico')))
+
   app.use(webpackHotMiddleware(compiler, {
     log: console.log,
     path: '/__webpack_hmr',

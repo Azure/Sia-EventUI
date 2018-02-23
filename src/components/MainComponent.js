@@ -14,6 +14,8 @@ import incidentRedirect from 'components/Incident/incidentRedirect'
 import Home from 'components/Home'
 import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
+import { isChromeExtensionBackground } from 'services/notificationService'
+import Notifications from 'components/Extension/Notifications'
 
 const history = createBrowserHistory()
 
@@ -27,6 +29,7 @@ export default class MainComponent extends React.Component {
               <EnsureLoggedInContainer>
                 <Router history={history} >
                   <div>
+                    { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
