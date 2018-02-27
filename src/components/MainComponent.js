@@ -16,6 +16,7 @@ import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
+import Checklist from 'components/Checklist'
 
 const history = createBrowserHistory()
 
@@ -31,6 +32,7 @@ export default class MainComponent extends React.Component {
                   <div>
                     { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
+                    <Route path='/tickets/:ticketId/checklist' component={Checklist} />
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
