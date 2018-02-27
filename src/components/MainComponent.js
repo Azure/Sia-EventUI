@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
