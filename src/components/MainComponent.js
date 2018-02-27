@@ -16,7 +16,26 @@ import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
-import Checklist from 'components/Checklist'
+
+try {
+  const Checklist = require('components/Checklist')
+}
+catch(error) {
+  if ( !error.toString().includes('Cannot find module') ) {
+    throw error
+  } else {
+
+  }
+}
+
+const isPluginDefined = () => {
+  if ( typeof Checklist !== undefined ) {
+    return false
+  } else {
+    return true
+
+  }
+}
 
 const history = createBrowserHistory()
 
@@ -32,7 +51,7 @@ export default class MainComponent extends React.Component {
                   <div>
                     { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
-                    <Route path='/tickets/:ticketId/checklist' component={Checklist} />
+                    { isPluginDefined() ? <Route path='/tickets/:ticketId/checklist' component={Checklist} /> : null}
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
