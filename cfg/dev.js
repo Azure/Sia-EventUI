@@ -3,6 +3,8 @@ const webpack = require('webpack')
 
 const baseConfig = require('./base')
 
+const Dotenv = require('dotenv-webpack');
+
 const config = Object.assign({}, baseConfig, {
   cache: true,
   devtool: 'eval-source-map'

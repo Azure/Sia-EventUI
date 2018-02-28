@@ -1,3 +1,6 @@
+src/pluginsTemp/
+.env
+
 # Logs
 logs
 *.log

@@ -17,23 +17,45 @@ import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 
-try {
-  const Checklist = require('components/Checklist')
-}
-catch(error) {
-  if ( !error.toString().includes('Cannot find module') ) {
-    throw error
-  } else {
+// import * from 'pluginsTemp/index'
+// // introducing unnecessary duplication to determine what needs extraction.
+// const _ = require('underscore')
 
+// const hydratePlugin = (plugin) => {
+//   const separator = require('path').sep
+//   const directoryPath = './src/pluginsTemp'
+//   var filename = _.last(plugin.path.split(separator))
+//
+//   plugin.newPath = [directoryPath, filename].join(separator)
+//
+//   return plugin
+// }
+
+// const plugins = (environment = process.env) => {
+//   if (!environment.PLUGINS) { console.log('No plugins are defined.'); return }
+//
+//   return _.map(JSON.parse(environment.PLUGINS), hydratePlugin)
+// }
+
+//
+
+// _.each(plugins(), function (plugin) {
+//
+// })
+
+const maybePlugin = () => {
+  try {
+    const Checklist = require('components/Checklist') // eslint-disable-line no-unused-vars
+  } catch (error) {
+    if (!error.toString().includes('Cannot find module')) {
+      throw error
+    } else {
+      console.log('Could not load', 'CHECKLIST--tktktk--plugin', 'plugin.')
+    }
   }
-}
 
-const isPluginDefined = () => {
-  if ( typeof Checklist !== undefined ) {
-    return false
-  } else {
-    return true
-
+  if (typeof Checklist !== 'undefined') {
+    return <Route path='/tickets/:ticketId/checklist' component={Checklist} /> // eslint-disable-line no-undef
   }
 }
 
@@ -51,7 +73,7 @@ export default class MainComponent extends React.Component {
                   <div>
                     { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
-                    { isPluginDefined() ? <Route path='/tickets/:ticketId/checklist' component={Checklist} /> : null}
+                    { maybePlugin() }
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
