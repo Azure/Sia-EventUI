@@ -1,7 +1,7 @@
 {
   "name": "SIA",
   "description": "SRE Incident Assistant",
-  "version": "0.0.0.3",
+  "version": "0.0.0.5",
   "icons": {
     "128": "/static/sia-blue-icon-128.png",
     "24": "/static/sia-blue-icon-24.png",
