@@ -1,7 +1,6 @@
 import moment from 'moment'
 import { paginationActions, updatePagination, reduxBackedPromise } from 'actions/actionHelpers'
 import * as filterActions from 'actions/filterActions'
-
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
 export const RECEIVE_EVENT = 'RECEIVE_EVENT'
@@ -27,6 +26,11 @@ export const fetchEvents = (filter) => reduxBackedPromise(
         getEventsFetchArgs(filter),
         getEventsActionSet(filter.incidentId)
     )
+
+export const fetchUncorrelatedEvents = (filter) => reduxBackedPromise(
+        ['events/' + filterActions.serializeFiltersForUrl(filter)],
+        getEventsActionSet(null)
+)
 
 export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = moment()) => reduxBackedPromise(
     postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
@@ -100,7 +104,7 @@ export const getEventsActionSet = (incidentId) => ({
       pagination: linksHeader
     })
 
-    if (linksHeader.NextPageLink) {
+    if (linksHeader && linksHeader.NextPageLink) {
       dispatch(reduxBackedPromise(
                 [linksHeader.NextPageLink],
                 getEventsActionSet(incidentId)
