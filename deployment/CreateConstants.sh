@@ -7,7 +7,7 @@ Environment=
 AadInstance=
 AadTenant=
 ClientId=
-baseUrl=
+BaseUrl=
 AuthRedirectUri=
 AuthVersion=
 TicketUriPrefix=
@@ -72,7 +72,9 @@ case $option in
     TicketUriSuffix="$2"
 	;;
   -*)
-    echo "\n error: $option \n"
+    echo
+    echo "bad option: $option"
+    echo
     Usage $ThisScript
 	exit 2
 esac
