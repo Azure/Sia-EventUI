@@ -2,7 +2,6 @@
 import { expect } from 'chai'
 import queryString from 'query-string'
 import * as filterActions from 'actions/filterActions'
-import AddMockDispatch from 'test/helpers/mockDispatch'
 
 // Istanbul for test coverage, provides us with a new command nyc-mocha, which runs the tests and gives a reporter
 describe('FilterActions', function () {

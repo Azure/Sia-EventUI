@@ -2,21 +2,23 @@ import { authenticatedFetch, authenticatedPost, authenticatedPut } from 'service
 
 const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
 
-export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') => (dispatch) => {
-  if (!actionSet.try) { throw needOnActionSet('try') }
-  if (!actionSet.succeed) { throw needOnActionSet('succeed') }
-  if (!actionSet.fail) { throw needOnActionSet('fail') }
+export const testableReduxBackedPromise = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
+(promiseArgs, actionSet, operation = 'GET') =>
+(dispatch) => {
+  if (!actionSet.try || !(typeof actionSet.try === 'function')) { throw needOnActionSet('try') }
+  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { throw needOnActionSet('succeed') }
+  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { throw needOnActionSet('fail') }
 
   let promiseGenerator
   switch (operation.toUpperCase()) {
     case 'PUT':
-      promiseGenerator = authenticatedPut
+      promiseGenerator = localAuthenticatedPut
       break
     case 'POST':
-      promiseGenerator = authenticatedPost
+      promiseGenerator = localAuthenticatedPost
       break
     default:
-      promiseGenerator = authenticatedFetch
+      promiseGenerator = localAuthenticatedFetch
       break
   }
   if (!promiseGenerator) {
@@ -29,6 +31,8 @@ export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') =>
         .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))
 }
+
+export const reduxBackedPromise = testableReduxBackedPromise(authenticatedFetch, authenticatedPost, authenticatedPut)
 
 const goToPageActionType = (BASE_NAME) => 'GOTO_' + BASE_NAME + '_PAGE'
 const nextPageActionType = (BASE_NAME) => 'NEXT_' + BASE_NAME + '_PAGE'
