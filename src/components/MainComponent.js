@@ -46,5 +46,3 @@ export default class MainComponent extends React.Component {
     )
   }
 }
-//
-// render = {() => <div> this is a placeholder </div>}
