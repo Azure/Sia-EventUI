@@ -17,6 +17,8 @@ import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 
+import StaticList from 'sia-static-list-component'
+
 const history = createBrowserHistory()
 
 export default class MainComponent extends React.Component {
@@ -33,6 +35,7 @@ export default class MainComponent extends React.Component {
                     <TopNav />
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
+                    <Route path='/tickets/:ticketId/checklist' component={StaticList} />
                     <Route path='/search' component={CreateIncident} />
                     <Route path='/tickets/:ticketId' component={Ticket} />
                     <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
