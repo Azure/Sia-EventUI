@@ -62,7 +62,8 @@ export function notificationListReducer (state = notificationListInitialState, a
 }
 
 export default combineReducers({
-  options: persistReducer({
+  options: persistReducer(
+    {
       key: 'notificationOptions',
       storage
     },
