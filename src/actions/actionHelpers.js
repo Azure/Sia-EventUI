@@ -19,9 +19,11 @@ export const reduxBackedPromise = testableReduxBackedPromise(authenticatedFetch,
 const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
 
 export const validateActionSet = (actionSet) => {
-  if (!actionSet.try || !(typeof actionSet.try === 'function')) { throw needOnActionSet('try') }
-  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { throw needOnActionSet('succeed') }
-  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { throw needOnActionSet('fail') }
+  let need
+  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { need = 'fail' }
+  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { need = 'succeed' }
+  if (!actionSet.try || !(typeof actionSet.try === 'function')) { need = 'try' }
+  if (need) { throw needOnActionSet(need) }
 }
 
 export const getPromiseGenerator = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
