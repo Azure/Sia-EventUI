@@ -1,13 +1,13 @@
-import queryString from 'query-string'
 import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
+import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 
 export const changeEventFilter = (history) => (filter) => {
-  getUrlFromFilter(history, filter)
+  filterService.getUrlFromFilter(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
     filter
@@ -56,57 +56,4 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
 export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
   const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId })
   return applyFilter(history)(filter, newFilter)
-}
-
-export const serializeFiltersForUrl = (filters) => {
-  if (!filters) {
-    return ''
-  }
-  const eventTypes = serializeEventTypesForQuery(filters.eventTypes)
-  const filterTokens = Object.entries(filters)
-        .filter(filter => filter[0] !== 'incidentId' &&
-            filter[0] !== 'eventTypes' &&
-            filter[0] !== 'fromUrl' &&
-            filter[0] !== 'ticketId')
-        .map(filter => `${filter[0]}=${filter[1]}`)
-  const finalFilterTokens = eventTypes
-        ? filterTokens.concat(eventTypes)
-        : filterTokens
-  return finalFilterTokens && finalFilterTokens.length > 0 ? '?' + finalFilterTokens.join('&')
-        : ''
-}
-
-export const serializeEventTypesForQuery = (eventTypes) => {
-  if (!eventTypes || eventTypes.length === 0) {
-    return ''
-  }
-  return eventTypes.map(eventType => `eventTypes=${eventType}`).join('&')
-}
-
-export const getFilterFromUrl = (urlFilterInfo) => {
-  let filter = queryString.parse(urlFilterInfo)
-  if (typeof (filter) !== 'object' || !filter.eventTypes) {
-    return null
-  }
-  if (!Array.isArray(filter.eventTypes)) {
-    filter.eventTypes = [filter.eventTypes]
-  }
-  filter.eventTypes = filter.eventTypes.map(e => parseInt(e))
-  return filter
-}
-
-export const getUrlFromFilter = (history, filter) => {
-  if (filter && filter.eventTypes) {
-    history.push(generateUrl(history, filter))
-  }
-}
-
-export const generateUrl = (history, filter) => {
-  return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
-}
-
-export const findEventTypeInRef = (referenceData) => (eventType) => {
-  return referenceData.hasOwnProperty(eventType)
-        ? referenceData[eventType]
-        : {id: eventType, name: 'unknown'}
 }

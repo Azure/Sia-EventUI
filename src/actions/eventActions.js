@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
 import { paginationActions, updatePagination, reduxBackedPromise } from 'actions/actionHelpers'
-import * as filterActions from 'actions/filterActions'
+import * as filterService from 'services/filterService'
 import * as notificationActions from 'actions/notificationActions'
 
 export const EVENTS = 'EVENTS'
@@ -39,7 +39,7 @@ export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events/'
 
 export const getEventsFetchArgs = (filter) => ([
-  getEventsEndPoint(filter.incidentId) + filterActions.serializeFiltersForUrl(filter)
+  getEventsEndPoint(filter.incidentId) + filterService.serializeFiltersForUrl(filter)
 ])
 
 export const getEventFetchArgs = (incidentId, eventId) => {
