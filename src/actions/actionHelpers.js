@@ -1,29 +1,11 @@
 import { authenticatedFetch, authenticatedPost, authenticatedPut } from 'services/authenticatedFetch'
 
-const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
-
 export const testableReduxBackedPromise = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
 (promiseArgs, actionSet, operation = 'GET') =>
 (dispatch) => {
-  if (!actionSet.try || !(typeof actionSet.try === 'function')) { throw needOnActionSet('try') }
-  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { throw needOnActionSet('succeed') }
-  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { throw needOnActionSet('fail') }
+  validateActionSet(actionSet)
 
-  let promiseGenerator
-  switch (operation.toUpperCase()) {
-    case 'PUT':
-      promiseGenerator = localAuthenticatedPut
-      break
-    case 'POST':
-      promiseGenerator = localAuthenticatedPost
-      break
-    default:
-      promiseGenerator = localAuthenticatedFetch
-      break
-  }
-  if (!promiseGenerator) {
-    throw new Error('promiseGenerator not initialized. This should not be possible. Consider rolling back.')
-  }
+  const promiseGenerator = getPromiseGenerator(localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut)(operation)
 
   dispatch(actionSet.try())
 
@@ -33,6 +15,29 @@ export const testableReduxBackedPromise = (localAuthenticatedFetch, localAuthent
 }
 
 export const reduxBackedPromise = testableReduxBackedPromise(authenticatedFetch, authenticatedPost, authenticatedPut)
+
+const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
+
+export const validateActionSet = (actionSet) => {
+  if (!actionSet.try || !(typeof actionSet.try === 'function')) { throw needOnActionSet('try') }
+  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { throw needOnActionSet('succeed') }
+  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { throw needOnActionSet('fail') }
+}
+
+export const getPromiseGenerator = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
+(operation) => {
+  switch (operation.toUpperCase()) {
+    case 'TESTERROR':
+      break // Never intended to happen in a deployed instance, just here for testing
+    case 'PUT':
+      return localAuthenticatedPut
+    case 'POST':
+      return localAuthenticatedPost
+    default:
+      return localAuthenticatedFetch
+  }
+  throw new Error('promiseGenerator not initialized. This should not be possible. Consider rolling back.')
+}
 
 const goToPageActionType = (BASE_NAME) => 'GOTO_' + BASE_NAME + '_PAGE'
 const nextPageActionType = (BASE_NAME) => 'NEXT_' + BASE_NAME + '_PAGE'

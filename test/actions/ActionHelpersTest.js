@@ -19,42 +19,40 @@ describe('ActionHelpers', function () {
     })
   })
 
-  describe('testableReduxBackedPromise', function () {
-    describe('actionSetBehavior', function () {
-      context('When actionset is malformed', function () {
-        const testFunctionNoPromiseGenerators = actionHelpers.testableReduxBackedPromise()
-        it('Should throw "Need "try" function on actionSet!" when no try or try is not a function', function () {
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, {})(),
-            'Need "try" function on actionSet'
-          )
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, { try: true })(),
-            'Need "try" function on actionSet'
-          )
-        })
-        it('Should throw "Need "succeed" function on actionSet!" when no succeed or succeed is not a function', function () {
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, { try: () => null })(),
-            'Need "succeed" function on actionSet'
-          )
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, { try: () => null, succeed: true })(),
-            'Need "succeed" function on actionSet'
-          )
-        })
-        it('Should throw "Need "fail" function on actionSet!" when no fail or fail is not a function', function () {
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, { try: () => null, succeed: () => null })(),
-            'Need "fail" function on actionSet'
-          )
-          assert.throws(
-            () => testFunctionNoPromiseGenerators(null, { try: () => null, succeed: () => null, fail: true })(),
-            'Need "fail" function on actionSet'
-          )
-        })
-      })
+  describe('validateActionSet', function () {
+    it('Should throw "Need "try" function on actionSet!" when no try or try is not a function', function () {
+      assert.throws(
+        () => actionHelpers.validateActionSet({}),
+        'Need "try" function on actionSet'
+      )
+      assert.throws(
+        () => actionHelpers.validateActionSet({ try: true }),
+        'Need "try" function on actionSet'
+      )
     })
+    it('Should throw "Need "succeed" function on actionSet!" when no succeed or succeed is not a function', function () {
+      assert.throws(
+        () => actionHelpers.validateActionSet({ try: () => null }),
+        'Need "succeed" function on actionSet'
+      )
+      assert.throws(
+        () => actionHelpers.validateActionSet({ try: () => null, succeed: true }),
+        'Need "succeed" function on actionSet'
+      )
+    })
+    it('Should throw "Need "fail" function on actionSet!" when no fail or fail is not a function', function () {
+      assert.throws(
+        () => actionHelpers.validateActionSet({ try: () => null, succeed: () => null }),
+        'Need "fail" function on actionSet'
+      )
+      assert.throws(
+        () => actionHelpers.validateActionSet({ try: () => null, succeed: () => null, fail: true }),
+        'Need "fail" function on actionSet'
+      )
+    })
+  })
+
+  describe('testableReduxBackedPromise', function () {
     const mockSuccess = {
       json: 'successJson',
       response: 'successResponse'
