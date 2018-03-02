@@ -7,8 +7,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - port: 3000
+  - port: 80
     name: http
+    targetPort: 3000
   selector:
     run: sia-eventui-ppe
     
