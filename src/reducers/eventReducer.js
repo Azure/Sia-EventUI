@@ -1,12 +1,16 @@
 import { combineReducers } from 'redux'
 import paginated from 'paginated-redux'
 import { DateTime } from 'luxon'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+
 import filter from 'reducers/filterReducer'
 import * as filterActions from 'actions/filterActions'
 import * as eventActions from 'actions/eventActions'
 import { mergeWithOverwrite } from 'reducers/reducerHelpers/merge'
 import buildFetching from 'reducers/reducerHelpers/fetching'
 import buildError from 'reducers/reducerHelpers/error'
+import { isChromeExtension } from 'services/notificationService'
 
 const defaultEventCollection = []
 
@@ -56,5 +60,7 @@ export default (defaultFilter) => combineReducers({
   fetching,
   error,
   pages,
-  filter: filter(defaultFilter)
+  filter: isChromeExtension()
+    ? persistReducer({ key: 'eventFilter', storage }, filter(defaultFilter))
+    : filter(defaultFilter)
 })

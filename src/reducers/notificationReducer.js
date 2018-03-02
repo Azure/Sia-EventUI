@@ -1,4 +1,7 @@
 import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+
 import * as notificationActions from 'actions/notificationActions'
 
 const notificationOptionsInitialState = {
@@ -59,7 +62,13 @@ export function notificationListReducer (state = notificationListInitialState, a
 }
 
 export default combineReducers({
-  options: notificationOptionsReducer,
+  options: persistReducer(
+    {
+      key: 'notificationOptions',
+      storage
+    },
+    notificationOptionsReducer
+  ),
   unreadCount: unreadNotificationCountReducer,
   list: notificationListReducer
 })
