@@ -6,13 +6,17 @@ import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
+import LinkChip from 'components/elements/LinkChips'
 import * as auth from 'services/authNService'
 
-var transformIdToTicketLink = (id, index) =>
+var transformIdToTicketLink2 = (id, index) =>
   <MenuItem
     key={'ticket-' + id + '-index-' + index}
     primaryText={<Link to={'/tickets/' + id} >{'Ticket ' + id}</Link>}
   />
+
+var transformIdToTicketLink = (id, index) =>
+  LinkChip(id, index)
 
 export const NavMenu = ({ dispatch, history, ticketIds }) => {
   return (<IconMenu
