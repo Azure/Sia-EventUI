@@ -9,7 +9,6 @@ import AutoComplete from 'material-ui/AutoComplete'
 
 import createComponent from 'test/helpers/shallowRenderHelper'
 import AutoCompleteMenu, { onNewRequest } from 'components/elements/AutoCompleteMenu'
-import AddMockDispatch from 'test/helpers/mockDispatch'
 
 
 const mockProps = {
