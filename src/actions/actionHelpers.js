@@ -20,10 +20,10 @@ const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
 
 export const validateActionSet = (actionSet) => {
   let need
-  if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { need = 'fail' }
-  if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { need = 'succeed' }
   if (!actionSet.try || !(typeof actionSet.try === 'function')) { need = 'try' }
-  if (need) { throw needOnActionSet(need) }
+  else if (!actionSet.succeed || !(typeof actionSet.succeed === 'function')) { need = 'succeed' }
+  else if (!actionSet.fail || !(typeof actionSet.fail === 'function')) { need = 'fail' }
+  if (need) { throw new Error(needOnActionSet(need)) }
 }
 
 export const getPromiseGenerator = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
