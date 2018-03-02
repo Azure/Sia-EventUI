@@ -21,13 +21,20 @@ class uncorrelatedEvents extends Component {
         dispatch: PropTypes.func.isRequired
     }
 
+    componentDidMount(){
+        const { filters, dispatch } = this.props
+        console.log(filters? "filter has value": "filter do not have value")
+        //dispatch(filterActions.clearFilterIncidentId(filters))
+        const newFilter = Object.assign({}, filters, {incidentId : null})
+        dispatch(filterActions.clearFilterIncidentId(newFilter))
+    }
     constructor(props){
         super(props)
         this.state = {startDate: null, startTime: null, endDate: null, endTime: null}
     }
 
     render() {
-        const { events, dispatch, eventTypes, history } = this.props
+        const { filters, events, dispatch, eventTypes, history } = this.props
         return (
             < div >
                 <DatePicker
@@ -76,7 +83,7 @@ class uncorrelatedEvents extends Component {
         console.log(start + "**" + end)
         const newFilter = (start && end)? Object.assign(...filters, {startTime: start, endTime: end}): filters
         dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
-        dispatch(fetchEventTypes())
+        //dispatch(fetchEventTypes())
     }
 }
 

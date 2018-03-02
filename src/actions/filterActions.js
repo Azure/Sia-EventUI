@@ -23,6 +23,13 @@ export const changeUncorrelatedEventFilter = (history) =>(filter) =>{
   }
 }
 
+export const clearFilterIncidentId = (filter) => {
+  return {
+    type: CHANGE_EVENT_FILTER,
+    filter
+  }
+}
+
 export const addFilter = (history) => (filter) => (eventType) => {
   let newFilter = {}
   let oldFilter = filter
@@ -57,15 +64,22 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
   if (!newFilter.incidentId) {
     throw new Error('Need to filter on incidentId!')
   }*/
+  console.log('current incidentId is: ' + newFilter.incidentId)
   if (newFilter.incidentId) {
+    console.log("applyFilter in normal");
+    
     if (!deepEquals(oldFilter, newFilter)) {
       dispatch(changeEventFilter(history)(newFilter))
       dispatch(eventActions.fetchEvents(newFilter))
     }
   }
   else {   
+      //console.log('first current startTime is: ' + newFilter.startTime)
+      //console.log('first current endTime is: ' + newFilter.endTime)
       const endTime = newFilter.endTime? moment(newFilter.endTime): moment()
       const startTime = newFilter.startTime? moment(newFilter.startTime) : endTime.clone().subtract(1, 'day')
+      //console.log('current startTime is: ' + startTime.format())
+      //console.log('current endTime is: ' + endTime.format())
       newFilter = Object.assign(...newFilter, {startTime: startTime.format(), endTime: endTime.format() })
       dispatch(changeUncorrelatedEventFilter(history)(newFilter))
       dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
@@ -73,9 +87,11 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
-  const newFilter = Object.assign({ incidentId: incidentId, ticketId: ticketId }, filter)
+  const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId }) 
   return applyFilter(history)(filter, newFilter)
 }
+
+
 
 export const serializeFiltersForUrl = (filters) => {
   if (!filters) {
@@ -128,6 +144,7 @@ export const getUrlFromUncorrelatedFilter = (history, filter) => {
     }
     const timeFilters = `startTime=${filter.startTime}&endTime=${filter.endTime}`
     filterValue = filter.eventTypes? filterValue + '&' + timeFilters:timeFilters  
+    console.log("filter with eventType: " + filterValue)
     history.push('/events/' + '?' + filterValue)
   }  
 }

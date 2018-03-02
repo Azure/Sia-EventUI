@@ -21,12 +21,15 @@ class Timeline extends Component {
   }
 
   componentDidMount () {
+    console.log("in timeline")
     const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
     updatePagination(incidentId, dispatch)
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId) {
       dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
+      console.log(`in end of timeline, incidentId is :  ${incidentId} ticketId is: ${ticketId}`)
     }
+    
   }
 
   render () {
