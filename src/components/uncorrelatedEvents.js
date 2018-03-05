@@ -78,7 +78,6 @@ class uncorrelatedEvents extends Component {
         const{startDate, startTime, endDate, endTime} = this.state
         const start = (startDate && startTime) ? startDate + startTime: null
         const end = (endDate && endTime)? endDate + endTime: null
-        console.log(start + "**" + end)
         const newFilter = (start && end)? Object.assign(...filters, {startTime: start, endTime: end}): filters
         dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
     }
