@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon'
-import _ from 'underscore'
 import { combineReducers } from 'redux'
 import { UPDATE_TICKET_QUERY, REMOVE_TICKET } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
@@ -48,8 +47,8 @@ const addIncidentsToState = (state, incidents) => {
 
 const removeTicketFromState = (state, ticketId) => {
   let newState = { ...state }
-  let updatedState = _.omit(newState, ticketId)
-  return updatedState
+  Reflect.deleteProperty(newState, ticketId)
+  return newState
 }
 
 export const map = (state = defaultTicketList, action) => {
