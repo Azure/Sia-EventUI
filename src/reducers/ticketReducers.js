@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
+import _ from 'underscore'
 import { combineReducers } from 'redux'
-import { UPDATE_TICKET_QUERY } from 'actions/ticketActions.js'
+import { UPDATE_TICKET_QUERY, REMOVE_TICKET } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
 import config from 'config'
 import { persistReducer } from 'redux-persist'
@@ -45,6 +46,12 @@ const addIncidentsToState = (state, incidents) => {
   return newState
 }
 
+const removeTicketFromState = (state, ticketId) => {
+  let newState = { ...state }
+  let updatedState = _.omit(newState, ticketId)
+  return updatedState
+}
+
 export const map = (state = defaultTicketList, action) => {
   switch (action.type) {
     case FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS:
@@ -53,6 +60,8 @@ export const map = (state = defaultTicketList, action) => {
     case CREATE_INCIDENT_SUCCESS:
     case RECEIVE_INCIDENT:
       return addIncidentToState(state, action.incident)
+    case REMOVE_TICKET:
+      return removeTicketFromState(state, action.id)
     default:
       return state
   }
@@ -93,6 +102,7 @@ const mapRed = persistReducer({
   key: 'ticket',
   storage
 }, map)
+
 const ticketReducer = combineReducers({
   map: mapRed,
   query,
