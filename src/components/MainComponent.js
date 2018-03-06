@@ -17,7 +17,39 @@ import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 
+
+try {
+  var Bananaphone = require('bananaphone')
+}
+catch (error) {
+  if ( !error.message.match('Cannot find module') ) {
+    throw error
+  }
+}
+
+
 const history = createBrowserHistory()
+
+function maybeComponent (component) {
+  if ( component !== undefined ) {
+    try {
+      return React.createElement(component.default, null)
+    }
+    catch (error) {
+      if ( !error.message.match('Module not found') ) {
+        throw error
+      }
+    }
+  }
+
+  return null
+}
+
+class Bunches extends React.Component {
+  render () {
+    return maybeComponent(Bananaphone)
+  }
+}
 
 export default class MainComponent extends React.Component {
   render () {
@@ -34,6 +66,7 @@ export default class MainComponent extends React.Component {
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
+                    <Route path='/tickets/:ticketId/bunches' component={Bunches} />
                     <Route path='/tickets/:ticketId' component={Ticket} />
                     <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
