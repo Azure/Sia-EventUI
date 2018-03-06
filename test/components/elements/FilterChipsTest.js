@@ -4,7 +4,6 @@ import React from 'react'
 import Chip from 'material-ui/Chip'
 import createComponent from 'test/helpers/shallowRenderHelper'
 import { FilterChips, mapStateToProps, renderChip, hydrateChip } from 'components/elements/FilterChips'
-import AddMockDispatch from 'test/helpers/mockDispatch'
 
 describe('FilterChips', function () {
   describe('mapStateToProps', function () {

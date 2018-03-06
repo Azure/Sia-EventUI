@@ -36,9 +36,11 @@ NavMenu.propTypes = {
 export const mapStateToProps = (state, ownProps) => {
   var pathname = ownProps.location.pathname
   var currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
+  let idContainsANumberAndIsNotCurrent = (id) => id !== currentId && /\d/.test(id)
+
   return {
     ...ownProps,
-    ticketIds: Object.keys(state.tickets.map).filter(id => id !== currentId)
+    ticketIds: Object.keys(state.tickets.map).filter(idContainsANumberAndIsNotCurrent)
   }
 }
 

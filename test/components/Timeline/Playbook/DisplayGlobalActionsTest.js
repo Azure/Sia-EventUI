@@ -1,7 +1,6 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
-import moment from 'moment'
 import createComponent from 'test/helpers/shallowRenderHelper'
 import {
     DisplayGlobalActions,

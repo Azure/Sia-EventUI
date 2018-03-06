@@ -1,6 +1,6 @@
 'use strict'
 import { expect } from 'chai'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 import * as playbook from 'services/playbookService'
 
 describe('Playbook Service', function () {
@@ -37,7 +37,7 @@ describe('Playbook Service', function () {
         dateTimeComparisonValue: '19700101',
         dataFormat: dateTimeDataFormatValue
       })
-      expect(playbook.GetComparisonValue(getComparisonValueDateTime).isSame(moment.utc('19700101'))).to.be.true
+      expect(playbook.GetComparisonValue(getComparisonValueDateTime).toISODate()).to.eql('1970-01-01')
     })
 
     it('Should return expected int when condition has int data format and comparison value', () => {

@@ -1,4 +1,3 @@
-import queryString from 'query-string'
 import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
