@@ -4,22 +4,20 @@ import React from 'react'
 import createComponent from 'test/helpers/shallowRenderHelper'
 import { DisplayRetryButton } from 'components/elements/Buttons'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
-import AddMockDispatch from 'test/helpers/mockDispatch'
+import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
 
 const setup = (props, children) => createComponent(DisplayRetryButton, props, children)
 
-const dummyState = AddMockDispatch({
+const dummyState = {
   actionForRetry: {
     type: 'ActionForRetry'
   }
-})
+}
 
 describe('DisplayRetryButton', function () {
   beforeEach(() => {
-    this.mockDispatchRecorder = {
-      action: null
-    }
-    this.singleState = setup(dummyState(this.mockDispatchRecorder), null)
+    this.mockDispatchRecorder = GetDispatchRecorder()
+    this.singleState = setup({ ...dummyState, dispatch: GetMockDispatch(this.mockDispatchRecorder)}, null)
   })
 
   it('Should render a FlatButtonStyled with a Retry label', () => {

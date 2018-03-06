@@ -3,11 +3,16 @@
     ["env"],
     "react"
   ],
+  "env": {
+    "coverage": {
+      "plugins": ["istanbul"]
+    }
+  },
   "plugins": [
-    "istanbul",
     "transform-object-rest-spread",
     "syntax-class-properties",
     "transform-class-properties",
+    "transform-async-to-generator",
     "react-hot-loader/babel",
     ["module-resolver", {
       "root": ["./src"],

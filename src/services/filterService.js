@@ -64,4 +64,4 @@ export const serializeFiltersForUrl = (filters) => {
       ? referenceData[eventType]
       : { id: eventType, name: 'unknown' }
   }
-  
+

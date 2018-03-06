@@ -1,6 +1,6 @@
 'use strict'
 import { expect } from 'chai'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 import createComponent from 'test/helpers/shallowRenderHelper'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import { Card, CardHeader } from 'material-ui/Card'
@@ -20,8 +20,8 @@ describe('ErrorMessage', function () {
         expect(testObject.props.children.props.children[1].props.title).to.equal('TestMessage')
       })
 
-      it('should render a card with a CardHeader with a null subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should render a card with a CardHeader with an empty subtitle', function () {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
 
@@ -36,11 +36,11 @@ describe('ErrorMessage', function () {
 
     describe('when given a time', function () {
       const backgroundColor = 'Purple'
-      const testTime = moment()
+      const testTime = DateTime.utc()
       const testObject = ErrorMessage(null, null, testTime)
 
       it('should render a card with a CardHeader with the given time as a subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.equal(testTime.local().format('LTS'))
+        expect(testObject.props.children.props.children[1].props.subtitle).to.equal( testTime.toLocal().toFormat(DateTime.TIME_WITH_SECONDS))
       })
     })
 
@@ -59,8 +59,8 @@ describe('ErrorMessage', function () {
       const testTime = undefined
       const testObject = ErrorMessage(null, null, testTime)
 
-      it('should return a null subtitle', function() {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should return an empty subtitle', function() {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
 
@@ -68,8 +68,8 @@ describe('ErrorMessage', function () {
       const testTime = undefined
       const testObject = ErrorMessage(null, null, null)
 
-      it('should return a null subtitle', function () {
-        expect(testObject.props.children.props.children[1].props.subtitle).to.be.null
+      it('should return an empty subtitle', function () {
+        expect(testObject.props.children.props.children[1].props.subtitle).to.be.empty
       })
     })
   })

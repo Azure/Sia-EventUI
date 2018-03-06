@@ -1,33 +1,55 @@
 import { authenticatedFetch, authenticatedPost, authenticatedPut } from 'services/authenticatedFetch'
 
-const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
+export const testableReduxBackedPromise = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
+(promiseArgs, actionSet, operation = 'GET') =>
+(dispatch) => {
+  validateActionSet(actionSet)
 
-export const reduxBackedPromise = (promiseArgs, actionSet, operation = 'GET') => (dispatch) => {
-  if (!actionSet.try) { throw needOnActionSet('try') }
-  if (!actionSet.succeed) { throw needOnActionSet('succeed') }
-  if (!actionSet.fail) { throw needOnActionSet('fail') }
-
-  let promiseGenerator
-  switch (operation.toUpperCase()) {
-    case 'PUT':
-      promiseGenerator = authenticatedPut
-      break
-    case 'POST':
-      promiseGenerator = authenticatedPost
-      break
-    default:
-      promiseGenerator = authenticatedFetch
-      break
-  }
-  if (!promiseGenerator) {
-    throw new Error('promiseGenerator not initialized. This should not be possible. Consider rolling back.')
-  }
+  const promiseGenerator = getPromiseGenerator(localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut)(operation)
 
   dispatch(actionSet.try())
 
   return promiseGenerator(dispatch, ...promiseArgs)
         .then(({json, response}) => dispatch(actionSet.succeed(json, response)),
             error => dispatch(actionSet.fail(error)))
+}
+
+export const reduxBackedPromise = testableReduxBackedPromise(authenticatedFetch, authenticatedPost, authenticatedPut)
+
+const needOnActionSet = (prop) => `Need "${prop}" function on actionSet!`
+
+/*
+  Expect actionSet to have shape:
+  {
+    try: () => tryAction,
+    succeed: (returnedObject) => succeedAction,
+    fail: (failureReason) => failureAction
+  }
+  actions can be Thunk actions ((dispatch) => action) or plain action objects
+*/
+export const validateActionSet = (actionSet) => {
+  ['try', 'succeed', 'fail'].map(
+    a => {
+      if (!actionSet[a] || typeof actionSet[a] !== 'function') {
+        throw new Error(needOnActionSet(a))
+      }
+    }
+  )
+}
+
+export const getPromiseGenerator = (localAuthenticatedFetch, localAuthenticatedPost, localAuthenticatedPut) =>
+(operation) => {
+  switch (operation.toUpperCase()) {
+    case 'TESTERROR':
+      break // Never intended to happen in a deployed instance, just here for testing
+    case 'PUT':
+      return localAuthenticatedPut
+    case 'POST':
+      return localAuthenticatedPost
+    default:
+      return localAuthenticatedFetch
+  }
+  throw new Error('promiseGenerator not initialized. This should not be possible. Consider rolling back.')
 }
 
 const goToPageActionType = (BASE_NAME) => 'GOTO_' + BASE_NAME + '_PAGE'

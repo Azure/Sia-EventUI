@@ -1,9 +1,13 @@
 import * as signalR from '@aspnet/signalr-client'
+
 import { getEventActionSet } from 'actions/eventActions'
 import * as signalRActions from 'actions/signalRActions'
 import config from 'config'
+import { getToken } from 'services/authNService'
 
 const defaultBasePath = config.baseUrl
+
+const defaultScopes = [config.clientId]
 
 let signalRConnectionSingleton
 
@@ -18,27 +22,27 @@ export const resetSignalRConnection = (dispatch) => {
   signalRConnectionSingleton = signalReduxConnection(dispatch)
 }
 
-const signalReduxConnection = (dispatch) => {
-  let connection = configureConnection(dispatch)
-
-  startConnection(connection, dispatch)
-
-  return connection
-}
-
-const configureConnection = (dispatch) => {
-  let connection = new signalR.HubConnection(defaultBasePath + 'events/live')
-
-  connection.on('Send', (event) => {
-    const eventObject = JSON.parse(event)
-    dispatch(signalRActions.receiveMessage())
-    dispatch(getEventActionSet(eventObject.incidentId, eventObject.id).succeed(eventObject))
+const signalReduxConnection = (dispatch) => configureConnection(dispatch)
+  .then(connection => {
+    startConnection(connection, dispatch)
+    return connection
   })
 
-  connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace'))
+const configureConnection = (dispatch) => getToken(defaultScopes)
+  .then(token => {
+    let connection = new signalR.HubConnection(defaultBasePath + 'events/live?token=' + token)
 
-  return connection
-}
+    connection.on('Send', (event) => {
+      const eventObject = JSON.parse(event)
+      dispatch(signalRActions.receiveMessage())
+      dispatch(getEventActionSet(eventObject.incidentId, eventObject.id).succeed(eventObject))
+    })
+
+    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace'))
+
+    return connection
+  }
+)
 
 const startConnection = (connection, dispatch) => {
   dispatch(signalRActions.tryEstablishConnection())

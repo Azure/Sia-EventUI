@@ -1,0 +1,33 @@
+{
+  "name": "SIA",
+  "description": "SRE Incident Assistant",
+  "version": "0.0.0.5",
+  "icons": {
+    "128": "/static/sia-blue-icon-128.png",
+    "24": "/static/sia-blue-icon-24.png",
+    "19": "/static/sia-blue-icon-19.png",
+    "16": "/static/sia-blue-icon-16.png"
+  },
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": {
+      "128": "/static/sia-blue-icon-128.png",
+      "24": "/static/sia-blue-icon-24.png",
+      "19": "/static/sia-blue-icon-19.png",
+      "16": "/static/sia-blue-icon-16.png"
+    },
+    "default_popup": "/extension.html"
+    },
+    "background": {
+      "page": "/extension.html"
+    },
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "author": "microsoft",
+    "permissions": [
+      "contextMenus",
+      "notifications",
+      "identity",
+      "tabs",
+      "https://*/"
+    ]
+}
