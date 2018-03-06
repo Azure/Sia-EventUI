@@ -22,11 +22,16 @@ function mixinSecretPlugins () {
 }
 
 function removeSecretPlugins () {
-  console.log('removing secret packages.')
+  if ( fs.existsSync("package.json.backup") ) {
+    console.log('removing secret packages.')
 
-  let project = fs.readFileSync("package.json.backup")
-  fs.writeFileSync("package.json", project)
-  fs.unlink("package.json.backup")
+    let project = fs.readFileSync("package.json.backup")
+    fs.writeFileSync("package.json", project)
+
+    fs.unlink("package.json.backup")
+  } else {
+    console.log('No secret packages to remove.')
+  }
 }
 
 if (process.argv.includes('--mixin-secret-plugins'))  { mixinSecretPlugins() }

@@ -17,16 +17,19 @@ import Debug from 'components/Debug'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 
-
-try {
-  var Bananaphone = require('bananaphone')
-}
-catch (error) {
-  if ( !error.message.match('Cannot find module') ) {
-    throw error
+function maybeRequire (identifier, string){
+  try {
+    var identifier = require(string)
+  }
+  catch (error) {
+    if ( !error.message.match('Cannot find module') ) {
+      throw error
+    }
   }
 }
 
+var Bananaphone
+maybeRequire(Bananaphone, 'bananaphone')
 
 const history = createBrowserHistory()
 
