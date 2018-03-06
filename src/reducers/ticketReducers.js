@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon'
 import { combineReducers } from 'redux'
-import { UPDATE_TICKET_QUERY, REMOVE_TICKET } from 'actions/ticketActions.js'
+import { UPDATE_TICKET_QUERY, REMOVE_TICKET, REMOVE_ALL_TICKETS } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
 import config from 'config'
-import { persistReducer } from 'redux-persist'
+import { createMigrate, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 const defaultTicketList = {}
 
@@ -47,7 +48,14 @@ const addIncidentsToState = (state, incidents) => {
 
 const removeTicketFromState = (state, ticketId) => {
   let newState = { ...state }
-  Reflect.deleteProperty(newState, ticketId)
+  // Reflect.deleteProperty(newState, ticketId)
+  newState[ticketId]['testProp'] = true
+  return newState
+}
+
+const removeAllTicketsFromState = (state, ticketIds) => {
+  let newState = { ...state }
+  ticketIds.map(id => Reflect.deleteProperty(newState, id))
   return newState
 }
 
@@ -61,6 +69,8 @@ export const map = (state = defaultTicketList, action) => {
       return addIncidentToState(state, action.incident)
     case REMOVE_TICKET:
       return removeTicketFromState(state, action.id)
+    case REMOVE_ALL_TICKETS:
+      return removeAllTicketsFromState(state, action.ids)
     default:
       return state
   }
@@ -97,10 +107,33 @@ export const preferences = (state = defaultPreferences, action) => {
   }
 }
 
-const mapRed = persistReducer({
+const migrations = {
+  0: (state) => {
+    console.log('what is', state)
+    return {
+      ...state, 
+      44444444: 'UGH'
+    }
+  },
+  1: (state) => {
+    return {
+      ...state
+    }
+  }
+}
+
+const persistConfig = {
   key: 'ticket',
-  storage
-}, map)
+  migrate: createMigrate(migrations, {debug: true}),
+  version: 0,
+  storage,
+  stateReconciler: autoMergeLevel2
+}
+
+
+
+const mapRed = persistReducer(persistConfig, map)
+
 
 const ticketReducer = combineReducers({
   map: mapRed,
