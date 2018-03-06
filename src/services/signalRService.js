@@ -11,16 +11,13 @@ const defaultScopes = [config.clientId]
 
 let signalRConnectionSingleton
 
-export const establishSignalRConnection = (dispatch) => {
-  if (!signalRConnectionSingleton) {
-    resetSignalRConnection(dispatch)
-  }
-  return signalRConnectionSingleton
-}
+export const getSignalRConnection = (dispatch) => signalRConnectionSingleton
+  ? signalRConnectionSingleton
+  : resetSignalRConnection(dispatch)
 
-export const resetSignalRConnection = (dispatch) => {
-  signalRConnectionSingleton = signalReduxConnection(dispatch)
-}
+export const resetSignalRConnection = (dispatch) => signalReduxConnection(dispatch)
+    .then(connection => signalRConnectionSingleton = connection)
+    .then(() => signalRConnectionSingleton )
 
 const signalReduxConnection = (dispatch) => configureConnection(dispatch)
   .then(connection => {
@@ -51,4 +48,8 @@ const startConnection = (connection, dispatch) => {
             (error) => dispatch(signalRActions.failEstablishConnection(error ? error.message : 'No error message', error ? error.stack : 'No stack trace provided')))
 }
 
-export default establishSignalRConnection
+export const updateEventFilter = (eventFilter) => signalRConnectionSingleton.invoke('updateFilter', eventFilter)
+
+export const clearEventFilter = () => signalRConnectionSingleton.invoke('clearFilter')
+
+export default getSignalRConnection

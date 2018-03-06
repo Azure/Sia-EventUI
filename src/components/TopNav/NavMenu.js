@@ -6,7 +6,10 @@ import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
+
 import * as auth from 'services/authNService'
+import Preferences from 'components/TopNav/Preferences'
 
 var transformIdToTicketLink = (id, index) =>
   <MenuItem
@@ -14,7 +17,7 @@ var transformIdToTicketLink = (id, index) =>
     primaryText={<Link to={'/tickets/' + id} >{'Ticket ' + id}</Link>}
   />
 
-export const NavMenu = ({ dispatch, history, ticketIds }) => {
+export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEventFilterType }) => {
   return (<IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -24,6 +27,12 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     { ticketIds && ticketIds.map(transformIdToTicketLink) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
+    <MenuItem
+      key='preferences'
+      primaryText={'Preferences'}
+      rightIcon={<ArrowDropRight />}
+      menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
+    />
   </IconMenu>)
 }
 
@@ -39,7 +48,9 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     ...ownProps,
-    ticketIds: Object.keys(state.tickets.map).filter(idContainsANumberAndIsNotCurrent)
+    ticketIds: Object.keys(state.tickets.map).filter(idContainsANumberAndIsNotCurrent),
+    eventFilter: state.events.filter,
+    currentEventFilterType: state.signalR.filterPreferences.eventFilterType
   }
 }
 

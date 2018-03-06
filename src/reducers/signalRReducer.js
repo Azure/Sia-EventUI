@@ -1,3 +1,7 @@
+import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
+
 import * as signalRActions from 'actions/signalRActions'
 
 export const connectionStatuses = {
@@ -8,12 +12,12 @@ export const connectionStatuses = {
   error: 'error'
 }
 
-const defaultState = {
+const connectionStatusDefault = {
   connectionStatus: connectionStatuses.notEstablished,
-  pendingMessages: 0
+
 }
 
-const signalRReducer = (state = defaultState, action) => {
+export const connectionStatusReducer = (state = connectionStatusDefault, action) => {
   switch (action.type) {
     case signalRActions.ESTABLISH_CONNECTION_TRY:
       return {
@@ -39,6 +43,17 @@ const signalRReducer = (state = defaultState, action) => {
         connectionStatus: connectionStatuses.disconnected,
         disconnectReason: action.error
       }
+    default:
+      return state
+  }
+}
+
+const messageStatusDefault = {
+  pendingMessages: 0
+}
+
+export const messageStatusReducer = (state = messageStatusDefault, action) => {
+  switch (action.type) {
     case signalRActions.RECEIVE_MESSAGE:
       return {
         ...state,
@@ -50,10 +65,34 @@ const signalRReducer = (state = defaultState, action) => {
         pendingMessages: 0
       }
     default:
-      return {
-        ...state
-      }
+      return state
   }
 }
 
-export default signalRReducer
+export const filterPreferencesReducer = (defaultEventFilterPreference) => (state = { eventFilterType: defaultEventFilterPreference }, action) => {
+  switch (action.type) {
+    case signalRActions.UPDATE_FILTER_PREFERENCE_EVENTS:
+      if (action.filterType === state.eventFilterType
+      || !Object.values(signalRActions.filterTypes).map(ft => ft.value).includes(action.filterType)) {
+        // if no change or invalid filter type
+        return state
+      }
+      return {
+        ...state,
+        eventFilterType: action.filterType
+      }
+    default:
+      return state
+  }
+}
+
+export default (defaultEventFilterPreference) => combineReducers({
+  connectionStatus: connectionStatusReducer,
+  messageStatus: messageStatusReducer,
+  filterPreferences: persistReducer({
+      key: 'signalR/filterPreferences',
+      storage
+    },
+    filterPreferencesReducer(defaultEventFilterPreference)
+  )
+})
