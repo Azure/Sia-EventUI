@@ -4,7 +4,7 @@ import establishSignalRConnection from 'services/signalRService'
 import { ListenForScreenSize } from 'actions/styleActions'
 import incidentApp from 'reducers'
 import { persistStore } from 'redux-persist'
-import { getFilterFromUrl } from 'actions/filterActions'
+import { getFilterFromUrl } from 'services/filterService'
 
 const urlFilter = getFilterFromUrl(window.location.search)
 const reducer = incidentApp(urlFilter)
