@@ -7,8 +7,8 @@
   "scripts": {
     "clean": "rimraf dist/*",
     "dist": "npm run clean && cross-env NODE_ENV=dist webpack --env=dist --progress --profile --colors --display-error-details --display-reasons --debug",
-    "preinstall": "node bunches.js --mixin-secret-plugins",
-    "postinstall": "node bunches.js --remove-secret-plugins",
+    "preinstall": "bunches --mixin-secret-plugins",
+    "postinstall": "bunches --remove-secret-plugins",
     "lint": "standard \"src/**/*.js\"",
     "lint:fix": "standard --fix \"src/**/*.js\"",
     "posttest": "npm run lint",
@@ -118,6 +118,7 @@
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "adal-angular": "^1.0.16",
+    "bunches": "0.x",
     "chai-spies": "^1.0.0",
     "deep-equal": "^1.0.1",
     "dotenv": "^5.0.1",
