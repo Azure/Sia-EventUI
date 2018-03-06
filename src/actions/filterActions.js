@@ -4,7 +4,7 @@ import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
 import * as filterService from 'services/filterService'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 
@@ -68,11 +68,11 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
     }
   }
   else {
-      const endTime = newFilter.endTime? moment(newFilter.endTime): moment()
-      const startTime = newFilter.startTime? moment(newFilter.startTime) : endTime.clone().subtract(1, 'day')
-      newFilter = Object.assign(...newFilter, {startTime: startTime.format(), endTime: endTime.format() })
-      dispatch(changeUncorrelatedEventFilter(history)(newFilter))
-      dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
+    const endTime = newFilter.endTime ? DateTime.fromJSDate(new Date(newFilter.endTime)) : DateTime.local()
+    const startTime = newFilter.startTime ? DateTime.fromJSDate(new Date(newFilter.startTime)) : DateTime.local().minus({days: 1})
+    newFilter = Object.assign(...newFilter, { startTime: startTime.toISO(), endTime: endTime.toISO() })
+    dispatch(changeUncorrelatedEventFilter(history)(newFilter))
+    dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
   }
 }
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import EventFilter from 'components/Timeline/EventFilter'
 import Footer from 'components/Timeline/EventFooter'
 import Events from 'components/Timeline/Events'
-import moment from 'moment'
+import { DateTime } from 'luxon'
 
 import { fetchUncorrelatedEvents } from 'actions/eventActions';
 import { fetchEventTypes } from 'actions/eventTypeActions';
@@ -38,27 +38,27 @@ class uncorrelatedEvents extends Component {
                 <DatePicker
                     hintText='Select a start date'
                     onChange = {(event, date) => {
-                        this.setState({startDate : moment(date).format('YYYY-MM-DD')})
-                }}
+                        this.setState({startDate : DateTime.fromJSDate(date).toISODate().toString()})
+                    }}
                 />
                 <TimePicker
                     format='24hr'
                     hintText='Select a start time'
                     onChange = {(event, time) => {
-                        this.setState({startTime : moment(time).format('THH:mm:ss')})
+                        this.setState({startTime : DateTime.fromJSDate(time).toISOTime().toString()})
                     }}
                 />
                 <DatePicker
                     hintText='Select an end date' 
                     onChange = {(event, date) => {
-                        this.setState({endDate : moment(date).format('YYYY-MM-DD')})
+                        this.setState({endDate : DateTime.fromJSDate(date).toISODate().toString()})
                     }}
                 />
                 <TimePicker
                     format='24hr'
                     hintText='Select an end time'
                     onChange = {(event, time) => {
-                        this.setState({endTime : moment(time).format('THH:mm:ss')})
+                        this.setState({endTime : DateTime.fromJSDate(time).toISOTime().toString()})
                     }}
                 />
                 <FlatButton
@@ -76,8 +76,8 @@ class uncorrelatedEvents extends Component {
     loadUncorrelatedEvents = () => {
         const { dispatch, filters, history } = this.props
         const{startDate, startTime, endDate, endTime} = this.state
-        const start = (startDate && startTime) ? startDate + startTime: null
-        const end = (endDate && endTime)? endDate + endTime: null
+        const start = (startDate && startTime) ? startDate + 'T' + startTime: null
+        const end = (endDate && endTime)? endDate + 'T' + endTime: null
         const newFilter = (start && end)? Object.assign(...filters, {startTime: start, endTime: end}): filters
         dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
     }
