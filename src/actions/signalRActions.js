@@ -48,10 +48,10 @@ export const filterTypes = {
 }
 
 export const updateEventFilterPreference = (filterType, eventFilter) => (dispatch) => {
-  if(filterType === filterTypes.sync.value) {
+  if (filterType === filterTypes.sync.value) {
     signalRService.updateEventFilter(eventFilter)
   }
-  if(filterType === filterTypes.none.value) {
+  if (filterType === filterTypes.none.value) {
     signalRService.clearEventFilter()
   }
   dispatch(updateEventfilterPreferenceActionCreator(filterType))

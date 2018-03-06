@@ -13,8 +13,7 @@ export const connectionStatuses = {
 }
 
 const connectionStatusDefault = {
-  connectionStatus: connectionStatuses.notEstablished,
-
+  connectionStatus: connectionStatuses.notEstablished
 }
 
 export const connectionStatusReducer = (state = connectionStatusDefault, action) => {
@@ -72,8 +71,8 @@ export const messageStatusReducer = (state = messageStatusDefault, action) => {
 export const filterPreferencesReducer = (defaultEventFilterPreference) => (state = { eventFilterType: defaultEventFilterPreference }, action) => {
   switch (action.type) {
     case signalRActions.UPDATE_FILTER_PREFERENCE_EVENTS:
-      if (action.filterType === state.eventFilterType
-      || !Object.values(signalRActions.filterTypes).map(ft => ft.value).includes(action.filterType)) {
+      if (action.filterType === state.eventFilterType ||
+        !Object.values(signalRActions.filterTypes).map(ft => ft.value).includes(action.filterType)) {
         // if no change or invalid filter type
         return state
       }
@@ -90,9 +89,9 @@ export default (defaultEventFilterPreference) => combineReducers({
   connectionStatus: connectionStatusReducer,
   messageStatus: messageStatusReducer,
   filterPreferences: persistReducer({
-      key: 'signalR/filterPreferences',
-      storage
-    },
+    key: 'signalR/filterPreferences',
+    storage
+  },
     filterPreferencesReducer(defaultEventFilterPreference)
   )
 })

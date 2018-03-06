@@ -1,9 +1,5 @@
 import React from 'react'
-import IconMenu from 'material-ui/IconMenu'
 import MenuItem from 'material-ui/MenuItem'
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
-import IconButton from 'material-ui/IconButton'
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import Divider from 'material-ui/Divider'
 
 import * as signalRActions from 'actions/signalRActions'

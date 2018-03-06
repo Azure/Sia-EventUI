@@ -11,13 +11,13 @@ const defaultScopes = [config.clientId]
 
 let signalRConnectionSingleton
 
-export const getSignalRConnection = (dispatch) => signalRConnectionSingleton
-  ? signalRConnectionSingleton
-  : resetSignalRConnection(dispatch)
+export const getSignalRConnection = (dispatch) => signalRConnectionSingleton || resetSignalRConnection(dispatch)
 
 export const resetSignalRConnection = (dispatch) => signalReduxConnection(dispatch)
-    .then(connection => signalRConnectionSingleton = connection)
-    .then(() => signalRConnectionSingleton )
+    .then(connection => {
+      signalRConnectionSingleton = connection
+      return connection
+    })
 
 const signalReduxConnection = (dispatch) => configureConnection(dispatch)
   .then(connection => {
