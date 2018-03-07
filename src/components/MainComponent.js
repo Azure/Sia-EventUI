@@ -37,7 +37,7 @@ export default class MainComponent extends React.Component {
                     <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />
-                    <Route path='/events' component={uncorrelatedEvents}/>
+                    <Route path='/events' component={uncorrelatedEvents} />
                   </div>
                 </Router>
               </EnsureLoggedInContainer>

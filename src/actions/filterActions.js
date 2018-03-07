@@ -15,7 +15,7 @@ export const changeEventFilter = (history) => (filter) => {
   }
 }
 
-export const changeUncorrelatedEventFilter = (history) =>(filter) =>{
+export const changeUncorrelatedEventFilter = (history) => (filter) => {
   filterService.getUrlFromUncorrelatedFilter(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
@@ -65,8 +65,7 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
       dispatch(changeEventFilter(history)(newFilter))
       dispatch(eventActions.fetchEvents(newFilter))
     }
-  }
-  else {
+  } else {
     const endTime = newFilter.endTime ? DateTime.fromJSDate(new Date(newFilter.endTime)) : DateTime.local()
     const startTime = newFilter.startTime ? DateTime.fromJSDate(new Date(newFilter.startTime)) : DateTime.local().minus({days: 1})
     newFilter = Object.assign(...newFilter, { startTime: startTime.toISO(), endTime: endTime.toISO() })
@@ -76,6 +75,6 @@ const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
 }
 
 export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
-  const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId }) 
+  const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId })
   return applyFilter(history)(filter, newFilter)
 }

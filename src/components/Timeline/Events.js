@@ -7,8 +7,8 @@ export const Events = ({events, ticketId, incidentId}) => {
     .map(event =>
       <Event
         key={event.id}
-        incidentId={incidentId? incidentId: event.incidentId}
-        ticketId={ticketId? ticketId: event.primaryTicketId}
+        incidentId={incidentId || event.incidentId}
+        ticketId={ticketId || event.primaryTicketId}
         event={event}
       />
     )
