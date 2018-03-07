@@ -22,9 +22,9 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
   >
     <MenuItem key='search' primaryText={<Link to='/search' >Incident Search</Link>} />
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
-    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Load Events</Link>} />
     { ticketIds && ticketIds.map(transformIdToTicketLink) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
+    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Load Events</Link>} />
   </IconMenu>)
 }
 
