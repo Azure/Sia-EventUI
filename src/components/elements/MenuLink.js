@@ -15,6 +15,10 @@ export const MenuLink = (type, id, onClick, dispatch) => {
   )
 }
 
+const menuItemOnClick = (onClick, dispatch, id) => {
+  dispatch(onClick(id))
+}
+
 const makeTitle = (type) => {
   return type.charAt(0).toUpperCase() + type.slice(1)
 }
