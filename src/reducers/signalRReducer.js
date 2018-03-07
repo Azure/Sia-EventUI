@@ -68,7 +68,11 @@ export const messageStatusReducer = (state = messageStatusDefault, action) => {
   }
 }
 
-export const filterPreferencesReducer = (defaultEventFilterPreference) => (state = { eventFilterType: defaultEventFilterPreference }, action) => {
+const getDefaultEventFilter = (defaultEventFilterPreference) => ({
+  eventFilterType: defaultEventFilterPreference
+})
+
+export const filterPreferencesReducer = (defaultEventFilterPreference) => (state = getDefaultEventFilter(defaultEventFilterPreference), action) => {
   switch (action.type) {
     case signalRActions.UPDATE_FILTER_PREFERENCE_EVENTS:
       if (action.filterType === state.eventFilterType ||

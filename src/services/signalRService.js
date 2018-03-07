@@ -52,4 +52,14 @@ export const updateEventFilter = (eventFilter) => signalRConnectionSingleton.inv
 
 export const clearEventFilter = () => signalRConnectionSingleton.invoke('clearFilter')
 
+export const getEchoConnectionForTesting = () => { // Do not use in prod
+  const callHistory = []
+
+  signalRConnectionSingleton = {
+    invoke: (...args) => callHistory.push([...args])
+  }
+
+  return callHistory
+}
+
 export default getSignalRConnection

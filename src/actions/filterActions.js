@@ -2,8 +2,8 @@ import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
-import * as filterService from 'services/filterService'
 import * as signalRActions from 'actions/signalRActions'
+import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 
