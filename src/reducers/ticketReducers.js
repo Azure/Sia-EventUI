@@ -48,14 +48,13 @@ const addIncidentsToState = (state, incidents) => {
 
 const removeTicketFromState = (state, ticketId) => {
   let newState = { ...state }
-  // Reflect.deleteProperty(newState, ticketId)
-  newState[ticketId]['testProp'] = true
+  newState[ticketId] = null
   return newState
 }
 
 const removeAllTicketsFromState = (state, ticketIds) => {
   let newState = { ...state }
-  ticketIds.map(id => Reflect.deleteProperty(newState, id))
+  ticketIds.map(ticketId => newState[ticketId] = null)
   return newState
 }
 
@@ -107,33 +106,13 @@ export const preferences = (state = defaultPreferences, action) => {
   }
 }
 
-const migrations = {
-  0: (state) => {
-    console.log('what is', state)
-    return {
-      ...state, 
-      44444444: 'UGH'
-    }
-  },
-  1: (state) => {
-    return {
-      ...state
-    }
-  }
-}
-
 const persistConfig = {
   key: 'ticket',
-  migrate: createMigrate(migrations, {debug: true}),
   version: 0,
-  storage,
-  stateReconciler: autoMergeLevel2
+  storage
 }
 
-
-
 const mapRed = persistReducer(persistConfig, map)
-
 
 const ticketReducer = combineReducers({
   map: mapRed,

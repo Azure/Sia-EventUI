@@ -9,10 +9,10 @@ import IconButton from 'material-ui/IconButton'
 import * as auth from 'services/authNService'
 import { persistor } from '../../configureStore'
 
-var transformIdToTicketLink = (id, index) =>
-  <MenuItem
-    key={'ticket-' + id + '-index-' + index}
-    primaryText={<Link to={'/tickets/' + id} >{'Ticket ' + id}</Link>}
+const clearRecentTickets = (ticketIds, dispatch) =>
+  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={ () => dispatch(removeAllTicketsFromRecent(ticketIds)) }
+      rightIcon={<ActionDeleteForever onClick={ () => dispatch(removeAllTicketsFromRecent(ticketIds)) }
+      />}
   />
 
 export const NavMenu = ({ dispatch, history, ticketIds }) => {
@@ -25,7 +25,7 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
-    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
+    { clearRecentTickets(ticketIds, dispatch) }
   </IconMenu>)
 }
 
@@ -41,7 +41,10 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     ...ownProps,
-    ticketIds: Object.keys(state.tickets.map).filter(idContainsANumberAndIsNotCurrent)
+    ticketIds: Object.entries(state.tickets.map)
+      .filter( kvp => kvp[1] !== null)
+      .map(kvp => kvp[0])
+      .filter(idContainsANumberAndIsNotCurrent)
   }
 }
 

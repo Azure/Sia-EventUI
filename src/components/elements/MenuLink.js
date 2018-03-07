@@ -2,8 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import MenuItem from 'material-ui/MenuItem'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
-import { removeTicketFromRecent } from 'actions/ticketActions'
-import { persistor } from '../../configureStore'
 
 export const MenuLink = (type, id, onClick, dispatch) => {
   var typeTitle = makeTitle(type)
@@ -12,13 +10,7 @@ export const MenuLink = (type, id, onClick, dispatch) => {
     <MenuItem
       key={makeKey(type, id)}
       primaryText={<Link to={typeRoute} >{`${typeTitle} ${id}`}</Link>}
-      rightIcon={<ActionDelete
-        onClick={
-          () => {
-            dispatch(onClick(id))
-          }
-        } 
-      />}
+      rightIcon={<ActionDelete onClick={ () => dispatch(onClick(id)) } />}
     />
   )
 }
