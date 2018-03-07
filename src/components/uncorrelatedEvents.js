@@ -6,12 +6,12 @@ import Footer from 'components/Timeline/EventFooter'
 import Events from 'components/Timeline/Events'
 import { DateTime } from 'luxon'
 
-import { fetchUncorrelatedEvents } from 'actions/eventActions';
-import { fetchEventTypes } from 'actions/eventTypeActions';
+import { fetchUncorrelatedEvents } from 'actions/eventActions'
+import { fetchEventTypes } from 'actions/eventTypeActions'
 import * as filterActions from 'actions/filterActions'
 import TimePicker from 'material-ui/TimePicker'
 import DatePicker from 'material-ui/DatePicker'
-import { ActionTimeline, FlatButton } from 'material-ui';
+import { ActionTimeline, FlatButton } from 'material-ui'
 
 class uncorrelatedEvents extends Component {
     static propTypes = {
