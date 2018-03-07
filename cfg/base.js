@@ -1,32 +1,27 @@
 const path = require('path')
 const webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const env = process.env.REACT_WEBPACK_ENV
 
 let constants
 try {
   constants = require(`./${env}.const`)
-} catch (ex) {
-  if (ex.code && ex.code === 'MODULE_NOT_FOUND') {
-    console.log(`${env}.const not found. Falling back to defaultConstants.`)
-    constants = require('./defaultConstants')
-  } else {
-    throw new Error(`Unknown error while loading ${env}.const. ${ex}`)
-  }
+} catch (ex) { // TODO: Catch only file not found.
+  console.log(`${env}.const not found.`, ex)
+  constants = require('./defaultConstants')
 }
 
-const siaRoot = path.join(__dirname, '..')
+const srcPath = path.join(__dirname, '/../src')
 const publicPath = '/assets/'
 
 const config = {
   entry: {
     app: ['babel-polyfill'],
-    appInsights: path.join(siaRoot, 'src/appInsights')
+    appInsights: path.join(srcPath, 'appInsights')
   },
   devtool: 'eval',
   output: {
-    path: path.join(siaRoot, 'dist/assets'),
+    path: path.join(__dirname, '/../dist/assets'),
     filename: '[name].js',
     publicPath: publicPath
   },
@@ -38,7 +33,15 @@ const config = {
     noInfo: false
   },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js'],
+    alias: {
+      actions: `${srcPath}/actions/`,
+      sources: `${srcPath}/sources/`,
+      stores: `${srcPath}/stores/`,
+      styles: `${srcPath}/styles/`,
+      config: `${srcPath}/config/`,
+      'react/lib/ReactMount': 'react-dom/lib/ReactMount'
+    }
   },
   module: {
     rules: [
@@ -82,15 +85,7 @@ const config = {
       'process.env.NODE_ENV': `"${env}"`,
       'constants': JSON.stringify(constants)
     }),
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/),
-    new CopyWebpackPlugin([
-      { from: path.join(siaRoot, 'src/extensionHooks/manifest.json'), to: path.join(siaRoot, 'dist') },
-      { from: path.join(siaRoot, 'src/static'), to: path.join(siaRoot, 'dist/static') },
-      { from: path.join(siaRoot, 'src/static/favicon.ico'), to: path.join(siaRoot, 'dist') },
-      { from: path.join(siaRoot, 'src/extensionHooks/extension.html'), to: path.join(siaRoot, 'dist') },
-      { from: path.join(siaRoot, 'src/index.html'), to: path.join(siaRoot, 'dist') }
-    ],
-    { copyUnmodified: true })
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /de/)
   ]
 }
 

@@ -4,8 +4,6 @@ module.exports = {
 
   baseUrl: 'http://localhost:50000/',
 
-  eventUiUrl: 'http://localhost:3000/',
-
   authRedirectUri: 'http://localhost:3000/',
 
   retries: 2,
@@ -44,6 +42,6 @@ module.exports = {
   },
 
   instrumentationKey: 'APP INSIGHT GOES HERE',
-
+  
   useAppInsights: false
 }
