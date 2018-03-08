@@ -3,20 +3,12 @@ import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
 import * as filterService from 'services/filterService'
-import { DateTime } from 'luxon'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
+export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 
-export const changeEventFilter = (history) => (filter) => {
-  filterService.getUrlFromFilter(history, filter)
-  return {
-    type: CHANGE_EVENT_FILTER,
-    filter
-  }
-}
-
-export const changeUncorrelatedEventFilter = (history) => (filter) => {
-  filterService.getUrlFromUncorrelatedFilter(history, filter)
+export const changeEventFilter = (history, urlLoader) => (filter) => {
+  urlLoader(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
     filter
@@ -25,7 +17,7 @@ export const changeUncorrelatedEventFilter = (history) => (filter) => {
 
 export const clearFilterIncidentId = (filter) => {
   return {
-    type: CHANGE_EVENT_FILTER,
+    type: CLEAR_EVENT_FILTER_INCIDENTID,
     filter
   }
 }
@@ -62,14 +54,11 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
 const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
   if (newFilter.incidentId) {
     if (!deepEquals(oldFilter, newFilter)) {
-      dispatch(changeEventFilter(history)(newFilter))
+      dispatch(changeEventFilter(history, filterService.getUrlFromFilter)(newFilter))
       dispatch(eventActions.fetchEvents(newFilter))
     }
   } else {
-    const endTime = newFilter.endTime ? DateTime.fromJSDate(new Date(newFilter.endTime)) : DateTime.local()
-    const startTime = newFilter.startTime ? DateTime.fromJSDate(new Date(newFilter.startTime)) : DateTime.local().minus({days: 1})
-    newFilter = Object.assign(...newFilter, { startTime: startTime.toISO(), endTime: endTime.toISO() })
-    dispatch(changeUncorrelatedEventFilter(history)(newFilter))
+    dispatch(changeEventFilter(history, filterService.getUrlFromUncorrelatedFilter)(newFilter))
     dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
   }
 }
