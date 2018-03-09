@@ -7,7 +7,7 @@ import * as filterService from 'services/filterService'
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 
-export const changeEventFilter = (history, urlLoader) => (filter) => {
+export const changeEventFilter = (history, urlLoader = filterService.getUrlFromFilter) => (filter) => {
   urlLoader(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
