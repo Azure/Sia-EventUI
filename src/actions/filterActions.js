@@ -55,7 +55,7 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
 }
 
 
-const applyFilter = (history) => (oldFilter, newFilter, signalRFilterType)) => (dispatch) => {
+const applyFilter = (history) => (oldFilter, newFilter, signalRFilterType) => (dispatch) => {
   if (newFilter.incidentId) {
     if (!deepEquals(oldFilter, newFilter)) {
       dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, newFilter))
