@@ -5,11 +5,19 @@ import * as eventActions from 'actions/eventActions'
 import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
+export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 
-export const changeEventFilter = (history) => (filter) => {
-  filterService.getUrlFromFilter(history, filter)
+export const changeEventFilter = (history, urlLoader = filterService.getUrlFromFilter) => (filter) => {
+  urlLoader(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
+    filter
+  }
+}
+
+export const clearFilterIncidentId = (filter) => {
+  return {
+    type: CLEAR_EVENT_FILTER_INCIDENTID,
     filter
   }
 }
@@ -26,8 +34,8 @@ export const addFilter = (history) => (filter) => (eventType) => {
     newFilter = {
       ...oldFilter,
       eventTypes: oldFilter.eventTypes
-      ? oldFilter.eventTypes.concat(eventType.id)
-      : [eventType.id]
+        ? oldFilter.eventTypes.concat(eventType.id)
+        : [eventType.id]
     }
   }
   return applyFilter(history)(oldFilter, newFilter)
@@ -44,12 +52,14 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
 }
 
 const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
-  if (!newFilter.incidentId) {
-    throw new Error('Need to filter on incidentId!')
-  }
-  if (!deepEquals(oldFilter, newFilter)) {
-    dispatch(changeEventFilter(history)(newFilter))
-    dispatch(eventActions.fetchEvents(newFilter))
+  if (newFilter.incidentId) {
+    if (!deepEquals(oldFilter, newFilter)) {
+      dispatch(changeEventFilter(history, filterService.getUrlFromFilter)(newFilter))
+      dispatch(eventActions.fetchEvents(newFilter))
+    }
+  } else {
+    dispatch(changeEventFilter(history, filterService.getUrlFromUncorrelatedFilter)(newFilter))
+    dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
   }
 }
 
