@@ -16,8 +16,6 @@ export const changeEventFilter = (history, urlLoader = filterService.getUrlFromF
   }
 }
 
-
-
 export const clearFilterIncidentId = (filter) => {
   return {
     type: CLEAR_EVENT_FILTER_INCIDENTID,
@@ -53,7 +51,6 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
   ByPath.set(newFilter, relativeFilterPath, ByPath.get(oldFilter, relativeFilterPath).filter(isFilterToKeep))
   return applyFilter(history)(oldFilter, newFilter)
 }
-
 
 const applyFilter = (history) => (oldFilter, newFilter, signalRFilterType) => (dispatch) => {
   if (newFilter.incidentId) {
