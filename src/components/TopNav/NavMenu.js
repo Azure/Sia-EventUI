@@ -7,7 +7,6 @@ import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import * as auth from 'services/authNService'
-import { persistor } from '../../configureStore'
 
 const clearRecentTickets = (ticketIds, dispatch) =>
   <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={ () => dispatch(removeAllTicketsFromRecent(ticketIds)) }
