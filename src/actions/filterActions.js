@@ -16,9 +16,8 @@ export const changeEventFilter = (history, urlLoader = filterService.getUrlFromF
   }
 }
 
-<<<<<<< HEAD
-export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
-=======
+
+
 export const clearFilterIncidentId = (filter) => {
   return {
     type: CLEAR_EVENT_FILTER_INCIDENTID,
@@ -26,8 +25,7 @@ export const clearFilterIncidentId = (filter) => {
   }
 }
 
-export const addFilter = (history) => (filter) => (eventType) => {
->>>>>>> origin/master
+export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
   let newFilter = {}
   let oldFilter = filter
   if (!eventType || !eventType.id) {
