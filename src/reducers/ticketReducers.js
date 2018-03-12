@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import { UPDATE_TICKET_QUERY, REMOVE_TICKET, REMOVE_ALL_TICKETS } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
 import config from 'config'
-import { createMigrate, persistReducer } from 'redux-persist'
+import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
