@@ -25,7 +25,8 @@ const actions = {
   badChangeTwo: filterActions.changeEventFilter(history)(newFilterNoEventTypes),
   noChange: {
     type: 'DUMMY_ACTION'
-  }
+  },
+  clearIncidentId: filterActions.clearFilterIncidentId(newFilterWithIncidentId)
 }
 
 const changedEventFilter = { incidentId: 1, ticketId: 0, eventTypes: [1, 2, 3] }
@@ -48,5 +49,8 @@ describe('filterReducer', function () {
   })
   it('should return a new filter with default empty eventTypes when passed a filter w/no eventTypes', function () {
     expect(filterReducer(defaultFilterNoFilterInUrl)(undefined, actions.badChangeTwo)).to.deep.equal({incidentId: 0, ticketId: 0, eventTypes: []})
+  })
+  it('should return a new filter with incidentId cleared when passed action as CLEAR_EVENT_FILTER_INCIDENTID', function(){
+    expect(filterReducer(defaultFilterSomethingInUrl)(undefined, actions.clearIncidentId)).to.deep.equal({ticketId: 0, eventTypes: [1, 2, 3]})
   })
 })
