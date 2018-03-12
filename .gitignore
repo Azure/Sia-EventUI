@@ -2,6 +2,8 @@
 logs
 *.log
 
+.env
+
 dist/*
 
 # Runtime data
