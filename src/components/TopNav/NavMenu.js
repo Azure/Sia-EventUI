@@ -33,6 +33,7 @@ export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEven
       rightIcon={<ArrowDropRight />}
       menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
     />
+    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
   </IconMenu>)
 }
 

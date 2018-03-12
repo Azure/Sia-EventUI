@@ -88,6 +88,31 @@ describe('FilterService', function () {
     })
   })
 
+  describe('getUrlFromUncorrelatedFilter', function () {
+    const history = []
+
+    const filterNostartEndTimes = {eventTypes: [1, 2]}
+    const filterWithEventTypesAndStartEndTimes = {startTime: 'startTime', endTime: 'endTime', eventTypes: [1, 2]}
+    const filterWithNoEventTypes = {startTime: 'startTime', endTime: 'endTime'}
+
+    const expectedResult = '/events/?eventTypes=1&eventTypes=2&startTime=startTime&endTime=endTime'
+    const expectedResultWithoutEventType = '/events/?startTime=startTime&endTime=endTime'
+
+    it('should push urls to history when there are startTime, EndTime and eventTypes', function () {
+      filterService.getUrlFromUncorrelatedFilter(history, filterWithEventTypesAndStartEndTimes)
+      expect(history[0]).to.equal(expectedResult)
+    })
+    it('should push only startTime and EndTime to history and nothing else', function(){
+      filterService.getUrlFromUncorrelatedFilter(history, filterWithNoEventTypes)
+      expect(history[1]).to.equal(expectedResultWithoutEventType)
+    })
+    it('should push nothing to history when there are no startTime and EndTime', function () {
+      const newHistory = []
+      filterService.getUrlFromUncorrelatedFilter(newHistory, filterNostartEndTimes)
+      expect(newHistory).to.be.empty
+    })
+  })
+
   describe('generateUrl', function () {
     const history = []
     const filter = {ticketId: 0, eventTypes: [1, 2]}
