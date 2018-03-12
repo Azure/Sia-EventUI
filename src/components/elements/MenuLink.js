@@ -4,6 +4,7 @@ import MenuItem from 'material-ui/MenuItem'
 import ActionDelete from 'material-ui/svg-icons/action/delete'
 
 export const MenuLink = (type, id, onClick, dispatch) => {
+  validateType(type)
   var typeTitle = makeTitle(type)
   var typeRoute = makeRoute(type, id)
   return (
@@ -13,10 +14,6 @@ export const MenuLink = (type, id, onClick, dispatch) => {
       rightIcon={<ActionDelete onClick={ () => dispatch(onClick(id)) } />}
     />
   )
-}
-
-const menuItemOnClick = (onClick, dispatch, id) => {
-  dispatch(onClick(id))
 }
 
 const makeTitle = (type) => {
@@ -29,6 +26,10 @@ const makeRoute = (type, id) => {
 
 const makeKey = (type, id) => {
   return `${type}-${id}`
+}
+
+const validateType = (type) => {
+  if (type === undefined || type === null || type.length < 2) { throw new Error('the type input is invalid') }
 }
 
 export default MenuLink
