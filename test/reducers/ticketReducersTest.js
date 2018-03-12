@@ -71,9 +71,19 @@ const createIncident = incident => ({
   incident
 })
 
+const removeTicket = id => ({
+  type: ticketActions.REMOVE_TICKET,
+  id
+})
+
+const removeAllTickets = ids => ({
+  type: ticketActions.REMOVE_ALL_TICKETS,
+  ids
+})
+
 const defaultQueryString = 'default'
 
-describe('Ticket Reducers', function test () {
+describe.only('Ticket Reducers', function test () {
   describe('maps reducer', function mapsTest () {
     beforeEach(() => {
       this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, receiveIncidents(replacementIncidentsList))
@@ -94,6 +104,17 @@ describe('Ticket Reducers', function test () {
       expect(Object.values(this.OnCreateIncidentFromPopulated).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
       expect(Object.values(this.OnReceiveIncidentFromEmpty).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
       expect(Object.values(this.OnReceiveIncidentFromPopulated).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
+    })
+
+    it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function() {
+      const result = map(populatedTicketList, removeTicket(38502026))
+      expect(result[38502026]).to.be.null
+    })
+
+    it('Should replace given tickets with null values when REMOVE_ALL_TICKET is dispatched', function () {
+      const result = map(populatedTicketList, removeAllTickets([38502026, 44444444]))
+      expect(result[38502026]).to.be.null
+      expect(result[44444444]).to.be.null
     })
   })
 
