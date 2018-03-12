@@ -108,12 +108,14 @@ describe('Ticket Reducers', function test () {
     it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function() {
       const result = map(populatedTicketList, removeTicketFromRecent(38502026))
       expect(result[38502026]).to.be.null
+      expect(result[44444444]).to.not.be.null
     })
 
     it('Should replace given tickets with null values when REMOVE_ALL_TICKET is dispatched', function () {
       const result = map(populatedTicketList, removeAllTicketsFromRecent())
       expect(result[38502026]).to.be.null
       expect(result[44444444]).to.be.null
+      expect(result[38805418]).to.be.null
     })
   })
 
