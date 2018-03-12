@@ -83,7 +83,7 @@ const removeAllTickets = ids => ({
 
 const defaultQueryString = 'default'
 
-describe.only('Ticket Reducers', function test () {
+describe('Ticket Reducers', function test () {
   describe('maps reducer', function mapsTest () {
     beforeEach(() => {
       this.OnReceiveIncidentsFromEmpty = map(emptyTicketList, receiveIncidents(replacementIncidentsList))
