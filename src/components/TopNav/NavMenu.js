@@ -6,12 +6,15 @@ import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
+import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
+import MenuLink from 'components/elements/MenuLink'
+import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
 import * as auth from 'services/authNService'
 
 const clearRecentTickets = (ticketIds, dispatch) =>
-  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={ () => dispatch(removeAllTicketsFromRecent(ticketIds)) }
-      rightIcon={<ActionDeleteForever onClick={ () => dispatch(removeAllTicketsFromRecent(ticketIds)) }
-      />}
+  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent(ticketIds))}
+    rightIcon={<ActionDeleteForever onClick={() => dispatch(removeAllTicketsFromRecent(ticketIds))}
+  />}
   />
 
 export const NavMenu = ({ dispatch, history, ticketIds }) => {
@@ -41,7 +44,7 @@ export const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     ticketIds: Object.entries(state.tickets.map)
-      .filter( kvp => kvp[1] !== null)
+      .filter(kvp => kvp[1] !== null)
       .map(kvp => kvp[0])
       .filter(idContainsANumberAndIsNotCurrent)
   }

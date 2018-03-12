@@ -10,8 +10,8 @@ export const MenuLink = (type, id, onClick, dispatch) => {
   return (
     <MenuItem
       key={makeKey(type, id)}
-      primaryText={<Link to={typeRoute} >{`${typeTitle} ${id}`}</Link>}
-      rightIcon={<ActionDelete onClick={ () => dispatch(onClick(id)) } />}
+      primaryText={<Link to={typeRoute}>{`${typeTitle} ${id}`}</Link>}
+      rightIcon={<ActionDelete onClick={() => dispatch(onClick(id))} />}
     />
   )
 }
@@ -21,7 +21,7 @@ const makeTitle = (type) => {
 }
 
 const makeRoute = (type, id) => {
-  return `/${ type }s/${ id }`
+  return `/${type}s/${id}`
 }
 
 const makeKey = (type, id) => {

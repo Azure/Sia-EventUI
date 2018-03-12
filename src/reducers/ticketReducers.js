@@ -5,7 +5,6 @@ import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INC
 import config from 'config'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 const defaultTicketList = {}
 
@@ -54,7 +53,7 @@ const removeTicketFromState = (state, ticketId) => {
 
 const removeAllTicketsFromState = (state, ticketIds) => {
   let newState = { ...state }
-  ticketIds.map(ticketId => newState[ticketId] = null)
+  ticketIds.map(ticketId => { newState[ticketId] = null })
   return newState
 }
 
