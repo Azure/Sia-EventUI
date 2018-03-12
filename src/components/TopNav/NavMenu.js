@@ -11,9 +11,9 @@ import MenuLink from 'components/elements/MenuLink'
 import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
 import * as auth from 'services/authNService'
 
-const clearRecentTickets = (ticketIds, dispatch) =>
-  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent(ticketIds))}
-    rightIcon={<ActionDeleteForever onClick={() => dispatch(removeAllTicketsFromRecent(ticketIds))}
+const clearRecentTickets = (dispatch) =>
+  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent())}
+    rightIcon={<ActionDeleteForever onClick={() => dispatch(removeAllTicketsFromRecent())}
   />}
   />
 
@@ -27,7 +27,7 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
-    { clearRecentTickets(ticketIds, dispatch) }
+    { clearRecentTickets(dispatch) }
   </IconMenu>)
 }
 

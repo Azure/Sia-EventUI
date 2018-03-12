@@ -51,9 +51,9 @@ const removeTicketFromState = (state, ticketId) => {
   return newState
 }
 
-const removeAllTicketsFromState = (state, ticketIds) => {
+const removeAllTicketsFromState = (state) => {
   let newState = { ...state }
-  ticketIds.map(ticketId => { newState[ticketId] = null })
+  Object.keys(state).map(ticketId => { newState[ticketId] = null })
   return newState
 }
 

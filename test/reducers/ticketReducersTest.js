@@ -71,14 +71,13 @@ const createIncident = incident => ({
   incident
 })
 
-const removeTicket = id => ({
+const removeTicketFromRecent = id => ({
   type: ticketActions.REMOVE_TICKET,
   id
 })
 
-const removeAllTickets = ids => ({
-  type: ticketActions.REMOVE_ALL_TICKETS,
-  ids
+const removeAllTicketsFromRecent = () => ({
+  type: ticketActions.REMOVE_ALL_TICKETS
 })
 
 const defaultQueryString = 'default'
@@ -107,12 +106,12 @@ describe('Ticket Reducers', function test () {
     })
 
     it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function() {
-      const result = map(populatedTicketList, removeTicket(38502026))
+      const result = map(populatedTicketList, removeTicketFromRecent(38502026))
       expect(result[38502026]).to.be.null
     })
 
     it('Should replace given tickets with null values when REMOVE_ALL_TICKET is dispatched', function () {
-      const result = map(populatedTicketList, removeAllTickets([38502026, 44444444]))
+      const result = map(populatedTicketList, removeAllTicketsFromRecent())
       expect(result[38502026]).to.be.null
       expect(result[44444444]).to.be.null
     })

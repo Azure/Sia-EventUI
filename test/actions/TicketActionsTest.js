@@ -12,9 +12,9 @@ describe('TicketActions', function() {
   })
 
   describe('removeAllTicketsFromRecent', function () {
-    const result = ticketActions.removeAllTicketsFromRecent([1, 2])
-    it('should return an object with type remove_all_tickets and given ids', function() {
-      expect(result).to.deep.equal({ type: ticketActions.REMOVE_ALL_TICKETS, ids: [1, 2] })
+    const result = ticketActions.removeAllTicketsFromRecent()
+    it('should return an object with type remove_all_tickets', function() {
+      expect(result).to.deep.equal({ type: ticketActions.REMOVE_ALL_TICKETS })
     })
 
   })

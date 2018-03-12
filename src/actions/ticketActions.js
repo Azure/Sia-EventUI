@@ -7,9 +7,8 @@ export const updateTicketQuery = ticketQuery => ({
   ticketQuery
 })
 
-export const removeAllTicketsFromRecent = (ids) => ({
-  type: REMOVE_ALL_TICKETS,
-  ids
+export const removeAllTicketsFromRecent = () => ({
+  type: REMOVE_ALL_TICKETS
 })
 
 export const removeTicketFromRecent = (id) => ({
