@@ -116,6 +116,7 @@
   "dependencies": {
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "adal-angular": "^1.0.16",
+    "bunches": "github:strand/bunches",
     "chai-spies": "^1.0.0",
     "deep-equal": "^1.0.1",
     "express": "^4.16.2",

@@ -51,6 +51,6 @@ describe('filterReducer', function () {
     expect(filterReducer(defaultFilterNoFilterInUrl)(undefined, actions.badChangeTwo)).to.deep.equal({incidentId: 0, ticketId: 0, eventTypes: []})
   })
   it('should return a new filter with incidentId cleared when passed action as CLEAR_EVENT_FILTER_INCIDENTID', function(){
-    expect(filterReducer(defaultFilterSomethingInUrl)(undefined, actions.clearIncidentId)).to.deep.equal({ticketId: 0, eventTypes: [1, 2, 3]})
+    expect(filterReducer(defaultFilterSomethingInUrl)(changedEventFilter, actions.clearIncidentId)).to.deep.equal({ticketId: 0, eventTypes: [1, 2, 3]})
   })
 })

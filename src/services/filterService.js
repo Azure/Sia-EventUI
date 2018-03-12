@@ -44,8 +44,8 @@ export const getUrlFromFilter = (history, filter) => {
 }
 
 export const getUrlFromUncorrelatedFilter = (history, filter) => {
-  let filterValue
-  if (filter) {
+  let filterValue = ''
+  if (filter && filter.startTime && filter.endTime) {
     if (filter.eventTypes) {
       filterValue += serializeEventTypesForQuery(filter.eventTypes)
     }
@@ -61,6 +61,6 @@ export const generateUrl = (history, filter) => {
 
 export const findEventTypeInRef = (referenceData) => (eventType) => {
   return referenceData.hasOwnProperty(eventType)
-      ? referenceData[eventType]
-      : { id: eventType, name: 'unknown' }
+    ? referenceData[eventType]
+    : { id: eventType, name: 'unknown' }
 }

@@ -20,6 +20,15 @@ describe('FilterActions', function () {
     })
   })
 
+  describe('clearFilterIncidentId', function(){
+    const filter = {incidentId: 1, eventTypes: [1, 2]}
+    const result = filterActions.clearFilterIncidentId(filter)
+    const expectedValue = {type: 'CLEAR_EVENT_FILTER_INCIDENTID', filter: {incidentId: 1, eventTypes: [1, 2]}}
+    it('should return an object with a type and a filter', function(){
+      expect(result).to.deep.equal(expectedValue)
+    })
+  })
+
   describe('removeFilter', function () {
     beforeEach(() => {
       this.mockDispatchRecorder = {
