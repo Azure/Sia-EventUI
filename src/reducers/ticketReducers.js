@@ -57,6 +57,16 @@ const removeAllTicketsFromState = (state) => {
   return newState
 }
 
+const defaultPreferences = {
+  refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
+}
+
+const persistConfig = {
+  key: 'ticket',
+  version: 0,
+  storage
+}
+
 export const map = (state = defaultTicketList, action) => {
   switch (action.type) {
     case FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS:
@@ -94,10 +104,6 @@ export const systems = (state = defaultSystems, action) => {
   }
 }
 
-const defaultPreferences = {
-  refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
-}
-
 export const preferences = (state = defaultPreferences, action) => {
   switch (action.type) {
     default:
@@ -105,19 +111,9 @@ export const preferences = (state = defaultPreferences, action) => {
   }
 }
 
-const persistConfig = {
-  key: 'ticket',
-  version: 0,
-  storage
-}
-
-const mapRed = persistReducer(persistConfig, map)
-
-const ticketReducer = combineReducers({
-  map: mapRed,
+export default combineReducers({
+  map: persistReducer(persistConfig, map),
   query,
   systems,
   preferences
 })
-
-export default ticketReducer
