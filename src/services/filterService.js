@@ -50,7 +50,7 @@ export const getUrlFromUncorrelatedFilter = (history, filter) => {
       filterValue += serializeEventTypesForQuery(filter.eventTypes)
     }
     const timeFilters = `startTime=${filter.startTime}&endTime=${filter.endTime}`
-    filterValue = filter.eventTypes ? filterValue + '&' + timeFilters : timeFilters
+    filterValue = filterValue !== '' ? filterValue + '&' + timeFilters : timeFilters
     history.push('/events/' + '?' + filterValue)
   }
 }

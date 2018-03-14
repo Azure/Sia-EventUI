@@ -18,7 +18,7 @@ class UncorrelatedEvents extends Component {
 
   componentDidMount () {
     const { filters, dispatch } = this.props
-    const newFilter = Object.assign({}, filters, {incidentId: null})
+    const newFilter = Object.assign({}, filters, { incidentId: null })
     dispatch(filterActions.clearFilterIncidentId(newFilter))
   }
 
