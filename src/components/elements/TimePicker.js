@@ -19,10 +19,10 @@ class TimeAndDatePicker extends Component {
   constructor () {
     super()
     this.state = {
-      endDate: DateTime.local().toISODate().toString(),
-      endTime: DateTime.local().toISOTime().toString(),
-      startDate: DateTime.local().minus({day: 1}).toISODate().toString(),
-      startTime: DateTime.local().toISOTime().toString()
+      endDate: DateTime.utc().toISODate().toString(),
+      endTime: DateTime.utc().toISOTime().toString(),
+      startDate: DateTime.utc().minus({day: 1}).toISODate().toString(),
+      startTime: DateTime.utc().toISOTime().toString()
     }
   }
 
