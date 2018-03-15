@@ -18,35 +18,41 @@ import UncorrelatedEvents from 'components/uncorrelatedEvents'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 
+import ReconvenerComponent from 'components/ReconvenerComponent'
+
 const history = createBrowserHistory()
 
 export default class MainComponent extends React.Component {
   render () {
     return (
-      <MuiThemeProvider muiTheme={getMuiTheme()}>
-        <Provider store={this.props.store}>
-          <PersistGate persistor={this.props.persistor}>
-            <div>
-              <EnsureLoggedInContainer>
-                <Router history={history} >
-                  <div>
-                    { isChromeExtensionBackground() ? <Notifications /> : null }
-                    <TopNav />
-                    <Route exact path='/' component={Home} />
-                    <Route exact path='/extension.html' component={Home} />
-                    <Route path='/search' component={CreateIncident} />
-                    <Route path='/tickets/:ticketId' component={Ticket} />
-                    <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
-                    <Route path='/incidents/:incidentId' component={incidentRedirect} />
-                    <Route path='/debug' render={() => <Debug />} />
-                    <Route path='/events' component={UncorrelatedEvents} />
-                  </div>
-                </Router>
-              </EnsureLoggedInContainer>
-            </div>
-          </PersistGate>
-        </Provider>
-      </MuiThemeProvider>
+      <div>
+        <ReconvenerComponent />
+        <MuiThemeProvider muiTheme={getMuiTheme()}>
+          <Provider store={this.props.store}>
+            <PersistGate persistor={this.props.persistor}>
+              <div>
+                <EnsureLoggedInContainer>
+                  <Router history={history} >
+                    <div>
+                      { isChromeExtensionBackground() ? <Notifications /> : null }
+                      <TopNav />
+                      <Route exact path='/' component={Home} />
+                      <Route exact path='/extension.html' component={Home} />
+                      <Route path='/search' component={CreateIncident} />
+                      <Route path='/tickets/:ticketId' component={Ticket} />
+                      <Route path='/tickets/:firstTicketId/compare/:secondTicketId' component={CompareTickets} />
+                      <Route path='/incidents/:incidentId' component={incidentRedirect} />
+                      <Route path='/incidents/:incidentId/reconvene' component={ReconvenerComponent} />
+                      <Route path='/debug' render={() => <Debug />} />
+                      <Route path='/events' component={UncorrelatedEvents} />
+                    </div>
+                  </Router>
+                </EnsureLoggedInContainer>
+              </div>
+            </PersistGate>
+          </Provider>
+        </MuiThemeProvider>
+      </div>
     )
   }
 }

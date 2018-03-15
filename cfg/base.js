@@ -80,6 +80,9 @@ const config = {
       }
     ]
   },
+  node: {
+    fs: 'empty'
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': `"${env}"`,

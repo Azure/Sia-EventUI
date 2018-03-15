@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const app = express()
+// const reconvener = require('./src/reconvenerAdapter')
 
 if (process.env.NODE_ENV !== 'dist') {
   const webpackDevMiddleware = require('webpack-dev-middleware')
