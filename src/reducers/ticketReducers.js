@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { combineReducers } from 'redux'
-import { UPDATE_TICKET_QUERY } from 'actions/ticketActions.js'
+import { UPDATE_TICKET_QUERY, REMOVE_TICKET, REMOVE_ALL_TICKETS } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
 import config from 'config'
 import { persistReducer } from 'redux-persist'
@@ -45,6 +45,28 @@ const addIncidentsToState = (state, incidents) => {
   return newState
 }
 
+const removeTicketFromState = (state, ticketId) => {
+  let newState = { ...state }
+  newState[ticketId] = null
+  return newState
+}
+
+const removeAllTicketsFromState = (state) => {
+  let newState = { ...state }
+  Object.keys(state).map(ticketId => { newState[ticketId] = null })
+  return newState
+}
+
+const defaultPreferences = {
+  refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
+}
+
+const persistConfig = {
+  key: 'ticket',
+  version: 0,
+  storage
+}
+
 export const map = (state = defaultTicketList, action) => {
   switch (action.type) {
     case FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS:
@@ -53,6 +75,10 @@ export const map = (state = defaultTicketList, action) => {
     case CREATE_INCIDENT_SUCCESS:
     case RECEIVE_INCIDENT:
       return addIncidentToState(state, action.incident)
+    case REMOVE_TICKET:
+      return removeTicketFromState(state, action.id)
+    case REMOVE_ALL_TICKETS:
+      return removeAllTicketsFromState(state, action.ids)
     default:
       return state
   }
@@ -78,10 +104,6 @@ export const systems = (state = defaultSystems, action) => {
   }
 }
 
-const defaultPreferences = {
-  refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
-}
-
 export const preferences = (state = defaultPreferences, action) => {
   switch (action.type) {
     default:
@@ -89,15 +111,9 @@ export const preferences = (state = defaultPreferences, action) => {
   }
 }
 
-const mapRed = persistReducer({
-  key: 'ticket',
-  storage
-}, map)
-const ticketReducer = combineReducers({
-  map: mapRed,
+export default combineReducers({
+  map: persistReducer(persistConfig, map),
   query,
   systems,
   preferences
 })
-
-export default ticketReducer
