@@ -46,20 +46,19 @@ const configureConnection = (dispatch) => getToken(defaultScopes)
     return connection
   })
 
-
 const startConnection = (connection, dispatch) => {
   dispatch(signalRActions.tryEstablishConnection())
   return connection
     .start()
     .then(() => {
-        dispatch(signalRActions.succeedEstablishConnection())
-        return connection
-      },
-      (error) => {
-        dispatch(signalRActions.failEstablishConnection(error ? error.message : 'No error message', error ? error.stack : 'No stack trace provided'))
-        return connection
-      }
-    )
+      dispatch(signalRActions.succeedEstablishConnection())
+      return connection
+    },
+    (error) => {
+      dispatch(signalRActions.failEstablishConnection(error ? error.message : 'No error message', error ? error.stack : 'No stack trace provided'))
+      return connection
+    }
+  )
 }
 
 export const updateEventFilter = (eventFilter) => signalRConnectionSingleton.invoke('updateFilter', eventFilter)
