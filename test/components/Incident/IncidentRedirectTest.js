@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import createComponent from 'test/helpers/shallowRenderHelper'
 import { IncidentRedirect, mapStateToProps, IncidentRedirectComponentDidMount } from 'components/Incident/IncidentRedirect'
-import AddMockDispatch from 'test/helpers/mockDispatch'
+import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
 import { Redirect } from 'react-router'
 
 const setup = (props, children) => createComponent(IncidentRedirect, props, children)
@@ -11,16 +11,15 @@ describe('Incident Redirect', function () {
   describe('Component', function () {
     describe('ComponentDidMount', function () {
       it('Should attempt to fetch incident by incident id if ticketid is not known', function () {
-        let mockDispatchRecorder = {
-          action: null
-        }
+        let mockDispatchRecorder = GetDispatchRecorder()
 
-        const testProps = AddMockDispatch({
+        const testProps = {
           ticketId: null,
           incidentId: 2
-        })(mockDispatchRecorder)
+        }
+        const mockDispatch = GetMockDispatch(mockDispatchRecorder)
 
-        IncidentRedirectComponentDidMount(testProps)
+        IncidentRedirectComponentDidMount({...testProps, dispatch: mockDispatch})
 
         expect(mockDispatchRecorder.action.type).to.equal('REQUEST_INCIDENT')
       })
@@ -30,12 +29,14 @@ describe('Incident Redirect', function () {
           action: null
         }
 
-        const testProps = AddMockDispatch({
+        const testProps = {
           ticketId: 1,
           incidentId: 2
-        })(mockDispatchRecorder)
+        }
 
-        IncidentRedirectComponentDidMount(testProps)
+        const mockDispatch = GetMockDispatch(mockDispatchRecorder)
+
+        IncidentRedirectComponentDidMount({...testProps, dispatch: mockDispatch})
 
         expect(mockDispatchRecorder.action).to.be.null
       })

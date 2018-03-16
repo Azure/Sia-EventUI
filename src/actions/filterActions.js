@@ -1,15 +1,23 @@
-import queryString from 'query-string'
 import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
+import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
+export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 
-export const changeEventFilter = (history) => (filter) => {
-  getUrlFromFilter(history, filter)
+export const changeEventFilter = (history, urlLoader = filterService.getUrlFromFilter) => (filter) => {
+  urlLoader(history, filter)
   return {
     type: CHANGE_EVENT_FILTER,
+    filter
+  }
+}
+
+export const clearFilterIncidentId = (filter) => {
+  return {
+    type: CLEAR_EVENT_FILTER_INCIDENTID,
     filter
   }
 }
@@ -26,8 +34,8 @@ export const addFilter = (history) => (filter) => (eventType) => {
     newFilter = {
       ...oldFilter,
       eventTypes: oldFilter.eventTypes
-      ? oldFilter.eventTypes.concat(eventType.id)
-      : [eventType.id]
+        ? oldFilter.eventTypes.concat(eventType.id)
+        : [eventType.id]
     }
   }
   return applyFilter(history)(oldFilter, newFilter)
@@ -44,69 +52,18 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
 }
 
 const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
-  if (!newFilter.incidentId) {
-    throw new Error('Need to filter on incidentId!')
-  }
-  if (!deepEquals(oldFilter, newFilter)) {
-    dispatch(changeEventFilter(history)(newFilter))
-    dispatch(eventActions.fetchEvents(newFilter))
+  if (newFilter.incidentId) {
+    if (!deepEquals(oldFilter, newFilter)) {
+      dispatch(changeEventFilter(history, filterService.getUrlFromFilter)(newFilter))
+      dispatch(eventActions.fetchEvents(newFilter))
+    }
+  } else {
+    dispatch(changeEventFilter(history, filterService.getUrlFromUncorrelatedFilter)(newFilter))
+    dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
   }
 }
 
 export const synchronizeFilters = (filter, incidentId, ticketId, history) => {
-  const newFilter = Object.assign({ incidentId: incidentId, ticketId: ticketId }, filter)
+  const newFilter = Object.assign({}, filter, { incidentId: incidentId, ticketId: ticketId })
   return applyFilter(history)(filter, newFilter)
-}
-
-export const serializeFiltersForUrl = (filters) => {
-  if (!filters) {
-    return ''
-  }
-  const eventTypes = serializeEventTypesForQuery(filters.eventTypes)
-  const filterTokens = Object.entries(filters)
-        .filter(filter => filter[0] !== 'incidentId' &&
-            filter[0] !== 'eventTypes' &&
-            filter[0] !== 'fromUrl' &&
-            filter[0] !== 'ticketId')
-        .map(filter => `${filter[0]}=${filter[1]}`)
-  const finalFilterTokens = eventTypes
-        ? filterTokens.concat(eventTypes)
-        : filterTokens
-  return finalFilterTokens && finalFilterTokens.length > 0 ? '?' + finalFilterTokens.join('&')
-        : ''
-}
-
-export const serializeEventTypesForQuery = (eventTypes) => {
-  if (!eventTypes || eventTypes.length === 0) {
-    return ''
-  }
-  return eventTypes.map(eventType => `eventTypes=${eventType}`).join('&')
-}
-
-export const getFilterFromUrl = (urlFilterInfo) => {
-  let filter = queryString.parse(urlFilterInfo)
-  if (typeof (filter) !== 'object' || !filter.eventTypes) {
-    return null
-  }
-  if (!Array.isArray(filter.eventTypes)) {
-    filter.eventTypes = [filter.eventTypes]
-  }
-  filter.eventTypes = filter.eventTypes.map(e => parseInt(e))
-  return filter
-}
-
-export const getUrlFromFilter = (history, filter) => {
-  if (filter && filter.eventTypes) {
-    history.push(generateUrl(history, filter))
-  }
-}
-
-export const generateUrl = (history, filter) => {
-  return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
-}
-
-export const findEventTypeInRef = (referenceData) => (eventType) => {
-  return referenceData.hasOwnProperty(eventType)
-        ? referenceData[eventType]
-        : {id: eventType, name: 'unknown'}
 }

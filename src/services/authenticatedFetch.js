@@ -2,6 +2,7 @@ import { rawHttpResponse, jsonResult } from 'actions/debugActions'
 import PromiseRetry from 'promise-retry'
 import { getToken } from 'services/authNService'
 import config from 'config'
+import appInsights from '../appInsights'
 
 export const clientId = config.clientId
 
@@ -15,8 +16,11 @@ const defaultOptions = {
 const defaultScopes = [clientId]
 
 const tryFetch = (dispatch, relativeUrl, init, returnJson = true, baseUrl = defaultBasePath) => (retry, number) => {
+  var startTime = new Date().getTime()
   return fetch(baseUrl + relativeUrl, init)
         .then(response => {
+          var timeUsed = new Date() - startTime
+          appInsights.trackDependency('myAjaxCall', init.method ? init.method : 'GET', [baseUrl + relativeUrl], relativeUrl, timeUsed, response.ok, response.status)
           const localResponse = response
           dispatch(rawHttpResponse(response))
           if (httpResponseNeedsRetry(response)) {

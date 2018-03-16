@@ -29,6 +29,15 @@ class Timeline extends Component {
     }
   }
 
+  componentDidUpdate (oldProps) {
+    const { dispatch, history, incidentId, filter, ticketId } = this.props
+
+    if (oldProps.incidentId !== incidentId) {
+      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
+      updatePagination(incidentId, dispatch)
+    }
+  }
+
   render () {
     const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
     return (
@@ -55,12 +64,13 @@ const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { events } = state
+  const { events, eventTypes } = state
+
   return {
     ...ownProps,
     events: events.pages,
     filter: events.filter,
-    eventTypes: state.eventTypes.records
+    eventTypes: eventTypes.records
   }
 }
 

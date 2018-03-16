@@ -1,5 +1,5 @@
 'use strict'
-import moment from 'moment'
+import { DateTime } from 'luxon';
 import { expect } from 'chai'
 import * as ticketActions from 'actions/ticketActions.js'
 import * as incidentActions from 'actions/incidentActions.js'
@@ -63,12 +63,21 @@ const receiveIncident = incident => ({
 const receiveIncidents = incidents => ({
   type: incidentActions.RECEIVE_INCIDENTS,
   incidents,
-  receivedAt: moment()
+  receivedAt: DateTime.utc()
 })
 
 const createIncident = incident => ({
   type: incidentActions.CREATE_INCIDENT_SUCCESS,
   incident
+})
+
+const removeTicketFromRecent = id => ({
+  type: ticketActions.REMOVE_TICKET,
+  id
+})
+
+const removeAllTicketsFromRecent = () => ({
+  type: ticketActions.REMOVE_ALL_TICKETS
 })
 
 const defaultQueryString = 'default'
@@ -94,6 +103,19 @@ describe('Ticket Reducers', function test () {
       expect(Object.values(this.OnCreateIncidentFromPopulated).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
       expect(Object.values(this.OnReceiveIncidentFromEmpty).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
       expect(Object.values(this.OnReceiveIncidentFromPopulated).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
+    })
+
+    it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function() {
+      const result = map(populatedTicketList, removeTicketFromRecent(38502026))
+      expect(result[38502026]).to.be.null
+      expect(result[44444444]).to.not.be.null
+    })
+
+    it('Should replace given tickets with null values when REMOVE_ALL_TICKET is dispatched', function () {
+      const result = map(populatedTicketList, removeAllTicketsFromRecent())
+      expect(result[38502026]).to.be.null
+      expect(result[44444444]).to.be.null
+      expect(result[38805418]).to.be.null
     })
   })
 

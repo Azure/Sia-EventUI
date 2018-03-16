@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sia-eventui-ppe-service
+  labels:
+    run: sia-eventui-ppe
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    name: http
+    targetPort: 3000
+  selector:
+    run: sia-eventui-ppe
+    
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: sia-eventui-ppe 
+spec:
+  selector:
+    matchLabels:
+      run: sia-eventui-ppe
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: sia-eventui-ppe
+    spec:
+      containers:
+          - name: sia-eventui-ppe
+            image: siacontainerregistry.azurecr.io/azure/sia-eventui-dist:latest
+            env:
+              - name: NODE_ENV
+                value: dist
+            ports:
+              - containerPort: 3000
+

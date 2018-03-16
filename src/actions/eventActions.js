@@ -1,7 +1,8 @@
-import moment from 'moment'
-import { paginationActions, updatePagination, reduxBackedPromise } from 'actions/actionHelpers'
-import * as filterActions from 'actions/filterActions'
+import { DateTime } from 'luxon'
 
+import { paginationActions, updatePagination, reduxBackedPromise } from 'actions/actionHelpers'
+import * as filterService from 'services/filterService'
+import * as notificationActions from 'actions/notificationActions'
 export const EVENTS = 'EVENTS'
 export const REQUEST_EVENT = 'REQUEST_EVENT'
 export const RECEIVE_EVENT = 'RECEIVE_EVENT'
@@ -28,7 +29,12 @@ export const fetchEvents = (filter) => reduxBackedPromise(
         getEventsActionSet(filter.incidentId)
     )
 
-export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = moment()) => reduxBackedPromise(
+export const fetchUncorrelatedEvents = (filter) => reduxBackedPromise(
+        ['events/' + filterService.serializeFiltersForUrl(filter)],
+        getEventsActionSet(null)
+)
+
+export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.utc()) => reduxBackedPromise(
     postEventFetchArgs(incidentId, eventTypeId, data, occurrenceTime),
     postEventActionSet(incidentId),
     'POST'
@@ -37,7 +43,7 @@ export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events/'
 
 export const getEventsFetchArgs = (filter) => ([
-  getEventsEndPoint(filter.incidentId) + filterActions.serializeFiltersForUrl(filter)
+  getEventsEndPoint(filter.incidentId) + filterService.serializeFiltersForUrl(filter)
 ])
 
 export const getEventFetchArgs = (incidentId, eventId) => {
@@ -62,6 +68,11 @@ export const getEventActionSet = (incidentId, eventId) => ({
   }),
 
   succeed: (event) => (dispatch) => {
+    dispatch(notificationActions.emitNotification({
+      event,
+      incidentId: event.incidentId
+    }))
+
     dispatch({
       type: RECEIVE_EVENT,
       event,
@@ -100,7 +111,7 @@ export const getEventsActionSet = (incidentId) => ({
       pagination: linksHeader
     })
 
-    if (linksHeader.NextPageLink) {
+    if (linksHeader && linksHeader.NextPageLink) {
       dispatch(reduxBackedPromise(
                 [linksHeader.NextPageLink],
                 getEventsActionSet(incidentId)

@@ -39,5 +39,9 @@ module.exports = {
       ticketUriPrefix: 'http://example2/ticketId=',
       ticketUriSuffix: '&edit=false'
     }
-  }
+  },
+
+  instrumentationKey: 'APP INSIGHT GOES HERE',
+  
+  useAppInsights: false
 }

@@ -9,7 +9,7 @@ const config = Object.assign({}, baseConfig, {
   devtool: 'sourcemap'
 })
 
-config.entry.push(path.join(__dirname, '../src/index'))
+config.entry.app.push(path.join(__dirname, '../src/index'))
 
 config.plugins.push(...[
   new UglifyJSPlugin({ sourceMap: true }),
