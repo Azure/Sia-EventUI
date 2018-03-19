@@ -7,6 +7,7 @@ import Footer from 'components/Timeline/EventFooter'
 import Events from 'components/Timeline/Events'
 import TimeAndDatePicker from 'components/elements/TimePicker'
 import * as filterActions from 'actions/filterActions'
+import TextFilter from 'components/Timeline/Playbook/TextFilter'
 
 class UncorrelatedEvents extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class UncorrelatedEvents extends Component {
       <div >
         <TimeAndDatePicker history={history} />
         <EventFilter history={history} eventTypes={eventTypes} />
+        <TextFilter/>
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />
       </div >
