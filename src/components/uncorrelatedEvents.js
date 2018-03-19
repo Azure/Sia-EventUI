@@ -28,15 +28,15 @@ class UncorrelatedEvents extends Component {
     return (
       <div >
         <TimeAndDatePicker history={history} />
+        
         <EventFilter history={history} eventTypes={eventTypes} />
-        <TextFilter/>
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />
       </div >
     )
   }
 }
-
+//<TextFilter events = {events.pageList}/>
 export const mapStateToProps = (state, ownProps) => {
   const { events } = state
   return {

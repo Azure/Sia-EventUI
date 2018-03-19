@@ -27,6 +27,7 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
+    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
     { clearRecentTickets(dispatch) }
   </IconMenu>)
 }
