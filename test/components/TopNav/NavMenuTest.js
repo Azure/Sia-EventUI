@@ -54,7 +54,26 @@ describe('NavMenu', function test () {
 })
 
 describe('mapStateToProps', function test () {
-  let state = { tickets: { map: { '12345': 'value', '67890': 'unused' }}}
+  let state = {
+    tickets: {
+      map: {
+        '12345': 'value',
+         '67890': 'unused'
+      }
+    },
+    events: {
+      filter: {
+        incidentId: 1,
+        eventTypes: [0,5]
+      }
+    },
+    signalR: {
+      filterPreferences: {
+        eventFilterType: 'magic'
+      }
+    }
+  }
+
   let ownProps = { location: { pathname: '/tickets/4444' } }
 
   beforeEach(() => { this.result = mapStateToProps(state, ownProps)})

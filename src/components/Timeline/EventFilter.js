@@ -32,7 +32,7 @@ export const filterSearchForm = {
 }
 
 const EventFilter = (props) => {
-  const { pagination, filter, filterSearchField, eventTypes, dispatch, history } = props
+  const { pagination, filter, filterSearchField, eventTypes, dispatch, history, signalRFilterType } = props
   const filterTypes = eventTypes ? Object.values(props.eventTypes) : []
   return (
     <div className='incident-EventFilter'>
@@ -49,7 +49,7 @@ const EventFilter = (props) => {
         dataSource={filterTypes}
         searchText={filterSearchField || ''}
         onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
-        selectMethod={(menuSelection) => dispatch(filterActions.addFilter(history)(filter)(menuSelection))}
+        selectMethod={(menuSelection) => dispatch(filterActions.addFilter(history)(filter, signalRFilterType)(menuSelection))}
         clearMethod={() => dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))}
       />
       <IconButtonStyled
@@ -67,13 +67,14 @@ const EventFilter = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { events } = state
+  const { events, signalR } = state
   let filterFormField = state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
   return {
     ...ownProps,
     pagination: events.pages,
     filter: events.filter,
-    filterSearchField: filterFormField
+    filterSearchField: filterFormField,
+    signalRFilterType: signalR.filterPreferences.eventFilterType
   }
 }
 
