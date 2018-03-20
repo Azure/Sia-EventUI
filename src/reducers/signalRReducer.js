@@ -48,7 +48,7 @@ export const connectionStatusReducer = (state = connectionStatusDefault, action)
 }
 
 const messageStatusDefault = {
-  pendingMessages: 0
+  pendingMessageCount: 0
 }
 
 export const messageStatusReducer = (state = messageStatusDefault, action) => {
@@ -56,12 +56,12 @@ export const messageStatusReducer = (state = messageStatusDefault, action) => {
     case signalRActions.RECEIVE_MESSAGE:
       return {
         ...state,
-        pendingMessages: state.pendingMessages ? state.pendingMessages + 1 : 1
+        pendingMessageCount: state.pendingMessageCount ? state.pendingMessageCount + 1 : 1
       }
     case signalRActions.ACKNOWLEDGE_MESSAGES:
       return {
         ...state,
-        pendingMessages: 0
+        pendingMessageCount: 0
       }
     default:
       return state

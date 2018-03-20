@@ -119,42 +119,42 @@ describe('SignalR Reducer', function () {
       const state = {}
       const result = signalRReducer.connectionStatusReducer(state, { type: 'IGNOREME' })
 
-      expect(Object.is(result, state)).to.be.true
+      expect(result).to.equal(state)
     })
   })
 
   describe('Message Status Reducer', function () {
     describe('From default state', function () {
       const messageStatusDefault = {
-        pendingMessages: 0
+        pendingMessageCount: 0
       }
       it('Should return with 1 more pending message when passed RECEIVE_MESSAGE', function () {
         const result = signalRReducer.messageStatusReducer(messageStatusDefault, { type: signalRActions.RECEIVE_MESSAGE })
 
-        expect(result.pendingMessages).to.equal(1)
+        expect(result.pendingMessageCount).to.equal(1)
       })
 
       it('Should return with 0 pending message when passed ACKNOWLEDGE_MESSAGES', function () {
         const result = signalRReducer.messageStatusReducer(messageStatusDefault, { type: signalRActions.ACKNOWLEDGE_MESSAGES })
 
-        expect(result.pendingMessages).to.equal(0)
+        expect(result.pendingMessageCount).to.equal(0)
       })
     })
 
     describe('From state with one message pending', function () {
       const messageStatusOnePending = {
-        pendingMessages: 1
+        pendingMessageCount: 1
       }
       it('Should return with 1 more pending message when passed RECEIVE_MESSAGE', function () {
         const result = signalRReducer.messageStatusReducer(messageStatusOnePending, { type: signalRActions.RECEIVE_MESSAGE })
 
-        expect(result.pendingMessages).to.equal(2)
+        expect(result.pendingMessageCount).to.equal(2)
       })
 
       it('Should return with 0 pending message when passed ACKNOWLEDGE_MESSAGES', function () {
         const result = signalRReducer.messageStatusReducer(messageStatusOnePending, { type: signalRActions.ACKNOWLEDGE_MESSAGES })
 
-        expect(result.pendingMessages).to.equal(0)
+        expect(result.pendingMessageCount).to.equal(0)
       })
     })
 
@@ -162,7 +162,7 @@ describe('SignalR Reducer', function () {
       const state = {}
       const result = signalRReducer.messageStatusReducer(state, { type: 'IGNOREME' })
 
-      expect(Object.is(result, state)).to.be.true
+      expect(result).to.equal(state)
     })
   })
 
@@ -182,7 +182,7 @@ describe('SignalR Reducer', function () {
           const result = signalRReducer.filterPreferencesReducer(null)(defaultState, getAction('sync'))
 
           it('should return state', function () {
-            expect(Object.is(result, defaultState)).to.be.true
+            expect(result).to.equal(defaultState)
           })
         })
 
@@ -190,7 +190,7 @@ describe('SignalR Reducer', function () {
           const result = signalRReducer.filterPreferencesReducer(null)(defaultState, getAction('pool'))
 
           it('should return state', function () {
-            expect(Object.is(result, defaultState)).to.be.true
+            expect(result).to.equal(defaultState)
           })
         })
 
@@ -208,7 +208,7 @@ describe('SignalR Reducer', function () {
       const state = { eventFilterType: 'unimportant' }
       const result = signalRReducer.filterPreferencesReducer(undefined)(state, { type: 'IGNOREME' })
 
-      expect(Object.is(result, state)).to.be.true
+      expect(result).to.equal(state)
     })
   })
 })
