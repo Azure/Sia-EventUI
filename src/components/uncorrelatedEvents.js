@@ -28,7 +28,7 @@ class UncorrelatedEvents extends Component {
     return (
       <div >
         <TimeAndDatePicker history={history} />
-        <TextFilter history = {history}/>
+        <TextFilter history={history} />
         <EventFilter history={history} eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />

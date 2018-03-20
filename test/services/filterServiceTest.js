@@ -95,7 +95,7 @@ describe('FilterService', function () {
     const filterWithEventTypesAndStartEndTimes = {startTime: 'startTime', endTime: 'endTime', eventTypes: [1, 2]}
     const filterWithNoEventTypes = {startTime: 'startTime', endTime: 'endTime'}
 
-    const expectedResult = '/events/?eventTypes=1&eventTypes=2&startTime=startTime&endTime=endTime'
+    const expectedResult = '/events/?startTime=startTime&endTime=endTime&eventTypes=1&eventTypes=2'
     const expectedResultWithoutEventType = '/events/?startTime=startTime&endTime=endTime'
 
     it('should push urls to history when there are startTime, EndTime and eventTypes', function () {

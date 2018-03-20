@@ -9,7 +9,8 @@ export const serializeFiltersForUrl = (filters) => {
     .filter(filter => filter[0] !== 'incidentId' &&
       filter[0] !== 'eventTypes' &&
       filter[0] !== 'fromUrl' &&
-      filter[0] !== 'ticketId')
+      filter[0] !== 'ticketId' &&
+      filter[1])
     .map(filter => `${filter[0]}=${filter[1]}`)
   const finalFilterTokens = eventTypes
     ? filterTokens.concat(eventTypes)
@@ -44,21 +45,8 @@ export const getUrlFromFilter = (history, filter) => {
 }
 
 export const getUrlFromUncorrelatedFilter = (history, filter) => {
-  let filterValue = ''
   if (filter && filter.startTime && filter.endTime) {
-    let filterTokens = Object.entries(filter).
-      filter(token => token[0] !== 'incidentId' &&
-        token[0] !== 'ticketId' &&
-        token[1] &&
-        ((!Array.isArray(token[1])) || 
-        (Array.isArray(token[1]) && token[1].length > 0))).
-      map(token => `${token[0]}=${token[1]}`)
-    for (var i = 0; i < filterTokens.length - 1; i++) {
-      if (i == 0) filterValue += ('/events/' + '?')
-      filterValue = filterValue + filterTokens[i] + '&'
-    }
-    if (filterValue != '') filterValue = filterValue + filterTokens[filterTokens.length - 1]
-    history.push(filterValue)
+    history.push('/events/' + serializeFiltersForUrl(filter))
   }
 }
 
