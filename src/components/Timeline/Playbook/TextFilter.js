@@ -1,26 +1,30 @@
 import React, { Component } from 'react'
 import { TextField } from 'material-ui';
+import { FlatButton } from 'material-ui'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { LoadTextFromEvent, TestConditionSet } from 'services/playbookService'
+import * as filterActions from 'actions/filterActions'
 
 class TextFilter extends Component {
-    static PropTypes = {
-        events: PropTypes.object.isRequired
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        filters: PropTypes.object
     }
 
     constructor(props){
         super(props);
 
         this.state = {
-            value: 'Search',
+            value: '',
         };
     }
 
     render() {
         return (
             <div>
+                <br/>
                 <TextField
                     hintText='Search'
                     id = 'search-field-value'
@@ -28,7 +32,7 @@ class TextFilter extends Component {
                     onChange = { this.handleChange }
                 />
                 <FlatButton
-                    label='submit'
+                    label='Search'
                     primary
                     onClick={() => this.submitSearch()}
                 />
@@ -43,14 +47,17 @@ class TextFilter extends Component {
     };
 
     submitSearch(){
-
+        const{ filters, dispatch, history } = this.props
+        const newFilter = Object.assign({}, filters, { DataSearch : this.state.value })
+        dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
     }
 }
 
 export const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        //text: LoadTextFromEvent(event, eventType, ticket, engagement)
+        dispatch: state.dispatch,
+        filters: state.events.filter
     }
 }
 
