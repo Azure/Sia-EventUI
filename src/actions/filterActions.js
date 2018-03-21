@@ -2,6 +2,7 @@ import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
 import * as eventActions from 'actions/eventActions'
+import * as signalRActions from 'actions/signalRActions'
 import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
@@ -21,7 +22,7 @@ export const clearFilterIncidentId = () => {
   }
 }
 
-export const addFilter = (history) => (filter) => (eventType) => {
+export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
   let newFilter = {}
   let oldFilter = filter
   if (!eventType || !eventType.id) {
@@ -37,7 +38,7 @@ export const addFilter = (history) => (filter) => (eventType) => {
         : [eventType.id]
     }
   }
-  return applyFilter(history)(oldFilter, newFilter)
+  return applyFilter(history)(oldFilter, newFilter, signalRFilterType)
 }
 
 export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterToDelete) => {
@@ -50,13 +51,15 @@ export const removeFilter = (history, relativeFilterPath) => (oldFilter, filterT
   return applyFilter(history)(oldFilter, newFilter)
 }
 
-const applyFilter = (history) => (oldFilter, newFilter) => (dispatch) => {
+const applyFilter = (history) => (oldFilter, newFilter, signalRFilterType) => (dispatch) => {
   if (newFilter.incidentId) {
     if (!deepEquals(oldFilter, newFilter)) {
+      dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, newFilter))
       dispatch(changeEventFilter(history, filterService.getUrlFromFilter)(newFilter))
       dispatch(eventActions.fetchEvents(newFilter))
     }
   } else {
+    dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, newFilter))
     dispatch(changeEventFilter(history, filterService.getUrlFromUncorrelatedFilter)(newFilter))
     dispatch(eventActions.fetchUncorrelatedEvents(newFilter))
   }

@@ -15,12 +15,12 @@ function mockDispatch (object) { }
 
 const testSignalRConnectedWithMessages = {
   connectionStatus: connectionStatuses.connected,
-  pendingMessages: [{}]
+  pendingMessageCount: [{}]
 }
 
 const testSignalRConnectedNoMessages = {
   connectionStatus: connectionStatuses.connected,
-  pendingMessages: null
+  pendingMessageCount: null
 }
 
 const testSignalR = (status) => ({
