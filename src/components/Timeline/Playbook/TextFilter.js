@@ -8,7 +8,8 @@ import * as filterActions from 'actions/filterActions'
 class TextFilter extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    filters: PropTypes.object
+    filters: PropTypes.object,
+    dispatch: PropTypes.func.isRequired
   }
 
   constructor (props) {
@@ -54,7 +55,6 @@ class TextFilter extends Component {
 export const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
-    dispatch: state.dispatch,
     filters: state.events.filter
   }
 }

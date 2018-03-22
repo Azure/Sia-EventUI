@@ -95,12 +95,12 @@ describe('FilterService', function () {
     const filterWithEventTypesAndStartEndTimes = {startTime: 'startTime', endTime: 'endTime', eventTypes: [1, 2]}
     const filterWithNoEventTypes = {startTime: 'startTime', endTime: 'endTime'}
 
-    const expectedResult = '/events/?startTime=startTime&endTime=endTime&eventTypes=1&eventTypes=2'
+    const expectedResult =  [ 'eventTypes=1', 'eventTypes=2', 'startTime=startTime', 'endTime=endTime' ]
     const expectedResultWithoutEventType = '/events/?startTime=startTime&endTime=endTime'
 
     it('should push urls to history when there are startTime, EndTime and eventTypes', function () {
       filterService.getUrlFromUncorrelatedFilter(history, filterWithEventTypesAndStartEndTimes)
-      expect(history[0]).to.equal(expectedResult)
+      expectedResult.forEach(expectedToken => expect(history[0]).to.include(expectedToken))
     })
     it('should push only startTime and EndTime to history and nothing else', function(){
       filterService.getUrlFromUncorrelatedFilter(history, filterWithNoEventTypes)
