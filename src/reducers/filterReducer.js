@@ -63,14 +63,23 @@ export const ticketId = (defaultTicketId) => (state = defaultTicketId, action) =
   }
 }
 
-export const filter = (defaultFilter) => {
+const initalFilter = {
+  ticketId: null,
+  incidentId: null,
+  eventTypes: null,
+  startTime: null,
+  endTime: null,
+  DataSearch: null
+}
+
+export const filter = (defaultFilter = initalFilter) => {
   return combineReducers({
-    ticketId: ticketId(defaultFilter ? defaultFilter.ticketId ? defaultFilter.ticketId : null : null),
-    incidentId: incidentId(defaultFilter ? defaultFilter.incidentId ? defaultFilter.incidentId : null : null),
-    eventTypes: eventTypes(defaultFilter ? defaultFilter.eventTypes ? defaultFilter.eventTypes : null : null),
-    startTime: startTime(defaultFilter ? defaultFilter.startTime ? defaultFilter.startTime : null : null),
-    endTime: endTime(defaultFilter ? defaultFilter.endTime ? defaultFilter.endTime : null : null),
-    DataSearch: dataSearch(defaultFilter ? defaultFilter.DataSearch ? defaultFilter.DataSearch : null : null)
+    ticketId: ticketId(defaultFilter.ticketId),
+    incidentId: incidentId(defaultFilter.incidentId),
+    eventTypes: eventTypes(defaultFilter.eventTypes),
+    startTime: startTime(defaultFilter.startTime),
+    endTime: endTime(defaultFilter.endTime),
+    DataSearch: dataSearch(defaultFilter.DataSearch)
   })
 }
 
