@@ -18,8 +18,8 @@ class UncorrelatedEvents extends Component {
   }
 
   componentDidMount () {
-    const { filters, dispatch } = this.props
-    dispatch(filterActions.clearFilterIncidentId(Object.assign({}, filters, {incidentId: null})))
+    const { dispatch } = this.props
+    dispatch(filterActions.clearFilterIncidentId())
   }
 
   render () {
@@ -27,7 +27,7 @@ class UncorrelatedEvents extends Component {
     return (
       <div >
         <TimeAndDatePicker history={history} />
-        <TextFilter history={history} />
+        <TextFilter history={history} dispatch={dispatch} />
         <EventFilter history={history} eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />

@@ -1,55 +1,33 @@
-import React, { Component } from 'react'
-import { TextField, FlatButton } from 'material-ui'
+import React from 'react'
+import { TextField } from 'material-ui'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import TextSearchButton from 'components/elements/TextSearchButton'
 
 import * as filterActions from 'actions/filterActions'
 
-class TextFilter extends Component {
-  static propTypes = {
-    history: PropTypes.object.isRequired,
-    filters: PropTypes.object,
-    dispatch: PropTypes.func.isRequired
-  }
+export function TextFilter ({filters, history, dispatch}) {
+  return (
+    <div>
+      <br />
+      <TextField
+        hintText='Search'
+        id='search-field-value'
+        onChange={(event) => handleChange(event.target.value, dispatch)}
+      />
+      <TextSearchButton history={history} dispatch={dispatch} />
+    </div>
+  )
+}
 
-  constructor (props) {
-    super(props)
+TextFilter.propTypes = {
+  history: PropTypes.object.isRequired,
+  filters: PropTypes.object,
+  dispatch: PropTypes.func.isRequired
+}
 
-    this.state = {
-      value: ''
-    }
-  }
-
-  render () {
-    return (
-      <div>
-        <br />
-        <TextField
-          hintText='Search'
-          id='search-field-value'
-          value={this.state.value}
-          onChange={(event) => this.handleChange(event)}
-                />
-        <FlatButton
-          label='Search'
-          primary
-          onClick={() => this.submitSearch()}
-                />
-      </div>
-    )
-  }
-
-  handleChange (event) {
-    this.setState({
-      value: event.target.value
-    })
-  };
-
-  submitSearch () {
-    const { filters, dispatch, history } = this.props
-    const newFilter = Object.assign({}, filters, { DataSearch: this.state.value })
-    dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
-  }
+function handleChange (searchData, dispatch) {
+  dispatch(filterActions.updateDataSearch(searchData))
 }
 
 export const mapStateToProps = (state, ownProps) => {

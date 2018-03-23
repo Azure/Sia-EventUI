@@ -27,10 +27,8 @@ export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, act
 
 export const startTime = (defaultStartTime) => (state = defaultStartTime, action) => {
   switch (action.type) {
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.startTime) {
-        return action.filter.startTime
-      } else return state
+    case filterActions.UPDATE_START_AND_END_TIME:
+      return action.startTime
     default:
       return state
   }
@@ -38,10 +36,8 @@ export const startTime = (defaultStartTime) => (state = defaultStartTime, action
 
 export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
   switch (action.type) {
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.endTime) {
-        return action.filter.endTime
-      } else return state
+    case filterActions.UPDATE_START_AND_END_TIME:
+      return action.endTime
     default:
       return state
   }
@@ -49,10 +45,8 @@ export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
 
 export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.DataSearch) {
-        return action.filter.DataSearch
-      } else return state
+    case filterActions.UPDATE_DATASEARCH:
+      return action.dataSearch
     default:
       return state
   }
