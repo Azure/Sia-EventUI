@@ -5,6 +5,7 @@ import { FlatButton } from 'material-ui'
 import { DateTime } from 'luxon'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import deepEqual from 'deep-equal'
 
 import * as filterActions from 'actions/filterActions'
 
@@ -16,7 +17,26 @@ class TimeAndDatePicker extends Component {
 
   constructor () {
     super()
-    this.state = { startDate: null, startTime: null, endDate: null, endTime: null }
+    this.state = {
+      endDate: DateTime.utc().toISODate().toString(),
+      endTime: DateTime.utc().toISOTime().toString(),
+      startDate: DateTime.utc().minus({day: 1}).toISODate().toString(),
+      startTime: DateTime.utc().toISOTime().toString()
+    }
+  }
+
+  componentDidMount () {
+    const { filters, dispatch, history } = this.props
+    const { startDate, startTime, endDate, endTime } = this.state
+    const newFilter = Object.assign({}, filters, {startTime: startDate + 'T' + startTime, endTime: endDate + 'T' + endTime})
+    dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
+  }
+
+  componentDidUpdate (prevProps) {
+    const { filters, dispatch, history } = this.props
+    if (!deepEqual(prevProps.filters, filters)) {
+      dispatch(filterActions.synchronizeFilters(filters, null, null, history))
+    }
   }
 
   render () {
@@ -67,7 +87,6 @@ class TimeAndDatePicker extends Component {
       start = DateTime.local().minus({days: 1}).toISO()
     }
     dispatch(filterActions.setStartAndEndTime(start, end))
-  }
 }
 
 export const mapStateToProps = (state, ownProps) => {
