@@ -16,10 +16,9 @@ export const changeEventFilter = (history, urlLoader = filterService.getUrlFromF
   }
 }
 
-export const clearFilterIncidentId = (filter) => {
+export const clearFilterIncidentId = () => {
   return {
-    type: CLEAR_EVENT_FILTER_INCIDENTID,
-    filter
+    type: CLEAR_EVENT_FILTER_INCIDENTID
   }
 }
 
