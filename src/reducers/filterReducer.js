@@ -69,7 +69,7 @@ export const ticketId = (defaultTicketId) => (state = defaultTicketId, action) =
   }
 }
 
-const initalFilter = {
+const initialFilter = {
   ticketId: null,
   incidentId: null,
   eventTypes: null,
@@ -78,7 +78,7 @@ const initalFilter = {
   DataSearch: null
 }
 
-export const filter = (defaultFilter = initalFilter) => {
+export const filter = (defaultFilter = initialFilter) => {
   return combineReducers({
     ticketId: ticketId(defaultFilter.ticketId),
     incidentId: incidentId(defaultFilter.incidentId),
