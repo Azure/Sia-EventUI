@@ -12,14 +12,14 @@ import { resetSignalRConnection } from 'services/signalRService'
 import { acknowledgeMessages } from 'actions/signalRActions'
 
 export const NavNotifs = ({signalR, dispatch}) => {
-  const pendingMessages = signalR.pendingMessages ? signalR.pendingMessages : 0
-  return <IconButton tooltip={showNotifsMessage(pendingMessages)}onTouchTap={notifsAction(signalR, dispatch)}>
+  const pendingMessageCount = signalR.pendingMessageCount ? signalR.pendingMessageCount : 0
+  return <IconButton tooltip={showNotifsMessage(pendingMessageCount)}onTouchTap={notifsAction(signalR, dispatch)}>
     {displayButton(signalR)}
   </IconButton>
 }
 
-const showNotifsMessage = (pendingMessages) => {
-  return pendingMessages === 0 ? 'Check for new messages' : `View ${pendingMessages} messages`
+const showNotifsMessage = (pendingMessageCount) => {
+  return pendingMessageCount === 0 ? 'Check for new messages' : `View ${pendingMessageCount} messages`
 }
 
 NavNotifs.propTypes = {
@@ -29,7 +29,7 @@ NavNotifs.propTypes = {
 
 const notifsAction = (signalR, dispatch) => () => {
   if (signalR.connectionStatus === connectionStatuses.connected &&
-    signalR.pendingMessages) {
+    signalR.pendingMessageCount) {
     dispatch(acknowledgeMessages())
   } else {
     resetSignalRConnection(dispatch)
@@ -39,7 +39,7 @@ const notifsAction = (signalR, dispatch) => () => {
 const displayButton = (signalR) => {
   switch (signalR.connectionStatus) {
     case connectionStatuses.connected:
-      return signalR.pendingMessages ? <Notifications /> : <NotificationsNone />
+      return signalR.pendingMessageCount ? <Notifications /> : <NotificationsNone />
     case connectionStatuses.notEstablished:
       return <Sync />
     case connectionStatuses.disconnected:

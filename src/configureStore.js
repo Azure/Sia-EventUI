@@ -1,20 +1,28 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import establishSignalRConnection from 'services/signalRService'
+import { persistStore } from 'redux-persist'
+
+import { getSignalRConnection, updateEventFilter } from 'services/signalRService'
 import { ListenForScreenSize } from 'actions/styleActions'
 import incidentApp from 'reducers'
-import { persistStore } from 'redux-persist'
 import { getFilterFromUrl } from 'services/filterService'
 import { configureNotificationService } from 'services/notificationService'
+import { filterTypes } from 'actions/signalRActions'
+
+const defaultSignalREventFilterPreference = filterTypes.sync.value
 
 const urlFilter = getFilterFromUrl(window.location.search)
-const reducer = incidentApp(urlFilter)
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-export const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(incidentApp(urlFilter, defaultSignalREventFilterPreference), composeEnhancers(applyMiddleware(thunk)))
 export const persistor = persistStore(store)
 
-establishSignalRConnection(store.dispatch)
+getSignalRConnection(store.dispatch)
+  .then(() => {
+    if (defaultSignalREventFilterPreference === filterTypes.sync.value) {
+      updateEventFilter(urlFilter)
+    }
+  })
 
 configureNotificationService(store.dispatch)
 

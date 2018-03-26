@@ -6,10 +6,13 @@ import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
+
 import MenuLink from 'components/elements/MenuLink'
 import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
 import * as auth from 'services/authNService'
+import Preferences from 'components/TopNav/Preferences'
 
 const clearRecentTickets = (dispatch) =>
   <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent())}
@@ -17,7 +20,7 @@ const clearRecentTickets = (dispatch) =>
   />}
   />
 
-export const NavMenu = ({ dispatch, history, ticketIds }) => {
+export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEventFilterType }) => {
   return (<IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -27,6 +30,13 @@ export const NavMenu = ({ dispatch, history, ticketIds }) => {
     <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
     {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
     <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
+    <MenuItem
+      key='preferences'
+      primaryText={'Preferences'}
+      rightIcon={<ArrowDropRight />}
+      menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
+    />
+    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
     { clearRecentTickets(dispatch) }
   </IconMenu>)
 }
@@ -43,6 +53,8 @@ export const mapStateToProps = (state, ownProps) => {
 
   return {
     ...ownProps,
+    eventFilter: state.events.filter,
+    currentEventFilterType: state.signalR.filterPreferences.eventFilterType,
     ticketIds: Object.entries(state.tickets.map)
       .filter(kvp => kvp[1] !== null)
       .map(kvp => kvp[0])
