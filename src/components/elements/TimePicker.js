@@ -87,6 +87,7 @@ class TimeAndDatePicker extends Component {
       start = DateTime.local().minus({days: 1}).toISO()
     }
     dispatch(filterActions.setStartAndEndTime(start, end))
+  }
 }
 
 export const mapStateToProps = (state, ownProps) => {

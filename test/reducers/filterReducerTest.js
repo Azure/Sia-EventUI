@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 
 import * as filterActions from 'actions/filterActions.js'
-import filterReducer from 'reducers/filterReducer'
+import * as filterReducer from 'reducers/filterReducer'
 
 const defaultFilter = { eventTypes: [], ticketId: null }
 const filterWithEventTypes = {incidentId: 2, ticketId: 2, eventTypes: [1, 2]}
@@ -33,6 +33,44 @@ const actions = {
 const changedEventFilter = { incidentId: 1, ticketId: 0, eventTypes: [1, 2, 3] }
 
 describe('filterReducer', function () {
+  describe('IncidentId reducer', function () {
+    describe('When action is CLEAR_EVENT_FILTER_INCIDENTID', function () {
+      const clearIncidentIdAction = { type: filterActions.CLEAR_EVENT_FILTER_INCIDENTID }
+      it('Should return null regardless of initial state', function () {
+        expect(filterReducer.incidentId()(null, clearIncidentIdAction)).to.be.null
+        expect(filterReducer.incidentId()(100, clearIncidentIdAction)).to.be.null
+      })
+    })
+
+    describe('When action is CHANGE_EVENT_FILTER', function () {
+      describe('When filter includes an incidentId', function () {
+        const testAction = { type: filterActions.CHANGE_EVENT_FILTER, filter: { incidentId: 200 }}
+        it('Should return an object with an incidentId matching the object regardless of initial state', function () {
+          expect(filterReducer.incidentId()(null, testAction)).to.equal(200)
+          expect(filterReducer.incidentId()(100, testAction)).to.equal(200)
+        })
+      })
+
+      describe('When filter does not include an incidentId', function () {
+        const testAction = { type: filterActions.CHANGE_EVENT_FILTER, filter: { }}
+        it('Should return the initial state', function () {
+          expect(filterReducer.incidentId()(null, testAction)).to.be.null
+          expect(filterReducer.incidentId()(100, testAction)).to.equal(100)
+        })
+      })
+    })
+  })
+
+  describe('When action is not covered by reducer statements', function () {
+    it('Should return the initial state', function () {
+      const testAction = { type: 'IGNORE_ME' }
+      const initialState = {}
+      expect(filterReducer.incidentId()(initialState, testAction)).to.equal(initialState)
+    })
+  })
+
+  /*
+  TODO: adapt to per-reducer tests
   it('should return the initial state with no filter in URL', function () {
     const result = Object.entries(filterReducer(defaultFilterNoFilterInUrl)(undefined, {}))
     result.forEach(element => expect(element[1]).to.equal(null))
@@ -65,10 +103,10 @@ describe('filterReducer', function () {
     expect(result.ticketId).to.equal(2)
     Object.entries(result).filter(element => element[0] != 'incidentId' &&
                           element[0] != 'ticketId').forEach(element => expect(element[1]).to.equal(null))
-    
+
   })
   it('should return a new filter with incidentId cleared when passed action as CLEAR_EVENT_FILTER_INCIDENTID', function(){
    const result = filterReducer(defaultFilterNoFilterInUrl)(undefined, actions.clearIncidentId)
     Object.entries(result).forEach(element => expect(element[1]).to.equal(null))
-  })
+  })*/
 })
