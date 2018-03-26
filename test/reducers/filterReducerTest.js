@@ -4,34 +4,6 @@ import { expect } from 'chai'
 import * as filterActions from 'actions/filterActions.js'
 import * as filterReducer from 'reducers/filterReducer'
 
-const defaultFilter = { eventTypes: [], ticketId: null }
-const filterWithEventTypes = {incidentId: 2, ticketId: 2, eventTypes: [1, 2]}
-
-const newFilterWithIncidentId = {incidentId: 1, ticketId: 2, eventTypes: [1, 2, 3]}
-const newFilterNoTicketId = { incidentId: 2, eventTypes: [1] }
-const newFilterNoEventTypes = {incidentId: 2, ticketId: 2}
-
-const history = []
-
-const dispatch = function () {
-  return 'nothing'
-}
-
-const defaultFilterNoFilterInUrl = null
-const defaultFilterSomethingInUrl = {eventTypes: [1]}
-
-const actions = {
-  change: filterActions.changeEventFilter(history)(newFilterWithIncidentId),
-  badChangeOne: filterActions.changeEventFilter(history)(newFilterNoTicketId),
-  badChangeTwo: filterActions.changeEventFilter(history)(newFilterNoEventTypes),
-  noChange: {
-    type: 'DUMMY_ACTION'
-  },
-  clearIncidentId: filterActions.clearFilterIncidentId(newFilterWithIncidentId)
-}
-
-const changedEventFilter = { incidentId: 1, ticketId: 0, eventTypes: [1, 2, 3] }
-
 describe('filterReducer', function () {
   describe('IncidentId reducer', function () {
     describe('When action is CLEAR_EVENT_FILTER_INCIDENTID', function () {
@@ -57,6 +29,46 @@ describe('filterReducer', function () {
           expect(filterReducer.incidentId()(null, testAction)).to.be.null
           expect(filterReducer.incidentId()(100, testAction)).to.equal(100)
         })
+      })
+    })
+  })
+
+  describe('When action is UPDATE_START_AND_END_TIME', function(){
+      describe('When filter includes an startTime or endTime', function(){
+          const testAction = {type: filterActions.UPDATE_START_AND_END_TIME, startTime: 'startTime', endTime: 'endTime'}
+          it('Should return an object with a startTime and an endTime matching the object regardless of the initial state', function() {
+              expect(filterReducer.startTime()(null, testAction)).to.equal('startTime')
+              expect(filterReducer.startTime()('old_startTime', testAction)).to.equal('startTime')
+              expect(filterReducer.endTime()(null, testAction)).to.equal('endTime')
+              expect(filterReducer.endTime()('old_endTime', testAction)).to.equal('endTime')
+          })
+      })
+
+      describe('When filter does not include an startTime or endTime', function(){
+          const testAction = {type: filterActions.UPDATE_START_AND_END_TIME}
+          it('Should return an object with the initial startTime and endTime', function() {
+              expect(filterReducer.startTime()(null, testAction)).to.be.null
+              expect(filterReducer.startTime()('old_startTime', testAction)).to.be.equal('old_startTime')
+              expect(filterReducer.endTime()(null, testAction)).to.be.null
+              expect(filterReducer.endTime()('old_endTime', testAction)).to.equal('old_endTime')
+          })
+      })
+  })
+
+  describe('When action is UPDATE_DATASEARCH', function () {
+    describe('When filter includes a dataSearch', function () {
+      const testAction = { type: filterActions.UPDATE_DATASEARCH, dataSearch: 'search' }
+      it('Should return an object with an dataSearch info matching the object regardless of initial state', function () {
+        expect(filterReducer.dataSearch()(null, testAction)).to.equal('search')
+        expect(filterReducer.dataSearch()('old_search', testAction)).to.equal('search')
+      })
+    })
+
+    describe('When filter does not include a dataSearch', function () {
+      const testAction = { type: filterActions.UPDATE_DATASEARCH}
+      it('Should return an object with the initial dataSearch info', function () {
+        expect(filterReducer.dataSearch()(null, testAction)).to.be.null
+        expect(filterReducer.dataSearch()('old_search', testAction)).to.equal('old_search')
       })
     })
   })

@@ -28,7 +28,9 @@ export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, act
 export const startTime = (defaultStartTime) => (state = defaultStartTime, action) => {
   switch (action.type) {
     case filterActions.UPDATE_START_AND_END_TIME:
-      return action.startTime
+      if (action.startTime) {
+        return action.startTime
+      } else return state
     default:
       return state
   }
@@ -37,7 +39,9 @@ export const startTime = (defaultStartTime) => (state = defaultStartTime, action
 export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
   switch (action.type) {
     case filterActions.UPDATE_START_AND_END_TIME:
-      return action.endTime
+      if (action.endTime) {
+        return action.endTime
+      } else return state
     default:
       return state
   }
@@ -46,7 +50,9 @@ export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
 export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
     case filterActions.UPDATE_DATASEARCH:
-      return action.dataSearch
+      if (action.dataSearch) {
+        return action.dataSearch
+      } else return state
     default:
       return state
   }
