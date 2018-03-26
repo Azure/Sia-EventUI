@@ -16,30 +16,30 @@ const connectionStatusDefault = {
   connectionStatus: connectionStatuses.notEstablished
 }
 
-export const connectionStatusReducer = (state = connectionStatusDefault, action) => {
+export const connectionReducer = (state = connectionStatusDefault, action) => {
   switch (action.type) {
     case signalRActions.ESTABLISH_CONNECTION_TRY:
       return {
         ...state,
-        connectionStatus: connectionStatuses.connecting
+        status: connectionStatuses.connecting
       }
     case signalRActions.ESTABLISH_CONNECTION_FAIL:
       return {
         ...state,
-        connectionStatus: connectionStatuses.error,
+        status: connectionStatuses.error,
         connectionError: action.error
       }
     case signalRActions.ESTABLISH_CONNECTION_SUCCEED:
       return {
         ...state,
-        connectionStatus: connectionStatuses.connected,
+        status: connectionStatuses.connected,
         connectionError: null,
         disconnectReason: null
       }
     case signalRActions.CONNECTION_CLOSED:
       return {
         ...state,
-        connectionStatus: connectionStatuses.disconnected,
+        status: connectionStatuses.disconnected,
         disconnectReason: action.error
       }
     default:
@@ -90,7 +90,7 @@ export const filterPreferencesReducer = (defaultEventFilterPreference) => (state
 }
 
 export default (defaultEventFilterPreference) => combineReducers({
-  connectionStatus: connectionStatusReducer,
+  connection: connectionReducer,
   messageStatus: messageStatusReducer,
   filterPreferences: persistReducer({
     key: 'signalR/filterPreferences',
