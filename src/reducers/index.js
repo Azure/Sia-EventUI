@@ -16,7 +16,7 @@ const rootReducer = (filters, defaultEventFilterPreference) => combineReducers({
   auth,
   tickets,
   engagements,
-  events: events(filters),
+  events: filters ? events(filters) : events(),
   forms,
   expandSection,
   signalR: signalR(defaultEventFilterPreference),
