@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import SyncIcon from 'material-ui/svg-icons/notification/sync'
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 
 import IconButtonStyled from 'components/elements/IconButtonStyled'
@@ -32,10 +31,6 @@ const HeaderRow = (ticketId) => [
     (key) =>
       <strong key={key}>
                 Incident Summary{ticketId ? ` for ${ticketId}` : ''}:
-                &nbsp;
-                <IconButtonStyled tooltip='Refresh'>
-                  <SyncIcon />
-                </IconButtonStyled>
       </strong>
   ]
 ]
