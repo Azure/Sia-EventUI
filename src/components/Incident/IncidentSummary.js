@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit'
 
-import IconButtonStyled from 'components/elements/IconButtonStyled'
 import Engagements from 'components/Engagements'
 import GlobalActions from 'components/Timeline/Playbook/GlobalActions'
 
@@ -55,11 +53,7 @@ const IncidentManagerColumn = (ticket) => [
   (key) =>
     <div key={key}>
       {ticket.imName}
-    </div>,
-  (key) =>
-    <IconButtonStyled tooltip='Edit IM' key={key}>
-      <ModeEditIcon />
-    </IconButtonStyled>
+    </div>
 ]
 
 const noTitleMessage = 'No Title!'
