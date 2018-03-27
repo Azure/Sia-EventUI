@@ -83,8 +83,8 @@ class TimeAndDatePicker extends Component {
     let start = (startDate && startTime) ? startDate + 'T' + startTime : null
     let end = (endDate && endTime) ? endDate + 'T' + endTime : null
     if (!(start && end)) {
-      end = DateTime.local().toISO()
-      start = DateTime.local().minus({days: 1}).toISO()
+      end = DateTime.utc().toISO()
+      start = DateTime.utc().minus({days: 1}).toISO()
     }
     dispatch(filterActions.setStartAndEndTime(start, end))
   }
