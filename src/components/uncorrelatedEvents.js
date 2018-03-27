@@ -25,13 +25,13 @@ class UncorrelatedEvents extends Component {
   render () {
     const { events, dispatch, eventTypes, history } = this.props
     return (
-      <div >
+      <div style={{padding: '16px'}}>
         <TimeAndDatePicker history={history} />
         <TextFilter history={history} dispatch={dispatch} />
         <EventFilter history={history} eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />
-      </div >
+      </div>
     )
   }
 }
