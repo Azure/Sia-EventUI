@@ -7,6 +7,7 @@ let distConstants = Object.assign({}, baseConstants, {
   aadInstance: process.env.aadInstance,
   aadTenant: process.env.aadTenant,
   clientId: process.env.clientId,
+  authVersion: process.env.authVersion
 })
 
 module.exports = distConstants
