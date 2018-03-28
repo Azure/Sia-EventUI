@@ -22,7 +22,7 @@ SIA is configured for Wepback's hot module reloading, so changes should automati
 You will need to add const files in config for each environment you want to use; these are not tracked in git. See <code>cfg/constExample.js</code> for more details. Const files follow the naming convention $env.const.js (`localhost.const.js` is the const file loaded by localhost.js, for example).
 
 # Launch UI pointing at a local Gateway API
-Use these steps to launch if you're hosting your Gateway API locally. 
+Use these steps to launch if you're hosting your Gateway API locally.
 + Navigate to the SIA-EventUI source directory root
 + Ensure your local copy of the gateway API is running on http://localhost:50000 (or the base URL you configured)
 + Enter these commands to launch the Event UI:
@@ -33,10 +33,10 @@ Use these steps to launch if you're hosting your Gateway API locally.
 + Navigate to http://localhost:3000
 
 # Launch UI pointing at a remote dev Gateway API
-Use these steps if you're working on the Event UI and do not need to run a local copy of the gateway. 
+Use these steps if you're working on the Event UI and do not need to run a local copy of the gateway.
 
 + Create a localhost.const.js file inside the cfg folder. Use the <code>cfg/constExample.js</code> file as a template.
-+ Navigate to the SIA-EventUI source directory root 
++ Navigate to the SIA-EventUI source directory root
 + Enter these commands to launch the Event UI:
     ```
     npm install
@@ -51,6 +51,55 @@ Use these steps if you're working on the Event UI and do not need to run a local
 npm test
 ```
 
+## Testing Practices
+
+Best practice:
+
+For bugfixes, write a failing test before you change the code.
+
+For feature work we expect code to be reasonably well tested, which means:
+
+- A happy path through the feature should be illustrated.
+- Any exception or error handling should be tested.
+- failbacks for sad paths should be tested as well.
+- Features which handle user input should have validation tests describing when the input is valid or invalid.
+  - We would like to have a canonical list of bad user input and are considering fuzzing as well.
+- Tagging tests??? (like @blinks indicates a test intermittently fails.)
+- Should we move to XUnit?
+
+BDD style is being adopted in the codebase, but it was introduced in stages, so many tests aren't using this approach.
+
+- test messages should be human-readable and accurately describe the test. Use `describe` and `context` blocks to establish the context of the method under test, and `it` blocks to describe expectations. Avoid writing more than one `expect` per `it` block.
+  - `describe` should be used to name the object under test
+  - `context` should be used to enumerate the conditions in the test, and begin with 'when'.
+  - `it` blocks should begin with 'should' and list the expectation.
+- When submitting a pull request, try to include a user story ilustrating the happy path of your feature.
+- Any changes to the UI should include before and after screenshots. Or gifs!!
+- In code review, avoid approving if you are not confident in your understanding of the code. Approve after you've pulled the change into your local environment and manually validate.
+
+## Components
+
+How should we approach UI testing versus business logic?
+
+- UI components can be treated as purely functional, and can be tested easily, but these tests aren't high-value.
+- `mapStateToProps` and other non-render functions should be tested separately.
+- we need to test all user interactions like onClick, or onSubmit, or onHover… anything which is configured to dispatch an action should be tested.
+
+## Reducers
+
+- All paths through the function must be tested
+- When state is not changed use strict equality `.equal` (check).
+- When state is changed… use `.deep.equal` to compare it to the expected.
+
+## Actions
+
+- An action which returns a static object may safely be untested.
+- When an action conditionally returns differing values, tests should be written to cover _at least_ the happy path.
+- Thunks (actions which take dispatch as an argument and dispatch multiple actions) should use a mock
+dispatch to ensure that the correct actions are dispatched in the correct order
+
+## Services
+
 # To create dist bundle, no server
 ```
 webpack --env=dist
@@ -62,5 +111,5 @@ A partial list of run scripts and what they do
 
 | Script | What it does |
 | ------ | ------------ |
-| start  | Launch the server and point at a gateway hosted on localhost (use `localhost.const.js`) | 
+| start  | Launch the server and point at a gateway hosted on localhost (use `localhost.const.js`) |
 | serve  | Launch the server and point at a gateway hosted in the dev environment (use `dev.const.js`) |
