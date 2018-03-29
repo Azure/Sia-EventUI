@@ -33,7 +33,10 @@ export const Event = ({
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
   const missingId = eventTypeId
   return eventTypeIsFetching && !eventHasValidDisplayText(event)
-        ? LoadingMessage('Fetching Event Type Information', eventTypeActions.fetchEventType(eventTypeId))
+        ? <LoadingMessage
+          message={'Fetching Event Type Information'}
+          actionForRetry={eventTypeActions.fetchEventType(eventTypeId)}
+          />
         : eventTypeIsError && !eventHasValidDisplayText(event)
           ? ErrorMessage(`Error fetching eventType: ${missingId}`, eventTypeActions.fetchEventType(eventTypeId), time, backgroundColor)
             : <div style={itemHighlight}>
