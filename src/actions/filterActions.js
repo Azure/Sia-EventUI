@@ -9,6 +9,10 @@ export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 export const UPDATE_DATASEARCH = 'UPDATE_DATASEARCH'
 export const UPDATE_START_AND_END_TIME = 'UPDATE_START_AND_END_TIME'
+export const UPDATE_FILTER_START_TIME = 'UPDATE_FILTER_START_TIME'
+export const UPDATE_FILTER_START_DATE = 'UPDATE_FILTER_START_DATE'
+export const UPDATE_FILTER_END_TIME = 'UPDATE_FILTER_END_TIME'
+export const UPDATE_FILTER_END_DATE = 'UPDATE_FILTER_END_DATE'
 
 export const changeEventFilter = (history, urlLoader = filterService.getUrlFromFilter) => (filter) => {
   urlLoader(history, filter)
