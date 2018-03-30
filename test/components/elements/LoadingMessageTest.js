@@ -7,7 +7,7 @@ import { RetryButton } from 'components/elements/Buttons'
 
 describe('LoadingMessage', function () {
   it('Should render a CircularProgress icon and a span with the given message when called with just a message', function () {
-    const testObject = LoadingMessage('TestMessage')
+    const testObject = createComponent(LoadingMessage, { message: 'TestMessage' })
 
     expect(testObject.type).to.equal('div')
     expect(testObject.props.children[0].type).to.equal(CircularProgress)
@@ -17,7 +17,7 @@ describe('LoadingMessage', function () {
   })
 
   it('Should additionally render a retry button when provided an action for retry', function () {
-    const testObject = LoadingMessage('TestMessage', 'TestAction')
+    const testObject = createComponent(LoadingMessage, { message: 'TestMessage', actionForRetry: 'TestAction'})
 
     expect(testObject.props.children[2].type).to.equal(RetryButton)
     expect(testObject.props.children[2].props.actionForRetry).to.equal('TestAction')

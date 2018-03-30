@@ -2,7 +2,6 @@
 import { expect, assert } from 'chai'
 
 import * as actionHelpers from 'actions/actionHelpers'
-import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
 
 describe('ActionHelpers', function () {
   describe('paginationActions', function () {
