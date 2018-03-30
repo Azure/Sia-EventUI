@@ -1,14 +1,12 @@
 import deepEquals from 'deep-equal'
 import ByPath from 'object-path'
 
-import * as eventActions from 'actions/eventActions'
-import * as signalRActions from 'actions/signalRActions'
 import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
+export const UPDATE_EVENT_FILTER_INCIDENTID = 'UPDATE_EVENT_FILTER_INCIDENTID'
 export const UPDATE_DATASEARCH = 'UPDATE_DATASEARCH'
-export const UPDATE_START_AND_END_TIME = 'UPDATE_START_AND_END_TIME'
 export const UPDATE_FILTER_START_TIME = 'UPDATE_FILTER_START_TIME'
 export const UPDATE_FILTER_START_DATE = 'UPDATE_FILTER_START_DATE'
 export const UPDATE_FILTER_END_TIME = 'UPDATE_FILTER_END_TIME'
@@ -22,26 +20,39 @@ export const changeEventFilter = (history, urlLoader = filterService.getUrlFromF
   }
 }
 
-export const clearFilterIncidentId = () => {
-  return {
-    type: CLEAR_EVENT_FILTER_INCIDENTID
-  }
-}
+export const clearFilterIncidentId = () => ({
+  type: CLEAR_EVENT_FILTER_INCIDENTID
+})
 
-export const updateDataSearch = (dataSearch) => {
-  return {
-    type: UPDATE_DATASEARCH,
-    dataSearch
-  }
-}
+export const updateEventFilterIncidentId = (incidentId) => ({
+  type: UPDATE_EVENT_FILTER_INCIDENTID,
+  incidentId
+})
 
-export const setStartAndEndTime = (startTime, endTime) => {
-  return {
-    type: UPDATE_START_AND_END_TIME,
-    startTime,
-    endTime
-  }
-}
+export const updateDataSearch = (dataSearch) => ({
+  type: UPDATE_DATASEARCH,
+  dataSearch
+})
+
+export const updateFilterStartTime = (startTime) => ({
+  type: UPDATE_FILTER_START_TIME,
+  time: startTime
+})
+
+export const updateFilterStartDate = (startDate) => ({
+  type: UPDATE_FILTER_START_DATE,
+  date: startDate
+})
+
+export const updateFilterEndTime = (endTime) => ({
+  type: UPDATE_FILTER_END_TIME,
+  time: endTime
+})
+
+export const updateFilterEndDate = (endDate) => ({
+  type: UPDATE_FILTER_END_DATE,
+  date: endDate
+})
 
 export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
   let newFilter = {}

@@ -5,9 +5,10 @@ import { connect } from 'react-redux'
 import EventFilter from 'components/Timeline/EventFilter'
 import Footer from 'components/Timeline/EventFooter'
 import Events from 'components/Timeline/Events'
-import TimeAndDatePicker from 'components/elements/TimePicker'
+import TimeAndDatePicker from 'components/Timeline/Filter/TimePicker'
 import * as filterActions from 'actions/filterActions'
-import TextFilter from 'components/Timeline/Playbook/TextFilter'
+import TextFilter from 'components/Timeline/Filter/TextFilter'
+import LoadWhenFilterIsApplied from 'components/Timeline/Filter/'
 
 class UncorrelatedEvents extends Component {
   static propTypes = {

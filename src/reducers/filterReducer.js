@@ -1,14 +1,17 @@
-import * as filterActions from 'actions/filterActions'
 import { combineReducers } from 'redux'
+import { DateTime } from 'luxon'
+
+import * as filterActions from 'actions/filterActions'
+import dateTimeReducer from 'reducers/reducerHelpers/dateTime'
 
 export const incidentId = (defaultIncidentId) => (state = defaultIncidentId, action) => {
   switch (action.type) {
     case filterActions.CLEAR_EVENT_FILTER_INCIDENTID:
       return null
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.incidentId) {
-        return action.filter.incidentId
-      } else return state
+    case filterActions.UPDATE_EVENT_FILTER_INCIDENTID:
+      return state === action.incidentId
+        ? state
+        : action.incidentId
     default:
       return state
   }
@@ -25,27 +28,19 @@ export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, act
   }
 }
 
-export const startTime = (defaultStartTime) => (state = defaultStartTime, action) => {
-  switch (action.type) {
-    case filterActions.UPDATE_START_AND_END_TIME:
-      if (action.startTime) {
-        return action.startTime
-      } else return state
-    default:
-      return state
-  }
-}
+export const startTime = (defaultStartTime) => dateTimeReducer(
+  defaultStartTime ? defaultStartTime.split('T')[1] : DateTime.utc().toISOTime().toString(),
+  defaultStartTime ? defaultStartTime.split('T')[0] : DateTime.utc().minus({day: 1}).toISODate().toString(),
+  filterActions.UPDATE_FILTER_START_TIME,
+  filterActions.UPDATE_FILTER_START_DATE
+)
 
-export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
-  switch (action.type) {
-    case filterActions.UPDATE_START_AND_END_TIME:
-      if (action.endTime) {
-        return action.endTime
-      } else return state
-    default:
-      return state
-  }
-}
+export const endTime = (defaultEndTime) => dateTimeReducer(
+  defaultEndTime ? defaultEndTime.split('T')[1] : DateTime.utc().toISOTime().toString(),
+  defaultEndTime ? defaultEndTime.split('T')[0] : DateTime.utc().plus({day: 1}).toISODate().toString(),
+  filterActions.UPDATE_FILTER_START_TIME,
+  filterActions.UPDATE_FILTER_START_DATE
+)
 
 export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
@@ -75,7 +70,7 @@ const initialFilter = {
   eventTypes: null,
   startTime: null,
   endTime: null,
-  DataSearch: null
+  dataSearch: null
 }
 
 export const filter = (defaultFilter = initialFilter) => {
@@ -85,7 +80,7 @@ export const filter = (defaultFilter = initialFilter) => {
     eventTypes: eventTypes(defaultFilter.eventTypes),
     startTime: startTime(defaultFilter.startTime),
     endTime: endTime(defaultFilter.endTime),
-    DataSearch: dataSearch(defaultFilter.DataSearch)
+    dataSearch: dataSearch(defaultFilter.DataSearch)
   })
 }
 

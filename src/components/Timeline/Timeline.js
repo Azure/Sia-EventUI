@@ -21,18 +21,18 @@ class Timeline extends Component {
   }
 
   componentDidMount () {
-    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
+    const { eventTypes, events, incidentId, dispatch } = this.props
     updatePagination(incidentId, dispatch)
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId) {
-      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
+      dispatch(filterActions.updateEventFilterIncidentId(incidentId))
     }
   }
 
   componentDidUpdate (oldProps) {
-    const { dispatch, history, incidentId, filter, ticketId } = this.props
+    const { dispatch, incidentId, ticketId } = this.props
     if (oldProps.incidentId !== incidentId) {
-      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
+      dispatch(filterActions.updateEventFilterIncidentId(incidentId))
       updatePagination(incidentId, dispatch)
     }
   }
@@ -56,8 +56,7 @@ const updatePagination = (incidentId, dispatch) => {
 
 const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
   const eventTypeIds = Object.keys(eventTypes)
-  events.pageList
-    .map(event => event.eventTypeId)
+  [...new Set(events.cacheList.map(event => event.eventTypeId))] // Unique Ids
     .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
@@ -68,9 +67,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     events: events.pages,
-    filter: events.filter,
     eventTypes: eventTypes.records
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Timeline))
+export default connect(mapStateToProps)(Timeline)
