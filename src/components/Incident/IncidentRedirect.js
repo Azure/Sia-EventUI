@@ -22,7 +22,7 @@ export class IncidentRedirect extends Component {
       return (<Redirect to={`/tickets/${this.props.ticketId}`} />)
     }
     if (this.props.incidentIsFetching) {
-      return LoadingMessage('Loading incident information')
+      return <LoadingMessage message={'Loading incident information'} />
     }
     return (<div>Unexpected error or interruption when loading incident</div>)
   }
