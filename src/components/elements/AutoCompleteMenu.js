@@ -6,21 +6,24 @@ const dataSourceConfig = (textInput, valueInput) => ({
   value: valueInput
 })
 
-const AutoCompleteMenu = ({label, dataConfigText, dataConfigValue, dataSource, searchText, onUpdateInput, selectMethod, clearMethod}) => {
-  return (
-    <div>
-      <AutoComplete
-        floatingLabelText={label}
-        filter={AutoComplete.caseInsensitiveFilter}
-        dataSource={dataSource}
-        searchText={searchText}
-        onUpdateInput={(searchInput) => onUpdateInput(searchInput)}
-        onNewRequest={(selectedItem) => onNewRequest(dataSource, selectMethod, clearMethod)(selectedItem)}
-        dataSourceConfig={dataSourceConfig(dataConfigText, dataConfigValue)}
-    />
-    </div>
-  )
-}
+export const AutoCompleteMenu = ({
+  label,
+  dataConfigText,
+  dataConfigValue,
+  dataSource,
+  searchText,
+  onUpdateInput,
+  selectMethod,
+  clearMethod
+}) => <AutoComplete
+  floatingLabelText={label}
+  filter={AutoComplete.caseInsensitiveFilter}
+  dataSource={dataSource}
+  searchText={searchText}
+  onUpdateInput={(searchInput) => onUpdateInput(searchInput)}
+  onNewRequest={(selectedItem) => onNewRequest(dataSource, selectMethod, clearMethod)(selectedItem)}
+  dataSourceConfig={dataSourceConfig(dataConfigText, dataConfigValue)}
+/>
 
 export const onNewRequest = (dataSource, selectMethod, clearMethod) => (input) => {
   if (dataSource.length === 0 || input.length === 0) {
