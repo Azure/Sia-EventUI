@@ -30,6 +30,7 @@ export const rawList = (state = defaultEventCollection, action) => {
       return addEventsToState(state, action.events)
     case filterActions.CLEAR_EVENT_FILTER_INCIDENTID: // Fallthrough
     case filterActions.UPDATE_EVENT_FILTER_INCIDENTID:
+    case eventActions.CLEAR_EVENTS:
       return defaultEventCollection
     default:
       return state

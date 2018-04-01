@@ -14,10 +14,15 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
+export const CLEAR_EVENTS = 'CLEAR_EVENTS'
 
 export const pagination = paginationActions(EVENTS)
 
 export const linksHeaderName = 'links'
+
+export const clearEvents = () => ({
+  type: CLEAR_EVENTS
+})
 
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
     [getEventsEndPoint(incidentId) + eventId],

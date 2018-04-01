@@ -90,5 +90,6 @@ export const applyEventTypeRemoval = (history, signalRFilterType, oldFilter, eve
 export const applyFilter = (history, filter, signalRFilterType) => (dispatch) => {
   filterService.updateUrlToMatchFilter(history, filter)
   dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, filter))
+  dispatch(eventActions.clearEvents())
   dispatch(eventActions.fetchEvents(filter))
 }
