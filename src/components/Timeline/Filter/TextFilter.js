@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import * as filterActions from 'actions/filterActions'
 
 export const TextFilter = ({text, dispatch}) => <TextField
-  value={text}
+  value={text || ''}
   hintText='Search'
   id='search-field-value'
   onChange={(event) => dispatch(filterActions.updateDataSearch(event.target.value))}

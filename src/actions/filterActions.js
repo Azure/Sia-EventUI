@@ -2,7 +2,6 @@ import * as filterService from 'services/filterService'
 import * as eventActions from 'actions/eventActions'
 import * as signalRActions from 'actions/signalRActions'
 
-export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
 export const UPDATE_EVENT_FILTER_INCIDENTID = 'UPDATE_EVENT_FILTER_INCIDENTID'
 export const UPDATE_DATASEARCH = 'UPDATE_DATASEARCH'

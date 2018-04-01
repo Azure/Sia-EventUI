@@ -1,5 +1,5 @@
 export const dateTimeReducer = (defaultTime, defaultDate, timeAction, dateAction) =>
-(state = defaultTime + 'T' + defaultDate, action) => {
+(state = defaultDate + 'T' + defaultTime, action) => {
   switch (action.type) {
     case timeAction:
       return state.split('T')[0].concat('T', action.time)

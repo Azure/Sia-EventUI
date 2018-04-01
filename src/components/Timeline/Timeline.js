@@ -21,24 +21,28 @@ class Timeline extends Component {
 
   componentDidMount () {
     const { eventTypes, events, incidentId, dispatch } = this.props
-    updatePagination(incidentId, dispatch)
-    fetchMissingEventTypes(eventTypes, events, dispatch)
-    if (incidentId) {
-      dispatch(filterActions.updateEventFilterIncidentId(incidentId))
-    } else {
-      dispatch(filterActions.clearFilterIncidentId())
-    }
-  }
-
-  componentDidUpdate (oldProps) {
-    const { dispatch, incidentId } = this.props
-    if (oldProps.incidentId !== incidentId) {
+    dispatch((dispatch) => {
+      dispatch(fetchMissingEventTypes(eventTypes, events))
       if (incidentId) {
         dispatch(filterActions.updateEventFilterIncidentId(incidentId))
       } else {
         dispatch(filterActions.clearFilterIncidentId())
       }
-      updatePagination(incidentId, dispatch)
+      dispatch(updatePagination(incidentId))
+    })
+  }
+
+  componentDidUpdate (oldProps) {
+    const { dispatch, incidentId } = this.props
+    if (oldProps.incidentId !== incidentId) {
+      dispatch((dispatch) => {
+        if (incidentId) {
+          dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+        } else {
+          dispatch(filterActions.clearFilterIncidentId())
+        }
+        dispatch(updatePagination(incidentId))
+      })
     }
   }
 
@@ -55,11 +59,11 @@ class Timeline extends Component {
   }
 }
 
-const updatePagination = (incidentId, dispatch) => {
-  dispatch(eventActions.pagination.filter(incidentId.toString()))
+const updatePagination = (incidentId) => (dispatch) => {
+  dispatch(eventActions.pagination.filter(incidentId ? incidentId.toString() : ''))
 }
 
-const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
+const fetchMissingEventTypes = (eventTypes, events) => (dispatch) => {
   const loadedEventTypeIds = Object.keys(eventTypes)
   const neededEventTypeIds = new Set(events.cacheList.map(event => event.eventTypeId))
   const uniqueNeededEventTypeIds = [...neededEventTypeIds]

@@ -10,6 +10,7 @@ const defaultBasePath = config.baseUrl
 const defaultScopes = [config.clientId]
 
 let signalRConnectionSingleton
+let appliedFilterSingleton
 
 export const getSignalRConnection = (dispatch) => signalRConnectionSingleton
   ? Promise.resolve(signalRConnectionSingleton)
@@ -41,7 +42,7 @@ const configureConnection = (dispatch) => getToken(defaultScopes)
       dispatch(getEventActionSet(eventObject.incidentId, eventObject.id).succeed(eventObject))
     })
 
-    connection.onClosed = (error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace'))
+    connection.closedCallbacks = connection.closedCallbacks.concat((error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace')))
 
     return connection
   })
@@ -50,6 +51,13 @@ const startConnection = (connection, dispatch) => {
   dispatch(signalRActions.tryEstablishConnection())
   return connection
     .start()
+    .then(() => {
+      if (appliedFilterSingleton) {
+        connection.invoke('updateFilter', appliedFilterSingleton)
+      } else {
+        connection.invoke('clearFilter')
+      }
+    })
     .then(() => {
       dispatch(signalRActions.succeedEstablishConnection())
       return connection
@@ -61,9 +69,17 @@ const startConnection = (connection, dispatch) => {
   )
 }
 
-export const updateEventFilter = (eventFilter) => signalRConnectionSingleton.invoke('updateFilter', eventFilter)
+export const updateEventFilter = (eventFilter, dispatch) => {
+  appliedFilterSingleton = eventFilter
+  getSignalRConnection(dispatch)
+    .then(connection => connection.invoke('updateFilter', eventFilter))
+}
 
-export const clearEventFilter = () => signalRConnectionSingleton.invoke('clearFilter')
+export const clearEventFilter = (dispatch) => {
+  appliedFilterSingleton = null
+  getSignalRConnection(dispatch)
+    .then(connection => connection.invoke('clearFilter'))
+}
 
 export const getEchoConnectionForTesting = () => { // Do not use in prod
   const callHistory = []

@@ -17,7 +17,7 @@ export const IncidentEvents = (ticketToIncidentIdMap) => [
     ]
   ],
   [
-    <ApplyFilterOnMount>
+    <ApplyFilterOnMount incidentId={ticketToIncidentIdMap[0][1]}>
       <Timeline
         ticketId={ticketToIncidentIdMap[0][0]}
         incidentId={ticketToIncidentIdMap[0][1]}

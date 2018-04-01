@@ -84,7 +84,7 @@ export const filter = (defaultFilter = initialFilter) => {
     eventTypes: eventTypes(defaultFilter.eventTypes),
     startTime: startTime(defaultFilter.startTime),
     endTime: endTime(defaultFilter.endTime),
-    dataSearch: dataSearch(defaultFilter.DataSearch)
+    dataSearch: dataSearch(defaultFilter.dataSearch)
   })
 }
 

@@ -10,12 +10,22 @@ export class ApplyFilterOnMount extends Component {
     filters: PropTypes.object.isRequired,
     filterPreference: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    incidentId: PropTypes.number
   }
 
   componentDidMount () {
-    const { dispatch, history, filters, filterPreference } = this.props
-    dispatch(applyFilter(history, filters, filterPreference))
+    const { dispatch, history, filters, filterPreference, incidentId } = this.props
+    const filterWithIncidentId = Object.assign({}, filters, {incidentId})
+    dispatch(applyFilter(history, filterWithIncidentId, filterPreference))
+  }
+
+  componentDidUpdate (oldProps) {
+    const { dispatch, history, filters, filterPreference, incidentId } = this.props
+    if (oldProps.incidentId !== incidentId) {
+      const filterWithIncidentId = Object.assign({}, filters, {incidentId})
+      dispatch(applyFilter(history, filterWithIncidentId, filterPreference))
+    }
   }
 
   render () {

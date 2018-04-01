@@ -9,14 +9,14 @@ import * as filterActions from 'actions/filterActions'
 
 export const TimeAndDatePicker = ({filters, dispatch}) => <div>
   <DatePicker
-    value={filters.startTime && filters.startTime.includes('T') ? filters.startTime.split('T')[0] : null}
+    value={DateTime.fromISO(filters.startTime).toJSDate()}
     hintText='Select a start date'
     onChange={(event, date) => {
       dispatch(filterActions.updateFilterStartDate(DateTime.fromJSDate(date).toISODate().toString()))
     }}
   />
   <TimePicker
-    value={filters.startTime && filters.startTime.includes('T') ? filters.startTime.split('T')[1] : null}
+    value={DateTime.fromISO(filters.startTime).toJSDate()}
     format='24hr'
     hintText='Select a start time'
     onChange={(event, time) => {
@@ -24,14 +24,14 @@ export const TimeAndDatePicker = ({filters, dispatch}) => <div>
     }}
   />
   <DatePicker
-    value={filters.endTime && filters.endTime.includes('T') ? filters.endTime.split('T')[0] : null}
+    value={DateTime.fromISO(filters.endTime).toJSDate()}
     hintText='Select an end date'
     onChange={(event, date) => {
       dispatch(filterActions.updateFilterEndDate(DateTime.fromJSDate(date).toISODate().toString()))
     }}
   />
   <TimePicker
-    value={filters.endTime && filters.endTime.includes('T') ? filters.endTime.split('T')[1] : null}
+    value={DateTime.fromISO(filters.endTime).toJSDate()}
     format='24hr'
     hintText='Select an end time'
     onChange={(event, time) => {
