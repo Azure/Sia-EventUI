@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
 import EventFilter from 'components/Timeline/EventFilter'
 import Footer from 'components/Timeline/EventFooter'
 import AddEventCard from 'components/Timeline/AddEventCard'
-import PropTypes from 'prop-types'
 import Events from 'components/Timeline/Events'
+
 import * as eventActions from 'actions/eventActions'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import * as filterActions from 'actions/filterActions'
@@ -14,10 +15,8 @@ class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    ticketId: PropTypes.string.isRequired,
-    incidentId: PropTypes.number.isRequired,
-    eventTypes: PropTypes.object.isRequired,
-    filter: PropTypes.object
+    ticketId: PropTypes.string,
+    incidentId: PropTypes.number
   }
 
   componentDidMount () {
@@ -26,25 +25,31 @@ class Timeline extends Component {
     fetchMissingEventTypes(eventTypes, events, dispatch)
     if (incidentId) {
       dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+    } else {
+      dispatch(filterActions.clearFilterIncidentId())
     }
   }
 
   componentDidUpdate (oldProps) {
-    const { dispatch, incidentId, ticketId } = this.props
+    const { dispatch, incidentId } = this.props
     if (oldProps.incidentId !== incidentId) {
-      dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+      if (incidentId) {
+        dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+      } else {
+        dispatch(filterActions.clearFilterIncidentId())
+      }
       updatePagination(incidentId, dispatch)
     }
   }
 
   render () {
-    const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
+    const { events, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
-        {AddEventCard(incidentId)}
-        <EventFilter history={history} eventTypes={eventTypes} />
+        {incidentId ? AddEventCard(incidentId) : null}
+        <EventFilter eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
-        <Footer pagination={events} dispatch={dispatch} />
+        <Footer />
       </div>
     )
   }
@@ -55,9 +60,12 @@ const updatePagination = (incidentId, dispatch) => {
 }
 
 const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
-  const eventTypeIds = Object.keys(eventTypes)
-  [...new Set(events.cacheList.map(event => event.eventTypeId))] // Unique Ids
-    .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
+  const loadedEventTypeIds = Object.keys(eventTypes)
+  const neededEventTypeIds = new Set(events.cacheList.map(event => event.eventTypeId))
+  const uniqueNeededEventTypeIds = [...neededEventTypeIds]
+
+  uniqueNeededEventTypeIds
+    .filter(eventTypeId => !loadedEventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 

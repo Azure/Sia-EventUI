@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import { applyFilter } from 'services/filterService'
+import { applyFilter } from 'actions/filterActions'
 
 export class ApplyFilterOnMount extends Component {
   static propTypes = {
@@ -15,18 +15,18 @@ export class ApplyFilterOnMount extends Component {
 
   componentDidMount () {
     const { dispatch, history, filters, filterPreference } = this.props
-    dispatch(filterActions.applyFilter(history, filters, filterPreference))
+    dispatch(applyFilter(history, filters, filterPreference))
   }
 
   render () {
-    return this.props.children
+    return <div style={this.props.style ? this.props.style : undefined}>{this.props.children}</div>
   }
 }
 
-export const mapStateToApplyFilterOnMountProps = (state, ownProps) => ({
+export const mapStateToApplyFilterProps = (state, ownProps) => ({
   filters: state.events.filter,
   filterPreference: state.signalR.filterPreferences.eventFilterType,
   ...ownProps
 })
 
-export default withRouter(connect(mapStateToApplyFilterOnMountProps)(ApplyFilterOnMount))
+export default withRouter(connect(mapStateToApplyFilterProps)(ApplyFilterOnMount))

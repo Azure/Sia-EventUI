@@ -1,8 +1,5 @@
 import queryString from 'query-string'
 
-import * as eventActions from 'actions/eventActions'
-import * as signalRActions from 'actions/signalRActions'
-
 export const serializeFiltersForUrl = (filters) => {
   if (!filters) {
     return ''
@@ -41,7 +38,6 @@ export const getFilterFromUrl = (urlFilterInfo) => {
   return filter
 }
 
-export const applyFilter = (history, filter, signalRFilterType) => (dispatch) => {
-  dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, filter))
+export const updateUrlToMatchFilter = (history, filter) => {
   history.replace(history.location.pathname + serializeFiltersForUrl(filter) + history.location.hash)
 }

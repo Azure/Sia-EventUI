@@ -17,12 +17,16 @@ export const incidentId = (defaultIncidentId) => (state = defaultIncidentId, act
   }
 }
 
-export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, action) => {
+export const eventTypes = (defaultEventTypes = []) => (state = defaultEventTypes, action) => {
   switch (action.type) {
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.eventTypes) {
-        return action.filter.eventTypes
-      } else return state
+    case filterActions.ADD_EVENT_TYPE_TO_FILTER:
+      return state.includes(action.eventTypeId)
+        ? state
+        : state.concat(action.eventTypeId)
+    case filterActions.REMOVE_EVENT_TYPE_FROM_FILTER:
+      return state.includes(action.eventTypeId)
+        ? state.filter(action.eventTypeId)
+        : state
     default:
       return state
   }

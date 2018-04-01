@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Timeline from 'components/Timeline/Timeline'
 import ApplyFilterOnMount from 'components/Timeline/Filter/ApplyFilterOnMount'
+import Timeline from 'components/Timeline/Timeline'
 
 export const IncidentEventsName = () => {
   return 'IncidentEvents'
