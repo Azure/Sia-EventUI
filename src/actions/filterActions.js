@@ -56,24 +56,34 @@ export const removeEventTypeFromFilter = (eventTypeId) => ({
   eventTypeId
 })
 
+const nothingToAdd = (eventType) => !eventType || (!eventType.id && eventType.id !== 0)
+
+const typeIsAlreadyFiltered = (oldFilter, eventType) => oldFilter &&
+  oldFilter.eventTypes &&
+  oldFilter.eventTypes.includes(eventType.id)
+
+const addTypeToOldFilter = (oldFilter, eventType) => Object.assign({}, oldFilter, {eventTypes: oldFilter.eventTypes
+  ? oldFilter.eventTypes.concat(eventType.id)
+  : [eventType.id]})
+
 export const applyEventTypeAddition = (history, oldFilter, signalRFilterType, eventType) => (dispatch) => {
-  if (!eventType || (!eventType.id && eventType.id !== 0)) {
-    return // Nothing to add
+  if (nothingToAdd(eventType)) {
+    return
   }
-  if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
+  if (typeIsAlreadyFiltered(oldFilter, eventType)) {
     return // Event Type is already filtered
   }
   dispatch(addEventTypeToFilter(eventType.id))
 
-  const newFilter = Object.assign({}, oldFilter, {eventTypes: oldFilter.eventTypes
-    ? oldFilter.eventTypes.concat(eventType.id)
-    : [eventType.id]})
+  const newFilter = addTypeToOldFilter(oldFilter, eventType)
 
   dispatch(applyFilter(history, newFilter, signalRFilterType))
 }
 
+const nothingToRemove = (oldFilter, eventTypeId) => !oldFilter.eventTypes || !oldFilter.eventTypes.includes(eventTypeId)
+
 export const applyEventTypeRemoval = (history, signalRFilterType, oldFilter, eventTypeId) => (dispatch) => {
-  if (!oldFilter.eventTypes || !oldFilter.eventTypes.includes(eventTypeId)) {
+  if (nothingToRemove(oldFilter, eventTypeId)) {
     return
   }
   dispatch(removeEventTypeFromFilter(eventTypeId))
