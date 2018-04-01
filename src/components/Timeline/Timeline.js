@@ -65,10 +65,10 @@ const updatePagination = (incidentId) => (dispatch) => {
 
 const fetchMissingEventTypes = (eventTypes, events) => (dispatch) => {
   const loadedEventTypeIds = Object.keys(eventTypes)
-  const neededEventTypeIds = new Set(events.cacheList.map(event => event.eventTypeId))
-  const uniqueNeededEventTypeIds = [...neededEventTypeIds]
+  const uniqueNeededEventTypeIds = new Set(events.cacheList.map(event => event.eventTypeId))
+  const toFetch = [...uniqueNeededEventTypeIds]
 
-  uniqueNeededEventTypeIds
+  toFetch
     .filter(eventTypeId => !loadedEventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
