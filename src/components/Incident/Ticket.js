@@ -52,7 +52,7 @@ class Ticket extends Component {
     }
 
     if (!incident && ticket) {
-      var currentIncident = { id: ticket.incidentId, engagements: [] }
+      const currentIncident = { id: ticket.incidentId }
 
       return <DisplayIncident
         incident={currentIncident}
