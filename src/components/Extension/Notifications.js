@@ -40,13 +40,11 @@ class Notifications extends Component {
         const eventType = eventTypes[notification.event.eventTypeId]
         const actions = eventType ? eventType.actions : null
         const ticket = incidents[notification.incidentId].primaryTicket
-        const engagement = null // TODO
 
         return <Notification
           key={notification.event.id}
           {...notification}
           actions={actions}
-          engagement={engagement}
           eventType={eventType}
           ticket={ticket}
           />
@@ -73,7 +71,6 @@ export const mapStateToProps = (state) => {
     unreadCount: state.notifications.unreadCount,
     eventTypes: state.eventTypes.records,
     incidents: state.incidents.map,
-    engagements: state.engagements.list,
     incidentsFetching: state.incidents.fetchingByIncidentId
   }
 }

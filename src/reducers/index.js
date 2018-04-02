@@ -2,7 +2,6 @@ import { combineReducers } from 'redux'
 import tickets from 'reducers/ticketReducers'
 import auth from 'reducers/authReducer'
 import incidents from 'reducers/incidentReducers'
-import engagements from 'reducers/engagementReducer'
 import events from 'reducers/eventReducer'
 import expandSection from 'reducers/expandSectionReducer'
 import signalR from 'reducers/signalRReducer'
@@ -15,7 +14,6 @@ const rootReducer = (filters, defaultEventFilterPreference) => combineReducers({
   incidents,
   auth,
   tickets,
-  engagements,
   events: filters ? events(filters) : events(),
   forms,
   expandSection,
