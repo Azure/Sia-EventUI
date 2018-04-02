@@ -11,6 +11,8 @@ export class ApplyFilterOnMount extends Component {
     filterPreference: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    applyFilter: PropTypes.func.isRequired,
+    style: PropTypes.object,
     incidentId: PropTypes.number
   }
 
