@@ -42,8 +42,8 @@ export const startTime = (defaultStartTime) => dateTimeReducer(
 export const endTime = (defaultEndTime) => dateTimeReducer(
   defaultEndTime ? defaultEndTime.split('T')[1] : DateTime.utc().toISOTime().toString(),
   defaultEndTime ? defaultEndTime.split('T')[0] : DateTime.utc().plus({day: 1}).toISODate().toString(),
-  filterActions.UPDATE_FILTER_START_TIME,
-  filterActions.UPDATE_FILTER_START_DATE
+  filterActions.UPDATE_FILTER_END_TIME,
+  filterActions.UPDATE_FILTER_END_DATE
 )
 
 export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {

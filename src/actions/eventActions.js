@@ -43,7 +43,7 @@ export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events/'
 
 export const getEventsFetchArgs = (filter) => ([
-  getEventsEndPoint(filter.incidentId) + filterService.serializeFiltersForUrl(filter)
+  getEventsEndPoint(filter ? filter.incidentId : null) + filterService.serializeFiltersForUrl(filter)
 ])
 
 export const getEventFetchArgs = (incidentId, eventId) => {
