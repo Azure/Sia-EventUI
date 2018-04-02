@@ -25,8 +25,8 @@ export const clearEvents = () => ({
 })
 
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-    [getEventsEndPoint(incidentId) + eventId],
-    getEventActionSet(incidentId, eventId)
+  [getEventsEndPoint(incidentId) + eventId],
+  getEventActionSet(incidentId, eventId)
 )
 
 export const fetchEvents = (filter) => reduxBackedPromise(
