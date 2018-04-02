@@ -52,15 +52,13 @@ export const Event = ({
                 <CardHeader
                   title={ticketId ? `${ticketId}: ${text}` : text}
                   subtitle={timeFormattedToMultipleZones(time)}
-                  actAsExpander
-                  showExpandableButton
                   iconStyle={{
                     color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
                   }}
             />
                 {
               isAllPlaybookInfoAvailable &&
-              <CardText expandable>
+              <CardText>
                 Select the Actions below:
                 <Playbook
                   eventId={eventId}

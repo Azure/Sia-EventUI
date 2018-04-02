@@ -18,7 +18,6 @@ IncidentSummary.propTypes = {
   incident: PropTypes.object,
   ticket: PropTypes.object,
   ticketSystem: PropTypes.object,
-  expandSection: PropTypes.object,
   dispatch: PropTypes.func.isRequired
 }
 
