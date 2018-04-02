@@ -13,7 +13,7 @@ import incidentRedirect from 'components/Incident/IncidentRedirect'
 import Home from 'components/Home'
 import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
-import UncorrelatedEvents from 'components/uncorrelatedEvents'
+import UncorrelatedEvents from 'components/Timeline/UncorrelatedEvents'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 

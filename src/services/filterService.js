@@ -38,24 +38,6 @@ export const getFilterFromUrl = (urlFilterInfo) => {
   return filter
 }
 
-export const getUrlFromFilter = (history, filter) => {
-  if (filter && filter.eventTypes) {
-    history.push(generateUrl(history, filter))
-  }
-}
-
-export const getUrlFromUncorrelatedFilter = (history, filter) => {
-  if (filter && filter.startTime && filter.endTime) {
-    history.push('/events/' + serializeFiltersForUrl(filter))
-  }
-}
-
-export const generateUrl = (history, filter) => {
-  return /tickets/ + filter.ticketId + '?' + serializeEventTypesForQuery(filter.eventTypes)
-}
-
-export const findEventTypeInRef = (referenceData) => (eventType) => {
-  return referenceData.hasOwnProperty(eventType)
-    ? referenceData[eventType]
-    : { id: eventType, name: 'unknown' }
+export const updateUrlToMatchFilter = (history, filter) => {
+  history.replace(history.location.pathname + serializeFiltersForUrl(filter) + history.location.hash)
 }

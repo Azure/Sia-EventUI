@@ -1,11 +1,12 @@
 import { connect } from 'react-redux'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types'
+
 import EventFilter from 'components/Timeline/EventFilter'
 import Footer from 'components/Timeline/EventFooter'
 import AddEventCard from 'components/Timeline/AddEventCard'
-import PropTypes from 'prop-types'
 import Events from 'components/Timeline/Events'
+
 import * as eventActions from 'actions/eventActions'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import * as filterActions from 'actions/filterActions'
@@ -14,51 +15,61 @@ class Timeline extends Component {
   static propTypes = {
     events: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    ticketId: PropTypes.string.isRequired,
-    incidentId: PropTypes.number.isRequired,
-    eventTypes: PropTypes.object.isRequired,
-    filter: PropTypes.object
+    ticketId: PropTypes.string,
+    incidentId: PropTypes.number
   }
 
   componentDidMount () {
-    const { eventTypes, events, ticketId, incidentId, filter, history, dispatch } = this.props
-    updatePagination(incidentId, dispatch)
-    fetchMissingEventTypes(eventTypes, events, dispatch)
-    if (incidentId) {
-      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
-    }
+    const { eventTypes, events, incidentId, dispatch } = this.props
+    dispatch((dispatch) => {
+      dispatch(fetchMissingEventTypes(eventTypes, events))
+      if (incidentId) {
+        dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+      } else {
+        dispatch(filterActions.clearFilterIncidentId())
+      }
+      dispatch(updatePagination(incidentId))
+    })
   }
 
   componentDidUpdate (oldProps) {
-    const { dispatch, history, incidentId, filter, ticketId } = this.props
+    const { dispatch, incidentId } = this.props
     if (oldProps.incidentId !== incidentId) {
-      dispatch(filterActions.synchronizeFilters(filter, incidentId, ticketId, history))
-      updatePagination(incidentId, dispatch)
+      dispatch((dispatch) => {
+        if (incidentId) {
+          dispatch(filterActions.updateEventFilterIncidentId(incidentId))
+        } else {
+          dispatch(filterActions.clearFilterIncidentId())
+        }
+        dispatch(updatePagination(incidentId))
+      })
     }
   }
 
   render () {
-    const { events, dispatch, ticketId, incidentId, eventTypes, history } = this.props
+    const { events, ticketId, incidentId, eventTypes } = this.props
     return (
       <div>
-        {AddEventCard(incidentId)}
-        <EventFilter history={history} eventTypes={eventTypes} />
+        {incidentId ? AddEventCard(incidentId) : null}
+        <EventFilter eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={ticketId} incidentId={incidentId} />
-        <Footer pagination={events} dispatch={dispatch} />
+        <Footer />
       </div>
     )
   }
 }
 
-const updatePagination = (incidentId, dispatch) => {
-  dispatch(eventActions.pagination.filter(incidentId.toString()))
+const updatePagination = (incidentId) => (dispatch) => {
+  dispatch(eventActions.pagination.filter(incidentId ? incidentId.toString() : ''))
 }
 
-const fetchMissingEventTypes = (eventTypes, events, dispatch) => {
-  const eventTypeIds = Object.keys(eventTypes)
-  events.pageList
-    .map(event => event.eventTypeId)
-    .filter(eventTypeId => !eventTypeIds.includes(eventTypeId))
+const fetchMissingEventTypes = (eventTypes, events) => (dispatch) => {
+  const loadedEventTypeIds = Object.keys(eventTypes)
+  const neededEventTypeIds = new Set(events.cacheList.map(event => event.eventTypeId))
+  const uniqueNeededEventTypeIds = [...neededEventTypeIds]
+
+  uniqueNeededEventTypeIds
+    .filter(eventTypeId => !loadedEventTypeIds.includes(eventTypeId))
     .forEach(missingEventTypeId => dispatch(eventTypeActions.fetchEventType(missingEventTypeId)))
 }
 
@@ -68,9 +79,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...ownProps,
     events: events.pages,
-    filter: events.filter,
     eventTypes: eventTypes.records
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Timeline))
+export default connect(mapStateToProps)(Timeline)

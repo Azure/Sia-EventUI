@@ -13,46 +13,6 @@ describe('filterReducer', function () {
         expect(filterReducer.incidentId()(100, clearIncidentIdAction)).to.be.null
       })
     })
-
-    describe('When action is CHANGE_EVENT_FILTER', function () {
-      describe('When filter includes an incidentId', function () {
-        const testAction = { type: filterActions.CHANGE_EVENT_FILTER, filter: { incidentId: 200 }}
-        it('Should return an object with an incidentId matching the object regardless of initial state', function () {
-          expect(filterReducer.incidentId()(null, testAction)).to.equal(200)
-          expect(filterReducer.incidentId()(100, testAction)).to.equal(200)
-        })
-      })
-
-      describe('When filter does not include an incidentId', function () {
-        const testAction = { type: filterActions.CHANGE_EVENT_FILTER, filter: { }}
-        it('Should return the initial state', function () {
-          expect(filterReducer.incidentId()(null, testAction)).to.be.null
-          expect(filterReducer.incidentId()(100, testAction)).to.equal(100)
-        })
-      })
-    })
-  })
-
-  describe('When action is UPDATE_START_AND_END_TIME', function(){
-      describe('When filter includes an startTime or endTime', function(){
-          const testAction = {type: filterActions.UPDATE_START_AND_END_TIME, startTime: 'startTime', endTime: 'endTime'}
-          it('Should return an object with a startTime and an endTime matching the object regardless of the initial state', function() {
-              expect(filterReducer.startTime()(null, testAction)).to.equal('startTime')
-              expect(filterReducer.startTime()('old_startTime', testAction)).to.equal('startTime')
-              expect(filterReducer.endTime()(null, testAction)).to.equal('endTime')
-              expect(filterReducer.endTime()('old_endTime', testAction)).to.equal('endTime')
-          })
-      })
-
-      describe('When filter does not include an startTime or endTime', function(){
-          const testAction = {type: filterActions.UPDATE_START_AND_END_TIME}
-          it('Should return an object with the initial startTime and endTime', function() {
-              expect(filterReducer.startTime()(null, testAction)).to.be.null
-              expect(filterReducer.startTime()('old_startTime', testAction)).to.be.equal('old_startTime')
-              expect(filterReducer.endTime()(null, testAction)).to.be.null
-              expect(filterReducer.endTime()('old_endTime', testAction)).to.equal('old_endTime')
-          })
-      })
   })
 
   describe('When action is UPDATE_DATASEARCH', function () {

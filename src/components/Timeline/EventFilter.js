@@ -1,11 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import IconButtonStyled from 'components/elements/IconButtonStyled'
-import FilterChips from 'components/elements/FilterChips'
 import ArrowDown from 'material-ui/svg-icons/navigation/arrow-downward'
 import ArrowUp from 'material-ui/svg-icons/navigation/arrow-upward'
 
+import IconButtonStyled from 'components/elements/IconButtonStyled'
+import FilterChips from 'components/elements/FilterChips'
+import ApplyFilterButton from 'components/Timeline/Filter/ApplyFilterButton'
+import TextFilter from 'components/Timeline/Filter/TextFilter'
+import TimeAndDatePicker from 'components/Timeline/Filter/TimePicker'
 import AutoCompleteMenu from 'components/elements/AutoCompleteMenu'
 import * as formActions from 'actions/formActions'
 import * as eventActions from 'actions/eventActions'
@@ -36,11 +39,13 @@ const EventFilter = (props) => {
   const filterTypes = eventTypes ? Object.values(props.eventTypes) : []
   return (
     <div className='incident-EventFilter'>
+      <TimeAndDatePicker />
+      <TextFilter />
       <FilterChips
         selectSpecificFilter={'eventTypes'}
         lookupFilterObject={'events.filter'}
         recordLookup={'eventTypes.records'}
-        onRequestDelete={(filter, id) => () => dispatch(filterActions.removeFilter(history, 'eventTypes')(filter, id))}
+        onRequestDelete={(filter, id) => () => dispatch(filterActions.applyEventTypeRemoval(history, signalRFilterType, filter, id))}
       />
       <AutoCompleteMenu
         label={'Filter by event type'}
@@ -49,9 +54,10 @@ const EventFilter = (props) => {
         dataSource={filterTypes}
         searchText={filterSearchField || ''}
         onUpdateInput={(searchText) => dispatch(formActions.updateInput(filterSearchForm.name, filterSearchForm.field, searchText))}
-        selectMethod={(menuSelection) => dispatch(filterActions.addFilter(history)(filter, signalRFilterType)(menuSelection))}
+        selectMethod={(menuSelection) => dispatch(filterActions.applyEventTypeAddition(history, filter, signalRFilterType, menuSelection))}
         clearMethod={() => dispatch(formActions.clearInput(filterSearchForm.name, filterSearchForm.field))}
       />
+      <ApplyFilterButton />
       <IconButtonStyled
         tooltip='order'
         onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}

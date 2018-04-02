@@ -25,13 +25,8 @@ export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
 )
 
 export const fetchEvents = (filter) => reduxBackedPromise(
-        getEventsFetchArgs(filter),
-        getEventsActionSet(filter.incidentId)
-    )
-
-export const fetchUncorrelatedEvents = (filter) => reduxBackedPromise(
-        ['events/' + filterService.serializeFiltersForUrl(filter)],
-        getEventsActionSet(null)
+  getEventsFetchArgs(filter),
+  getEventsActionSet(filter.incidentId)
 )
 
 export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.utc()) => reduxBackedPromise(
