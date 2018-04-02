@@ -6,7 +6,6 @@ import Play from 'components/Timeline/Playbook/Play'
 export const DisplayGlobalActions = ({
     actions,
     ticketId,
-    engagementId,
     incidentId
 }) => {
   let localKey = 0
@@ -15,7 +14,6 @@ export const DisplayGlobalActions = ({
             ? actions.map(action => DisplayGlobalAction(
                     action,
                     ticketId,
-                    engagementId,
                     incidentId,
                     localKey++
                 ))
@@ -29,7 +27,6 @@ const AreAnyActionsAvailable = (actions) =>
 export const DisplayGlobalAction = (
     action,
     ticketId,
-    engagementId,
     incidentId,
     key
 ) => <div key={key}>
@@ -41,16 +38,13 @@ export const DisplayGlobalAction = (
     action={action}
     incidentId={incidentId}
     ticketId={ticketId}
-    engagementId={engagementId}
     />
 </div>
 
 export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
   const ticket = state.tickets.map[ownProps.ticketId]
-  const engagement = FindCurrentUserEngagement(state, ownProps.incidentId)
-
   const actions = Object.values(state.globalActions)
-  var populatedConditionSetTest = TestConditionSet(null, ticket, null, engagement)
+  var populatedConditionSetTest = TestConditionSet(null, ticket, null)
   const qualifiedActions = actions.filter(
         action => action.conditionSets.reduce(
             (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
@@ -62,18 +56,8 @@ export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
 
   return {
     actions: qualifiedActions,
-    engagementId: engagement ? engagement.id : null,
     ...ownProps
   }
 }
-
-const FindCurrentUserEngagement = (state, incidentId) => state.engagements.list.find(
-    engagement => engagement &&
-    engagement.incidentId === incidentId &&
-    engagement.participant &&
-    engagement.participant.alias === state.auth.userAlias &&
-    engagement.participant.team === state.auth.userTeam &&
-    engagement.participant.role === state.auth.userRole
-)
 
 export default connect(mapStateToDisplayGlobalActionsProps)(DisplayGlobalActions)

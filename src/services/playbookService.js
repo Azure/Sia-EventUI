@@ -13,12 +13,11 @@ export const BootstrapIfNeeded = ({eventTypeId, eventType, isFetching, isError, 
   }
 }
 
-export const selectSourceObject = (sourceObjectEnum, event, ticket, eventType, engagement) => {
+export const selectSourceObject = (sourceObjectEnum, event, ticket, eventType) => {
   switch (sourceObjectEnum) {
     case 0: return event
     case 1: return ticket
     case 2: return eventType
-    case 3: return engagement
     default: return null // not sure if there's a better behavior for undefined enum
   }
 }
@@ -65,14 +64,14 @@ export const testableTestCondition = (testByConditionType) => (condition) => {
 
 export const TestCondition = testableTestCondition(TestByConditionType)
 
-export const testableTestConditionSet = (select, testCondition) => (event, ticket, eventType, engagement) => (conditionSet) => {
+export const testableTestConditionSet = (select, testCondition) => (event, ticket, eventType) => (conditionSet) => {
   const conditionsWithValue = conditionSet.conditions
         ? conditionSet.conditions
             .map(condition => condition.conditionSource
                 ? ({
                   ...condition,
                   value: ByPath.get(
-                        select(condition.conditionSource.sourceObject, event, ticket, eventType, engagement),
+                        select(condition.conditionSource.sourceObject, event, ticket, eventType),
                         condition.conditionSource.key
                     )
                 })
@@ -97,12 +96,12 @@ export const testableTestConditionSet = (select, testCondition) => (event, ticke
 
 export const TestConditionSet = testableTestConditionSet(selectSourceObject, TestCondition)
 
-export const testableFillTemplate = (selectSource) => (template, event, ticket, eventType, engagement) => {
+export const testableFillTemplate = (selectSource) => (template, event, ticket, eventType) => {
   if (!template || !template.pattern) return ''
   const templateSourcesWithData = template.sources
         ? template.sources.map(
                 source => Object.assign({}, source, {dataValue: ByPath.get(
-                selectSource(source.sourceObject, event, ticket, eventType, engagement),
+                selectSource(source.sourceObject, event, ticket, eventType),
                 source.key
             )})
         ) : []
@@ -115,8 +114,8 @@ export const testableFillTemplate = (selectSource) => (template, event, ticket, 
 
 export const fillTemplate = testableFillTemplate(selectSourceObject)
 
-export const LoadTextFromEvent = (event, eventType, ticket, engagement) => {
-  return HasValidDisplayTemplatePattern(eventType) ? fillTemplate(eventType.displayTemplate, event, ticket, eventType, engagement)
+export const LoadTextFromEvent = (event, eventType, ticket) => {
+  return HasValidDisplayTemplatePattern(eventType) ? fillTemplate(eventType.displayTemplate, event, ticket, eventType)
     : HasValidDisplayText(event.data) ? event.data.DisplayText
     : HasValidName(eventType) ? eventType.name
     : HasValidData(event) ? JSON.stringify(event.data)

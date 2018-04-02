@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import * as incidentActions from 'actions/incidentActions'
-import { ENGAGE_SUCCESS, DISENGAGE_SUCCESS } from 'actions/engagementActions'
 import buildFetching from 'reducers/reducerHelpers/fetching'
 import buildError from 'reducers/reducerHelpers/error'
 
@@ -47,15 +46,6 @@ export const map = (state = defaultIncidentMap, action) => {
       return addIncidentToState(state, localIncidentRecord || { id: action.incidentId }, startFetch)
     case incidentActions.REQUEST_INCIDENTS:
       return addIncidentsToState(state, Object.values(state), startFetch)
-    case ENGAGE_SUCCESS:
-    case DISENGAGE_SUCCESS:
-      const existingIncident = state[action.engagement.incidentId]
-      return addIncidentToState(state, existingIncident, {
-        engagements: Array
-                                                    .from(existingIncident.engagements)
-                                                    .filter(engagement => engagement.id !== action.engagement.id)
-                                                    .concat(action.engagement)
-      })
     default:
       return state
   }
