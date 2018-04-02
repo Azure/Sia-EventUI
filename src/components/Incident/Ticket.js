@@ -112,10 +112,10 @@ export const ErrorLoadingIncident = (incident, ticketId) => ErrorMessage(
     DetermineRetryAction(incident, ticketId)
 )
 
-export const CurrentlyLoadingIncident = (incident, ticketId) => LoadingMessage(
-    'Loading Incident...',
-    DetermineRetryAction(incident, ticketId)
-)
+export const CurrentlyLoadingIncident = (incident, ticketId) => <LoadingMessage
+  message={'Loading Incident...'}
+  actionForRetry={DetermineRetryAction(incident, ticketId)}
+/>
 
 export const UnexpectedFailureToLoadIncident = () => ErrorMessage(
     'Unexpected Failure When Attempting to Display Incident'

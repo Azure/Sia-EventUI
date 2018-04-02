@@ -1,9 +1,14 @@
 'use strict'
 import { expect } from 'chai'
-import createComponent from 'test/helpers/shallowRenderHelper'
-import { IncidentRedirect, mapStateToProps, IncidentRedirectComponentDidMount } from 'components/Incident/IncidentRedirect'
-import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
 import { Redirect } from 'react-router'
+
+import createComponent from 'test/helpers/shallowRenderHelper'
+import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
+
+import { IncidentRedirect, mapStateToProps, IncidentRedirectComponentDidMount } from 'components/Incident/IncidentRedirect'
+import LoadingMessage from 'components/elements/LoadingMessage'
+
+
 
 const setup = (props, children) => createComponent(IncidentRedirect, props, children)
 
@@ -62,8 +67,8 @@ describe('Incident Redirect', function () {
 
         const testObject = setup(testProps)
 
-        expect(testObject.type).to.equal('div')
-        expect(testObject.props.children[1].props.children).to.equal('Loading incident information')
+        expect(testObject.type).to.equal(LoadingMessage)
+        expect(testObject.props.message).to.equal('Loading incident information')
       })
 
       it('Should render an error message if ticketId is not known and incident is not fetching', function () {

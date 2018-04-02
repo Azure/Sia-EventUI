@@ -19,10 +19,16 @@ export const Playbook = ({
     engagementId
 }) => {
   if (eventIsFetching) {
-    return LoadingMessage('Fetching event information...', eventActions.fetchEvent(incidentId, eventId))
+    return <LoadingMessage
+      message={'Fetching event information...'}
+      actionForRetry={eventActions.fetchEvent(incidentId, eventId)}
+    />
   }
   if (eventTypeIsFetching) {
-    return LoadingMessage('Fetching event type information...', eventTypeActions.fetchEventType(eventTypeId))
+    return <LoadingMessage
+      message={'Fetching event type information...'}
+      actionForRetry={eventTypeActions.fetchEventType(eventTypeId)}
+    />
   }
   if (eventIsError) {
     return ErrorMessage('Error fetching event!', eventActions.fetchEvent(incidentId, eventId))
