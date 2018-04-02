@@ -39,14 +39,14 @@ export class Notification extends Component {
   }
 
   createNotificationBody (buttonActions) {
-    const { event, ticket, eventType, engagement } = this.props
+    const { event, ticket, eventType } = this.props
     const severity = ticket.data ? ticket.data.severity : null
     const title = ticket.data ? ticket.data.title : null
     return {
       type: 'basic',
       iconUrl: `/static/sia-blue-icon-128.png`,
       title: `${ticket.originId} | ${ticket.status} ${severity ? '| Sev ' + severity : ''}`,
-      message: LoadTextFromEvent(event, eventType, ticket, engagement),
+      message: LoadTextFromEvent(event, eventType, ticket),
       contextMessage: title || `SRE Incident Assistant | Event ID: ${event.id}`,
       // Only two buttons allowed in chrome notifications
       buttons: buttonActions.slice(0, 2).map(buttonAction => ({
@@ -57,7 +57,7 @@ export class Notification extends Component {
   }
 
   createButtonActions () {
-    const { actions, event, ticket, eventType, engagement } = this.props
+    const { actions, event, ticket, eventType } = this.props
     const ticketSystem = config.ticketSystems[ticket.ticketSystemId || 1]
     const defaultActions = [{
       title: 'Open in SIA',
@@ -71,7 +71,7 @@ export class Notification extends Component {
       ? actions.filter(action => action.actionTemplate.isUrl)
                .map(action => ({
                  title: `${action.name}: ${action.actionTemplate.name}`,
-                 url: fillTemplate(action.actionTemplate, event, ticket, eventType, engagement)
+                 url: fillTemplate(action.actionTemplate, event, ticket, eventType)
                })) : []
     return playbookActions.concat(defaultActions)
   }
