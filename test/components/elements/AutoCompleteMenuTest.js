@@ -15,15 +15,18 @@ const mockProps = {
   label: 'testLabel',
   dataConfigText: 'textInput',
   dataConfigValue: 'valueInput',
-  dataSource: ['TEST1', 'TEST2', 'A'], // Not Alphabetically Ordered
+  dataSource: [
+    {textInput:'TEST1', valueInput: 1},
+    {textInput:'TEST2', valueInput: 2},
+    {textInput:'A', valueInput: 3}
+  ], // Not Alphabetically Ordered
   searchText: '',
   onUpdateInput: () => null,
   selectMethod: () => 42
 }
 
 const setup = (mockProps) => {
-
-    return createComponent(AutoCompleteMenu, mockProps)
+  return createComponent(AutoCompleteMenu, mockProps)
 }
 
 describe('AutoCompleteMenu', function() {
@@ -44,18 +47,22 @@ describe('AutoCompleteMenu', function() {
           expect(result.props.searchText).to.equal(mockProps.searchText)
         })
 
-        it('should have the dataSource we passed in', function () {
+        it('should have a dataSource with the dataSource records we passed in', function () {
           mockProps.dataSource.forEach(
             (expectedOption) => expect(result.props.dataSource).to.include(expectedOption)
           )
         })
 
-        it('Should display the menu options in alphabetical order', function () {
-          const alphabetizedMenuOptions = [...mockProps.dataSource].sort()
+        it('Should display the menu options in alphabetical order by text', function () {
+          const alphabetizedMenuOptions = [
+            {textInput:'A', valueInput: 3},
+            {textInput:'TEST1', valueInput: 1},
+            {textInput:'TEST2', valueInput: 2}
+          ]
           let i = 0
           alphabetizedMenuOptions.forEach(
             (expectedOption) => {
-              expect(result.props.dataSource[i]).to.equal(expectedOption)
+              expect(result.props.dataSource[i]).to.deep.equal(expectedOption)
               i++
             }
           )

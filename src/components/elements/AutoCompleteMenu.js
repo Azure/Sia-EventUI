@@ -18,7 +18,13 @@ export const AutoCompleteMenu = ({
 }) => <AutoComplete
   floatingLabelText={label}
   filter={AutoComplete.caseInsensitiveFilter}
-  dataSource={dataSource}
+  dataSource={[...dataSource].sort(
+    (a, b) => (a[dataConfigText] < b[dataConfigText])
+      ? -1
+      : (a[dataConfigText] > b[dataConfigText])
+        ? 1
+        : 0
+  )}
   searchText={searchText}
   onUpdateInput={(searchInput) => onUpdateInput(searchInput)}
   onNewRequest={(selectedItem) => onNewRequest(dataSource, selectMethod, clearMethod)(selectedItem)}
