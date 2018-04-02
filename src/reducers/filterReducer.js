@@ -25,7 +25,7 @@ export const eventTypes = (defaultEventTypes = []) => (state = defaultEventTypes
         : state.concat(action.eventTypeId)
     case filterActions.REMOVE_EVENT_TYPE_FROM_FILTER:
       return state.includes(action.eventTypeId)
-        ? state.filter(action.eventTypeId)
+        ? state.filter(eventTypeId => eventTypeId !== action.eventTypeId)
         : state
     default:
       return state
@@ -57,19 +57,7 @@ export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, act
   }
 }
 
-export const ticketId = (defaultTicketId) => (state = defaultTicketId, action) => {
-  switch (action.type) {
-    case filterActions.CHANGE_EVENT_FILTER:
-      if (action.filter.ticketId) {
-        return action.filter.ticketId
-      } else return state
-    default:
-      return state
-  }
-}
-
 const initialFilter = {
-  ticketId: null,
   incidentId: null,
   eventTypes: null,
   startTime: null,
@@ -79,7 +67,6 @@ const initialFilter = {
 
 export const filter = (defaultFilter = initialFilter) => {
   return combineReducers({
-    ticketId: ticketId(defaultFilter.ticketId),
     incidentId: incidentId(defaultFilter.incidentId),
     eventTypes: eventTypes(defaultFilter.eventTypes),
     startTime: startTime(defaultFilter.startTime),

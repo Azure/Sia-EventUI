@@ -67,11 +67,8 @@ const addTypeToOldFilter = (oldFilter, eventType) => Object.assign({}, oldFilter
   : [eventType.id]})
 
 export const applyEventTypeAddition = (history, oldFilter, signalRFilterType, eventType) => (dispatch) => {
-  if (nothingToAdd(eventType)) {
+  if (nothingToAdd(eventType) || typeIsAlreadyFiltered(oldFilter, eventType)) {
     return
-  }
-  if (typeIsAlreadyFiltered(oldFilter, eventType)) {
-    return // Event Type is already filtered
   }
   dispatch(addEventTypeToFilter(eventType.id))
 
