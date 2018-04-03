@@ -2,10 +2,10 @@
 import { expect } from 'chai'
 import React from 'react'
 import createComponent from 'test/helpers/shallowRenderHelper'
-import { Event, mapStateToEventProps } from 'components/Timeline/Event'
+import { Event, mapStateToEventProps, animationDelayAsSecondsString } from 'components/Timeline/Event'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
-import { DateTime } from 'luxon'
+import { DateTime, Duration } from 'luxon'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 const setup = () => {
@@ -52,6 +52,19 @@ describe('Event', function test () {
 
       let eventComponent = createComponent(Event, props)
       expect(eventComponent.props.children[1].props.children[1].type).to.eql(CardText)
+    })
+  })
+
+  describe('#animationDelayAsSecondsString', () => {
+    it('returns the appropriate number of seconds', () => {
+      const mockEvent = {
+        timeReceived: DateTime.utc().minus(Duration.fromObject({ seconds: 9 }))
+      }
+
+      const actualString = animationDelayAsSecondsString(mockEvent)
+      expect(parseInt(actualString)).to.be.closeTo(-9, 0.001)
+      expect(actualString.endsWith('s')).to.be
+
     })
   })
 

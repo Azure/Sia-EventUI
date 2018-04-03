@@ -11,6 +11,9 @@ import LoadingMessage from 'components/elements/LoadingMessage'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
+export const animationDelayAsSecondsString = (event) =>
+  event.timeReceived.diffNow('seconds').toObject().seconds + 's'
+
 export const Event = ({
     text,
     time,
@@ -27,7 +30,7 @@ export const Event = ({
   const itemHighlight = (event && event.timeReceived) ? {
     animationName: 'yellowfade',
     animationDuration: '30s',
-    animationDelay: event.timeReceived.diffNow('seconds').toObject().seconds + 's'
+    animationDelay: animationDelayAsSecondsString(event)
   } : {}
   const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
   const missingId = eventTypeId
