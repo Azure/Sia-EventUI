@@ -62,9 +62,8 @@ describe('Event', function test () {
       }
 
       const actualString = animationDelayAsSecondsString(mockEvent)
-      expect(parseInt(actualString)).to.be.closeTo(-9, 0.001)
-      expect(actualString.endsWith('s')).to.be
-
+      expect(parseInt(actualString.slice(0, -1))).to.be.within(-12, -9)
+      expect(actualString.slice(-1)).to.equal('s')
     })
   })
 
