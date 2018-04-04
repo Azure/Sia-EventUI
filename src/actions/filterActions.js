@@ -42,7 +42,7 @@ export const setStartAndEndTime = (startTime, endTime) => {
 export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
   let newFilter = {}
   let oldFilter = filter
-  if (!eventType || !eventType.id) {
+  if (!eventType || eventType.id == null) {
     return
   }
   if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {
