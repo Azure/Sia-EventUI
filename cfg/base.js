@@ -7,7 +7,7 @@ const env = process.env.REACT_WEBPACK_ENV
 let constants
 try {
   if (env === 'dist') {
-    constants = require(path.join(__dirname, '../../createconstants'))
+    constants = require(path.join(__dirname, '..', '..', 'createconstants'))
   }
   else {
     constants = require(`./${env}.const`)
