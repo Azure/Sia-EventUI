@@ -4,7 +4,47 @@ import { expect } from 'chai'
 import * as filterActions from 'actions/filterActions.js'
 import * as filterReducer from 'reducers/filterReducer'
 
+/* eslint-disable no-unused-expressions */
 describe('filterReducer', function () {
+  context('When the default filter contains all keys', function () {
+    it('Should create all filter reducers', function () {
+      const defaultFilter = {
+        ticketId: null,
+        incidentId: null,
+        eventTypes: null,
+        startTime: null,
+        endTime: null,
+        dataSearch: null
+      }
+
+      const result = filterReducer.filter(defaultFilter)({}, { type: null, filter: null })
+
+      expect(result.ticketId).to.not.be.undefined
+      expect(result.incidentId).to.not.be.undefined
+      expect(result.eventTypes).to.not.be.undefined
+      expect(result.startTime).to.not.be.undefined
+      expect(result.endTime).to.not.be.undefined
+      expect(result.dataSearch).to.not.be.undefined
+    })
+  })
+
+  context('When the default filter is missing keys', function () {
+    it('Should create all filter reducers', function () {
+      const defaultFilter = {
+        eventTypes: null
+      }
+
+      const result = filterReducer.filter(defaultFilter)({}, { type: null, filter: null })
+
+      expect(result.ticketId).to.not.be.undefined
+      expect(result.incidentId).to.not.be.undefined
+      expect(result.eventTypes).to.not.be.undefined
+      expect(result.startTime).to.not.be.undefined
+      expect(result.endTime).to.not.be.undefined
+      expect(result.dataSearch).to.not.be.undefined
+    })
+  })
+
   describe('IncidentId reducer', function () {
     describe('When action is CLEAR_EVENT_FILTER_INCIDENTID', function () {
       const clearIncidentIdAction = { type: filterActions.CLEAR_EVENT_FILTER_INCIDENTID }
