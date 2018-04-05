@@ -1,7 +1,16 @@
 import * as filterActions from 'actions/filterActions'
 import { combineReducers } from 'redux'
 
-export const incidentId = (defaultIncidentId) => (state = defaultIncidentId, action) => {
+const initialFilter = {
+  ticketId: null,
+  incidentId: null,
+  eventTypes: null,
+  startTime: null,
+  endTime: null,
+  dataSearch: null
+}
+
+export const incidentId = (defaultIncidentId = initialFilter.incidentId) => (state = defaultIncidentId, action) => {
   switch (action.type) {
     case filterActions.CLEAR_EVENT_FILTER_INCIDENTID:
       return null
@@ -14,7 +23,7 @@ export const incidentId = (defaultIncidentId) => (state = defaultIncidentId, act
   }
 }
 
-export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, action) => {
+export const eventTypes = (defaultEventTypes = initialFilter.eventTypes) => (state = defaultEventTypes, action) => {
   switch (action.type) {
     case filterActions.CHANGE_EVENT_FILTER:
       if (action.filter.eventTypes) {
@@ -25,7 +34,7 @@ export const eventTypes = (defaultEventTypes) => (state = defaultEventTypes, act
   }
 }
 
-export const startTime = (defaultStartTime) => (state = defaultStartTime, action) => {
+export const startTime = (defaultStartTime = initialFilter.startTime) => (state = defaultStartTime, action) => {
   switch (action.type) {
     case filterActions.UPDATE_START_AND_END_TIME:
       if (action.startTime) {
@@ -36,7 +45,7 @@ export const startTime = (defaultStartTime) => (state = defaultStartTime, action
   }
 }
 
-export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
+export const endTime = (defaultEndTime = initialFilter.endTime) => (state = defaultEndTime, action) => {
   switch (action.type) {
     case filterActions.UPDATE_START_AND_END_TIME:
       if (action.endTime) {
@@ -47,7 +56,7 @@ export const endTime = (defaultEndTime) => (state = defaultEndTime, action) => {
   }
 }
 
-export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {
+export const dataSearch = (defaultDataSearch = initialFilter.dataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
     case filterActions.UPDATE_DATASEARCH:
       if (action.dataSearch) {
@@ -58,7 +67,7 @@ export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, act
   }
 }
 
-export const ticketId = (defaultTicketId) => (state = defaultTicketId, action) => {
+export const ticketId = (defaultTicketId = initialFilter.ticketId) => (state = defaultTicketId, action) => {
   switch (action.type) {
     case filterActions.CHANGE_EVENT_FILTER:
       if (action.filter.ticketId) {
@@ -69,15 +78,6 @@ export const ticketId = (defaultTicketId) => (state = defaultTicketId, action) =
   }
 }
 
-const initialFilter = {
-  ticketId: null,
-  incidentId: null,
-  eventTypes: null,
-  startTime: null,
-  endTime: null,
-  DataSearch: null
-}
-
 export const filter = (defaultFilter = initialFilter) => {
   return combineReducers({
     ticketId: ticketId(defaultFilter.ticketId),
@@ -85,7 +85,7 @@ export const filter = (defaultFilter = initialFilter) => {
     eventTypes: eventTypes(defaultFilter.eventTypes),
     startTime: startTime(defaultFilter.startTime),
     endTime: endTime(defaultFilter.endTime),
-    DataSearch: dataSearch(defaultFilter.DataSearch)
+    dataSearch: dataSearch(defaultFilter.dataSearch)
   })
 }
 
