@@ -24,7 +24,6 @@ describe('Notification component', function () {
   const baseProps = {
     event: { id: 'eventId0' },
     actions: [],
-    engagement: {},
     eventType: {},
     ticket: {}
   }

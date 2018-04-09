@@ -4,7 +4,15 @@ import { DateTime } from 'luxon'
 import * as filterActions from 'actions/filterActions'
 import dateTimeReducer from 'reducers/reducerHelpers/dateTime'
 
-export const incidentId = (defaultIncidentId) => (state = defaultIncidentId, action) => {
+const initialFilter = {
+  incidentId: null,
+  eventTypes: null,
+  startTime: null,
+  endTime: null,
+  dataSearch: null
+}
+
+export const incidentId = (defaultIncidentId = initialFilter.incidentId) => (state = defaultIncidentId, action) => {
   switch (action.type) {
     case filterActions.CLEAR_EVENT_FILTER_INCIDENTID:
       return null
@@ -46,7 +54,7 @@ export const endTime = (defaultEndTime) => dateTimeReducer(
   filterActions.UPDATE_FILTER_END_DATE
 )
 
-export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, action) => {
+export const dataSearch = (defaultDataSearch = initialFilter.dataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
     case filterActions.UPDATE_DATASEARCH:
       if (action.dataSearch) {
@@ -55,14 +63,6 @@ export const dataSearch = (defaultDataSearch) => (state = defaultDataSearch, act
     default:
       return state
   }
-}
-
-const initialFilter = {
-  incidentId: null,
-  eventTypes: null,
-  startTime: null,
-  endTime: null,
-  dataSearch: null
 }
 
 export const filter = (defaultFilter = initialFilter) => {

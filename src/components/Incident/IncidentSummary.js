@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Engagements from 'components/Engagements'
 import GlobalActions from 'components/Timeline/Playbook/GlobalActions'
 
 export const IncidentSummaryName = (ticketId) => {
@@ -13,14 +12,12 @@ export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId,
     HeaderRow(ticketOriginId),
     TicketDetailsRow(ticketSystem, ticket),
     TitleRow(incident),
-    GlobalActionsRow(incident, ticketOriginId),
-    EngagementsRow(incident, dispatch)
+    GlobalActionsRow(incident, ticketOriginId)
   ]
 IncidentSummary.propTypes = {
   incident: PropTypes.object,
   ticket: PropTypes.object,
   ticketSystem: PropTypes.object,
-  expandSection: PropTypes.object,
   dispatch: PropTypes.func.isRequired
 }
 
@@ -75,14 +72,6 @@ const DoesPrimaryTicketHaveNativeTitle = (incident) =>
 
 const DoesPrimaryTicketHaveDataTitle = (incident) =>
     incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
-
-const EngagementsRow = (incident, dispatch) => [
-  <Engagements
-    incidentId={incident.id}
-    engagements={incident.engagements}
-    dispatch={dispatch}
-    />
-]
 
 const GlobalActionsRow = (incident, ticketId) => [
   [
