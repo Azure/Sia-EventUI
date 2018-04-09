@@ -28,7 +28,9 @@ export const rawList = (state = defaultEventCollection, action) => {
       return addEventsToState(state, [{...action.event, timeReceived: DateTime.utc()}])
     case eventActions.RECEIVE_EVENTS:
       return addEventsToState(state, action.events)
-    case filterActions.CHANGE_EVENT_FILTER:
+    case filterActions.CLEAR_EVENT_FILTER_INCIDENTID: // Fallthrough
+    case filterActions.UPDATE_EVENT_FILTER_INCIDENTID:
+    case eventActions.CLEAR_EVENTS:
       return defaultEventCollection
     default:
       return state

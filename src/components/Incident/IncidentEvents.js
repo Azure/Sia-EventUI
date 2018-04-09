@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
+import ApplyFilterOnMount from 'components/Timeline/Filter/ApplyFilterOnMount'
 import Timeline from 'components/Timeline/Timeline'
 
 export const IncidentEventsName = () => {
@@ -15,10 +17,12 @@ export const IncidentEvents = (ticketToIncidentIdMap) => [
     ]
   ],
   [
-    <Timeline
-      ticketId={ticketToIncidentIdMap[0][0]}
-      incidentId={ticketToIncidentIdMap[0][1]}
-        />
+    <ApplyFilterOnMount incidentId={ticketToIncidentIdMap[0][1]}>
+      <Timeline
+        ticketId={ticketToIncidentIdMap[0][0]}
+        incidentId={ticketToIncidentIdMap[0][1]}
+      />
+    </ApplyFilterOnMount>
   ]
 ]
 
