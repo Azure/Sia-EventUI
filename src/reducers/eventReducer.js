@@ -49,7 +49,7 @@ const pageArgs = {
   defaultPage: 1,
   defaultSortOrder: 'desc',
   defaultSortBy: 'occurred',
-  defaultPer: 10,
+  defaultPer: 25,
   defaultFilter: '',
   defaultTotal: 0
 }
