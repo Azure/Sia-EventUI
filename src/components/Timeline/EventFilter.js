@@ -33,6 +33,7 @@ export const filterSearchForm = {
 
 export const sortEvents = (dispatch) => {
   dispatch(eventActions.pagination.sort('occurred'))
+  dispatch(eventActions.pagination.goToPage(1))
 }
 
 export const EventFilter = (props) => {
