@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CircularProgress from 'material-ui/CircularProgress'
 import { RetryButton } from 'components/elements/Buttons'
 
-const LoadingMessage = (message, actionForRetry) => <div>
+const LoadingMessage = ({message, actionForRetry}) => <div>
   <CircularProgress />
   <span>{message}</span>
   { actionForRetry ? <RetryButton actionForRetry={actionForRetry} /> : null }

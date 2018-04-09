@@ -8,58 +8,72 @@ import React from 'react'
 import AutoComplete from 'material-ui/AutoComplete'
 
 import createComponent from 'test/helpers/shallowRenderHelper'
-import AutoCompleteMenu, { onNewRequest } from 'components/elements/AutoCompleteMenu'
+import { AutoCompleteMenu, onNewRequest } from 'components/elements/AutoCompleteMenu'
 
 
 const mockProps = {
-    label: 'testLabel',
-    dataConfigText: 'textInput',
-    dataConfigValue: 'valueInput',
-    menuOptions: ['TEST1', 'TEST2'],
-    searchText: '',
-    onUpdateInput: () => null,
-    selectMethod: () => 42
+  label: 'testLabel',
+  dataConfigText: 'textInput',
+  dataConfigValue: 'valueInput',
+  dataSource: [
+    {textInput:'TEST1', valueInput: 1},
+    {textInput:'TEST2', valueInput: 2},
+    {textInput:'A', valueInput: 3}
+  ], // Not Alphabetically Ordered
+  searchText: '',
+  onUpdateInput: () => null,
+  selectMethod: () => 42
 }
 
 const setup = (mockProps) => {
-
-    return createComponent(AutoCompleteMenu, mockProps)
+  return createComponent(AutoCompleteMenu, mockProps)
 }
 
 describe('AutoCompleteMenu', function() {
   describe('Component', function() {
     describe('when it receives all required information', function () {
-      beforeEach(function () {
-          this.output = setup(mockProps)
-      })
+      const result = setup(mockProps)
 
-      it('should return a div', function () {
-          expect(this.output.type).to.equal('div')
-      })
-
-      it('the div should contain an AutoComplete', function () {
-          expect(this.output.props.children.type).to.equal(AutoComplete)
+      it('Should return an autoComplete', function () {
+          expect(result.type).to.equal(AutoComplete)
       })
 
       describe('AutoComplete', function() {
         it('should have the label we passed in', function () {
-          expect(this.output.props.children.props.floatingLabelText).to.equal(mockProps.label)
+          expect(result.props.floatingLabelText).to.equal(mockProps.label)
         })
 
         it('should have the searchText we passed in', function () {
-          expect(this.output.props.children.props.searchText).to.equal(mockProps.searchText)
+          expect(result.props.searchText).to.equal(mockProps.searchText)
         })
 
-        it('should have the menuOptions we passed in', function () {
-          expect(this.output.props.children.props.dataSource).to.equal(mockProps.dataSource)
+        it('should have a dataSource with the dataSource records we passed in', function () {
+          mockProps.dataSource.forEach(
+            (expectedOption) => expect(result.props.dataSource).to.include(expectedOption)
+          )
+        })
+
+        it('Should display the menu options in alphabetical order by text', function () {
+          const alphabetizedMenuOptions = [
+            {textInput:'A', valueInput: 3},
+            {textInput:'TEST1', valueInput: 1},
+            {textInput:'TEST2', valueInput: 2}
+          ]
+          let i = 0
+          alphabetizedMenuOptions.forEach(
+            (expectedOption) => {
+              expect(result.props.dataSource[i]).to.deep.equal(expectedOption)
+              i++
+            }
+          )
         })
 
         it('should a data config object using info we passed in', function () {
-          expect(this.output.props.children.props.dataSourceConfig).to.deep.equal({ text: mockProps.dataConfigText, value: mockProps.dataConfigValue })
+          expect(result.props.dataSourceConfig).to.deep.equal({ text: mockProps.dataConfigText, value: mockProps.dataConfigValue })
         })
 
         it('should have an onUpdateInput fx just like the fx we passed in', function () {
-          expect(this.output.props.children.props.onUpdateInput()).to.equal(mockProps.onUpdateInput())
+          expect(result.props.onUpdateInput()).to.equal(mockProps.onUpdateInput())
         })
       })
     })

@@ -5,17 +5,17 @@ import * as signalRActions from 'actions/signalRActions'
 import * as signalRReducer from 'reducers/signalRReducer'
 
 describe('SignalR Reducer', function () {
-  describe('ConnectionStatusReducer', function () {
+  describe('ConnectionReducer', function () {
     context('When passed default state or null', function () {
       const defaultState = {
-        connectionStatus: signalRReducer.connectionStatuses.notEstablished
+        status: signalRReducer.connectionStatuses.notEstablished
       }
 
       describe('When passed action of type ESTABLISH_CONNECTION_TRY', function () {
-        const result = signalRReducer.connectionStatusReducer(defaultState, { type: signalRActions.ESTABLISH_CONNECTION_TRY })
+        const result = signalRReducer.connectionReducer(defaultState, { type: signalRActions.ESTABLISH_CONNECTION_TRY })
 
         it('Should be connecting with undefined error values', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.connecting)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.connecting)
           expect(result.connectionError).to.be.undefined
           expect(result.disconnectReason).to.be.undefined
         })
@@ -26,20 +26,20 @@ describe('SignalR Reducer', function () {
           type: signalRActions.ESTABLISH_CONNECTION_FAIL,
           error: 'testValue'
         }
-        const result = signalRReducer.connectionStatusReducer(defaultState, action)
+        const result = signalRReducer.connectionReducer(defaultState, action)
 
         it('Should be in error state with the most recent connectionError', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.error)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.error)
           expect(result.connectionError).to.equal('testValue')
           expect(result.disconnectReason).to.be.undefined
         })
       })
 
       describe('When passed action of type ESTABLISH_CONNECTION_SUCCEED', function () {
-        const result = signalRReducer.connectionStatusReducer(defaultState, { type: signalRActions.ESTABLISH_CONNECTION_SUCCEED })
+        const result = signalRReducer.connectionReducer(defaultState, { type: signalRActions.ESTABLISH_CONNECTION_SUCCEED })
 
         it('Should be in connected state with null error values', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.connected)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.connected)
           expect(result.connectionError).to.be.null
           expect(result.disconnectReason).to.be.null
         })
@@ -50,10 +50,10 @@ describe('SignalR Reducer', function () {
           type: signalRActions.CONNECTION_CLOSED,
           error: 'testValue'
         }
-        const result = signalRReducer.connectionStatusReducer(defaultState, action)
+        const result = signalRReducer.connectionReducer(defaultState, action)
 
         it('Should be in disconnected state with the most recent error as disconnectReason', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.disconnected)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.disconnected)
           expect(result.connectionError).to.be.undefined
           expect(result.disconnectReason).to.equal('testValue')
         })
@@ -67,10 +67,10 @@ describe('SignalR Reducer', function () {
       }
 
       describe('When passed action of type ESTABLISH_CONNECTION_TRY', function () {
-        const result = signalRReducer.connectionStatusReducer(errorState, { type: signalRActions.ESTABLISH_CONNECTION_TRY })
+        const result = signalRReducer.connectionReducer(errorState, { type: signalRActions.ESTABLISH_CONNECTION_TRY })
 
         it('Should be connecting with the existing error values', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.connecting)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.connecting)
           expect(result.connectionError).to.equal('error')
           expect(result.disconnectReason).to.equal('error')
         })
@@ -81,20 +81,20 @@ describe('SignalR Reducer', function () {
           type: signalRActions.ESTABLISH_CONNECTION_FAIL,
           error: 'testValue'
         }
-        const result = signalRReducer.connectionStatusReducer(errorState, action)
+        const result = signalRReducer.connectionReducer(errorState, action)
 
         it('Should be in error state with the most recent connectionError', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.error)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.error)
           expect(result.connectionError).to.equal('testValue')
           expect(result.disconnectReason).to.equal('error')
         })
       })
 
       describe('When passed action of type ESTABLISH_CONNECTION_SUCCEED', function () {
-        const result = signalRReducer.connectionStatusReducer(errorState, { type: signalRActions.ESTABLISH_CONNECTION_SUCCEED })
+        const result = signalRReducer.connectionReducer(errorState, { type: signalRActions.ESTABLISH_CONNECTION_SUCCEED })
 
         it('Should be in connected state with null error values', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.connected)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.connected)
           expect(result.connectionError).to.be.null
           expect(result.disconnectReason).to.be.null
         })
@@ -105,10 +105,10 @@ describe('SignalR Reducer', function () {
           type: signalRActions.CONNECTION_CLOSED,
           error: 'testValue'
         }
-        const result = signalRReducer.connectionStatusReducer(errorState, action)
+        const result = signalRReducer.connectionReducer(errorState, action)
 
         it('Should be in disconnected state with the most recent error as disconnectReason', function () {
-          expect(result.connectionStatus).to.equal(signalRReducer.connectionStatuses.disconnected)
+          expect(result.status).to.equal(signalRReducer.connectionStatuses.disconnected)
           expect(result.connectionError).to.equal('error')
           expect(result.disconnectReason).to.equal('testValue')
         })
@@ -117,7 +117,7 @@ describe('SignalR Reducer', function () {
 
     it('Should return state when action has an uncaught type', function () {
       const state = {}
-      const result = signalRReducer.connectionStatusReducer(state, { type: 'IGNOREME' })
+      const result = signalRReducer.connectionReducer(state, { type: 'IGNOREME' })
 
       expect(result).to.equal(state)
     })

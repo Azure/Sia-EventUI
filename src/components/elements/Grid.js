@@ -14,7 +14,7 @@ export const GridSet = (containerClass, rowClass, columnClass, children) => {
 export const Grid = (rowClass, columnClass, children, key = 0) => {
   let rowKey = 0
   return (
-    <Paper zDepth={2} key={key}>
+    <Paper zDepth={1} key={key}>
       {
                 children.map(child => {
                   return Array.isArray(child) ? GridRow(rowClass, columnClass, child, rowKey++) : child

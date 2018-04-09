@@ -12,8 +12,7 @@ import * as filterActions from 'actions/filterActions'
 class TimeAndDatePicker extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    filters: PropTypes.object,
-    history: PropTypes.object.isRequired
+    filters: PropTypes.object
   }
 
   constructor () {
@@ -70,21 +69,24 @@ class TimeAndDatePicker extends Component {
           }}
                 />
         <FlatButton
-          label='submit'
-          primary
-          onClick={() => this.loadUncorrelatedEvents()}
+          label='Select time range'
+          default
+          onClick={() => this.setStartAndEndTime()}
                 />
       </div>
     )
   }
 
-  loadUncorrelatedEvents () {
-    const { dispatch, filters, history } = this.props
+  setStartAndEndTime () {
+    const { dispatch } = this.props
     const { startDate, startTime, endDate, endTime } = this.state
     let start = (startDate && startTime) ? startDate + 'T' + startTime : null
     let end = (endDate && endTime) ? endDate + 'T' + endTime : null
-    const newFilter = Object.assign({}, filters, { startTime: start, endTime: end })
-    dispatch(filterActions.synchronizeFilters(newFilter, null, null, history))
+    if (!(start && end)) {
+      end = DateTime.utc().toISO()
+      start = DateTime.utc().minus({days: 1}).toISO()
+    }
+    dispatch(filterActions.setStartAndEndTime(start, end))
   }
 }
 

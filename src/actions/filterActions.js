@@ -7,6 +7,8 @@ import * as filterService from 'services/filterService'
 
 export const CHANGE_EVENT_FILTER = 'CHANGE_EVENT_FILTER'
 export const CLEAR_EVENT_FILTER_INCIDENTID = 'CLEAR_EVENT_FILTER_INCIDENTID'
+export const UPDATE_DATASEARCH = 'UPDATE_DATASEARCH'
+export const UPDATE_START_AND_END_TIME = 'UPDATE_START_AND_END_TIME'
 
 export const changeEventFilter = (history, urlLoader = filterService.getUrlFromFilter) => (filter) => {
   urlLoader(history, filter)
@@ -22,10 +24,25 @@ export const clearFilterIncidentId = () => {
   }
 }
 
+export const updateDataSearch = (dataSearch) => {
+  return {
+    type: UPDATE_DATASEARCH,
+    dataSearch
+  }
+}
+
+export const setStartAndEndTime = (startTime, endTime) => {
+  return {
+    type: UPDATE_START_AND_END_TIME,
+    startTime,
+    endTime
+  }
+}
+
 export const addFilter = (history) => (filter, signalRFilterType) => (eventType) => {
   let newFilter = {}
   let oldFilter = filter
-  if (!eventType || !eventType.id) {
+  if (!eventType || eventType.id == null) {
     return
   }
   if (oldFilter && oldFilter.eventTypes && oldFilter.eventTypes.includes(eventType.id)) {

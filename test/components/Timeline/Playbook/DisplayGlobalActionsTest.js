@@ -14,7 +14,6 @@ describe('DisplayGlobalActions', function () {
     it('Should output a div with a list of DisplayGlobalAction children when passed actions', function () {
       const input = {
         ticketId: 1,
-        engagementId: 2,
         incidentId: 3,
         actions: [
           {
@@ -40,7 +39,6 @@ describe('DisplayGlobalActions', function () {
     it('Should output an empty div when passed no actions', function () {
       const input = {
         ticketId: 1,
-        engagementId: 2,
         incidentId: 3
       }
 
@@ -73,74 +71,8 @@ describe('DisplayGlobalActions', function () {
       incidentId: 1
     }
 
-    describe('engagementId', function () {
-      const state = {
-        globalActions: {
-
-        },
-        tickets: {
-          map: {
-            7: {
-              id: 7
-            }
-          }
-        },
-        auth: {
-          userAlias: 'testAlias',
-          userTeam: 'testTeam',
-          userRole: 'testRole'
-        },
-        engagements: {
-          list: [
-            {
-              id: 3,
-              incidentId: 1,
-              participant: {
-                alias: 'testAlias',
-                team: 'testTeam',
-                role: 'testRole'
-              }
-            },
-            {
-              id: 4,
-              incidentId: 2,
-              participant: {
-                alias: 'otherAlias',
-                team: 'otherTeam',
-                role: 'otherRole'
-              }
-            }
-          ]
-        }
-      }
-
-      describe('When the current logged in user has an engagement on the current incidentId', function () {
-        it('Should find engagementId based on state.auth matching engagement.paricipant field and incidentId matching engagement.incidentId', function () {
-          const result = mapStateToDisplayGlobalActionsProps(state, ownProps)
-
-          expect(result.engagementId).to.equal(3)
-        })
-      })
-
-      describe('When the current logged in user has no engagement on the current incidentId', function () {
-        it('Should return undefinded as engagementId', function () {
-          const ownPropsDeliberateMiss = {
-            ticketId: 7000,
-            incidentId: 1000
-          }
-
-          const result = mapStateToDisplayGlobalActionsProps(state, ownPropsDeliberateMiss)
-
-          expect(result.engagementId).to.be.null
-        })
-      })
-    })
-
     describe('Qualified Actions', function () {
       const state = {
-        engagements: {
-          list: []
-        },
         tickets: {
           map: {
             7: {

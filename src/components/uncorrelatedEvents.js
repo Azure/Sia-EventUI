@@ -7,6 +7,7 @@ import Footer from 'components/Timeline/EventFooter'
 import Events from 'components/Timeline/Events'
 import TimeAndDatePicker from 'components/elements/TimePicker'
 import * as filterActions from 'actions/filterActions'
+import TextFilter from 'components/Timeline/Playbook/TextFilter'
 
 class UncorrelatedEvents extends Component {
   static propTypes = {
@@ -17,20 +18,20 @@ class UncorrelatedEvents extends Component {
   }
 
   componentDidMount () {
-    const { filters, dispatch } = this.props
-    const newFilter = Object.assign({}, filters, { incidentId: null })
-    dispatch(filterActions.clearFilterIncidentId(newFilter))
+    const { dispatch } = this.props
+    dispatch(filterActions.clearFilterIncidentId())
   }
 
   render () {
     const { events, dispatch, eventTypes, history } = this.props
     return (
-      <div >
+      <div style={{padding: '16px'}}>
         <TimeAndDatePicker history={history} />
+        <TextFilter history={history} dispatch={dispatch} />
         <EventFilter history={history} eventTypes={eventTypes} />
         <Events events={events.pageList} ticketId={null} incidentId={null} />
         <Footer pagination={events} dispatch={dispatch} />
-      </div >
+      </div>
     )
   }
 }

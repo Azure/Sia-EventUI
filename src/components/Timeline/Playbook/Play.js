@@ -20,9 +20,8 @@ export const mapStateToPlayProps = (state, ownProps) => {
   const eventType = state.eventTypes.records[ownProps.eventTypeId]
   const event = state.events.pages.list.find(event => event.id === ownProps.eventId)
   const ticket = state.tickets.map[ownProps.ticketId]
-  const engagement = state.engagements.list.find(engagement => engagement.id === ownProps.engagementId)
   const action = ownProps.action
-  const filledTemplate = action ? fillTemplate(action.actionTemplate, event, ticket, eventType, engagement) : ''
+  const filledTemplate = action ? fillTemplate(action.actionTemplate, event, ticket, eventType) : ''
 
   return {
     ...ownProps,
