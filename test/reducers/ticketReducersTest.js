@@ -76,10 +76,6 @@ const removeTicketFromRecent = id => ({
   id
 })
 
-const removeAllTicketsFromRecent = () => ({
-  type: ticketActions.REMOVE_ALL_TICKETS
-})
-
 const defaultQueryString = 'default'
 
 describe('Ticket Reducers', function test () {
@@ -111,12 +107,24 @@ describe('Ticket Reducers', function test () {
       expect(result[44444444]).to.not.be.null
     })
 
-    it('Should replace given tickets with null values when REMOVE_ALL_TICKET is dispatched', function () {
-      const result = map(populatedTicketList, removeAllTicketsFromRecent())
-      expect(result[38502026]).to.be.null
-      expect(result[44444444]).to.be.null
-      expect(result[38805418]).to.be.null
+    describe('When REMOVE_PREVIOUS_TICKETS is called with no current ticketId', function () {
+      it('Should replace all tickets with null values', function () {
+        const result = map(populatedTicketList, ticketActions.removePreviousTicketsFromRecent())
+        expect(result[38502026]).to.be.null
+        expect(result[44444444]).to.be.null
+        expect(result[38805418]).to.be.null
+      })
     })
+
+    describe('When REMOVE_PREVIOUS_TICKETS is called with a current ticketId', function () {
+      it('Should replace all but the current ticket with null values', function () {
+        const result = map(populatedTicketList, ticketActions.removePreviousTicketsFromRecent(38502026))
+        expect(result[38502026]).to.not.be.null
+        expect(result[44444444]).to.be.null
+        expect(result[38805418]).to.be.null
+      })
+    })
+
   })
 
   describe('query reducer', function queryTest () {

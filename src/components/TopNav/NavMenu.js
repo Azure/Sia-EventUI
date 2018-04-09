@@ -2,23 +2,18 @@ import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
-import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
 
 import MenuLink from 'components/elements/MenuLink'
-import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
+import { removeTicketFromRecent } from 'actions/ticketActions'
 import * as auth from 'services/authNService'
 import Preferences from 'components/TopNav/Preferences'
-
-const clearRecentTickets = (dispatch) =>
-  <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent())}
-    rightIcon={<ActionDeleteForever onClick={() => dispatch(removeAllTicketsFromRecent())}
-  />}
-  />
+import ClearRecentTickets from 'components/TopNav/ClearRecentTickets'
 
 export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEventFilterType }) => {
   return (<IconMenu
@@ -37,7 +32,7 @@ export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEven
       menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
     />
     <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
-    { clearRecentTickets(dispatch) }
+    <ClearRecentTickets />
   </IconMenu>)
 }
 

@@ -12,11 +12,16 @@ describe('TicketActions', function() {
   })
 
   describe('removeAllTicketsFromRecent', function () {
-    const result = ticketActions.removeAllTicketsFromRecent()
-    it('should return an object with type remove_all_tickets', function() {
-      expect(result).to.deep.equal({ type: ticketActions.REMOVE_ALL_TICKETS })
-    })
+    const result = ticketActions.removePreviousTicketsFromRecent(100)
+    describe('action object', function () {
+      it('Should have the REMOVE_PREVIOUS_TICKETS type', function () {
+        expect(result.type).to.equal('REMOVE_PREVIOUS_TICKETS')
+      })
 
+      it('Should have a current property with the passed in value', function () {
+        expect(result.current).to.equal(100)
+      })
+    })
   })
 
   describe('removeTicketFromRecent', function () {
