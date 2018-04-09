@@ -5,27 +5,30 @@ import { TextField } from 'material-ui'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { updateIncidentCreationInput } from 'actions/incidentActions'
 
-const onSubmit = (input, history) => () => {
+export const onSubmit = (input, history, dispatch) => () => {
   if (input) {
     history.push(/tickets/ + input)
+    //dispatch(updateIncidentCreationInput(''))
   }
 }
 
-export const CreateIncident = ({input, creationError, history, dispatch}) => {
-  return <form id='incident-search' onSubmit={onSubmit(input, history)} style={{padding: '16px'}}>
-    <TextField
-      hintText='Ticket Id of primary ticket'
-      floatingLabelText='Ticket Id'
-      onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
-      value={input}
-      errorText={creationError}
-                />
-    <FlatButtonStyled
-      label='Submit'
-      onTouchTap={onSubmit(input, history)}
-                />
-  </form>
-}
+export const CreateIncident = ({input, creationError, history, dispatch}) => <form
+  id='incident-search'
+  onSubmit={onSubmit(input, history)}
+  style={{padding: '16px'}}
+>
+  <TextField
+    hintText='Ticket Id of primary ticket'
+    floatingLabelText='Ticket Id'
+    onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+    value={input}
+    errorText={creationError}
+  />
+  <FlatButtonStyled
+    label='Submit'
+    onTouchTap={onSubmit(input, history)}
+  />
+</form>
 
 export const mapStateToProps = (state) => {
   return {
