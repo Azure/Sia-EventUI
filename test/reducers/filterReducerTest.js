@@ -9,7 +9,6 @@ describe('filterReducer', function () {
   context('When the default filter contains all keys', function () {
     it('Should create all filter reducers', function () {
       const defaultFilter = {
-        ticketId: null,
         incidentId: null,
         eventTypes: null,
         startTime: null,
@@ -19,7 +18,6 @@ describe('filterReducer', function () {
 
       const result = filterReducer.filter(defaultFilter)({}, { type: null, filter: null })
 
-      expect(result.ticketId).to.not.be.undefined
       expect(result.incidentId).to.not.be.undefined
       expect(result.eventTypes).to.not.be.undefined
       expect(result.startTime).to.not.be.undefined
@@ -36,7 +34,6 @@ describe('filterReducer', function () {
 
       const result = filterReducer.filter(defaultFilter)({}, { type: null, filter: null })
 
-      expect(result.ticketId).to.not.be.undefined
       expect(result.incidentId).to.not.be.undefined
       expect(result.eventTypes).to.not.be.undefined
       expect(result.startTime).to.not.be.undefined

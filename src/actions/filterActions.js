@@ -56,7 +56,7 @@ export const removeEventTypeFromFilter = (eventTypeId) => ({
   eventTypeId
 })
 
-const nothingToAdd = (eventType) => !eventType || (!eventType.id && eventType.id !== 0)
+export const nothingToAdd = (eventType) => !eventType || (!eventType.id && eventType.id !== 0)
 
 const typeIsAlreadyFiltered = (oldFilter, eventType) => oldFilter &&
   oldFilter.eventTypes &&
