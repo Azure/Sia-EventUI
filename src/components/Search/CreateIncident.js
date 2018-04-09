@@ -8,7 +8,7 @@ import { updateIncidentCreationInput } from 'actions/incidentActions'
 export const onSubmit = (input, history, dispatch) => () => {
   if (input) {
     history.push(/tickets/ + input)
-    //dispatch(updateIncidentCreationInput(''))
+    dispatch(updateIncidentCreationInput(''))
   }
 }
 
