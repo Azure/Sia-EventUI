@@ -31,7 +31,11 @@ export const filterSearchForm = {
   field: 'input'
 }
 
-const EventFilter = (props) => {
+export const sortEvents = (dispatch) => {
+  dispatch(eventActions.pagination.sort('occurred'))
+}
+
+export const EventFilter = (props) => {
   const { pagination, filter, filterSearchField, eventTypes, dispatch, history, signalRFilterType } = props
   const filterTypes = eventTypes ? Object.values(props.eventTypes) : []
   return (
@@ -54,7 +58,7 @@ const EventFilter = (props) => {
       />
       <IconButtonStyled
         tooltip='order'
-        onTouchTap={() => dispatch(eventActions.pagination.sort('occurred'))}
+        onTouchTap={() => dispatch(sortEvents)}
       >
         {
           pagination && pagination.order === 'desc'
@@ -66,7 +70,7 @@ const EventFilter = (props) => {
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
+export const mapStateToProps = (state, ownProps) => {
   const { events, signalR } = state
   let filterFormField = state.forms[filterSearchForm.name] ? state.forms[filterSearchForm.name][filterSearchForm.field] : ''
   return {
