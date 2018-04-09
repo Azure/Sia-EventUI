@@ -7,8 +7,8 @@ import { updateIncidentCreationInput } from 'actions/incidentActions'
 
 export const onSubmit = (input, history, dispatch) => () => {
   if (input) {
-    history.push(/tickets/ + input)
     dispatch(updateIncidentCreationInput(''))
+    history.push(/tickets/ + input)
   }
 }
 
@@ -26,7 +26,7 @@ export const CreateIncident = ({input, creationError, history, dispatch}) => <fo
   />
   <FlatButtonStyled
     label='Submit'
-    onTouchTap={onSubmit(input, history)}
+    onTouchTap={onSubmit(input, history, dispatch)}
   />
 </form>
 
