@@ -2,9 +2,6 @@
 logs
 *.log
 
-# SECRETS
-.env
-
 dist/*
 
 # Runtime data
