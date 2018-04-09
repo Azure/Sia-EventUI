@@ -26,7 +26,7 @@ describe('DisplayRetryButton', function () {
   })
 
   it('Should dispatch the action for retry onTouchTap', () => {
-    expect(this.mockDispatchRecorder.action).to.be.null
+    expect(this.mockDispatchRecorder.action).to.be.undefined
 
     this.singleState.props.onTouchTap()
 
