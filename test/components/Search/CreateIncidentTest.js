@@ -1,16 +1,18 @@
 'use strict'
 import { expect } from 'chai'
-import { CreateIncident, mapStateToProps } from 'components/Search/CreateIncident'
-import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import React from 'react'
-import createComponent from 'test/helpers/shallowRenderHelper'
 import { TextField } from 'material-ui'
 
-function mockDispatch (object) { }
+import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
+import { GetMockHistory, GetHistoryRecorder } from 'test/helpers/mockHistory'
+import createComponent from 'test/helpers/shallowRenderHelper'
+
+import { CreateIncident, mapStateToProps, onSubmit } from 'components/Search/CreateIncident'
+import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 
 const setup = (input, creationError) => {
   let props = {
-    dispatch: mockDispatch,
+    dispatch: () => null,
     input,
     creationError
   }
@@ -19,35 +21,83 @@ const setup = (input, creationError) => {
 }
 
 describe('CreateIncident', function testCreateIncident () {
-  beforeEach(function createIncidentInit () {
-    this.testError = 'Test Error'
-    this.testInput = '10'
+  describe('Rendered component', function () {
+    beforeEach(function createIncidentInit () {
+      this.testError = 'Test Error'
+      this.testInput = '10'
 
-    this.defaultCase = setup('', '')
-    this.withError = setup('', this.testError)
-    this.withInput = setup(this.testInput, '')
+      this.defaultCase = setup('', '')
+      this.withError = setup('', this.testError)
+      this.withInput = setup(this.testInput, '')
+    })
+
+    it('Should render a form with text field and FlatButtonStyled', function createIncidentRenderForm () {
+      expect(this.defaultCase.type).to.equal('form')
+      expect(this.defaultCase.props.children[0].type).to.equal(TextField)
+      expect(this.defaultCase.props.children[1].type).to.equal(FlatButtonStyled)
+      expect(this.withError.type).to.equal('form')
+      expect(this.withError.props.children[0].type).to.equal(TextField)
+      expect(this.withError.props.children[1].type).to.equal(FlatButtonStyled)
+      expect(this.withInput.type).to.equal('form')
+      expect(this.withInput.props.children[0].type).to.equal(TextField)
+      expect(this.withInput.props.children[1].type).to.equal(FlatButtonStyled)
+    })
+
+    it('Should pass props.input to TextField value', function createIncidentDisplayInput () {
+      expect(this.defaultCase.props.children[0].props.value).to.equal('')
+      expect(this.withInput.props.children[0].props.value).to.equal(this.testInput)
+    })
+
+    it('Should pass props.creationError to TextField errorText', function createIncidentDisplayCreationError () {
+      expect(this.defaultCase.props.children[0].props.errorText).to.equal('')
+      expect(this.withError.props.children[0].props.errorText).to.equal(this.testError)
+    })
   })
 
-  it('Should render a form with text field and FlatButtonStyled', function createIncidentRenderForm () {
-    expect(this.defaultCase.type).to.equal('form')
-    expect(this.defaultCase.props.children[0].type).to.equal(TextField)
-    expect(this.defaultCase.props.children[1].type).to.equal(FlatButtonStyled)
-    expect(this.withError.type).to.equal('form')
-    expect(this.withError.props.children[0].type).to.equal(TextField)
-    expect(this.withError.props.children[1].type).to.equal(FlatButtonStyled)
-    expect(this.withInput.type).to.equal('form')
-    expect(this.withInput.props.children[0].type).to.equal(TextField)
-    expect(this.withInput.props.children[1].type).to.equal(FlatButtonStyled)
-  })
+  describe('onSubmit function', function () {
+    context('When input is truthy', function () {
+      const input = 'testInput'
+      const historyRecord = GetHistoryRecorder()
+      const history = GetMockHistory(historyRecord)
+      const dispatchRecord = GetDispatchRecorder()
+      const dispatch = GetMockDispatch(dispatchRecord)
 
-  it('Should pass props.input to TextField value', function createIncidentDisplayInput () {
-    expect(this.defaultCase.props.children[0].props.value).to.equal('')
-    expect(this.withInput.props.children[0].props.value).to.equal(this.testInput)
-  })
+      onSubmit(input, history, dispatch)()
+      describe('History', function () {
+        it('Should push a new url based on input', function () {
+          expect(historyRecord[0]).to.equal('/tickets/testInput')
+        })
+      })
 
-  it('Should pass props.creationError to TextField errorText', function createIncidentDisplayCreationError () {
-    expect(this.defaultCase.props.children[0].props.errorText).to.equal('')
-    expect(this.withError.props.children[0].props.errorText).to.equal(this.testError)
+      describe('Dispatched actions', function () {
+        it('Should dispatch an updateIncidentCreationInput action', function () {
+          expect(dispatchRecord.action).to.not.be.null
+          expect(dispatchRecord.action.type).to.equal('UPDATE_INCIDENT_CREATION_INPUT')
+          expect(dispatchRecord.action.input).to.equal('')
+        })
+      })
+    })
+
+    context('When input is not truthy', function () {
+      const input = ''
+      const historyRecord = GetHistoryRecorder()
+      const history = GetMockHistory(historyRecord)
+      const dispatchRecord = GetDispatchRecorder()
+      const dispatch = GetMockDispatch(dispatchRecord)
+
+      onSubmit(input, history, dispatch)()
+      describe('History', function () {
+        it('Should not be changed', function () {
+          expect(historyRecord.length).to.equal(0)
+        })
+      })
+
+      describe('Dispatched actions', function () {
+        it('Should not have dispatched any actions', function () {
+          expect(dispatchRecord.action).to.be.undefined
+        })
+      })
+    })
   })
 })
 
