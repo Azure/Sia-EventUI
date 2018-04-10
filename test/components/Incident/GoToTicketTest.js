@@ -2,27 +2,34 @@
 import { expect } from 'chai'
 import React from 'react'
 import { TextField } from 'material-ui'
+import Paper from 'material-ui/Paper'
 
 import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
 import { GetMockHistory, GetHistoryRecorder } from 'test/helpers/mockHistory'
 import createComponent from 'test/helpers/shallowRenderHelper'
 
-import { CreateIncident, mapStateToProps, onSubmit } from 'components/Search/CreateIncident'
+import {
+  GoToTicketForm,
+  mapStateToProps,
+  onSubmit,
+  ConnectedGoToTicketForm,
+  GoToTicket
+} from 'components/Incident/GoToTicket'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 
-const setup = (input, creationError) => {
-  let props = {
-    dispatch: () => null,
-    input,
-    creationError
-  }
+describe('GoToTicket', function () {
+  describe('GoToTicketForm render output', function () {
+    const setup = (input, creationError) => {
+      let props = {
+        dispatch: () => null,
+        input,
+        creationError
+      }
 
-  return createComponent(CreateIncident, props)
-}
+      return createComponent(GoToTicketForm, props)
+    }
 
-describe('CreateIncident', function testCreateIncident () {
-  describe('Rendered component', function () {
-    beforeEach(function createIncidentInit () {
+    beforeEach(function () {
       this.testError = 'Test Error'
       this.testInput = '10'
 
@@ -31,7 +38,7 @@ describe('CreateIncident', function testCreateIncident () {
       this.withInput = setup(this.testInput, '')
     })
 
-    it('Should render a form with text field and FlatButtonStyled', function createIncidentRenderForm () {
+    it('Should render a form with text field and FlatButtonStyled', function () {
       expect(this.defaultCase.type).to.equal('form')
       expect(this.defaultCase.props.children[0].type).to.equal(TextField)
       expect(this.defaultCase.props.children[1].type).to.equal(FlatButtonStyled)
@@ -43,12 +50,12 @@ describe('CreateIncident', function testCreateIncident () {
       expect(this.withInput.props.children[1].type).to.equal(FlatButtonStyled)
     })
 
-    it('Should pass props.input to TextField value', function createIncidentDisplayInput () {
+    it('Should pass props.input to TextField value', function () {
       expect(this.defaultCase.props.children[0].props.value).to.equal('')
       expect(this.withInput.props.children[0].props.value).to.equal(this.testInput)
     })
 
-    it('Should pass props.creationError to TextField errorText', function createIncidentDisplayCreationError () {
+    it('Should pass props.creationError to TextField errorText', function () {
       expect(this.defaultCase.props.children[0].props.errorText).to.equal('')
       expect(this.withError.props.children[0].props.errorText).to.equal(this.testError)
     })
@@ -99,45 +106,66 @@ describe('CreateIncident', function testCreateIncident () {
       })
     })
   })
-})
 
-const inputState = {
-  tickets: {
-    map: {
-      1: {id: 100}
-    },
-    systems: {
-      1: {id: 1},
-      2: {id: 2}
-    }
-  },
-  incidents: {
-    creation: {
-      input: 'test input',
-      error: {
-        message: 'test error message'
+  describe('mapStateToProps', function () {
+    const inputState = {
+      tickets: {
+        map: {
+          1: {id: 100}
+        },
+        systems: {
+          1: {id: 1},
+          2: {id: 2}
+        }
+      },
+      incidents: {
+        creation: {
+          input: 'test input',
+          error: {
+            message: 'test error message'
+          }
+        }
       }
     }
-  }
-}
 
-const expectedResult = {
-  input: 'test input',
-  ticketSystem: {
-    id: 1
-  },
-  creationError: 'test error message',
-  incidentActions: {
-    TestKey: 'TestValue'
-  }
-}
-
-describe('CreateIncidentMapStateToProps', () => {
-  it('Should correctly generate an args object from state', () => {
     const result = mapStateToProps(inputState)
 
-    expect(result.input).to.equal(expectedResult.input)
-    expect(result.ticketSystem.id).to.equal(expectedResult.ticketSystem.id)
-    expect(result.creationError).to.equal(expectedResult.creationError)
+    it('Should correctly generate an args object from state', () => {
+      const expectedResult = {
+        input: 'test input',
+        ticketSystem: {
+          id: 1
+        },
+        creationError: 'test error message',
+        incidentActions: {
+          TestKey: 'TestValue'
+        }
+      }
+
+      expect(result.input).to.equal(expectedResult.input)
+      expect(result.ticketSystem.id).to.equal(expectedResult.ticketSystem.id)
+      expect(result.creationError).to.equal(expectedResult.creationError)
+    })
+  })
+
+  describe('GoToTicket render output', function () {
+    const result = createComponent(GoToTicket)
+
+    it('Should be a Paper', function () {
+      expect(result.type).to.equal(Paper)
+    })
+
+    it('Should have a label span as its first child', function () {
+      expect(result.props.children[0].type).to.equal('span')
+    })
+
+    it('Should have ConnectedGoToTicketForm as its second child', function () {
+      expect(result.props.children[1].type).to.equal(ConnectedGoToTicketForm)
+    })
   })
 })
+
+
+
+
+

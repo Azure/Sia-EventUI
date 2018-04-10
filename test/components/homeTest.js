@@ -16,17 +16,14 @@ const ticketState = { ticket: {
   lastRefresh: '2017-12-29T20:19:32.407Z'
 }}
 
-describe('Home Container Component', function test () {
-  beforeEach(() => {
-    this.noTicketsExistState = setup(noTicketState, children)
-    this.ticketsExistState = setup(ticketState, children)
+describe('Home Container Component', function () {
+  it('Should return nothing if no tickets', function () {
+    const noTicketsExistState = setup(noTicketState, children)
+    expect(noTicketsExistState).to.be.undefined
   })
-
-  it('Should redirect to search if no tickets', () => {
-    expect(this.noTicketsExistState.props.to).to.equal('/search')
-  })
-  it('Should redirect to most recent ticket if there are tickets', () => {
-    expect(this.ticketsExistState.props.to).to.equal('/tickets/5507')
+  it('Should redirect to most recent ticket if there are tickets', function () {
+    const ticketsExistState = setup(ticketState, children)
+    expect(ticketsExistState.props.to).to.equal('/tickets/5507')
   })
 })
 

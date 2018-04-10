@@ -3,24 +3,25 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { TextField } from 'material-ui'
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
-import { updateIncidentCreationInput } from 'actions/incidentActions'
+import { updateTicketNavigationInput } from 'actions/incidentActions'
+import Paper from 'material-ui/Paper'
 
 export const onSubmit = (input, history, dispatch) => () => {
   if (input) {
-    dispatch(updateIncidentCreationInput(''))
+    dispatch(updateTicketNavigationInput(''))
     history.push(/tickets/ + input)
   }
 }
 
-export const CreateIncident = ({input, creationError, history, dispatch}) => <form
-  id='incident-search'
+export const GoToTicketForm = ({input, creationError, history, dispatch}) => <form
+  id='incident-navigation'
   onSubmit={onSubmit(input, history)}
   style={{padding: '16px'}}
 >
   <TextField
-    hintText='Ticket Id of primary ticket'
+    hintText='Ticket Id'
     floatingLabelText='Ticket Id'
-    onChange={(event, newValue) => dispatch(updateIncidentCreationInput(newValue))}
+    onChange={(event, newValue) => dispatch(updateTicketNavigationInput(newValue))}
     value={input}
     errorText={creationError}
   />
@@ -38,11 +39,18 @@ export const mapStateToProps = (state) => {
   }
 }
 
-CreateIncident.propTypes = {
+GoToTicketForm.propTypes = {
   input: PropTypes.string,
   creationError: PropTypes.string,
   history: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps)(CreateIncident)
+export const ConnectedGoToTicketForm = connect(mapStateToProps)(GoToTicketForm)
+
+export const GoToTicket = () => <Paper zDepth={1}>
+  <span>Go To Ticket:</span>
+  <ConnectedGoToTicketForm />
+</Paper>
+
+export default GoToTicket
