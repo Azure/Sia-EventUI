@@ -6,6 +6,7 @@
   "main": "",
   "scripts": {
     "clean": "rimraf dist/*",
+    "predist": "mkdir -p dist && git log --pretty=format:'%h' -n 1 >> ./dist/SHA",
     "dist": "npm run clean && cross-env NODE_ENV=dist webpack --env=dist --progress --profile --colors --display-error-details --display-reasons --debug",
     "lint": "standard \"src/**/*.js\"",
     "lint:fix": "standard --fix \"src/**/*.js\"",

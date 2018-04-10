@@ -11,6 +11,7 @@ import Ticket from 'components/Incident/Ticket'
 import EnsureLoggedInContainer from 'components/Auth/EnsureLoggedIn'
 import incidentRedirect from 'components/Incident/IncidentRedirect'
 import Home from 'components/Home'
+import About from 'components/About'
 import TopNav from 'components/TopNav/TopNav'
 import Debug from 'components/Debug'
 import UncorrelatedEvents from 'components/Timeline/UncorrelatedEvents'
@@ -32,6 +33,7 @@ export default class MainComponent extends React.Component {
                     { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
                     <Route exact path='/' component={Home} />
+                    <Route exact path='/about' component={About} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
                     <Route path='/tickets/:ticketId' component={Ticket} />
