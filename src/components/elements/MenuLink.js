@@ -9,7 +9,8 @@ export const MenuLink = (type, id, onClick, dispatch) => {
   return (
     <MenuItem
       key={`${type}-${id}`}
-      primaryText={<Link to={typeRoute}>{`${type} ${id}`}</Link>}
+      containerElement={<Link to={typeRoute} />}
+      primaryText={`${type} ${id}`}
       rightIcon={<ActionDelete onClick={() => dispatch(onClick(id))} />}
     />
   )

@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
+import Divider from 'material-ui/Divider'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
@@ -26,18 +27,21 @@ export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEven
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
   >
-    <MenuItem key='search' primaryText={<Link to='/search' >Incident Search</Link>} />
-    <MenuItem key='logout' primaryText={<Link to='/' onClick={() => dispatch(auth.logOut)}>LogOut</Link>} />
-    {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
-    <MenuItem key='debug' primaryText={<Link to='/debug' >Debug</Link>} />
+    <MenuItem containerElement={<Link to='/search' />} primaryText='Incident Search' />
+    <MenuItem containerElement={<Link to='/events' />} primaryText='Events for All Incidents' />
+    <Divider />
     <MenuItem
       key='preferences'
       primaryText={'Preferences'}
       rightIcon={<ArrowDropRight />}
       menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
     />
-    <MenuItem key='load uncorrelated events' primaryText={<Link to='/events'>Events for All Incidents</Link>} />
+    <Divider />
     { clearRecentTickets(dispatch) }
+    {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
+    <Divider />
+    <MenuItem onClick={() => dispatch(auth.logOut)} primaryText='LogOut' />
+    <MenuItem containerElement={<Link to='/debug' />} primaryText='Debug' />
   </IconMenu>)
 }
 
