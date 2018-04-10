@@ -9,28 +9,29 @@ import { removePreviousTicketsFromRecent } from 'actions/ticketActions'
 export const clearRecentTicketsButtonAction = (dispatch, currentTicketId) =>
 () => dispatch(removePreviousTicketsFromRecent(currentTicketId))
 
-export const clearRecentTicketsButton = ({dispatch, currentTicketId}) => <MenuItem
+export const ClearRecentTicketsButton = ({dispatch, currentTicketId, clearRecentTickets}) => <MenuItem
   key='clear'
   primaryText={'Clear Recent Tickets'}
-  onClick={clearRecentTicketsButtonAction(dispatch, currentTicketId)}
-  rightIcon={<ActionDeleteForever onClick={clearRecentTicketsButtonAction(dispatch, currentTicketId)} />}
+  onClick={clearRecentTickets(dispatch, currentTicketId)}
+  rightIcon={<ActionDeleteForever onClick={clearRecentTickets(dispatch, currentTicketId)} />}
 />
 
-const mapStateToClearRecentTicketsProps = (_, ownProps) => ({
-  currentTicketId: ownProps.match.params.ticketId
+export const mapStateToClearRecentTicketsProps = (_, ownProps) => ({
+  currentTicketId: ownProps.match.params.ticketId,
+  clearRecentTickets: clearRecentTicketsButtonAction
 })
 
-const ConnectedButton = connect(mapStateToClearRecentTicketsProps)(clearRecentTicketsButton)
+export const ConnectedClearRecentTicketsButton = connect(mapStateToClearRecentTicketsProps)(ClearRecentTicketsButton)
 
-export const clearRecentTickets = () => <Switch>
+export const ClearRecentTickets = () => <Switch>
   <Route
     path='/tickets/:ticketId'
-    component={ConnectedButton}
+    component={ConnectedClearRecentTicketsButton}
   />
   <Route
     path='/'
-    component={ConnectedButton}
+    component={ConnectedClearRecentTicketsButton}
   />
 </Switch>
 
-export default clearRecentTickets
+export default ClearRecentTickets
