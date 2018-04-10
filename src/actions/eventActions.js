@@ -14,24 +14,24 @@ export const POST_EVENT_TRY = 'POST_EVENT_TRY'
 export const POST_EVENT_SUCCEED = 'POST_EVENT_SUCCEED'
 export const POST_EVENT_FAIL = 'POST_EVENT_FAIL'
 export const ADD_EVENT = 'ADD_EVENT'
+export const CLEAR_EVENTS = 'CLEAR_EVENTS'
 
 export const pagination = paginationActions(EVENTS)
 
 export const linksHeaderName = 'links'
 
+export const clearEvents = () => ({
+  type: CLEAR_EVENTS
+})
+
 export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-    [getEventsEndPoint(incidentId) + eventId],
-    getEventActionSet(incidentId, eventId)
+  [getEventsEndPoint(incidentId) + eventId],
+  getEventActionSet(incidentId, eventId)
 )
 
 export const fetchEvents = (filter) => reduxBackedPromise(
-        getEventsFetchArgs(filter),
-        getEventsActionSet(filter.incidentId)
-    )
-
-export const fetchUncorrelatedEvents = (filter) => reduxBackedPromise(
-        ['events/' + filterService.serializeFiltersForUrl(filter)],
-        getEventsActionSet(null)
+  getEventsFetchArgs(filter),
+  getEventsActionSet(filter.incidentId)
 )
 
 export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.utc()) => reduxBackedPromise(
@@ -43,7 +43,7 @@ export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime
 export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events/'
 
 export const getEventsFetchArgs = (filter) => ([
-  getEventsEndPoint(filter.incidentId) + filterService.serializeFiltersForUrl(filter)
+  getEventsEndPoint(filter ? filter.incidentId : null) + filterService.serializeFiltersForUrl(filter)
 ])
 
 export const getEventFetchArgs = (incidentId, eventId) => {
