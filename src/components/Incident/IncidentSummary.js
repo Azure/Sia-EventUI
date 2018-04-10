@@ -40,10 +40,13 @@ const BasicInfoColumn = (ticketSystem, ticket) => [
     <a href={`${ticketSystem.ticketUriPrefix}${ticket.originId}${ticketSystem.ticketUriSuffix}`} key={key} target='_blank'>
       {ticket.originId}
     </a>,
-  (key) =>
-    <div key={key}>
-      {ticket.severity}
-    </div>
+  (key) => ticket.data && 'severity' in ticket.data
+    ? (
+      <div key={key}>
+        Severity: {ticket.data.severity}
+      </div>
+    )
+    : null
 ]
 
 const IncidentManagerColumn = (ticket) => [

@@ -1,13 +1,12 @@
 import React from 'react'
 import MenuItem from 'material-ui/MenuItem'
-import Divider from 'material-ui/Divider'
 
 import * as signalRActions from 'actions/signalRActions'
 
 export const Preferences = (eventFilter, currentEventFilterType, dispatch) => [
   <MenuItem
     key='signalREventFilter'
-    primaryText={'SignalR Event Filter Preferences:'}
+    primaryText={'Event Filter Preferences:'}
   />,
   ...Object.values(signalRActions.filterTypes).map(filterType => <MenuItem
     key={filterType.value}
@@ -18,8 +17,7 @@ export const Preferences = (eventFilter, currentEventFilterType, dispatch) => [
       >
         "{filterType.value}": {filterType.description}
       </div>}
-  />),
-  <Divider />
+  />)
 ]
 
 export default Preferences
