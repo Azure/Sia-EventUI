@@ -94,7 +94,7 @@ describe('CreateIncident', function testCreateIncident () {
 
       describe('Dispatched actions', function () {
         it('Should not have dispatched any actions', function () {
-          expect(dispatchRecord.action).to.be.null
+          expect(dispatchRecord.action).to.be.undefined
         })
       })
     })
