@@ -20,16 +20,16 @@ describe('MenuLink', function() {
       expect(result.type).to.equal(MenuItem)
     })
 
-    it('should contain a Link in the primaryText', function() {
-      expect(result.props.primaryText.type).to.equal(Link)
+    it('should not contain a Link in the primaryText', function() {
+      expect(result.props.primaryText.type).to.not.equal(Link)
     })
 
     it('should link to a route composed of type and id', function() {
-      expect(result.props.primaryText.props.to).to.equal(`/${mockType}s/${mockId}`)
+      expect(result.props.containerElement.props.to).to.equal(`/${mockType}s/${mockId}`)
     })
 
     it('should have a route named for the type and id', function () {
-      expect(result.props.primaryText.props.children).to.equal(`${mockType} ${mockId}`)
+      expect(result.props.primaryText).to.equal(`${mockType} ${mockId}`)
     })
 
     it('should have a key that is composed of both the type and id', function() {
