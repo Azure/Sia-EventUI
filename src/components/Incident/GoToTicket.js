@@ -6,10 +6,9 @@ import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { updateTicketNavigationInput } from 'actions/incidentActions'
 import Paper from 'material-ui/Paper'
 
-export const onSubmit = (input, history, dispatch) => () => {
+export const onSubmit = (input, history) => () => {
   if (input) {
-    dispatch(updateTicketNavigationInput(''))
-    history.push(/tickets/ + input)
+    history.push('/tickets/' + input)
   }
 }
 
@@ -27,15 +26,16 @@ export const GoToTicketForm = ({input, creationError, history, dispatch}) => <fo
   />
   <FlatButtonStyled
     label='Submit'
-    onTouchTap={onSubmit(input, history, dispatch)}
+    onTouchTap={onSubmit(input, history)}
   />
 </form>
 
-export const mapStateToProps = (state) => {
+export const mapStateToProps = (state, ownProps) => {
   return {
     input: state.incidents.creation.input,
     ticketSystem: state.tickets.systems[1],
-    creationError: state.incidents.creation.error ? state.incidents.creation.error.message : ''
+    creationError: state.incidents.creation.error ? state.incidents.creation.error.message : '',
+    ...ownProps
   }
 }
 
@@ -48,9 +48,9 @@ GoToTicketForm.propTypes = {
 
 export const ConnectedGoToTicketForm = connect(mapStateToProps)(GoToTicketForm)
 
-export const GoToTicket = () => <Paper zDepth={1}>
+export const GoToTicket = ({history}) => <Paper zDepth={1}>
   <span>Go To Ticket:</span>
-  <ConnectedGoToTicketForm />
+  <ConnectedGoToTicketForm history={history} />
 </Paper>
 
 export default GoToTicket

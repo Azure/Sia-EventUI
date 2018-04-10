@@ -3,6 +3,7 @@ import { Redirect } from 'react-router'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+
 import DisplayIncident from 'components/Incident/DisplayIncident'
 import LoadingMessage from 'components/elements/LoadingMessage'
 import ErrorMessage from 'components/elements/ErrorMessage'
@@ -26,11 +27,15 @@ class Ticket extends Component {
     const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
     dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
     dispatch(fetchEventTypes())
+    dispatch(incidentActions.updateTicketNavigationInput(''))
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (previousProps) {
     const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
     dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
+    if (previousProps.ticketId !== ticketId) {
+      dispatch(incidentActions.updateTicketNavigationInput(''))
+    }
   }
 
   render () {

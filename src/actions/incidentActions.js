@@ -144,7 +144,7 @@ const postIncidentFetchArgs = (ticketId, ticketSystem) => {
   ]
 }
 
-export const updateTicketNavigationInput = (input) => ({
+export const updateTicketNavigationInput = (input, history) => ({
   type: UPDATE_INCIDENT_CREATION_INPUT,
   input
 })

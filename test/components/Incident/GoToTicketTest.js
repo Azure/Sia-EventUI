@@ -66,21 +66,11 @@ describe('GoToTicket', function () {
       const input = 'testInput'
       const historyRecord = GetHistoryRecorder()
       const history = GetMockHistory(historyRecord)
-      const dispatchRecord = GetDispatchRecorder()
-      const dispatch = GetMockDispatch(dispatchRecord)
 
-      onSubmit(input, history, dispatch)()
+      onSubmit(input, history)()
       describe('History', function () {
         it('Should push a new url based on input', function () {
           expect(historyRecord[0]).to.equal('/tickets/testInput')
-        })
-      })
-
-      describe('Dispatched actions', function () {
-        it('Should dispatch an updateIncidentCreationInput action', function () {
-          expect(dispatchRecord.action).to.not.be.null
-          expect(dispatchRecord.action.type).to.equal('UPDATE_INCIDENT_CREATION_INPUT')
-          expect(dispatchRecord.action.input).to.equal('')
         })
       })
     })
@@ -92,16 +82,10 @@ describe('GoToTicket', function () {
       const dispatchRecord = GetDispatchRecorder()
       const dispatch = GetMockDispatch(dispatchRecord)
 
-      onSubmit(input, history, dispatch)()
+      onSubmit(input, history)()
       describe('History', function () {
         it('Should not be changed', function () {
           expect(historyRecord.length).to.equal(0)
-        })
-      })
-
-      describe('Dispatched actions', function () {
-        it('Should not have dispatched any actions', function () {
-          expect(dispatchRecord.action).to.be.undefined
         })
       })
     })
