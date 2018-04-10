@@ -22,6 +22,6 @@ export const GetMockDispatch = (mockDispatchRecorder) => {
   return dispatch
 }
 
-export const GetDispatchRecorder = () => ({ action: null })
+export const GetDispatchRecorder = () => ({})
 
 export default GetMockDispatch

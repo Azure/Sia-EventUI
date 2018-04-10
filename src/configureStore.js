@@ -20,7 +20,7 @@ export const persistor = persistStore(store)
 getSignalRConnection(store.dispatch)
   .then(() => {
     if (defaultSignalREventFilterPreference === filterTypes.sync.value) {
-      updateEventFilter(urlFilter)
+      updateEventFilter(urlFilter, store.dispatch)
     }
   })
 

@@ -28,6 +28,11 @@ class Ticket extends Component {
     dispatch(fetchEventTypes())
   }
 
+  componentDidUpdate () {
+    const { dispatch, incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError } = this.props
+    dispatch(incidentActions.fetchIncidentIfNeeded(incident, ticketId, ticket, ticketSystem, preferences, incidentIsFetching, incidentIsError))
+  }
+
   render () {
     const {
             incident,
@@ -53,7 +58,7 @@ class Ticket extends Component {
         incident={currentIncident}
         ticket={ticket}
         ticketSystem={ticketSystem}
-             />
+      />
     }
 
     if (!incident || !incident.primaryTicket || !ticket || incident.error) {
@@ -65,7 +70,7 @@ class Ticket extends Component {
         incident={incident}
         ticket={ticket}
         ticketSystem={ticketSystem}
-             />
+      />
     }
     return (
       <Redirect to={`/tickets/${incident.primaryTicket.originId}`}>

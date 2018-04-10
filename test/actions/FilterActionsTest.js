@@ -3,46 +3,39 @@ import { expect } from 'chai'
 import queryString from 'query-string'
 import * as filterActions from 'actions/filterActions'
 
-// Istanbul for test coverage, provides us with a new command nyc-mocha, which runs the tests and gives a reporter
 describe('FilterActions', function () {
-  describe('addFilter', function () {
-    it('should return a function for eventType with falsy id: 0', function () {
-      const history = {}
-      const filter = {}
-      const signalRFilterType = {}
-      const eventType = { id: 0, name: 'Note' }
-      const result = filterActions.addFilter(history)(filter, signalRFilterType)(eventType)
-      expect(result).to.be.a('function')
-    })
-  })
+  describe('applyEventTypeAddition', function () {
+    describe('nothingToAdd', function () {
+      context('When eventType has Id 0', function () {
+        const eventType = {
+          id: 0
+        }
+        it('Should return false', function () {
+          expect(filterActions.nothingToAdd(eventType)).to.be.false
+        })
+      })
 
-  describe('changeEventFilter', function () {
-    const history = []
-    const filter = {ticketId: 0, eventTypes: [1, 2]}
+      context('When eventType is null or undefined', function () {
+        it('Should return true', function () {
+          expect(filterActions.nothingToAdd(undefined)).to.be.true
+          expect(filterActions.nothingToAdd(null)).to.be.true
+        })
+      })
 
-    const result = filterActions.changeEventFilter(history)(filter)
-
-    const expectedValue = {type: 'CHANGE_EVENT_FILTER', filter: {ticketId: 0, eventTypes: [1, 2]}}
-
-    it('should return an object with a type and a filter', function () {
-      expect(result).to.deep.equal(expectedValue)
+      context('When eventType has no id', function () {
+        const eventType = {}
+        it('Should return true', function () {
+          expect(filterActions.nothingToAdd(eventType)).to.be.true
+        })
+      })
     })
   })
 
   describe('clearFilterIncidentId', function(){
-    const filter = {incidentId: 1, eventTypes: [1, 2]}
-    const result = filterActions.clearFilterIncidentId(filter)
-    it('should return an object with a type and a filter', function(){
-      expect(result.incidentId).to.be.undefined
-    })
-  })
-
-  describe('removeFilter', function () {
-    beforeEach(() => {
-      this.mockDispatchRecorder = {
-        action: null
-      }
-      this.singleState = setup(dummyState(this.mockDispatchRecorder), null)
+    const result = filterActions.clearFilterIncidentId()
+    it('should return an object the correct type and no other properties', function(){
+      expect(result.type).to.equal('CLEAR_EVENT_FILTER_INCIDENTID')
+      expect(Object.keys(result).length).to.equal(1)
     })
   })
 })

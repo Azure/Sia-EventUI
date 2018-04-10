@@ -31,7 +31,7 @@ const config = {
     publicPath: publicPath
   },
   devServer: {
-    contentBase: './src/',
+    contentBase: path.join(siaRoot, 'src'),
     historyApiFallback: true,
     hot: true,
     publicPath: publicPath,

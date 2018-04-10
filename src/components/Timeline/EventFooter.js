@@ -1,8 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import RaisedButtonStyled from 'components/elements/RaisedButtonStyled'
 import * as eventActions from 'actions/eventActions'
 
-const EventFooter = ({pagination, dispatch}) => {
+export const EventFooter = ({pagination, dispatch}) => {
   const linkRange = 2
   const maxPagesToLinkTo = 2 * linkRange + 1
   const pagesForDirectLink = []
@@ -32,4 +34,8 @@ const EventFooter = ({pagination, dispatch}) => {
   )
 }
 
-export default EventFooter
+export const mapStateToProps = (state, ownProps) => ({
+  pagination: state.events.pages
+})
+
+export default connect(mapStateToProps)(EventFooter)
