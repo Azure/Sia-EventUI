@@ -39,11 +39,11 @@ export const connectionClosed = (error, stack) => ({
 export const filterTypes = {
   none: {
     value: 'none',
-    description: 'Do not filter events sent from the Gateway'
+    description: 'Receive Notifications For All Events For All Incidents'
   },
   sync: {
     value: 'sync',
-    description: 'Receive only events that match the event filter on the current page'
+    description: 'Receive Notifications Only For Events Matching The Current Incident and Filter'
   }
 }
 

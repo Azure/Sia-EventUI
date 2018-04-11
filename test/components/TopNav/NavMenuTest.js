@@ -82,15 +82,18 @@ describe('mapStateToProps', function test () {
     }
   }
 
-  let ownProps = { location: { pathname: '/tickets/4444' } }
+  const ownProps = {
+    history: {},
+    location: { pathname: '/tickets/4444' }
+  }
 
-  beforeEach(() => { this.result = mapStateToProps(state, ownProps)})
+  const result = mapStateToProps(state, ownProps)
 
-  it('passes ownProps data through', () => {
-    expect(this.result).to.contain(ownProps)
+  it('passes history from ownProps', () => {
+    expect(result.history).to.equal(ownProps.history)
   })
 
   it('transforms the tickets.map into ticketIds', () => {
-    expect(this.result.ticketIds).to.contain('12345', '67890')
+    expect(result.ticketIds).to.contain('12345', '67890')
   })
 })

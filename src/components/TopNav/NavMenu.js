@@ -7,13 +7,11 @@ import Divider from 'material-ui/Divider'
 import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
 
 import MenuLink from 'components/elements/MenuLink'
 import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
 import * as auth from 'services/authNService'
-import Preferences from 'components/TopNav/Preferences'
 
 const clearRecentTickets = (dispatch) =>
   <MenuItem key='clear' primaryText={'Clear Recent Tickets'} onClick={() => dispatch(removeAllTicketsFromRecent())}
@@ -21,7 +19,11 @@ const clearRecentTickets = (dispatch) =>
   />}
   />
 
-export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEventFilterType }) => {
+export const NavMenu = ({
+  dispatch,
+  history,
+  ticketIds
+}) => {
   return (<IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -30,12 +32,7 @@ export const NavMenu = ({ dispatch, history, ticketIds, eventFilter, currentEven
     <MenuItem containerElement={<Link to='/search' />} primaryText='Incident Search' />
     <MenuItem containerElement={<Link to='/events' />} primaryText='Events for All Incidents' />
     <Divider />
-    <MenuItem
-      key='preferences'
-      primaryText={'Preferences'}
-      rightIcon={<ArrowDropRight />}
-      menuItems={Preferences(eventFilter, currentEventFilterType, dispatch)}
-    />
+    <MenuItem containerElement={<Link to='/preferences' />} primaryText={'Preferences'} />
     <Divider />
     { clearRecentTickets(dispatch) }
     {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
@@ -51,14 +48,12 @@ NavMenu.propTypes = {
 }
 
 export const mapStateToProps = (state, ownProps) => {
-  var pathname = ownProps.location.pathname
-  var currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
-  let idContainsANumberAndIsNotCurrent = (id) => id !== currentId && /\d/.test(id)
+  const pathname = ownProps.location.pathname
+  const currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
+  const idContainsANumberAndIsNotCurrent = (id) => id !== currentId && /\d/.test(id)
 
   return {
-    ...ownProps,
-    eventFilter: state.events.filter,
-    currentEventFilterType: state.signalR.filterPreferences.eventFilterType,
+    history: ownProps.history,
     ticketIds: Object.entries(state.tickets.map)
       .filter(kvp => kvp[1] !== null)
       .map(kvp => kvp[0])
