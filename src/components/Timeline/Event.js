@@ -9,7 +9,7 @@ import Playbook from 'components/Timeline/Playbook/Playbook'
 import { LoadTextFromEvent, TestConditionSet } from 'services/playbookService'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import LoadingMessage from 'components/elements/LoadingMessage'
-import EventTypeIcon from 'components/Timeline/EventTypeIcon'
+import EventTypeIcon from 'components/Timeline/Event/EventTypeIcon'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 

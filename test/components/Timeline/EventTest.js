@@ -6,7 +6,6 @@ import { Event, mapStateToEventProps, animationDelayAsSecondsString } from 'comp
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { DateTime, Duration } from 'luxon'
-import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 const setup = () => {
   let props = {
@@ -63,16 +62,7 @@ describe('Event', function test () {
 
       const actualString = animationDelayAsSecondsString(mockEvent)
       expect(parseInt(actualString.slice(0, -1))).to.be.within(-11, -9)
-      expect(actualString.endsWith('s')).to.be.true
-    })
-  })
-
-  describe('#timeFormattedToMultipleZones', () => {
-    it('defaults to displaying time in Pacific, India Standard, and UTC', () => {
-      const time = DateTime.utc(1970, 1, 1, 0, 0)
-      const expected = '1969-12-31 16:00:00 PT; 1970-01-01 05:30:00 IST, 00:00:00 UTC'
-
-      expect(timeFormattedToMultipleZones(time)).to.eql(expected)
+      expect(actualString.endsWith('s')).to.be.true()
     })
   })
 })

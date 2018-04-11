@@ -50,3 +50,5 @@ export const mapStateToEventCardProps = (state, ownProps) => {
     titleText: LoadTextFromEvent(event, eventType, ticket)
   }
 }
+
+export default connect(mapStateToEventCardProps)(EventCard)

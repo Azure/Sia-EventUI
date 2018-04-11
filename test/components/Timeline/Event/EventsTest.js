@@ -96,7 +96,7 @@ describe('Events', function test () {
     expect(this.output.type).to.equal('div')
     expect(this.output.props.children[0].type).to.equal(Event)
     expect(this.output.props.children[10].type).to.equal(Event)
-    expect(this.output.props.children[11]).to.not.exist
+    expect(this.output.props.children[11]).to.not.exist()
   })
 
   it('Should return the right ticketId', () => {

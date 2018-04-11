@@ -16,11 +16,12 @@ export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
                     />
 }
 
-export const mapStateToPlayProps = (state, ownProps) => {
-  const eventType = state.eventTypes.records[ownProps.eventTypeId]
-  const event = state.events.pages.list.find(event => event.id === ownProps.eventId)
-  const ticket = state.tickets.map[ownProps.ticketId]
-  const action = ownProps.action
+export const mapStateToPlayProps = (fillTemplate) => (state, ownProps) => {
+  const { eventTypeId, eventId, ticketId, action } = ownProps
+
+  const eventType = state.eventTypes.records[eventTypeId]
+  const event = state.events.pages.list.find(event => event.id === eventId)
+  const ticket = state.tickets.map[ticketId]
   const filledTemplate = action ? fillTemplate(action.actionTemplate, event, ticket, eventType) : ''
 
   return {
@@ -31,4 +32,4 @@ export const mapStateToPlayProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToPlayProps)(Play)
+export default connect(mapStateToPlayProps(fillTemplate))(Play)

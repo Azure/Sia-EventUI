@@ -39,7 +39,6 @@ export const Playbook = ({
     eventId={eventId}
     ticketId={ticketId}
     incidentId={incidentId}
-    actions={actions}
     />
 }
 
