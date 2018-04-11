@@ -1,9 +1,9 @@
 'use strict'
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 import { expect } from 'chai'
 import * as ticketActions from 'actions/ticketActions.js'
 import * as incidentActions from 'actions/incidentActions.js'
-import { map, query, systems } from 'reducers/ticketReducers.js'
+import { map, query } from 'reducers/ticketReducers.js'
 
 const emptyTicketList = {}
 
@@ -101,7 +101,7 @@ describe('Ticket Reducers', function test () {
       expect(Object.values(this.OnReceiveIncidentFromPopulated).filter(function (ticket) { return ticket.originId === 38808134 })[0]).to.exist
     })
 
-    it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function() {
+    it('Should replace a given ticket with null values when REMOVE_TICKET is dispatched', function () {
       const result = map(populatedTicketList, removeTicketFromRecent(38502026))
       expect(result[38502026]).to.be.null
       expect(result[44444444]).to.not.be.null
@@ -124,7 +124,6 @@ describe('Ticket Reducers', function test () {
         expect(result[38805418]).to.be.null
       })
     })
-
   })
 
   describe('query reducer', function queryTest () {

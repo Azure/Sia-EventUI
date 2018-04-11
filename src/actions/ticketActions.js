@@ -9,7 +9,7 @@ export const updateTicketQuery = ticketQuery => ({
 
 export const removePreviousTicketsFromRecent = (currentTicketId) => ({
   type: REMOVE_PREVIOUS_TICKETS,
-  current: currentTicketId
+  currentId: currentTicketId
 })
 
 export const removeTicketFromRecent = (id) => ({

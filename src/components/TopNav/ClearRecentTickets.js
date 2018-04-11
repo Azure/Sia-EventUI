@@ -7,7 +7,7 @@ import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
 import { removePreviousTicketsFromRecent } from 'actions/ticketActions'
 
 export const clearRecentTicketsButtonAction = (dispatch, currentTicketId) =>
-() => dispatch(removePreviousTicketsFromRecent(currentTicketId))
+  () => dispatch(removePreviousTicketsFromRecent(currentTicketId))
 
 export const ClearRecentTicketsButton = ({dispatch, currentTicketId, clearRecentTickets}) => <MenuItem
   key='clear'

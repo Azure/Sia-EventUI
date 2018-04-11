@@ -2,16 +2,15 @@
 import { expect } from 'chai'
 import * as ticketActions from 'actions/ticketActions'
 
-describe('TicketActions', function() {
-  describe('updateTicketQuery', function() {
+describe('TicketActions', function () {
+  describe('updateTicketQuery', function () {
     const result = ticketActions.updateTicketQuery(null)
-    it('should return an object with type update_ticket_query and given ticketQuery', function() {
+    it('should return an object with type update_ticket_query and given ticketQuery', function () {
       expect(result).to.deep.equal({ type: ticketActions.UPDATE_TICKET_QUERY, ticketQuery: null })
     })
-
   })
 
-  describe('removeAllTicketsFromRecent', function () {
+  describe('#removePreviousTicketsFromRecent', function () {
     const result = ticketActions.removePreviousTicketsFromRecent(100)
     describe('action object', function () {
       it('Should have the REMOVE_PREVIOUS_TICKETS type', function () {
@@ -19,7 +18,7 @@ describe('TicketActions', function() {
       })
 
       it('Should have a current property with the passed in value', function () {
-        expect(result.current).to.equal(100)
+        expect(result.currentId).to.equal(100)
       })
     })
   })

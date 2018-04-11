@@ -50,7 +50,7 @@ describe('ClearRecentTickets', function () {
 
       it('Should dispatch removePreviousTicketsFromRecent with the passed in current value', function () {
         expect(dispatchRecorder.action.type).to.equal('REMOVE_PREVIOUS_TICKETS')
-        expect(dispatchRecorder.action.current).to.equal(inputTicketId)
+        expect(dispatchRecorder.action.currentId).to.equal(inputTicketId)
       })
     })
   })

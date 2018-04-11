@@ -51,15 +51,13 @@ const removeTicketFromState = (state, ticketId) => {
   return newState
 }
 
-const removePreviousTicketsFromState = (state, currentTicketId) => {
-  let newState = {}
-  Object.keys(state)
-    .forEach(ticketId => {
-      newState[ticketId] = null
-    })
-  newState[currentTicketId] = state[currentTicketId]
-  return newState
-}
+const removePreviousTicketsFromState = (state, currentTicketId) =>
+  Object.assign(
+    {},
+    ...Object.keys(state)
+      .map(ticketId => ({[ticketId]: null})),
+    {[currentTicketId]: state[currentTicketId]}
+  )
 
 const defaultPreferences = {
   refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
@@ -82,7 +80,7 @@ export const map = (state = defaultTicketList, action) => {
     case REMOVE_TICKET:
       return removeTicketFromState(state, action.id)
     case REMOVE_PREVIOUS_TICKETS:
-      return removePreviousTicketsFromState(state, action.current)
+      return removePreviousTicketsFromState(state, action.currentId)
     default:
       return state
   }
