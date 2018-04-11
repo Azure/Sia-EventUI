@@ -68,80 +68,32 @@ describe('FilterService', function () {
     })
   })
 
-  describe('getUrlFromFilter', function () {
-    const history = []
+  describe('serializeFiltersForUrl', function () {
+    it('Should serialize EventTypes when the filter object provides any', function () {
+      const filterWithEventTypes = { ticketId: 0, eventTypes: [1, 2] }
 
-    const filterNoEventTypes = {ticketId: 0, foo: 'bar'}
-    const filterWithEventTypes = {ticketId: 0, eventTypes: [1, 2]}
-
-    const expectedResult = '/tickets/0?eventTypes=1&eventTypes=2'
-
-    filterService.getUrlFromFilter(history, filterWithEventTypes)
-
-    it('should push urls to history when there are eventTypes', function () {
-      expect(history[0]).to.equal(expectedResult)
+      const expectedResult = '?eventTypes=1&eventTypes=2'
+      expect(filterService.serializeFiltersForUrl(filterWithEventTypes)).to.equal(expectedResult)
     })
-    it('should push nothing to history when there are no eventTypes', function () {
-      const newHistory = []
-      filterService.getUrlFromFilter(newHistory, filterNoEventTypes)
-      expect(newHistory).to.be.empty
+
+    it('Should return an empty string when the filter object has no values that result in valid tokens', function () {
+      const filterNoEventTypes = { ticketId: 0 }
+
+      expect(filterService.serializeFiltersForUrl(filterNoEventTypes)).to.equal('')
     })
-  })
 
-  describe('getUrlFromUncorrelatedFilter', function () {
-    const history = []
-
-    const filterNostartEndTimes = {eventTypes: [1, 2]}
-    const filterWithEventTypesAndStartEndTimes = {startTime: 'startTime', endTime: 'endTime', eventTypes: [1, 2]}
-    const filterWithNoEventTypes = {startTime: 'startTime', endTime: 'endTime'}
-
-    const expectedResult =  [ 'eventTypes=1', 'eventTypes=2', 'startTime=startTime', 'endTime=endTime' ]
-    const expectedResultWithoutEventType = '/events/?startTime=startTime&endTime=endTime'
-
-    it('should push urls to history when there are startTime, EndTime and eventTypes', function () {
-      filterService.getUrlFromUncorrelatedFilter(history, filterWithEventTypesAndStartEndTimes)
-      expectedResult.forEach(expectedToken => expect(history[0]).to.include(expectedToken))
+    it('Should include startTime, endTime, and eventTypes tokens when the filter object has valid values for them', function () {
+      const filterWithEventTypesAndStartEndTimes = {startTime: 'startTime', endTime: 'endTime', eventTypes: [1, 2]}
+      const expectedResult =  [ 'eventTypes=1', 'eventTypes=2', 'startTime=startTime', 'endTime=endTime' ]
+      const result = filterService.serializeFiltersForUrl(filterWithEventTypesAndStartEndTimes)
+      expectedResult.forEach(expectedToken => expect(result).to.include(expectedToken))
     })
-    it('should push only startTime and EndTime to history and nothing else', function(){
-      filterService.getUrlFromUncorrelatedFilter(history, filterWithNoEventTypes)
-      expect(history[1]).to.equal(expectedResultWithoutEventType)
-    })
-    it('should push nothing to history when there are no startTime and EndTime', function () {
-      const newHistory = []
-      filterService.getUrlFromUncorrelatedFilter(newHistory, filterNostartEndTimes)
-      expect(newHistory).to.be.empty
-    })
-  })
 
-  describe('generateUrl', function () {
-    const history = []
-    const filter = {ticketId: 0, eventTypes: [1, 2]}
-
-    const result = filterService.generateUrl(history, filter)
-
-    const expectedValue = '/tickets/0?eventTypes=1&eventTypes=2'
-
-    it('should return the right URL from the filter object', function () {
-      expect(result).to.equal(expectedValue)
-    })
-  })
-
-  describe('findEventTypeInRef', function () {
-    const testEventTypeId = 0
-    const unknownEventTypeId = 10000
-
-    const referenceData = {0: {id: 0, name: 'testZero'}, 1: {id: 1, name: 'testOne'}}
-
-    const expectedEventType = { id: 0, name: 'testZero' }
-    const unknownEventType = {id: 10000, name: 'unknown'}
-
-    it('should return a matching object when given a known id', function () {
-      const result = filterService.findEventTypeInRef(referenceData)(testEventTypeId)
-      expect(result).to.deep.equal(expectedEventType)
-    })
-    it('should return a new object with name "unknown" when given an unknown id', function () {
-      const badResult = filterService.findEventTypeInRef(referenceData)(unknownEventTypeId)
-      expect(badResult).to.deep.equal(unknownEventType)
+    it('Should serialize only startTime and EndTime when nothing else is provided', function(){
+      const filterWithNoEventTypes = { startTime: 'startTime', endTime: 'endTime' }
+      const expectedResultWithoutEventType = '?startTime=startTime&endTime=endTime'
+      const result = filterService.serializeFiltersForUrl(filterWithNoEventTypes)
+      expect(result).to.equal(expectedResultWithoutEventType)
     })
   })
 

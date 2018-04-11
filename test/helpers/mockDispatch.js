@@ -10,16 +10,18 @@ import { isObject } from 'util'
         Subsequent actions are added to the array.
 */
 export const GetMockDispatch = (mockDispatchRecorder) => {
-  const dispatch = (action) => isObject(action)
-    ? mockDispatchRecorder.action
-        ? Array.isArray(mockDispatchRecorder.action)
-            ? mockDispatchRecorder.action.push(action)
-            : mockDispatchRecorder.action = [mockDispatchRecorder.action, action]
-        : mockDispatchRecorder.action = action
-    : action(dispatch)
+  const dispatch = (action) => action
+    ? isObject(action)
+      ? mockDispatchRecorder.action
+          ? Array.isArray(mockDispatchRecorder.action)
+              ? mockDispatchRecorder.action.push(action)
+              : mockDispatchRecorder.action = [mockDispatchRecorder.action, action]
+          : mockDispatchRecorder.action = action
+      : action(dispatch)
+    : null
   return dispatch
 }
 
-export const GetDispatchRecorder = () => ({ action: null })
+export const GetDispatchRecorder = () => ({})
 
 export default GetMockDispatch

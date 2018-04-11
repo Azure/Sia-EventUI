@@ -31,26 +31,34 @@ describe('NavMenu', function test () {
     let link = this.wrapper.props().children[0]
 
     expect(link.type).to.equal(MenuItem)
-    expect(link.props.primaryText.type).to.equal(Link)
-    expect(link.props.primaryText.props.to).to.equal('/search')
+    expect(link.props.primaryText).to.equal('Incident Search')
+    expect(link.props.containerElement.type).to.equal(Link)
+    expect(link.props.containerElement.props.to).to.equal('/search')
   })
 
-  it('Should render a log out link', () => {
+  it('Should render an Events for All Incidents link', () => {
     let link = this.wrapper.props().children[1]
 
     expect(link.type).to.equal(MenuItem)
-    expect(link.props.primaryText.type).to.equal(Link)
-    expect(link.props.primaryText.props.to).to.equal('/')
-    expect(link.props.primaryText.props.onClick).to.exist
+    expect(link.props.primaryText).to.equal('Events for All Incidents')
+    expect(link.props.containerElement.type).to.equal(Link)
+    expect(link.props.containerElement.props.to).to.equal('/events')
+  })
+
+  it('Should render a log out link', () => {
+    let link = this.wrapper.props().children[8]
+
+    expect(link.type).to.equal(MenuItem)
+    expect(link.props.primaryText).to.equal('LogOut')
   })
 
   it('Should render links to previously visited tickets', () => {
-    let links = this.wrapper.props().children[2]
+    let links = this.wrapper.props().children[6]
 
-    expect(links[0].props.primaryText.props.to).to.equal('/tickets/1111')
-    expect(links[1].props.primaryText.props.to).to.equal('/tickets/2222')
-    expect(links[2].props.primaryText.props.to).to.equal('/tickets/3333')
-    })
+    expect(links[0].props.containerElement.props.to).to.equal('/tickets/1111')
+    expect(links[1].props.containerElement.props.to).to.equal('/tickets/2222')
+    expect(links[2].props.containerElement.props.to).to.equal('/tickets/3333')
+  })
 })
 
 describe('mapStateToProps', function test () {
