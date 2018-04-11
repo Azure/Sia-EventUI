@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import Event from 'components/Timeline/Event'
-import Events from 'components/Timeline/Events'
+import Events from 'components/Timeline/Event/Events'
 
 const eventZero = {
   eventTypeId: 0,

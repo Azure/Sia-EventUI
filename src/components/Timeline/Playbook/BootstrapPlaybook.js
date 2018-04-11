@@ -5,9 +5,10 @@ import { BootstrapIfNeeded } from 'services/playbookService'
 
 export class BootstrapPlaybook extends React.Component {
   static propTypes = {
-    bootStrapIfNeeded: PropTypes.func,
     eventType: PropTypes.object,
-    isFetching: PropTypes.bool
+    eventTypeId: PropTypes.number.isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    isError: PropTypes.bool.isRequired
   }
 
   componentDidMount () {
@@ -24,10 +25,10 @@ export class BootstrapPlaybook extends React.Component {
 }
 
 export const mapStateToBootstrapPlaybookProps = (state, ownProps) => ({
-  ...ownProps,
   eventType: state.eventTypes.records[ownProps.eventTypeId],
   isFetching: state.eventTypes.fetching.includes(ownProps.eventTypeId),
-  isError: state.eventTypes.error.includes(ownProps.eventTypeId)
+  isError: state.eventTypes.error.includes(ownProps.eventTypeId),
+  ...ownProps
 })
 
 export default connect(mapStateToBootstrapPlaybookProps)(BootstrapPlaybook)

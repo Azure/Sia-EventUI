@@ -3,16 +3,15 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { DateTime } from 'luxon'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
+
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import Playbook from 'components/Timeline/Playbook/Playbook'
 import { LoadTextFromEvent, TestConditionSet } from 'services/playbookService'
 import ErrorMessage from 'components/elements/ErrorMessage'
 import LoadingMessage from 'components/elements/LoadingMessage'
+import EventTypeIcon from 'components/Timeline/EventTypeIcon'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
-
-export const animationDelayAsSecondsString = (event) =>
-  event.timeReceived.diffNow('seconds').toObject().seconds + 's'
 
 export const Event = ({
     text,
@@ -32,15 +31,14 @@ export const Event = ({
     animationDuration: '30s',
     animationDelay: animationDelayAsSecondsString(event)
   } : {}
-  const isAllPlaybookInfoAvailable = !!(actions && Array.isArray(actions) && actions.length > 0)
-  const missingId = eventTypeId
+
   return eventTypeIsFetching && !eventHasValidDisplayText(event)
         ? <LoadingMessage
           message={'Fetching Event Type Information'}
           actionForRetry={eventTypeActions.fetchEventType(eventTypeId)}
           />
         : eventTypeIsError && !eventHasValidDisplayText(event)
-          ? ErrorMessage(`Error fetching eventType: ${missingId}`, eventTypeActions.fetchEventType(eventTypeId), time, backgroundColor)
+          ? ErrorMessage(`Error fetching eventType: ${eventTypeId}`, eventTypeActions.fetchEventType(eventTypeId), time, backgroundColor)
             : <div style={itemHighlight}>
               <BootstrapPlaybook
                 eventId={eventId}
@@ -60,6 +58,7 @@ export const Event = ({
                   iconStyle={{
                     color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
                   }}
+                  avatar={EventTypeIcon(eventTypeId)}
             />
                 {
               isAllPlaybookInfoAvailable &&
@@ -96,7 +95,7 @@ export const mapStateToEventProps = (state, ownProps) => {
   const eventType = state.eventTypes.records[event.eventTypeId]
   const ticket = state.tickets.map[ownProps.ticketId]
   const actions = eventType ? eventType.actions : null
-  var populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
+  const populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
   const qualifiedActions = actions
     ? actions.filter(
         action => action.conditionSets.reduce(

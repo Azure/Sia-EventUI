@@ -14,8 +14,7 @@ export const Playbook = ({
     eventIsFetching,
     eventIsError,
     eventTypeIsFetching,
-    eventTypeIsError,
-    actions
+    eventTypeIsError
 }) => {
   if (eventIsFetching) {
     return <LoadingMessage

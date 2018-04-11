@@ -12,6 +12,7 @@ export const DisplayPlaybook = ({
 }) => {
   let localKey = 0
   return <div>
+    <div key={localKey++}>Select the Actions below:</div>
     {actions.map(action =>
       <div key={localKey++}>
         <span>
@@ -24,7 +25,7 @@ export const DisplayPlaybook = ({
           eventId={eventId}
           incidentId={incidentId}
           ticketId={ticketId}
-                />
+        />
       </div>
         )}
   </div>
