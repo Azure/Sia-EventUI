@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
@@ -8,6 +8,7 @@ import IconMenu from 'material-ui/IconMenu'
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import IconButton from 'material-ui/IconButton'
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever'
+import ActionDelete from 'material-ui/svg-icons/action/delete'
 
 import MenuLink from 'components/elements/MenuLink'
 import { removeTicketFromRecent, removeAllTicketsFromRecent } from 'actions/ticketActions'
@@ -29,16 +30,16 @@ export const NavMenu = ({
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
   >
-    <MenuItem containerElement={<Link to='/search' />} primaryText='Incident Search' />
-    <MenuItem containerElement={<Link to='/events' />} primaryText='Events for All Incidents' />
+    {MenuLink('Incident Search', '/search')}
+    {MenuLink('Events for All Incidents', '/events')}
     <Divider />
-    <MenuItem containerElement={<Link to='/preferences' />} primaryText={'Preferences'} />
+    {MenuLink('Preferences', '/preferences')}
     <Divider />
-    { clearRecentTickets(dispatch) }
-    {ticketIds && ticketIds.map(id => MenuLink('ticket', id, removeTicketFromRecent, dispatch)) }
+    {clearRecentTickets(dispatch)}
+    {ticketIds && ticketIds.map(id => MenuLink(`Ticket ${id}`, `/tickets/${id}`, <ActionDelete onClick={() => dispatch(removeTicketFromRecent(id))} />)) }
     <Divider />
     <MenuItem onClick={() => dispatch(auth.logOut)} primaryText='LogOut' />
-    <MenuItem containerElement={<Link to='/debug' />} primaryText='Debug' />
+    {MenuLink('Debug', '/debug')}
   </IconMenu>)
 }
 

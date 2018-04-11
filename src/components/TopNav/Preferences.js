@@ -28,7 +28,7 @@ export const EventFilterPreferences = ({
   </RadioButtonGroup>
 </div>
 
-export const mapStateToEventFilterPreferencesProps = (state, ownProps) => ({
+export const mapStateToEventFilterPreferencesProps = (state) => ({
   currentEventFilterObject: state.events.filter,
   currentEventFilterPreference: state.signalR.filterPreferences.eventFilterType
 })
