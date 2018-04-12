@@ -16,6 +16,7 @@ import Debug from 'components/Debug'
 import UncorrelatedEvents from 'components/Timeline/UncorrelatedEvents'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
+import Preferences from 'components/TopNav/Preferences'
 
 const history = createBrowserHistory()
 
@@ -37,6 +38,7 @@ export default class MainComponent extends React.Component {
                     <Route path='/tickets/:ticketId' component={Ticket} />
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />
+                    <Route path='/preferences' component={Preferences} />
                     <Route path='/events' component={UncorrelatedEvents} />
                   </div>
                 </Router>

@@ -7,7 +7,7 @@ export const Debug = () => {
     <FlatButtonStyled
       label='Clear Auth Cache'
       onTouchTap={() => clearCache()}
-                />
+    />
   </div>)
 }
 
