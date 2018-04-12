@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { DateTime } from 'luxon'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
+import * as Icons from 'material-ui/svg-icons'
+import Avatar from 'material-ui/Avatar'
 
 import Playbook from 'components/Timeline/Playbook/Playbook'
-import { GetQualifiedActions, LoadTextFromEvent } from 'services/playbookService'
+import { LoadTextFromEvent } from 'services/playbookService'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
 const isAllPlaybookInfoAvailable = (actions) =>
@@ -13,7 +15,9 @@ const isAllPlaybookInfoAvailable = (actions) =>
 
 export const EventCard = ({
   event,
-  titleText
+  titleText,
+  ticketId,
+  IconType
 }) => <Card
   className='incident-card'
   style={{ backgroundColor: event.backgroundColor }}
@@ -24,30 +28,37 @@ export const EventCard = ({
     iconStyle={{
       color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
     }}
-    avatar={EventTypeIcon(event.eventTypeId)}
+    avatar={IconType ? <Avatar icon={<IconType />} /> : null}
   />
   <CardText>
     <Playbook
       eventId={event.id}
       eventTypeId={event.eventTypeId}
       ticketId={ticketId}
-      incidentId={incidentId}
     />
   </CardText>
 </Card>
 
-EventCard.propTypes ={
+EventCard.propTypes = {
   event: PropTypes.object.isRequired,
+  titleText: PropTypes.string.isRequired,
+  ticketId: PropTypes.string,
+  IconType: PropTypes.func
 }
 
 export const mapStateToEventCardProps = (state, ownProps) => {
-  const { event } = ownProps
+  const { event, ticketId } = ownProps
   const eventType = state.eventTypes.records[event.eventTypeId]
-  const ticket = state.tickets.map[ownProps.ticketId]
+  const ticket = state.tickets.map[ticketId]
+  const IconType = Icons[eventType.icon]
 
   return {
     event,
-    titleText: LoadTextFromEvent(event, eventType, ticket)
+    titleText: LoadTextFromEvent(event, eventType, ticket),
+    ticketId,
+    IconType: typeof IconType === 'function'
+      ? IconType
+      : null
   }
 }
 

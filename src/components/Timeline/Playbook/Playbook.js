@@ -7,19 +7,18 @@ import * as eventActions from 'actions/eventActions'
 import * as eventTypeActions from 'actions/eventTypeActions'
 
 export const Playbook = ({
-    eventTypeId,
-    incidentId,
-    eventId,
-    ticketId,
-    eventIsFetching,
-    eventIsError,
-    eventTypeIsFetching,
-    eventTypeIsError
+  eventTypeId,
+  eventId,
+  ticketId,
+  eventIsFetching,
+  eventIsError,
+  eventTypeIsFetching,
+  eventTypeIsError
 }) => {
   if (eventIsFetching) {
     return <LoadingMessage
       message={'Fetching event information...'}
-      actionForRetry={eventActions.fetchEvent(incidentId, eventId)}
+      actionForRetry={eventActions.fetchEvent(eventId)}
     />
   }
   if (eventTypeIsFetching) {
@@ -29,7 +28,7 @@ export const Playbook = ({
     />
   }
   if (eventIsError) {
-    return ErrorMessage('Error fetching event!', eventActions.fetchEvent(incidentId, eventId))
+    return ErrorMessage('Error fetching event!', eventActions.fetchEvent(eventId))
   }
   if (eventTypeIsError) {
     return ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
@@ -38,7 +37,6 @@ export const Playbook = ({
     eventTypeId={eventTypeId}
     eventId={eventId}
     ticketId={ticketId}
-    incidentId={incidentId}
     />
 }
 

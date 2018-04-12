@@ -39,7 +39,7 @@ const configureConnection = (dispatch) => getToken(defaultScopes)
     connection.on('Send', (event) => {
       const eventObject = JSON.parse(event)
       dispatch(signalRActions.receiveMessage())
-      dispatch(getEventActionSet(eventObject.incidentId, eventObject.id).succeed(eventObject))
+      dispatch(getEventActionSet(eventObject.id).succeed(eventObject))
     })
 
     connection.closedCallbacks = connection.closedCallbacks.concat((error) => dispatch(signalRActions.connectionClosed(error ? error.message : 'No Error Message', error ? error.stack : 'No Stack Trace')))

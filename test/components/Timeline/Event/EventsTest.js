@@ -1,7 +1,9 @@
 'use strict'
 import { expect } from 'chai'
-import Event from 'components/Timeline/Event'
-import Events from 'components/Timeline/Event/Events'
+import {
+  Events,
+  ConnectedEvent
+} from 'components/Timeline/Event/Events'
 
 const eventZero = {
   eventTypeId: 0,
@@ -94,9 +96,9 @@ describe('Events', function test () {
 
   it('Should return a div containing an array of Events', () => {
     expect(this.output.type).to.equal('div')
-    expect(this.output.props.children[0].type).to.equal(Event)
-    expect(this.output.props.children[10].type).to.equal(Event)
-    expect(this.output.props.children[11]).to.not.exist()
+    expect(this.output.props.children[0].type).to.equal(ConnectedEvent)
+    expect(this.output.props.children[10].type).to.equal(ConnectedEvent)
+    expect(this.output.props.children[11]).to.not.exist
   })
 
   it('Should return the right ticketId', () => {

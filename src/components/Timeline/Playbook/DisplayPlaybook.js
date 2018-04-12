@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import Play from 'components/Timeline/Playbook/Play'
 import { TestConditionSet } from 'services/playbookService'
@@ -7,45 +8,46 @@ export const DisplayPlaybook = ({
     actions,
     eventTypeId,
     eventId,
-    ticketId,
-    incidentId
+    ticketId
 }) => {
   let localKey = 0
-  return <div>
-    <div key={localKey++}>Select the Actions below:</div>
-    {actions.map(action =>
-      <div key={localKey++}>
-        <span>
-          {action.name}
-        </span>
-        <br />
-        <Play
-          action={action}
-          eventTypeId={eventTypeId}
-          eventId={eventId}
-          incidentId={incidentId}
-          ticketId={ticketId}
-        />
-      </div>
+  return actions
+    ? <div>
+      <div key={localKey++}>Select the Actions below:</div>
+      {actions.map(action =>
+        <div key={localKey++}>
+          <span>
+            {action.name}
+          </span>
+          <br />
+          <Play
+            action={action}
+            eventTypeId={eventTypeId}
+            eventId={eventId}
+            ticketId={ticketId}
+          />
+        </div>
         )}
-  </div>
+    </div>
+    : null
 }
 
 DisplayPlaybook.propTypes = {
-  actions: PropTypes.array.isRequired,
+  actions: PropTypes.array,
   eventTypeId: PropTypes.number.isRequired,
   eventId: PropTypes.number.isRequired,
-  ticketId: PropTypes.string.isRequired,
-  incidentId: PropTypes.number.isRequired
+  ticketId: PropTypes.string
 }
 
 export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
-  const eventType = state.eventTypes.records[ownProps.eventTypeId]
-  const event = Object.values(state.events.list.list)
-        .find(event => event.id === ownProps.eventId)
-  const ticket = state.tickets.map[ownProps.ticketId]
+  const { eventTypeId, ticketId, eventId } = ownProps
+
+  const eventType = state.eventTypes.records[eventTypeId]
+  const event = Object.values(state.events.pages.list)
+        .find(event => event.id === eventId)
+  const ticket = state.tickets.map[ticketId]
   const actions = eventType.actions
-  var populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
+  const populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
   const qualifiedActions = actions.filter(
         action => action.conditionSets.reduce(
             (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
@@ -57,8 +59,10 @@ export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
 
   return {
     actions: qualifiedActions,
-    ...ownProps
+    eventTypeId,
+    ticketId,
+    eventId
   }
 }
 
-export default DisplayPlaybook
+export default connect(mapStateToDisplayPlaybookProps)(DisplayPlaybook)

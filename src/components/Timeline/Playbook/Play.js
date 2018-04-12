@@ -1,20 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
+
 import FlatButtonStyled from 'components/elements/FlatButtonStyled'
 import { fillTemplate, publishEvent } from 'services/playbookService'
 import appInsights from '../../../appInsights'
 
-var trackLinkClick = (name) => {
+const trackLinkClick = (name) => {
   appInsights.trackEvent(name + ' Clicked')
 }
 
-export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
-  return isUrl ? <a href={filledTemplate} target='_blank' onClick={() => trackLinkClick(name)}>Link: {name}</a>
-                 : <FlatButtonStyled
-                   label={'Publish Event: ' + name}
-                   onTouchTap={publishEvent(incidentId, filledTemplate)}
-                    />
-}
+export const Play = ({incidentId, isUrl, filledTemplate, name}) =>
+  isUrl
+    ? <a
+      href={filledTemplate}
+      target='_blank'
+      onClick={() => trackLinkClick(name)
+    }>
+      Link: {name}
+    </a>
+    : <FlatButtonStyled
+      label={'Publish Event: ' + name}
+      onTouchTap={publishEvent(incidentId, filledTemplate)}
+    />
 
 export const mapStateToPlayProps = (fillTemplate) => (state, ownProps) => {
   const { eventTypeId, eventId, ticketId, action } = ownProps
@@ -25,7 +32,11 @@ export const mapStateToPlayProps = (fillTemplate) => (state, ownProps) => {
   const filledTemplate = action ? fillTemplate(action.actionTemplate, event, ticket, eventType) : ''
 
   return {
-    ...ownProps,
+    incidentId: event
+      ? event.incidentId
+      : ticket
+        ? ticket.incidentId
+        : null,
     isUrl: action.actionTemplate.isUrl,
     name: action.actionTemplate.name,
     filledTemplate

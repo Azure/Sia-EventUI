@@ -5,11 +5,12 @@ export const Highlight = ({
   animationName = 'yellowfade',
   animationDuration = '30s',
   children
-}) => <div style={({
-    animationDelay,
-    animationName,
-    animationDuration
-  })}
->
+}) => <div style={animationDelay && {
+  animationDelay,
+  animationName,
+  animationDuration
+}}>
   {children}
 </div>
+
+export default Highlight

@@ -6,12 +6,12 @@ import {
   mapStateToEventTypeIconProps
 } from 'components/Timeline/Event/EventTypeIcon'
 
-describe.only('EventTypeIcon', function () {
+describe('EventTypeIcon', function () {
   describe('mapStateToEventTypeIconProps', function () {
     context('When eventType.Icon is a valid material icon', function () {
       const mockState = {
         eventTypes: {
-          map: {
+          records: {
             111: {
               Icon: 'ActionThreeDRotation'
             }
@@ -32,7 +32,7 @@ describe.only('EventTypeIcon', function () {
     context('When eventType.Icon is not a valid material icon', function () {
       const mockState = {
         eventTypes: {
-          map: {
+          records: {
             111: {
               Icon: 'MaterialPleaseDontMakeThisARealIcon'
             }

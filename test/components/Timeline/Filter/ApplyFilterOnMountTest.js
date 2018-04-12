@@ -1,6 +1,5 @@
 'use strict'
 import { expect } from 'chai'
-import React from 'react'
 
 import createComponent from 'test/helpers/shallowRenderHelper'
 import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
@@ -105,8 +104,8 @@ describe('Apply Filter On Mount', function () {
     }
     const result = mapStateToApplyFilterProps(mockState, testOwnProps)
 
-    it('Should return filters from state', function () {
-      expect(result.filters).to.equal('expectedFilter')
+    it('Should return filter from state', function () {
+      expect(result.filter).to.equal('expectedFilter')
     })
 
     it('Should return filterPreference from state', function () {

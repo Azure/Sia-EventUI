@@ -115,12 +115,18 @@ export const TestConditionSet = testableTestConditionSet(selectSourceObject, Tes
 export const testableFillTemplate = (selectSource) => (template, event, ticket, eventType) => {
   if (!template || !template.pattern) return ''
   const templateSourcesWithData = template.sources
-        ? template.sources.map(
-                source => Object.assign({}, source, {dataValue: ByPath.get(
-                selectSource(source.sourceObject, event, ticket, eventType),
-                source.key
-            )})
-        ) : []
+    ? template.sources
+      .map(source =>
+        Object.assign(
+          {},
+          source,
+          {dataValue: ByPath.get(
+            selectSource(source.sourceObject, event, ticket, eventType),
+            source.key
+          )}
+        )
+      )
+    : []
   let filledTemplate = template.pattern
   templateSourcesWithData.forEach(source => {
     filledTemplate = filledTemplate.replace('${' + source.name + '}', source.dataValue)
