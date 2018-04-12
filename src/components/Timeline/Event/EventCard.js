@@ -10,9 +10,6 @@ import Playbook from 'components/Timeline/Playbook/Playbook'
 import { LoadTextFromEvent } from 'services/playbookService'
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
-const isAllPlaybookInfoAvailable = (actions) =>
-  !!(actions && Array.isArray(actions) && actions.length > 0)
-
 export const EventCard = ({
   event,
   titleText,
@@ -26,7 +23,7 @@ export const EventCard = ({
     title={titleText}
     subtitle={timeFormattedToMultipleZones(DateTime.fromISO(event.occurred ? event.occurred : event.Occurred))}
     iconStyle={{
-      color: isAllPlaybookInfoAvailable ? 'black' : 'Lightgrey'
+      color: 'black'
     }}
     avatar={IconType ? <Avatar icon={<IconType />} /> : null}
   />

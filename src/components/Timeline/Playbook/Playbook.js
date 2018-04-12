@@ -28,10 +28,16 @@ export const Playbook = ({
     />
   }
   if (eventIsError) {
-    return ErrorMessage('Error fetching event!', eventActions.fetchEvent(eventId))
+    return <ErrorMessage
+      message={'Error fetching event!'}
+      actionForRetry={eventActions.fetchEvent(eventId)}
+    />
   }
   if (eventTypeIsError) {
-    return ErrorMessage('Error fetching eventType!', eventTypeActions.fetchEventType(eventTypeId))
+    return <ErrorMessage
+      message={'Error fetching eventType!'}
+      actionForRetry={eventTypeActions.fetchEventType(eventTypeId)}
+    />
   }
   return <DisplayPlaybook
     eventTypeId={eventTypeId}

@@ -30,7 +30,6 @@ const eventHasValidDisplayText = (event) =>
   event && event.data && event.data.DisplayText
 
 export const Event = ({
-  eventTypeId,
   eventTypeIsFetching,
   eventTypeIsError,
   event,
@@ -38,13 +37,13 @@ export const Event = ({
 }) => eventTypeIsFetching && !eventHasValidDisplayText(event)
 ? <LoadingMessage
   message={'Fetching Event Type Information'}
-  actionForRetry={eventTypeActions.fetchEventType(eventTypeId)}
+  actionForRetry={eventTypeActions.fetchEventType(event.eventTypeId)}
 />
 : eventTypeIsError && !eventHasValidDisplayText(event)
-  ? ErrorMessage(
-    `Error fetching eventType: ${eventTypeId}`,
-    eventTypeActions.fetchEventType(eventTypeId)
-  )
+  ? <ErrorMessage
+    message={`Error fetching eventType: ${event.eventTypeId}`}
+    actionForRetry={eventTypeActions.fetchEventType(event.eventTypeId)}
+  />
   : <DisplayEvent
     event={event}
     ticketId={ticketId}
@@ -54,7 +53,6 @@ export const mapStateToEventProps = (state, ownProps) => {
   const { event, ticketId } = ownProps
 
   return {
-    eventTypeId: event.eventTypeId,
     eventTypeIsFetching: state.eventTypes.fetching.includes(event.eventTypeId),
     eventTypeIsError: state.eventTypes.error.includes(event.eventTypeId),
     event,
