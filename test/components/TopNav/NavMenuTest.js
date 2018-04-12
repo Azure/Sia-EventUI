@@ -2,58 +2,64 @@
 import { expect } from 'chai'
 import React from 'react'
 import { shallow } from 'enzyme'
-require('test/helpers/configureEnzyme')
 import { NavMenu, mapStateToProps } from 'components/TopNav/NavMenu'
-import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import { Link } from 'react-router-dom'
+require('test/helpers/configureEnzyme')
 
-function mockDispatch (object) { }
+const mockDispatch = () => null
 
-function setup() {
-  return shallow(<NavMenu dispatch={mockDispatch} ticketIds={['1111', '2222', '3333']}/>)
-}
+const setup = () => shallow(
+  <NavMenu
+    dispatch={mockDispatch}
+    ticketIds={['1111', '2222', '3333']}
+  />
+)
 
 describe('NavMenu', function test () {
-  beforeEach( () => {
-    this.wrapper = setup()
+  const testObject = setup()
+
+  const expectMenuLink = (testObject, expectedPrimaryText, expectedLink) => {
+    expect(testObject.type).to.equal(MenuItem)
+    expect(testObject.props.primaryText).to.equal(expectedPrimaryText)
+    expect(testObject.props.containerElement.type).to.equal(Link)
+    expect(testObject.props.containerElement.props.to).to.equal(expectedLink)
+  }
+
+  it('Should render an IconMenu with an icon button', function () {
+    expect(testObject.type()).to.equal(IconMenu)
+    expect(testObject.props().iconButtonElement.type).to.equal(IconButton)
   })
 
-  it('Should render an IconMenu with an icon button', () => {
-    expect(this.wrapper.type()).to.equal(IconMenu)
-    expect(this.wrapper.props().iconButtonElement.type).to.equal(IconButton)
+  it('Should render an Incident Search link', function () {
+    const link = testObject.props().children[0]
+
+    expectMenuLink(link, 'Incident Search', '/search')
   })
 
-  it('Should render an Incident Search link', () => {
-    let link = this.wrapper.props().children[0]
+  it('Should render an Events for All Incidents link', function () {
+    const link = testObject.props().children[1]
 
-    expect(link.type).to.equal(MenuItem)
-    expect(link.props.primaryText).to.equal('Incident Search')
-    expect(link.props.containerElement.type).to.equal(Link)
-    expect(link.props.containerElement.props.to).to.equal('/search')
+    expectMenuLink(link, 'Events for All Incidents', '/events')
   })
 
-  it('Should render an Events for All Incidents link', () => {
-    let link = this.wrapper.props().children[1]
+  it('Should render a Preferences link', function () {
+    const link = testObject.props().children[3]
 
-    expect(link.type).to.equal(MenuItem)
-    expect(link.props.primaryText).to.equal('Events for All Incidents')
-    expect(link.props.containerElement.type).to.equal(Link)
-    expect(link.props.containerElement.props.to).to.equal('/events')
+    expectMenuLink(link, 'Preferences', '/preferences')
   })
 
-  it('Should render a log out link', () => {
-    let link = this.wrapper.props().children[8]
+  it('Should render a log out link', function () {
+    const link = testObject.props().children[8]
 
     expect(link.type).to.equal(MenuItem)
     expect(link.props.primaryText).to.equal('LogOut')
   })
 
-  it('Should render links to previously visited tickets', () => {
-    let links = this.wrapper.props().children[6]
+  it('Should render links to previously visited tickets', function () {
+    const links = testObject.props().children[6]
 
     expect(links[0].props.containerElement.props.to).to.equal('/tickets/1111')
     expect(links[1].props.containerElement.props.to).to.equal('/tickets/2222')
@@ -62,17 +68,17 @@ describe('NavMenu', function test () {
 })
 
 describe('mapStateToProps', function test () {
-  let state = {
+  const state = {
     tickets: {
       map: {
         '12345': 'value',
-         '67890': 'unused'
+        '67890': 'unused'
       }
     },
     events: {
       filter: {
         incidentId: 1,
-        eventTypes: [0,5]
+        eventTypes: [ 0, 5 ]
       }
     },
     signalR: {
@@ -82,15 +88,18 @@ describe('mapStateToProps', function test () {
     }
   }
 
-  let ownProps = { location: { pathname: '/tickets/4444' } }
+  const ownProps = {
+    history: {},
+    location: { pathname: '/tickets/4444' }
+  }
 
-  beforeEach(() => { this.result = mapStateToProps(state, ownProps)})
+  const result = mapStateToProps(state, ownProps)
 
-  it('passes ownProps data through', () => {
-    expect(this.result).to.contain(ownProps)
+  it('passes history from ownProps', () => {
+    expect(result.history).to.equal(ownProps.history)
   })
 
   it('transforms the tickets.map into ticketIds', () => {
-    expect(this.result.ticketIds).to.contain('12345', '67890')
+    expect(result.ticketIds).to.contain('12345', '67890')
   })
 })
