@@ -10,14 +10,13 @@ import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import * as eventTypeActions from 'actions/eventTypeActions'
 
 export const Events = ({events, ticketId, incidentId}) => <div>
-  {Array.from(events)
-    .map(event =>
-      <ConnectedEvent
-        key={event.id}
-        event={event}
-        ticketId={ticketId}
-      />)
-  }
+  {Array.from(events).map(event =>
+    <ConnectedEvent
+      key={event.id}
+      event={event}
+      ticketId={ticketId}
+    />
+  )}
 </div>
 
 Events.propTypes = {
@@ -26,20 +25,20 @@ Events.propTypes = {
   incidentId: PropTypes.number
 }
 
-const eventHasValidDisplayText = (event) =>
-  event && event.data && event.data.DisplayText
+const eventHasNoAttachedDisplayText = (event) =>
+  !(event && event.data && event.data.DisplayText)
 
 export const Event = ({
   eventTypeIsFetching,
   eventTypeIsError,
   event,
   ticketId
-}) => eventTypeIsFetching && !eventHasValidDisplayText(event)
+}) => eventTypeIsFetching && eventHasNoAttachedDisplayText(event)
 ? <LoadingMessage
   message={'Fetching Event Type Information'}
   actionForRetry={eventTypeActions.fetchEventType(event.eventTypeId)}
 />
-: eventTypeIsError && !eventHasValidDisplayText(event)
+: eventTypeIsError && eventHasNoAttachedDisplayText(event)
   ? <ErrorMessage
     message={`Error fetching eventType: ${event.eventTypeId}`}
     actionForRetry={eventTypeActions.fetchEventType(event.eventTypeId)}
