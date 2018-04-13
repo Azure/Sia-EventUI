@@ -6,6 +6,7 @@ export const Home = ({ ticket }) => {
   if (ticket && ticket.originId) {
     return <Redirect to={`/tickets/${ticket.originId}`} />
   }
+  return null
 }
 
 export const mapStateToProps = (state) => {

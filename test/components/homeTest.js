@@ -1,8 +1,9 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
+
 import createComponent from 'test/helpers/shallowRenderHelper'
-import GetMockStore from 'test/helpers/mockReduxStore'
+
 import { Home, mapStateToProps } from 'components/Home'
 
 const setup = (props, children) => createComponent(Home, props, children)
@@ -17,13 +18,13 @@ const ticketState = { ticket: {
 }}
 
 describe('Home Container Component', function () {
-  it('Should return nothing if no tickets', function () {
-    const noTicketsExistState = setup(noTicketState, children)
-    expect(noTicketsExistState).to.be.undefined
+  it('Should return null if no tickets', function () {
+    const noTicketsExistResult = setup(noTicketState, children)
+    expect(noTicketsExistResult).to.be.null
   })
   it('Should redirect to most recent ticket if there are tickets', function () {
-    const ticketsExistState = setup(ticketState, children)
-    expect(ticketsExistState.props.to).to.equal('/tickets/5507')
+    const ticketsExistResult = setup(ticketState, children)
+    expect(ticketsExistResult.props.to).to.equal('/tickets/5507')
   })
 })
 
