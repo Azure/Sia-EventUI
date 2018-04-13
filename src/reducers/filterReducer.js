@@ -6,7 +6,7 @@ import dateTimeReducer from 'reducers/reducerHelpers/dateTime'
 
 const initialFilter = {
   incidentId: null,
-  eventTypes: null,
+  eventTypes: [],
   startTime: null,
   endTime: null,
   dataSearch: null
