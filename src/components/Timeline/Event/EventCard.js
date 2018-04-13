@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { DateTime } from 'luxon'
-import { Card, CardHeader, CardText } from 'material-ui/Card'
+import { Card, CardHeader, CardActions } from 'material-ui/Card'
 import * as Icons from 'material-ui/svg-icons'
 import Avatar from 'material-ui/Avatar'
 
@@ -27,13 +27,13 @@ export const EventCard = ({
     }}
     avatar={IconType ? <Avatar icon={<IconType />} /> : null}
   />
-  <CardText>
+  <CardActions>
     <Playbook
       eventId={event.id}
       eventTypeId={event.eventTypeId}
       ticketId={ticketId}
     />
-  </CardText>
+  </CardActions>
 </Card>
 
 EventCard.propTypes = {

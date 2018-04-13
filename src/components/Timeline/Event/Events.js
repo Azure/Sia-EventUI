@@ -9,22 +9,6 @@ import EventCard from 'components/Timeline/Event/EventCard'
 import BootstrapPlaybook from 'components/Timeline/Playbook/BootstrapPlaybook'
 import * as eventTypeActions from 'actions/eventTypeActions'
 
-export const Events = ({events, ticketId, incidentId}) => <div>
-  {Array.from(events).map(event =>
-    <ConnectedEvent
-      key={event.id}
-      event={event}
-      ticketId={ticketId}
-    />
-  )}
-</div>
-
-Events.propTypes = {
-  events: PropTypes.array.isRequired,
-  ticketId: PropTypes.string.isRequired,
-  incidentId: PropTypes.number
-}
-
 const eventHasNoAttachedDisplayText = (event) =>
   !(event && event.data && event.data.DisplayText)
 
@@ -59,9 +43,7 @@ export const mapStateToEventProps = (state, ownProps) => {
   }
 }
 
-export const ConnectedEvent = connect(mapStateToEventProps)(Event)
-
-export const animationDelayAsSecondsString = (event) =>
+const animationDelayAsSecondsString = (event) =>
   event && event.timeReceived
     ? event.timeReceived.diffNow('seconds').toObject().seconds + 's'
     : null
@@ -72,5 +54,23 @@ export const DisplayEvent = ({event, ticketId}) => <Highlight
   <BootstrapPlaybook eventTypeId={event.eventTypeId} />
   <EventCard event={event} ticketId={ticketId} />
 </Highlight>
+
+export const ConnectedEvent = connect(mapStateToEventProps)(Event)
+
+export const Events = ({events, ticketId, incidentId}) => <div>
+  {Array.from(events).map(event =>
+    <ConnectedEvent
+      key={event.id}
+      event={event}
+      ticketId={ticketId}
+    />
+  )}
+</div>
+
+Events.propTypes = {
+  events: PropTypes.array.isRequired,
+  ticketId: PropTypes.string.isRequired,
+  incidentId: PropTypes.number
+}
 
 export default Events

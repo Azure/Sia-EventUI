@@ -1,7 +1,7 @@
 'use strict'
 import { expect } from 'chai'
 import * as Icons from 'material-ui/svg-icons'
-import { Card, CardHeader, CardText } from 'material-ui/Card'
+import { Card, CardHeader, CardActions } from 'material-ui/Card'
 
 import createComponent from 'test/helpers/shallowRenderHelper'
 
@@ -98,7 +98,7 @@ describe('EventCard', function () {
       })
 
       it('Should have a child card text that contains only the Playbook component', function () {
-        expect(result.props.children[1].type).to.equal(CardText)
+        expect(result.props.children[1].type).to.equal(CardActions)
         expect(result.props.children[1].props.children.type).to.equal(Playbook)
       })
     })
