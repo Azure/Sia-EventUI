@@ -1,7 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Play from 'components/Timeline/Playbook/Play'
-import { TestConditionSet } from 'services/playbookService'
+
+const wrapperStyle = {
+  display: 'flex',
+  flexWrap: 'wrap'
+}
 
 export const DisplayPlaybook = ({
     actions,
@@ -11,53 +14,38 @@ export const DisplayPlaybook = ({
     incidentId
 }) => {
   let localKey = 0
-  return <div>
-    {actions.map(action =>
-      <div key={localKey++}>
-        <span>
-          {action.name}
-        </span>
-        <br />
-        <Play
-          action={action}
-          eventTypeId={eventTypeId}
-          eventId={eventId}
-          incidentId={incidentId}
-          ticketId={ticketId}
-                />
-      </div>
-        )}
+  return <div style={wrapperStyle}>
+    {AreAnyActionsAvailable(actions)
+      ? actions.map(action => DisplayAction(
+      action,
+      eventTypeId,
+      eventId,
+      ticketId,
+      incidentId,
+      localKey++
+    ))
+    : null}
   </div>
 }
 
-DisplayPlaybook.propTypes = {
-  actions: PropTypes.array.isRequired,
-  eventTypeId: PropTypes.number.isRequired,
-  eventId: PropTypes.number.isRequired,
-  ticketId: PropTypes.string.isRequired,
-  incidentId: PropTypes.number.isRequired
-}
+const AreAnyActionsAvailable = (actions) =>
+    actions && Array.isArray(actions) && actions.length
 
-export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
-  const eventType = state.eventTypes.records[ownProps.eventTypeId]
-  const event = Object.values(state.events.list.list)
-        .find(event => event.id === ownProps.eventId)
-  const ticket = state.tickets.map[ownProps.ticketId]
-  const actions = eventType.actions
-  var populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
-  const qualifiedActions = actions.filter(
-        action => action.conditionSets.reduce(
-            (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
-                ? populatedConditionSetTest(currentConditionSet)
-                : false,
-            true
-        )
-    )
-
-  return {
-    actions: qualifiedActions,
-    ...ownProps
-  }
-}
+export const DisplayAction = (
+  action,
+  eventTypeId,
+  eventId,
+  ticketId,
+  incidentId,
+  key
+) => <div key={key}>
+  <Play
+    action={action}
+    eventTypeId={eventTypeId}
+    eventId={eventId}
+    incidentId={incidentId}
+    ticketId={ticketId}
+  />
+</div>
 
 export default DisplayPlaybook

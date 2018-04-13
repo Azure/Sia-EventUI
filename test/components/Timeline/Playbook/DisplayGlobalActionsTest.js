@@ -4,14 +4,13 @@ import React from 'react'
 import createComponent from 'test/helpers/shallowRenderHelper'
 import {
     DisplayGlobalActions,
-    DisplayGlobalAction,
     mapStateToDisplayGlobalActionsProps
 } from 'components/Timeline/Playbook/DisplayGlobalActions'
-import Play from 'components/Timeline/Playbook/Play'
+import DisplayPlaybook from 'components/Timeline/Playbook/DisplayPlaybook'
 
 describe('DisplayGlobalActions', function () {
   describe('Component - Display All', function () {
-    it('Should output a div with a list of DisplayGlobalAction children when passed actions', function () {
+    it('Should output a DisplayPlaybook with a list of DisplayGlobalAction children when passed actions', function () {
       const input = {
         ticketId: 1,
         incidentId: 3,
@@ -29,14 +28,13 @@ describe('DisplayGlobalActions', function () {
       }
 
       const testResult = createComponent(DisplayGlobalActions, input)
-
-      expect(testResult.type).to.equal('div')
-      expect(testResult.props.children[0].type).to.equal('div')
-      expect(testResult.props.children[2].type).to.equal('div')
-      expect(testResult.props.children.length).to.equal(input.actions.length)
+      expect(testResult.type).to.equal(DisplayPlaybook)
+      expect(testResult.props.actions[0]).to.equal(input.actions[0])
+      expect(testResult.props.actions[1]).to.equal(input.actions[1])
+      expect(testResult.props.actions[2]).to.equal(input.actions[2])
     })
 
-    it('Should output an empty div when passed no actions', function () {
+    it('Should output an empty DisplayPlaybook when passed no actions', function () {
       const input = {
         ticketId: 1,
         incidentId: 3
@@ -44,24 +42,8 @@ describe('DisplayGlobalActions', function () {
 
       const testResult = createComponent(DisplayGlobalActions, input)
 
-      expect(testResult.type).to.equal('div')
-      expect(testResult.props.children).to.be.null
-    })
-  })
-
-  describe('Component - Display Single', function () {
-    const testAction = {
-      name: 'test'
-    }
-    it('Should output a div with a span child for the action name, a line break for spacing, and a Play to render the link', function () {
-      const testResult = DisplayGlobalAction(testAction, 1, 2, 3, 4)
-      const expectedChildTypes = ['span', 'br', Play]
-
-      expect(testResult.type).to.equal('div')
-      for (let childIndex = 0; childIndex < 3; childIndex++) {
-        expect(testResult.props.children[childIndex].type).to.equal(expectedChildTypes[childIndex])
-      }
-      expect(testResult.props.children.length).to.equal(3)
+      expect(testResult.type).to.equal(DisplayPlaybook)
+      expect(testResult.props.children).to.be.undefined
     })
   })
 
