@@ -11,17 +11,18 @@ const trackLinkClick = (name) => {
 
 export const Play = ({incidentId, isUrl, filledTemplate, name}) =>
   isUrl
-    ? <a
-      href={filledTemplate}
-      target='_blank'
-      onClick={() => trackLinkClick(name)
-    }>
-      Link: {name}
-    </a>
-    : <FlatButtonStyled
-      label={'Publish Event: ' + name}
-      onTouchTap={publishEvent(incidentId, filledTemplate)}
-    />
+  ? <FlatButtonStyled
+    label={name}
+    primary
+    href={filledTemplate}
+    target='_blank'
+    onTouchTap={() => trackLinkClick(name)}
+  />
+  : <FlatButtonStyled
+    label={'Publish ' + name}
+    primary
+    onTouchTap={publishEvent(incidentId, filledTemplate)}
+  />
 
 export const mapStateToPlayProps = (fillTemplate) => (state, ownProps) => {
   const { eventTypeId, eventId, ticketId, action } = ownProps

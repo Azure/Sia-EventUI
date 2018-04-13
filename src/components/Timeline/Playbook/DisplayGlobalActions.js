@@ -1,48 +1,11 @@
-import React from 'react'
 import { connect } from 'react-redux'
 import { TestConditionSet } from 'services/playbookService'
-import Play from 'components/Timeline/Playbook/Play'
-
-export const DisplayGlobalActions = ({
-    actions,
-    ticketId,
-    incidentId
-}) => {
-  let localKey = 0
-  return <div>
-    { AreAnyActionsAvailable(actions)
-            ? actions.map(action => DisplayGlobalAction(
-                    action,
-                    ticketId,
-                    incidentId,
-                    localKey++
-                ))
-            : null}
-  </div>
-}
-
-const AreAnyActionsAvailable = (actions) =>
-    actions && Array.isArray(actions) && actions.length
-
-export const DisplayGlobalAction = (
-    action,
-    ticketId,
-    incidentId,
-    key
-) => <div key={key}>
-  <span>
-    {action.name}
-  </span>
-  <br />
-  <Play
-    action={action}
-    incidentId={incidentId}
-    ticketId={ticketId}
-    />
-</div>
+import { DisplayPlaybook } from 'components/Timeline/Playbook/DisplayPlaybook'
 
 export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
-  const ticket = state.tickets.map[ownProps.ticketId]
+  const { ticketId } = ownProps
+
+  const ticket = state.tickets.map[ticketId]
   const actions = Object.values(state.globalActions)
   var populatedConditionSetTest = TestConditionSet(null, ticket, null)
   const qualifiedActions = actions.filter(
@@ -56,8 +19,8 @@ export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
 
   return {
     actions: qualifiedActions,
-    ...ownProps
+    ticketId
   }
 }
 
-export default connect(mapStateToDisplayGlobalActionsProps)(DisplayGlobalActions)
+export default connect(mapStateToDisplayGlobalActionsProps)(DisplayPlaybook)
