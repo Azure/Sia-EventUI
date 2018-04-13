@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import { Router, Route } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -20,6 +20,8 @@ import Preferences from 'components/TopNav/Preferences'
 
 const history = createBrowserHistory()
 
+const TicketChecklist = () => <div>Hello</div>
+
 export default class MainComponent extends React.Component {
   render () {
     return (
@@ -35,7 +37,10 @@ export default class MainComponent extends React.Component {
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
-                    <Route path='/tickets/:ticketId' component={Ticket} />
+                    <Switch>
+                      <Route path='/tickets/:ticketId/checklist' component={TicketChecklist} />
+                      <Route path='/tickets/:ticketId' component={Ticket} />
+                    </Switch>
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />
                     <Route path='/preferences' component={Preferences} />
