@@ -10,6 +10,7 @@ export const IncidentSummaryName = (ticketId) => {
 export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId, dispatch}) =>
   [
     HeaderRow(ticketOriginId),
+    ReviewChecklistRow(ticketOriginId),
     TicketDetailsRow(ticketSystem, ticket),
     TitleRow(incident),
     GlobalActionsRow(incident, ticketOriginId)
@@ -29,6 +30,13 @@ const HeaderRow = (ticketId) => [
       </strong>
   ]
 ]
+
+const ReviewChecklistRow = (ticketId) =>  [
+  <a href='./checklist'>
+    Review checklist for {ticketId}
+  </a>
+]
+
 
 const TicketDetailsRow = (ticketSystem, ticket) => [
   BasicInfoColumn(ticketSystem, ticket),

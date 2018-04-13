@@ -17,10 +17,9 @@ import UncorrelatedEvents from 'components/Timeline/UncorrelatedEvents'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 import Preferences from 'components/TopNav/Preferences'
+import TicketChecklist from 'components/TicketChecklist'
 
 const history = createBrowserHistory()
-
-const TicketChecklist = () => <div>Hello</div>
 
 export default class MainComponent extends React.Component {
   render () {
