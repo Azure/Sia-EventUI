@@ -2,7 +2,6 @@
 import { expect } from 'chai'
 import React from 'react'
 import { shallow } from 'enzyme'
-
 require('test/helpers/configureEnzyme')
 import { NavMenu, ticketMenuLinks, mapStateToProps } from 'components/TopNav/NavMenu'
 import MenuLink from 'components/elements/MenuLink'
@@ -29,10 +28,9 @@ describe('NavMenu', function test () {
   const testObject = setup()
 
   const expectMenuLink = (testObject, expectedPrimaryText, expectedLink) => {
-    expect(testObject.type).to.equal(MenuItem)
+    expect(testObject.type).to.equal(MenuLink)
     expect(testObject.props.primaryText).to.equal(expectedPrimaryText)
-    expect(testObject.props.containerElement.type).to.equal(Link)
-    expect(testObject.props.containerElement.props.to).to.equal(expectedLink)
+    expect(testObject.props.route).to.equal(expectedLink)
   }
 
   it('Should render an IconMenu with an icon button', function () {
@@ -122,9 +120,8 @@ describe('mapStateToProps', function test () {
     expect(result.history).to.equal(ownProps.history)
   })
 
-
-  it.only('transforms the tickets.map into ticketInfo', () => {
-    expect(this.result.ticketInfo).to.deep.include(
+  it('transforms the tickets.map into ticketInfo', () => {
+    expect(result.ticketInfo).to.deep.include(
       { id: '12345', title: 'title' },
       { id: '67890', title: '' }
     )
