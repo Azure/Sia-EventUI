@@ -18,42 +18,61 @@ import ClearRecentTickets from 'components/TopNav/ClearRecentTickets'
 export const NavMenu = ({
   dispatch,
   history,
-  ticketIds
+  ticketInfo
 }) => {
   return (<IconMenu
     iconButtonElement={<IconButton><NavigationMenu /></IconButton>}
     anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
     targetOrigin={{horizontal: 'left', vertical: 'top'}}
   >
-    {MenuLink('Incident Search', '/search')}
-    {MenuLink('Events for All Incidents', '/events')}
+    <MenuLink primaryText={'Incident Search'} route={'/search'} />
+    <MenuLink primaryText={'Events for All Incidents'} route={'/events'} />
     <Divider />
-    {MenuLink('Preferences', '/preferences')}
+    <MenuLink primaryText={'Preferences'} route={'/preferences'} />
     <Divider />
     <ClearRecentTickets />
-    {ticketIds && ticketIds.map(id => MenuLink(`Ticket ${id}`, `/tickets/${id}`, <ActionDelete onClick={() => dispatch(removeTicketFromRecent(id))} />)) }
+    { ticketMenuLinks(ticketInfo, dispatch) }
     <Divider />
     <MenuItem onClick={() => dispatch(auth.logOut)} primaryText='LogOut' />
-    {MenuLink('Debug', '/debug')}
+    <MenuLink primaryText={'Debug'} route={'/debug'} />
   </IconMenu>)
 }
 
+export const ticketMenuLinks = (ticketInfo, dispatch) =>
+  ticketInfo &&
+  ticketInfo.map(({id, title}) => {
+    const ticketTitle = `${id} ${title ? '-' : ''} ${title}`
+
+    return <MenuLink
+      route={`/tickets/${id}`}
+      primaryText={ticketTitle}
+      rightIcon={<ActionDelete onClick={() => dispatch(removeTicketFromRecent(id))} />}
+    />
+  })
+
+const ticketTitle = (ticket) =>
+  ticket && ticket.data && ticket.data.title
+    ? ticket.data.title
+    : ''
+
 NavMenu.propTypes = {
   dispatch: PropTypes.func,
-  ticketIds: PropTypes.array
+  ticketInfo: PropTypes.array
 }
 
 export const mapStateToProps = (state, ownProps) => {
   const pathname = ownProps.location.pathname
   const currentId = /\d/.test(pathname) && pathname.match(/(\d+)/)[1]
-  const idContainsANumberAndIsNotCurrent = (id) => id !== currentId && /\d/.test(id)
+  const entryBelongsInHistory = (kvp) =>
+    kvp[1] !== null &&
+    kvp[0] !== currentId &&
+    /\d/.test(kvp[0])
 
   return {
     history: ownProps.history,
-    ticketIds: Object.entries(state.tickets.map)
-      .filter(kvp => kvp[1] !== null)
-      .map(kvp => kvp[0])
-      .filter(idContainsANumberAndIsNotCurrent)
+    ticketInfo: Object.entries(state.tickets.map)
+      .filter(entryBelongsInHistory)
+      .map(kvp => { return { id: kvp[0], title: ticketTitle(kvp[1]) } })
   }
 }
 
