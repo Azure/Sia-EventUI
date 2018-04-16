@@ -69,7 +69,7 @@ export const Events = ({events, ticketId, incidentId}) => <div>
 
 Events.propTypes = {
   events: PropTypes.array.isRequired,
-  ticketId: PropTypes.string.isRequired,
+  ticketId: PropTypes.string,
   incidentId: PropTypes.number
 }
 
