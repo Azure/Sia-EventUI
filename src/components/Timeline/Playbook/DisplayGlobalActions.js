@@ -1,45 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { TestConditionSet } from 'services/playbookService'
-import Play from 'components/Timeline/Playbook/Play'
+import DisplayPlaybook from 'components/Timeline/Playbook/DisplayPlaybook'
 
 export const DisplayGlobalActions = ({
     actions,
     ticketId,
     incidentId
-}) => {
-  let localKey = 0
-  return <div>
-    { AreAnyActionsAvailable(actions)
-            ? actions.map(action => DisplayGlobalAction(
-                    action,
-                    ticketId,
-                    incidentId,
-                    localKey++
-                ))
-            : null}
-  </div>
-}
-
-const AreAnyActionsAvailable = (actions) =>
-    actions && Array.isArray(actions) && actions.length
-
-export const DisplayGlobalAction = (
-    action,
-    ticketId,
-    incidentId,
-    key
-) => <div key={key}>
-  <span>
-    {action.name}
-  </span>
-  <br />
-  <Play
-    action={action}
-    incidentId={incidentId}
+}) => (
+  <DisplayPlaybook
+    actions={actions}
     ticketId={ticketId}
-    />
-</div>
+    incidentId={incidentId}
+  />
+)
 
 export const mapStateToDisplayGlobalActionsProps = (state, ownProps) => {
   const ticket = state.tickets.map[ownProps.ticketId]

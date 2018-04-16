@@ -8,13 +8,19 @@ var trackLinkClick = (name) => {
   appInsights.trackEvent(name + ' Clicked')
 }
 
-export const Play = ({incidentId, isUrl, filledTemplate, name}) => {
-  return isUrl ? <a href={filledTemplate} target='_blank' onClick={() => trackLinkClick(name)}>Link: {name}</a>
-                 : <FlatButtonStyled
-                   label={'Publish Event: ' + name}
-                   onTouchTap={publishEvent(incidentId, filledTemplate)}
-                    />
-}
+export const Play = ({incidentId, isUrl, filledTemplate, name}) =>
+  isUrl
+    ? <FlatButtonStyled
+      label={name}
+      primary
+      href={filledTemplate}
+      target='_blank'
+      onTouchTap={() => trackLinkClick(name)} />
+    : <FlatButtonStyled
+      label={'Publish ' + name}
+      primary
+      onTouchTap={publishEvent(incidentId, filledTemplate)}
+    />
 
 export const mapStateToPlayProps = (state, ownProps) => {
   const eventType = state.eventTypes.records[ownProps.eventTypeId]
