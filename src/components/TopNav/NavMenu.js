@@ -44,6 +44,7 @@ export const ticketMenuLinks = (ticketInfo, dispatch) =>
     const ticketTitle = `${id} ${title ? '-' : ''} ${title}`
 
     return <MenuLink
+      key={id}
       route={`/tickets/${id}`}
       primaryText={ticketTitle}
       rightIcon={<ActionDelete onClick={() => dispatch(removeTicketFromRecent(id))} />}
