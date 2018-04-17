@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 
 import * as signalRActions from 'actions/signalRActions'
 
@@ -26,7 +28,18 @@ export const EventFilterPreferences = ({
       )
     }
   </RadioButtonGroup>
+
+  <h3 key='timePreferences'>Time Preferences:</h3>
+  Display times in timezone:
+  <DropDownMenu
+    onChange={this.handleDropdownChange}>
+    <MenuItem primaryText={'UTC'} value={'UTC'} />
+    <MenuItem primaryText={'Pacific Time'} value={'America/Los_Angeles'} />
+    <MenuItem primaryText={'India Standard Time'} value={'Asia/Kolkata'} />
+  </DropDownMenu>
 </div>
+
+let handleDropdownChange = (event, index, value) => this.setState({value})
 
 export const mapStateToEventFilterPreferencesProps = (state) => ({
   currentEventFilterObject: state.events.filter,
