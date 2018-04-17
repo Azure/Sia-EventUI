@@ -15,8 +15,7 @@ config.entry.app.push(...[
 ])
 
 config.plugins.push(...[
-  new webpack.HotModuleReplacementPlugin(),
-  new webpack.NamedModulesPlugin()
+  new webpack.HotModuleReplacementPlugin()
 ])
 
 module.exports = config
