@@ -16,8 +16,7 @@ config.entry.app.push(...[
 
 config.plugins.push(...[
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NamedModulesPlugin(),
-  new webpack.NoEmitOnErrorsPlugin()
+  new webpack.NamedModulesPlugin()
 ])
 
 module.exports = config
