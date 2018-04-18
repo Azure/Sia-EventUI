@@ -42,14 +42,14 @@ export const eventTypes = (defaultEventTypes = []) => (state = defaultEventTypes
 
 export const startTime = (defaultStartTime) => dateTimeReducer(
   defaultStartTime ? defaultStartTime.split('T')[1] : DateTime.utc().toISOTime().toString(),
-  defaultStartTime ? defaultStartTime.split('T')[0] : DateTime.utc().minus({day: 1}).toISODate().toString(),
+  defaultStartTime ? defaultStartTime.split('T')[0] : DateTime.utc().minus({ day: 1 }).toISODate().toString(),
   filterActions.UPDATE_FILTER_START_TIME,
   filterActions.UPDATE_FILTER_START_DATE
 )
 
 export const endTime = (defaultEndTime) => dateTimeReducer(
   defaultEndTime ? defaultEndTime.split('T')[1] : DateTime.utc().toISOTime().toString(),
-  defaultEndTime ? defaultEndTime.split('T')[0] : DateTime.utc().plus({day: 1}).toISODate().toString(),
+  defaultEndTime ? defaultEndTime.split('T')[0] : DateTime.utc().plus({ day: 1 }).toISODate().toString(),
   filterActions.UPDATE_FILTER_END_TIME,
   filterActions.UPDATE_FILTER_END_DATE
 )
@@ -57,9 +57,7 @@ export const endTime = (defaultEndTime) => dateTimeReducer(
 export const dataSearch = (defaultDataSearch = initialFilter.dataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
     case filterActions.UPDATE_DATASEARCH:
-      if (action.dataSearch) {
-        return action.dataSearch
-      } else return state
+      return action.dataSearch
     default:
       return state
   }
