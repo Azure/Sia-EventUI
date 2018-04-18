@@ -3,6 +3,11 @@ import PropTypes from 'prop-types'
 
 import GlobalActions from 'components/Timeline/Playbook/GlobalActions'
 
+const styles = {
+  activeStatus: { color: 'red' },
+  inactiveStatus: { color: 'black' }
+}
+
 export const IncidentSummaryName = (ticketId) => {
   return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
 }
@@ -42,23 +47,24 @@ const BasicInfoColumn = (ticketSystem, ticket) => [
     </a>,
   (key) => ticket.data && 'severity' in ticket.data
     ? (
-      <font key={key}>
+      <span key={key}>
         {' | Severity ' + ticket.data.severity}
-      </font>
+      </span>
     )
     : null,
-  (key) =>
-    ticket.status ? <font key={key}> | </font>
-      : null,
-  (key) => {
-    if (ticket.status) {
-      const fontColor = ticket.status === 'Active' ? 'red' : 'black'
-      return <font key={key} color={fontColor}>
-        {ticket.status}
-      </font>
-    } else return null
-  }
+  (key) => ticket.status
+      ? ticketStatus(key, ticket.status)
+      : null
 ]
+
+const ticketStatus = (key, status) =>(
+  <span key={key}>
+    {' | '}
+    <span style={status === 'Active' ? styles.activeStatus : styles.inactiveStatus}>
+      {status}
+    </span>
+  </span>
+)
 
 const IncidentManagerColumn = (ticket) => [
   (key) =>
