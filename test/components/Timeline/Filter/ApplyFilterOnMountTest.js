@@ -1,6 +1,5 @@
 'use strict'
 import { expect } from 'chai'
-import React from 'react'
 
 import createComponent from 'test/helpers/shallowRenderHelper'
 import { GetMockDispatch, GetDispatchRecorder } from 'test/helpers/mockDispatch'
@@ -25,41 +24,41 @@ describe('Apply Filter On Mount', function () {
     describe('Render Output', function () {
       context('When style is provided', function () {
         const recorder = GetDispatchRecorder()
-        const expectedStyle =  { key: 'value'}
-        const result = createComponent(ApplyFilterOnMount, getMockInput(recorder, expectedStyle))
+        const expectedStyle = { key: 'value'}
+        const componentUnderTest = createComponent(ApplyFilterOnMount, getMockInput(recorder, expectedStyle))
         it('Should be a div', function () {
-          expect(result.type).to.equal('div')
+          expect(componentUnderTest.type).to.equal('div')
         })
 
         it('Should have the provided style', function () {
-          expect(result.props.style).to.equal(expectedStyle)
+          expect(componentUnderTest.props.style).to.equal(expectedStyle)
         })
 
         it('Should contain children', function () {
-          expect(result.props.children).to.equal('MockChildren')
+          expect(componentUnderTest.props.children).to.equal('MockChildren')
         })
       })
 
       context('When style is not provided', function () {
         const recorder = GetDispatchRecorder()
-        const result = createComponent(ApplyFilterOnMount, getMockInput(recorder))
+        const componentUnderTest = createComponent(ApplyFilterOnMount, getMockInput(recorder))
         it('Should output a div', function () {
-          expect(result.type).to.equal('div')
+          expect(componentUnderTest.type).to.equal('div')
         })
 
         it('Should have no style', function () {
-          expect(result.props.style).to.be.undefined
+          expect(componentUnderTest.props.style).to.be.undefined
         })
 
         it('Should contain children', function () {
-          expect(result.props.children).to.equal('MockChildren')
+          expect(componentUnderTest.props.children).to.equal('MockChildren')
         })
       })
     })
 
     describe('ComponentDidMount', function () {
       const recorder = GetDispatchRecorder()
-      ApplyFilterOnMount.prototype.componentDidMount.bind({props:getMockInput(recorder)})()
+      ApplyFilterOnMount.prototype.componentDidMount.bind({props: getMockInput(recorder)})()
 
       it('Should dispatch the passed in apply filter method', function () {
         expect(recorder.action.type).to.equal('MOCK_APPLY_FILTER')
@@ -70,7 +69,7 @@ describe('Apply Filter On Mount', function () {
       context('When oldProps incidentId matches passed in incidentId', function () {
         const recorder = GetDispatchRecorder()
         const input = getMockInput(recorder)
-        ApplyFilterOnMount.prototype.componentDidUpdate.bind({props:input})(input)
+        ApplyFilterOnMount.prototype.componentDidUpdate.bind({props: input})(input)
 
         it('Should not dispatch', function () {
           expect(recorder.action).to.be.undefined
@@ -80,7 +79,7 @@ describe('Apply Filter On Mount', function () {
       context('When oldProps incidentId does not match passed in incidentId', function () {
         const oldProps = {incidentId: 10000000}
         const recorder = GetDispatchRecorder()
-        ApplyFilterOnMount.prototype.componentDidUpdate.bind({props:getMockInput(recorder)})(oldProps)
+        ApplyFilterOnMount.prototype.componentDidUpdate.bind({props: getMockInput(recorder)})(oldProps)
 
         it('Should dispatch the passed in apply filter method', function () {
           expect(recorder.action.type).to.equal('MOCK_APPLY_FILTER')
@@ -103,22 +102,27 @@ describe('Apply Filter On Mount', function () {
     const testOwnProps = {
       style: 'mockStyle'
     }
-    const result = mapStateToApplyFilterProps(mockState, testOwnProps)
+    const propsObjectUnderTest = mapStateToApplyFilterProps(mockState, testOwnProps)
 
+<<<<<<< HEAD
     it('Should return filters from state', function () {
       expect(result.filter).to.equal('expectedFilter')
+=======
+    it('Should return filter from state', function () {
+      expect(propsObjectUnderTest.filter).to.equal('expectedFilter')
+>>>>>>> 982dc6549000ea5f2a054a0aa486d1a2b7a1801f
     })
 
     it('Should return filterPreference from state', function () {
-      expect(result.filterPreference).to.equal('expectedEventFilterType')
+      expect(propsObjectUnderTest.filterPreference).to.equal('expectedEventFilterType')
     })
 
     it('Should return applyFilter from imports', function () {
-      expect(result.applyFilter).to.equal(applyFilter)
+      expect(propsObjectUnderTest.applyFilter).to.equal(applyFilter)
     })
 
     it('Should pass forward ownProps (including style)', function () {
-      expect(result.style).to.equal('mockStyle')
+      expect(propsObjectUnderTest.style).to.equal('mockStyle')
     })
   })
 })

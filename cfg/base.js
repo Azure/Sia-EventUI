@@ -20,6 +20,7 @@ const siaRoot = path.join(__dirname, '..')
 const publicPath = '/assets/'
 
 const config = {
+  mode: 'development',
   entry: {
     app: ['babel-polyfill'],
     appInsights: path.join(siaRoot, 'src/appInsights')
@@ -76,6 +77,9 @@ const config = {
         loader: 'file-loader'
       }
     ]
+  },
+  optimization: {
+    noEmitOnErrors: true
   },
   plugins: [
     new webpack.DefinePlugin({

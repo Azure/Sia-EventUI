@@ -2,7 +2,10 @@
 import { expect } from 'chai'
 import React from 'react'
 import { shallow } from 'enzyme'
-import { NavMenu, mapStateToProps } from 'components/TopNav/NavMenu'
+require('test/helpers/configureEnzyme')
+import { NavMenu, ticketMenuLinks, mapStateToProps } from 'components/TopNav/NavMenu'
+import MenuLink from 'components/elements/MenuLink'
+import NotificationsNone from 'material-ui/svg-icons/social/notifications-none'
 import IconButton from 'material-ui/IconButton'
 import MenuItem from 'material-ui/MenuItem'
 import IconMenu from 'material-ui/IconMenu'
@@ -11,21 +14,23 @@ require('test/helpers/configureEnzyme')
 
 const mockDispatch = () => null
 
-const setup = () => shallow(
-  <NavMenu
-    dispatch={mockDispatch}
-    ticketIds={['1111', '2222', '3333']}
-  />
-)
+function setup () {
+  const ticketInfo = [
+    { id: '1111', title: 'title' },
+    { id: '2222', title: 'title' },
+    { id: '3333', title: 'title' }
+  ]
+
+  return shallow(<NavMenu dispatch={mockDispatch} ticketInfo={ticketInfo} />)
+}
 
 describe('NavMenu', function test () {
   const testObject = setup()
 
   const expectMenuLink = (testObject, expectedPrimaryText, expectedLink) => {
-    expect(testObject.type).to.equal(MenuItem)
+    expect(testObject.type).to.equal(MenuLink)
     expect(testObject.props.primaryText).to.equal(expectedPrimaryText)
-    expect(testObject.props.containerElement.type).to.equal(Link)
-    expect(testObject.props.containerElement.props.to).to.equal(expectedLink)
+    expect(testObject.props.route).to.equal(expectedLink)
   }
 
   it('Should render an IconMenu with an icon button', function () {
@@ -57,13 +62,29 @@ describe('NavMenu', function test () {
     expect(link.type).to.equal(MenuItem)
     expect(link.props.primaryText).to.equal('LogOut')
   })
+})
 
-  it('Should render links to previously visited tickets', function () {
-    const links = testObject.props().children[6]
+describe('ticketMenulinks', () => {
+  const multipleTickets = [
+    { id: 123, title: 'title' },
+    { id: 456, title: 'title' }
+  ]
 
-    expect(links[0].props.containerElement.props.to).to.equal('/tickets/1111')
-    expect(links[1].props.containerElement.props.to).to.equal('/tickets/2222')
-    expect(links[2].props.containerElement.props.to).to.equal('/tickets/3333')
+  it('Should render nothing when there is no ticketInfo', () => {
+    expect(ticketMenuLinks(null, mockDispatch)).to.equal(null)
+  })
+
+  it('Should render the expected number of menu entries', () => {
+    expect(ticketMenuLinks(multipleTickets, mockDispatch))
+      .to
+      .have
+      .lengthOf(multipleTickets.length)
+  })
+
+  it('Should render the expected number of MenuLink entities', () => {
+    ticketMenuLinks(multipleTickets, mockDispatch)
+      .map(item => item.type)
+      .forEach(type => expect(type).to.equal(MenuLink))
   })
 })
 
@@ -71,7 +92,7 @@ describe('mapStateToProps', function test () {
   const state = {
     tickets: {
       map: {
-        '12345': 'value',
+        '12345': { data: { title: 'title' } },
         '67890': 'unused'
       }
     },
@@ -99,7 +120,10 @@ describe('mapStateToProps', function test () {
     expect(result.history).to.equal(ownProps.history)
   })
 
-  it('transforms the tickets.map into ticketIds', () => {
-    expect(result.ticketIds).to.contain('12345', '67890')
+  it('transforms the tickets.map into ticketInfo', () => {
+    expect(result.ticketInfo).to.deep.include(
+      { id: '12345', title: 'title' },
+      { id: '67890', title: '' }
+    )
   })
 })

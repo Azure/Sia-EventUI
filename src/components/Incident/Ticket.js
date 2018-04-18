@@ -107,10 +107,10 @@ export const getInfoByTicketId = (state, ticketId) => {
 export const getTicketSystemId = (ticket) => ticket ? (ticket.ticketSystemId ? ticket.ticketSystemId : 1) : 1
 export const getIncident = (ticket, incidents) => ticket ? (ticket.incidentId ? incidents.map[ticket.incidentId] : null) : null
 
-export const ErrorLoadingIncident = (incident, ticketId) => ErrorMessage(
-    'Error Loading Incident: ' + (incident ? incident.error : 'incident could not be retrieved'),
-    DetermineRetryAction(incident, ticketId)
-)
+export const ErrorLoadingIncident = (incident, ticketId) => <ErrorMessage
+  message={'Error Loading Incident: ' + (incident ? incident.error : 'incident could not be retrieved')}
+  actionForRetry={DetermineRetryAction(incident, ticketId)}
+/>
 
 export const CurrentlyLoadingIncident = (incident, ticketId) => <LoadingMessage
   message={'Loading Incident...'}

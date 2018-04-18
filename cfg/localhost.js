@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const baseConfig = require('./base')
 
 const config = Object.assign({}, baseConfig, {
@@ -16,8 +16,7 @@ config.entry.app.push(...[
 
 config.plugins.push(...[
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NamedModulesPlugin(),
-  new webpack.NoEmitOnErrorsPlugin()
+  new BundleAnalyzerPlugin()
 ])
 
 module.exports = config
