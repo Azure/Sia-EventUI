@@ -3,11 +3,16 @@ import PropTypes from 'prop-types'
 
 import GlobalActions from 'components/Timeline/Playbook/GlobalActions'
 
+const styles = {
+  activeStatus: { color: 'red' },
+  inactiveStatus: { color: 'black' }
+}
+
 export const IncidentSummaryName = (ticketId) => {
   return 'IncidentSummary' + (ticketId ? '_' + ticketId : '')
 }
 
-export const IncidentSummary = ({incident, ticket, ticketSystem, ticketOriginId, dispatch}) =>
+export const IncidentSummary = ({ incident, ticket, ticketSystem, ticketOriginId, dispatch }) =>
   [
     HeaderRow(ticketOriginId),
     TicketDetailsRow(ticketSystem, ticket),
@@ -25,7 +30,7 @@ const HeaderRow = (ticketId) => [
   [
     (key) =>
       <strong key={key}>
-                Incident Summary{ticketId ? ` for ${ticketId}` : ''}:
+        Incident Summary{ticketId ? ` for ${ticketId}` : ''}:
       </strong>
   ]
 ]
@@ -42,12 +47,24 @@ const BasicInfoColumn = (ticketSystem, ticket) => [
     </a>,
   (key) => ticket.data && 'severity' in ticket.data
     ? (
-      <div key={key}>
-        Severity: {ticket.data.severity}
-      </div>
+      <span key={key}>
+        {' | Severity ' + ticket.data.severity}
+      </span>
     )
-    : null
+    : null,
+  (key) => ticket.status
+      ? ticketStatus(key, ticket.status)
+      : null
 ]
+
+const ticketStatus = (key, status) => (
+  <span key={key}>
+    {' | '}
+    <span style={status === 'Active' ? styles.activeStatus : styles.inactiveStatus}>
+      {status}
+    </span>
+  </span>
+)
 
 const IncidentManagerColumn = (ticket) => [
   (key) =>
@@ -61,20 +78,20 @@ const noTitleMessage = 'No Title!'
 const TitleRow = (incident) => [
   <div>
     {DoesIncidentHaveTitle(incident) ? incident.title
-        : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
+      : DoesPrimaryTicketHaveNativeTitle(incident) ? incident.primaryTicket.title
         : DoesPrimaryTicketHaveDataTitle(incident) ? incident.primaryTicket.data.title
-        : noTitleMessage}
+          : noTitleMessage}
   </div>
 ]
 
 const DoesIncidentHaveTitle = (incident) =>
-    incident && incident.title
+  incident && incident.title
 
 const DoesPrimaryTicketHaveNativeTitle = (incident) =>
-    incident && incident.primaryTicket && incident.primaryTicket.title
+  incident && incident.primaryTicket && incident.primaryTicket.title
 
 const DoesPrimaryTicketHaveDataTitle = (incident) =>
-    incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
+  incident && incident.primaryTicket && incident.primaryTicket.data && incident.primaryTicket.data.title
 
 const GlobalActionsRow = (incident, ticketId) => [
   [
@@ -82,6 +99,6 @@ const GlobalActionsRow = (incident, ticketId) => [
       incidentId={incident.id}
       ticketId={ticketId}
       key={key}
-            />
+    />
   ]
 ]
