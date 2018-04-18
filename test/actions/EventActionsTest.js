@@ -5,20 +5,20 @@ import * as eventActions from 'actions/eventActions'
 describe('EventActions', function () {
   describe('getEventsEndPoint', function () {
     describe('when there is an incidentId', function () {
-      let incidentId = 42
+      const incidentId = 42
 
-      let result = eventActions.getEventsEndPoint(incidentId)
+      const result = eventActions.getEventsEndPoint(incidentId)
       it('should return string with the incident id', function () {
-        expect(result).to.equal('incidents/42/events/')
+        expect(result).to.equal('incidents/42/events')
       })
     })
 
     describe('when there is no incidentId', function () {
-      let incidentId = null
+      const incidentId = null
 
       let result = eventActions.getEventsEndPoint(incidentId)
       it('should return string with just events', function () {
-        expect(result).to.equal('events/')
+        expect(result).to.equal('events')
       })
     })
   })
@@ -30,7 +30,7 @@ describe('EventActions', function () {
 
         let result = eventActions.getEventsFetchArgs(filter)
 
-        expect(result).to.deep.equal(['incidents/42/events/?eventTypes=0'])
+        expect(result).to.deep.equal(['incidents/42/events?eventTypes=0'])
       })
     })
 
@@ -40,33 +40,19 @@ describe('EventActions', function () {
 
         let result = eventActions.getEventsFetchArgs(filter)
 
-        expect(result).to.deep.equal(['incidents/42/events/'])
-      })
-    })
-  })
-
-  describe('getEventFetchArgs', function () {
-    describe('when given an eventId', function () {
-      it('should return an array item with url that includes the eventId', function () {
-        let incidentId = 42
-        let eventId = 1
-
-        let result = eventActions.getEventFetchArgs(incidentId, eventId)
-
-        expect(result).to.deep.equal(['incidents/42/events/1'])
+        expect(result).to.deep.equal(['incidents/42/events'])
       })
     })
   })
 
   describe('getEventActionSet', function () {
-    context('when given an incidentId and an eventId', function () {
-      let incidentId = 42
-      let eventId = 1
+    context('when given an eventId', function () {
+      const eventId = 1
       describe('try', function () {
         it('should return an object with the incidentId, eventId, and type', function () {
-          let result = eventActions.getEventActionSet(incidentId, eventId).try()
+          const result = eventActions.getEventActionSet(eventId).try()
 
-          expect(result).to.deep.equal({type: 'REQUEST_EVENT', incidentId: 42, id: 1})
+          expect(result).to.deep.equal({type: 'REQUEST_EVENT', id: 1})
         })
       })
     })

@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { combineReducers } from 'redux'
-import { UPDATE_TICKET_QUERY, REMOVE_TICKET, REMOVE_ALL_TICKETS } from 'actions/ticketActions.js'
+import { UPDATE_TICKET_QUERY, REMOVE_TICKET, REMOVE_PREVIOUS_TICKETS } from 'actions/ticketActions.js'
 import { RECEIVE_INCIDENTS, CREATE_INCIDENT_SUCCESS, RECEIVE_INCIDENT, FETCH_INCIDENTS_BY_TICKET_ID_SUCCESS } from 'actions/incidentActions.js'
 import config from 'config'
 import { persistReducer } from 'redux-persist'
@@ -51,11 +51,13 @@ const removeTicketFromState = (state, ticketId) => {
   return newState
 }
 
-const removeAllTicketsFromState = (state) => {
-  let newState = { ...state }
-  Object.keys(state).map(ticketId => { newState[ticketId] = null })
-  return newState
-}
+const removePreviousTicketsFromState = (state, currentTicketId) =>
+  Object.assign(
+    {},
+    ...Object.keys(state)
+      .map(ticketId => ({[ticketId]: null})),
+    {[currentTicketId]: state[currentTicketId]}
+  )
 
 const defaultPreferences = {
   refreshIntervalInSeconds: config.ticketRefreshIntervalInSeconds
@@ -77,8 +79,8 @@ export const map = (state = defaultTicketList, action) => {
       return addIncidentToState(state, action.incident)
     case REMOVE_TICKET:
       return removeTicketFromState(state, action.id)
-    case REMOVE_ALL_TICKETS:
-      return removeAllTicketsFromState(state, action.ids)
+    case REMOVE_PREVIOUS_TICKETS:
+      return removePreviousTicketsFromState(state, action.currentId)
     default:
       return state
   }
