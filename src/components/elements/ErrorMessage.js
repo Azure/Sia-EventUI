@@ -6,23 +6,25 @@ import { RetryButton } from 'components/elements/Buttons'
 
 import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 
-const ErrorMessage = (message, actionForRetry, time = null, backgroundColor = null) => {
+export const ErrorMessage = ({
+  message,
+  actionForRetry,
+  time = null,
+  backgroundColor = null
+}) => {
   const errorMessageTime = time && time instanceof DateTime ? time.toLocal().toFormat(DateTime.TIME_WITH_SECONDS) : null
 
-  return <div>
-    <Card
-      className='incident-card'
-      style={{ backgroundColor }}
-    >
-      <ErrorIcon />
-      <CardHeader
-
-        title={message}
-        subtitle={timeFormattedToMultipleZones(errorMessageTime)}
-      />
-      { actionForRetry ? <RetryButton actionForRetry={actionForRetry} /> : null }
-    </Card>
-  </div>
+  return <Card
+    className='incident-card'
+    style={{ backgroundColor }}
+  >
+    <ErrorIcon />
+    <CardHeader
+      title={message}
+      subtitle={timeFormattedToMultipleZones(errorMessageTime)}
+    />
+    { actionForRetry ? <RetryButton actionForRetry={actionForRetry} /> : null }
+  </Card>
 }
 
 export default ErrorMessage

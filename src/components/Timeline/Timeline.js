@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import EventFilter from 'components/Timeline/EventFilter'
 import Footer from 'components/Timeline/EventFooter'
 import AddEventCard from 'components/Timeline/AddEventCard'
-import Events from 'components/Timeline/Events'
+import Events from 'components/Timeline/Event/Events'
 
 import * as eventActions from 'actions/eventActions'
 import * as eventTypeActions from 'actions/eventTypeActions'
