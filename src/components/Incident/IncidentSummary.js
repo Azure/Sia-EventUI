@@ -57,7 +57,7 @@ const BasicInfoColumn = (ticketSystem, ticket) => [
       : null
 ]
 
-const ticketStatus = (key, status) =>(
+const ticketStatus = (key, status) => (
   <span key={key}>
     {' | '}
     <span style={status === 'Active' ? styles.activeStatus : styles.inactiveStatus}>
