@@ -57,7 +57,9 @@ export const endTime = (defaultEndTime) => dateTimeReducer(
 export const dataSearch = (defaultDataSearch = initialFilter.dataSearch) => (state = defaultDataSearch, action) => {
   switch (action.type) {
     case filterActions.UPDATE_DATASEARCH:
-      return action.dataSearch
+      if (action.dataSearch || action.dataSearch === '') {
+        return action.dataSearch
+      } else return state
     default:
       return state
   }
