@@ -3,6 +3,22 @@ import ByPath from 'object-path'
 import * as eventTypeActions from 'actions/eventTypeActions'
 import * as eventActions from 'actions/eventActions'
 
+export const GetQualifiedActions = (event, ticket, eventType) => {
+  const actions = eventType ? eventType.actions : null
+  const populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
+  const qualifiedActions = actions
+    ? actions.filter(
+        action => action.conditionSets.reduce(
+            (allConditionSetsMet, currentConditionSet) => allConditionSetsMet
+            ? populatedConditionSetTest(currentConditionSet)
+            : false,
+             true
+        )
+      )
+    : []
+  return qualifiedActions
+}
+
 export const IsBootstrapNeeded = (eventType, isFetching, isError) =>
     !eventType &&
     !(isFetching || isError)
@@ -99,12 +115,18 @@ export const TestConditionSet = testableTestConditionSet(selectSourceObject, Tes
 export const testableFillTemplate = (selectSource) => (template, event, ticket, eventType) => {
   if (!template || !template.pattern) return ''
   const templateSourcesWithData = template.sources
-        ? template.sources.map(
-                source => Object.assign({}, source, {dataValue: ByPath.get(
-                selectSource(source.sourceObject, event, ticket, eventType),
-                source.key
-            )})
-        ) : []
+    ? template.sources
+      .map(source =>
+        Object.assign(
+          {},
+          source,
+          {dataValue: ByPath.get(
+            selectSource(source.sourceObject, event, ticket, eventType),
+            source.key
+          )}
+        )
+      )
+    : []
   let filledTemplate = template.pattern
   templateSourcesWithData.forEach(source => {
     filledTemplate = filledTemplate.replace('${' + source.name + '}', source.dataValue)
