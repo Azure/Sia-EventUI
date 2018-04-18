@@ -16,6 +16,7 @@ export const TimeAndDatePicker = ({
   dispatch
 }) => <div>
   <DatePicker
+    aria-label='Select a start date'
     value={DateTime.fromISO(filters.startTime).toJSDate()}
     hintText='Select a start date'
     onChange={(event, date) => {
@@ -23,6 +24,7 @@ export const TimeAndDatePicker = ({
     }}
   />
   <TimePicker
+    aria-label='Select a start time'
     value={DateTime.fromISO(filters.startTime).toJSDate()}
     format='24hr'
     hintText='Select a start time'
@@ -31,6 +33,7 @@ export const TimeAndDatePicker = ({
     }}
   />
   <DatePicker
+    aria-label='Select an end date'
     value={DateTime.fromISO(filters.endTime).toJSDate()}
     hintText='Select an end date'
     onChange={(event, date) => {
@@ -38,6 +41,7 @@ export const TimeAndDatePicker = ({
     }}
   />
   <TimePicker
+    aria-label='Select an end time'
     value={DateTime.fromISO(filters.endTime).toJSDate()}
     format='24hr'
     hintText='Select an end time'
