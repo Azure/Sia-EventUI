@@ -104,8 +104,13 @@ describe('Apply Filter On Mount', function () {
     }
     const propsObjectUnderTest = mapStateToApplyFilterProps(mockState, testOwnProps)
 
+<<<<<<< HEAD
+    it('Should return filters from state', function () {
+      expect(result.filter).to.equal('expectedFilter')
+=======
     it('Should return filter from state', function () {
       expect(propsObjectUnderTest.filter).to.equal('expectedFilter')
+>>>>>>> 982dc6549000ea5f2a054a0aa486d1a2b7a1801f
     })
 
     it('Should return filterPreference from state', function () {
