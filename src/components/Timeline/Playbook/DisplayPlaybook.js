@@ -32,8 +32,8 @@ export const DisplayPlaybook = ({
 
 DisplayPlaybook.propTypes = {
   actions: PropTypes.array,
-  eventTypeId: PropTypes.number.isRequired,
-  eventId: PropTypes.number.isRequired,
+  eventTypeId: PropTypes.number,
+  eventId: PropTypes.number,
   ticketId: PropTypes.string
 }
 
