@@ -7,7 +7,7 @@ import { applyFilter } from 'actions/filterActions'
 
 export class ApplyFilterOnMount extends Component {
   static propTypes = {
-    filters: PropTypes.object.isRequired,
+    filter: PropTypes.object.isRequired,
     filterPreference: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -17,15 +17,15 @@ export class ApplyFilterOnMount extends Component {
   }
 
   componentDidMount () {
-    const { dispatch, history, filters, filterPreference, incidentId, applyFilter } = this.props
-    const filterWithIncidentId = Object.assign({}, filters, {incidentId})
+    const { dispatch, history, filter, filterPreference, incidentId, applyFilter } = this.props
+    const filterWithIncidentId = Object.assign({}, filter, {incidentId})
     dispatch(applyFilter(history, filterWithIncidentId, filterPreference))
   }
 
   componentDidUpdate (oldProps) {
-    const { dispatch, history, filters, filterPreference, incidentId, applyFilter } = this.props
+    const { dispatch, history, filter, filterPreference, incidentId, applyFilter } = this.props
     if (oldProps.incidentId !== incidentId) {
-      const filterWithIncidentId = Object.assign({}, filters, {incidentId})
+      const filterWithIncidentId = Object.assign({}, filter, {incidentId})
       dispatch(applyFilter(history, filterWithIncidentId, filterPreference))
     }
   }
@@ -36,7 +36,7 @@ export class ApplyFilterOnMount extends Component {
 }
 
 export const mapStateToApplyFilterProps = (state, ownProps) => ({
-  filters: state.events.filter,
+  filter: state.events.filter,
   filterPreference: state.signalR.filterPreferences.eventFilterType,
   applyFilter,
   ...ownProps

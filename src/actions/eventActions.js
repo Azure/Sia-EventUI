@@ -24,14 +24,14 @@ export const clearEvents = () => ({
   type: CLEAR_EVENTS
 })
 
-export const fetchEvent = (incidentId, eventId) => reduxBackedPromise(
-  [getEventsEndPoint(incidentId) + eventId],
-  getEventActionSet(incidentId, eventId)
+export const fetchEvent = (eventId) => reduxBackedPromise(
+  [getEventsEndPoint() + '/' + eventId],
+  getEventActionSet(eventId)
 )
 
 export const fetchEvents = (filter) => reduxBackedPromise(
   getEventsFetchArgs(filter),
-  getEventsActionSet(filter.incidentId)
+  getEventsActionSet(filter)
 )
 
 export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime = DateTime.utc()) => reduxBackedPromise(
@@ -40,18 +40,14 @@ export const postEvent = (incidentId, eventTypeId = 0, data = {}, occurrenceTime
     'POST'
 )
 
-export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events/'
+export const getEventsEndPoint = (incidentId) => (incidentId ? 'incidents/' + incidentId + '/' : '') + 'events'
 
 export const getEventsFetchArgs = (filter) => ([
   getEventsEndPoint(filter ? filter.incidentId : null) + filterService.serializeFiltersForUrl(filter)
 ])
 
-export const getEventFetchArgs = (incidentId, eventId) => {
-  return [getEventsEndPoint(incidentId) + eventId]
-}
-
 export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime) => ([
-  getEventsEndPoint(incidentId),
+  getEventsEndPoint({incidentId}),
   {
     eventTypeId,
     occurred: occurrenceTime,
@@ -60,17 +56,15 @@ export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime
   }
 ])
 
-export const getEventActionSet = (incidentId, eventId) => ({
+export const getEventActionSet = (eventId) => ({
   try: () => ({
     type: REQUEST_EVENT,
-    incidentId,
     id: eventId
   }),
 
   succeed: (event) => (dispatch) => {
     dispatch(notificationActions.emitNotification({
-      event,
-      incidentId: event.incidentId
+      event
     }))
 
     dispatch({
@@ -85,15 +79,15 @@ export const getEventActionSet = (incidentId, eventId) => ({
   fail: (failureReason) => ({
     type: RECEIVE_EVENT_FAILURE,
     failureReason,
-    incidentId,
     id: eventId
   })
 })
 
-export const getEventsActionSet = (incidentId) => ({
+export const getEventsActionSet = (filter) => ({
   try: () => ({
     type: REQUEST_EVENTS,
-    incidentId
+    incidentId: filter ? filter.incidentId : null,
+    filter
   }),
 
   succeed: (events, response) => (dispatch) => {
@@ -106,15 +100,16 @@ export const getEventsActionSet = (incidentId) => ({
 
     dispatch({
       type: RECEIVE_EVENTS,
+      filter,
       events,
-      incidentId,
+      incidentId: filter ? filter.incidentId : null,
       pagination: linksHeader
     })
 
     if (linksHeader && linksHeader.NextPageLink) {
       dispatch(reduxBackedPromise(
                 [linksHeader.NextPageLink],
-                getEventsActionSet(incidentId)
+                getEventsActionSet(filter)
             ))
     } else {
       dispatch(updatePagination())
@@ -124,7 +119,8 @@ export const getEventsActionSet = (incidentId) => ({
   fail: (failureReason) => ({
     type: RECEIVE_EVENTS_FAILURE,
     failureReason,
-    incidentId
+    incidentId: filter ? filter.incidentId : null,
+    filter
   })
 })
 

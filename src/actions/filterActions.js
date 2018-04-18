@@ -58,7 +58,7 @@ export const removeEventTypeFromFilter = (eventTypeId) => ({
 
 export const nothingToAdd = (eventType) => !eventType || (!eventType.id && eventType.id !== 0)
 
-const typeIsAlreadyFiltered = (oldFilter, eventType) => oldFilter &&
+export const typeIsAlreadyFiltered = (oldFilter, eventType) => oldFilter &&
   oldFilter.eventTypes &&
   oldFilter.eventTypes.includes(eventType.id)
 
@@ -66,7 +66,12 @@ const addTypeToOldFilter = (oldFilter, eventType) => Object.assign({}, oldFilter
   ? oldFilter.eventTypes.concat(eventType.id)
   : [eventType.id]})
 
-export const applyEventTypeAddition = (history, oldFilter, signalRFilterType, eventType) => (dispatch) => {
+export const applyEventTypeAddition = (
+  history,
+  oldFilter,
+  signalRFilterType,
+  eventType
+) => (dispatch) => {
   if (nothingToAdd(eventType) || typeIsAlreadyFiltered(oldFilter, eventType)) {
     return
   }
@@ -97,6 +102,8 @@ export const applyEventTypeRemoval = (history, signalRFilterType, oldFilter, eve
 export const applyFilter = (history, filter, signalRFilterType) => (dispatch) => {
   filterService.updateUrlToMatchFilter(history, filter)
   dispatch(signalRActions.updateEventFilterPreference(signalRFilterType, filter))
-  dispatch(eventActions.clearEvents())
-  dispatch(eventActions.fetchEvents(filter))
+  if (filter) {
+    dispatch(eventActions.clearEvents())
+    dispatch(eventActions.fetchEvents(filter))
+  }
 }
