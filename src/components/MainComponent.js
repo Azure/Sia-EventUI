@@ -2,7 +2,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import { Router, Route } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -17,6 +17,7 @@ import UncorrelatedEvents from 'components/Timeline/UncorrelatedEvents'
 import { isChromeExtensionBackground } from 'services/notificationService'
 import Notifications from 'components/Extension/Notifications'
 import Preferences from 'components/TopNav/Preferences'
+import TicketChecklist from 'components/TicketChecklist'
 
 const history = createBrowserHistory()
 
@@ -35,7 +36,10 @@ export default class MainComponent extends React.Component {
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
-                    <Route path='/tickets/:ticketId' component={Ticket} />
+                    <Switch>
+                      <Route path='/tickets/:ticketId/checklist' component={TicketChecklist} />
+                      <Route path='/tickets/:ticketId' component={Ticket} />
+                    </Switch>
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />
                     <Route path='/preferences' component={Preferences} />

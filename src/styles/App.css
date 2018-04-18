@@ -14,11 +14,21 @@ div#siaApp {
   background: white;
 }
 
+.item {
+  cursor: pointer;
+}
+.checked::before {
+  content: '☑︎';
+}
+.unchecked::before {
+  content: '☐';
+}
+
 .incident-container {
   flex-direction: column;
 }
 
-.incident-col {
+.incident-col, .standard-padding {
   padding: 16px 16px 0px 16px;
 }
 
