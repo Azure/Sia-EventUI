@@ -1,10 +1,14 @@
 'use strict'
+import React from 'react'
 import { expect } from 'chai'
 import { Link } from 'react-router-dom'
 import MenuItem from 'material-ui/MenuItem'
 import MenuLink from 'components/elements/MenuLink'
+import { shallow } from 'enzyme'
+import toJson from 'enzyme-to-json'
+require('helpers/enableSnapshot')
 
-describe('MenuLink', function() {
+describe.only('MenuLink', function() {
   describe('when all input is valid', function() {
     const mockTitle = 'mock title'
     const mockToolTip = 'mock tool tip'
@@ -18,6 +22,20 @@ describe('MenuLink', function() {
       route: mockRoute,
       onClick: mockOnClick,
       rightIcon: mockRightIcon
+    })
+
+    it('should match the snapshot', function () {
+      const wrapper = shallow(
+        <MenuLink
+          primaryText={mockTitle}
+          toolTip={mockToolTip}
+          route={mockRoute}
+          onClick={mockOnClick}
+          rightIcon={mockRightIcon}
+        />
+      )
+
+      expect(toJson(wrapper)).to.matchSnapshot()
     })
 
     it('should render a MenuItem', function() {
