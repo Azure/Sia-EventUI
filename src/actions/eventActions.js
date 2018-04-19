@@ -47,7 +47,7 @@ export const getEventsFetchArgs = (filter) => ([
 ])
 
 export const postEventFetchArgs = (incidentId, eventTypeId, data, occurrenceTime) => ([
-  getEventsEndPoint({incidentId}),
+  getEventsEndPoint(incidentId),
   {
     eventTypeId,
     occurred: occurrenceTime,
