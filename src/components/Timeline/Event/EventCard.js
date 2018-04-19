@@ -47,7 +47,7 @@ export const mapStateToEventCardProps = (state, ownProps) => {
   const { event, ticketId } = ownProps
   const eventType = state.eventTypes.records[event.eventTypeId]
   const ticket = state.tickets.map[ticketId]
-  const IconType = Icons[eventType.icon]
+  const IconType = eventType ? Icons[eventType.icon] : null
 
   return {
     event,
