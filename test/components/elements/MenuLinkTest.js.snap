@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MenuLink when all input is valid should match the snapshot 1`] = `
+exports[`MenuLink when all input is valid snapshot should match the snapshot 1`] = `
 <MenuItem
   anchorOrigin={
     Object {
