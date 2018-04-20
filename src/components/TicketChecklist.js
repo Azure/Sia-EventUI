@@ -4,11 +4,9 @@ import Checklist from 'components/Checklist'
 
 // TODO: gigure out how to inject the ticketId in
 
+const TicketChecklist = ({...props}) => <Paper className='standard-padding '>
+    <Checklist initialProps={props} /> 
+  </Paper>
 
-
-const TicketChecklist = ({ticketId}) => <Paper className='standard-padding '>
-  <Checklist
-  />
-</Paper>
 
 export default TicketChecklist

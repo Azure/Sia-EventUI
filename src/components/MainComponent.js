@@ -37,7 +37,9 @@ export default class MainComponent extends React.Component {
                     <Route exact path='/extension.html' component={Home} />
                     <Route path='/search' component={CreateIncident} />
                     <Switch>
-                      <Route path='/tickets/:ticketId/checklist' component={TicketChecklist} />
+                      <Route path='/tickets/:ticketId/checklist'
+                        component={TicketChecklist}
+                      />
                       <Route path='/tickets/:ticketId' component={Ticket} />
                     </Switch>
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />

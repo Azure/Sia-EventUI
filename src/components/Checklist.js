@@ -18,16 +18,17 @@ const Title = (ticketId) => <span>
 </span>
 
 class Checklist extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     // This binding is necessary to make `this` work in the callback
-    this.toggleCheck = this.toggleCheck.bind(this);
+    this.toggleCheck = this.toggleCheck.bind(this)
   }
 
+  /* global localStorage, toggleCheck */
   toggleCheck = (ev) => {
     const isChecked = () => ev.currentTarget.classList.contains('checked')
-    const content   = () => ev.currentTarget.textContent
+    const content = () => ev.currentTarget.textContent
     this.itemToUpdate = { text: content(), checked: !isChecked() }
     ev.preventDefault()
     this.setState((pastState) => {
@@ -36,36 +37,39 @@ class Checklist extends React.Component {
         (item) => item.text === this.itemToUpdate.text
       )
 
+      // TODO: Don't mutate state. test, then refactor to assignment instead of mutation.
       pastState.items[index] = this.itemToUpdate
       localStorage.setItem('checklist', JSON.stringify(pastState))
       return pastState
     })
   }
 
-  render() {
+  render () {
     return <div id='checklist'>
       <Header title={Title()} />
       <ul>
         {
-          _.chain(this.state && this.state.items).
-            map((item, index) =>
+          _.chain(this.state && this.state.items)
+            .map((item, index) =>
               <li
-                style={{listStyle: "none"}}
+                style={{listStyle: 'none'}}
                 className={className(item)}
                 onClick={this.toggleCheck}
-                key={ index }>{ item.text }
+                key={index}>{ item.text }
               </li>
-            ).
-            value()
+            )
+            .value()
         }
       </ul>
     </div>
   }
 
-  componentDidMount(_nullState) {
+  componentDidMount () {
+    let ticketId = this.props.initialProps.match.params.ticketId
+
     let persistedState
 
-    if ( localStorage.getItem('checklist') ) {
+    if (localStorage.getItem('checklist')) {
       persistedState = JSON.parse(localStorage.getItem('checklist'))
     } else {
       persistedState = {}

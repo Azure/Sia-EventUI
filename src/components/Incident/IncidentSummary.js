@@ -31,12 +31,11 @@ const HeaderRow = (ticketId) => [
   ]
 ]
 
-const ReviewChecklistRow = (ticketId) =>  [
-  <a href='./checklist'>
+const ReviewChecklistRow = (ticketId) => [
+  <a href={`./checklist`}>
     Review checklist for {ticketId}
   </a>
 ]
-
 
 const TicketDetailsRow = (ticketSystem, ticket) => [
   BasicInfoColumn(ticketSystem, ticket),
