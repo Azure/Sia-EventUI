@@ -14,16 +14,6 @@ div#siaApp {
   background: white;
 }
 
-.item {
-  cursor: pointer;
-}
-.checked::before {
-  content: '☑︎';
-}
-.unchecked::before {
-  content: '☐';
-}
-
 .incident-container {
   flex-direction: column;
 }

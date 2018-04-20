@@ -1,0 +1,10 @@
+.item {
+  list-style: none;
+  cursor: pointer;
+}
+.checked::before {
+  content: '☑︎';
+}
+.unchecked::before {
+  content: '☐';
+}

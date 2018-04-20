@@ -1,13 +1,14 @@
 import React from 'react'
 import _ from 'lodash'
 
+require('../styles/Checklist.css')
+
 // Stateless, functional components. It is their responsibility to tranform
 // data for display. They should be designed so they will not raise an error,
 // and they must be contained by ErrorBoundaries if they might raise.
-const Header = ({title}) => <h2>{title}</h2>
 const className = (item) => item.checked ? 'item checked' : 'item unchecked'
 
-const Title = (ticketId) => <span>
+const Title = (ticketId) => <h2>
   Checklist {ticketId ? ` for ${ticketId}` : ''}
   <a
     style={{ margin: '0 0 0 10px' }}
@@ -15,21 +16,32 @@ const Title = (ticketId) => <span>
   >
     🔙
   </a>
-</span>
+</h2>
 
 class Checklist extends React.Component {
   constructor (props) {
     super(props)
 
     // This binding is necessary to make `this` work in the callback
+    // See also, the Toggle class https://reactjs.org/docs/handling-events.html
     this.toggleCheck = this.toggleCheck.bind(this)
   }
 
   /* global localStorage, toggleCheck */
   toggleCheck = (ev) => {
-    const isChecked = () => ev.currentTarget.classList.contains('checked')
+    // A predicate method which returns a boolean.
+    //   true indicates that the classList doesn't contain checked,
+    //     and ∴ should contain checked after toggle.
+    //   false indicates that the classList does contain checked,
+    //     and ∴ should not contain checked after toggle.
+    const shouldBeChecked = () => {
+      return !ev.currentTarget.classList.contains('checked')
+    }
     const content = () => ev.currentTarget.textContent
-    this.itemToUpdate = { text: content(), checked: !isChecked() }
+    this.itemToUpdate = {
+      text: content(),
+      checked: shouldBeChecked()
+    }
     ev.preventDefault()
     this.setState((pastState) => {
       let index = _.findIndex(
@@ -46,13 +58,12 @@ class Checklist extends React.Component {
 
   render () {
     return <div id='checklist'>
-      <Header title={Title()} />
+      <Title />
       <ul>
         {
           _.chain(this.state && this.state.items)
             .map((item, index) =>
               <li
-                style={{listStyle: 'none'}}
                 className={className(item)}
                 onClick={this.toggleCheck}
                 key={index}>{ item.text }

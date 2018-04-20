@@ -62,7 +62,6 @@ class Ticket extends Component {
     }
 
     if (!incident || !incident.primaryTicket || !ticket || incident.error) {
-      debugger
       return UnexpectedFailureToLoadIncident()
     }
 
