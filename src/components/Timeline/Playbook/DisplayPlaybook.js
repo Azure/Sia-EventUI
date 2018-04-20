@@ -44,7 +44,7 @@ export const mapStateToDisplayPlaybookProps = (state, ownProps) => {
   const event = Object.values(state.events.pages.list)
         .find(event => event.id === eventId)
   const ticket = state.tickets.map[ticketId]
-  const actions = eventType.actions
+  const actions = eventType ? eventType.actions : []
   const populatedConditionSetTest = TestConditionSet(event, ticket, eventType)
   const qualifiedActions = actions.filter(
         action => action.conditionSets.reduce(
