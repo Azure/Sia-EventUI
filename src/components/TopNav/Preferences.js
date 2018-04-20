@@ -32,14 +32,12 @@ export const EventFilterPreferences = ({
   <h3 key='timePreferences'>Time Preferences:</h3>
   Display times in timezone:
   <DropDownMenu
-    onChange={this.handleDropdownChange}>
+    >
     <MenuItem primaryText={'UTC'} value={'UTC'} />
     <MenuItem primaryText={'Pacific Time'} value={'America/Los_Angeles'} />
     <MenuItem primaryText={'India Standard Time'} value={'Asia/Kolkata'} />
   </DropDownMenu>
 </div>
-
-let handleDropdownChange = (event, index, value) => this.setState({value})
 
 export const mapStateToEventFilterPreferencesProps = (state) => ({
   currentEventFilterObject: state.events.filter,

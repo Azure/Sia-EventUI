@@ -2,16 +2,25 @@ import { connect } from 'react-redux'
 import React from 'react'
 import { DateTime } from 'luxon'
 
-const TimeDisplay = ({time, timezone}) => (
+const TimeDisplay = ({time, timezone}) => {
+  return (
   <div>
     <div>Passed in: {time.toString()}</div>
-    <div>Configured ({timezone}): {time.setZone(timezone).toString()}</div>
+    <div>
+      Configured ({timezone}): {
+        DateTime
+          .fromISO(time)
+          .setZone(timezone)
+          .toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
+        }
+    </div>
   </div>
-)
+  )
+}
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    timezone: 'UTC'
+    timezone: 'America/Los_Angeles'
   }
 }
 
