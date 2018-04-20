@@ -2,17 +2,21 @@ import { connect } from 'react-redux'
 import React from 'react'
 import { DateTime } from 'luxon'
 
-const TimeDisplay = ({time, timezone}) => {
+const TimeDisplay = ({time, timezones}) => {
   return (
   <div>
     <div>Passed in: {time.toString()}</div>
     <div>
-      Configured ({timezone}): {
-        DateTime
-          .fromISO(time)
-          .setZone(timezone)
-          .toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
-        }
+      {timezones.map(timezone => (
+        <div>
+          Configured ({timezone}): {
+            DateTime
+              .fromISO(time)
+              .setZone(timezone)
+              .toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)
+            }
+        </div>
+      ))}
     </div>
   </div>
   )
@@ -20,7 +24,8 @@ const TimeDisplay = ({time, timezone}) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    timezone: 'America/Los_Angeles'
+    timezones: state.timePreferences,
+    time: ownProps.time
   }
 }
 
