@@ -3,7 +3,7 @@ import chaiJestSnapshot from 'chai-jest-snapshot'
 
 chai.use(chaiJestSnapshot)
 
-export const snapshot = (testsCallback) => {
+export const describeSnapshot = (testsCallback) => {
   describe('snapshot', function () {
         before(function () {
             chaiJestSnapshot.resetSnapshotRegistry()

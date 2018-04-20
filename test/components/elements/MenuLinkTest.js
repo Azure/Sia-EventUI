@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import MenuLink from 'components/elements/MenuLink'
 import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
-import { snapshot } from 'test/helpers/snapshotScope'
+import { describeSnapshot } from 'test/helpers/describeSnapshot'
 
 describe('MenuLink', function () {
   describe('when all input is valid', function () {
@@ -14,7 +14,7 @@ describe('MenuLink', function () {
     const mockOnClick = () => 'clicked'
     const mockRightIcon = {}
 
-    snapshot(function () {
+    describeSnapshot(function () {
       it('should match the snapshot', function () {
         const wrapper = shallow(
           <MenuLink
