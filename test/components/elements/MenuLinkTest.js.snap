@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MenuLink when all input is valid snapshot should match the snapshot 1`] = `
+<MenuItem
+  anchorOrigin={
+    Object {
+      "horizontal": "right",
+      "vertical": "top",
+    }
+  }
+  checked={false}
+  containerElement={
+    <Link
+      replace={false}
+      to="/mock/route"
+    />
+  }
+  desktop={false}
+  disabled={false}
+  focusState="none"
+  insetChildren={false}
+  key="mock title/mock/route"
+  onClick={[Function]}
+  primaryText={
+    <div
+      style={
+        Object {
+          "overflow": "hidden",
+          "textOverflow": "ellipsis",
+          "width": "25rem",
+        }
+      }
+    >
+      mock title
+    </div>
+  }
+  rightIcon={Object {}}
+  targetOrigin={
+    Object {
+      "horizontal": "left",
+      "vertical": "top",
+    }
+  }
+  title="mock title"
+/>
+`;
