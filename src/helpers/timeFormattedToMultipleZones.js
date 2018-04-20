@@ -3,7 +3,7 @@ import _ from 'underscore'
 
 // PST https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 // India's IANA zone https://en.wikipedia.org/wiki/Time_in_India
-const zones = [
+export const zones = [
   { shortname: 'PT', ianaZone: 'America/Los_Angeles' },
   { shortname: 'IST', ianaZone: 'Asia/Kolkata' },
   { shortname: 'UTC', ianaZone: 'UTC' }
