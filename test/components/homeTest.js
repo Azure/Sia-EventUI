@@ -1,8 +1,9 @@
 'use strict'
 import { expect } from 'chai'
 import React from 'react'
+
 import createComponent from 'test/helpers/shallowRenderHelper'
-import GetMockStore from 'test/helpers/mockReduxStore'
+
 import { Home, mapStateToProps } from 'components/Home'
 
 const setup = (props, children) => createComponent(Home, props, children)
@@ -16,17 +17,14 @@ const ticketState = { ticket: {
   lastRefresh: '2017-12-29T20:19:32.407Z'
 }}
 
-describe('Home Container Component', function test () {
-  beforeEach(() => {
-    this.noTicketsExistState = setup(noTicketState, children)
-    this.ticketsExistState = setup(ticketState, children)
+describe('Home Container Component', function () {
+  it('Should return null if no tickets', function () {
+    const noTicketsExistResult = setup(noTicketState, children)
+    expect(noTicketsExistResult).to.be.null
   })
-
-  it('Should redirect to search if no tickets', () => {
-    expect(this.noTicketsExistState.props.to).to.equal('/search')
-  })
-  it('Should redirect to most recent ticket if there are tickets', () => {
-    expect(this.ticketsExistState.props.to).to.equal('/tickets/5507')
+  it('Should redirect to most recent ticket if there are tickets', function () {
+    const ticketsExistResult = setup(ticketState, children)
+    expect(ticketsExistResult.props.to).to.equal('/tickets/5507')
   })
 })
 

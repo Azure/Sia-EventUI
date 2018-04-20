@@ -6,7 +6,7 @@ import { Router, Route } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import createBrowserHistory from 'history/createBrowserHistory'
-import CreateIncident from 'components/Search/CreateIncident'
+import GoToTicket from 'components/Incident/GoToTicket'
 import Ticket from 'components/Incident/Ticket'
 import EnsureLoggedInContainer from 'components/Auth/EnsureLoggedIn'
 import incidentRedirect from 'components/Incident/IncidentRedirect'
@@ -32,9 +32,9 @@ export default class MainComponent extends React.Component {
                   <div>
                     { isChromeExtensionBackground() ? <Notifications /> : null }
                     <TopNav />
+                    <GoToTicket history={history} />
                     <Route exact path='/' component={Home} />
                     <Route exact path='/extension.html' component={Home} />
-                    <Route path='/search' component={CreateIncident} />
                     <Route path='/tickets/:ticketId' component={Ticket} />
                     <Route path='/incidents/:incidentId' component={incidentRedirect} />
                     <Route path='/debug' render={() => <Debug />} />

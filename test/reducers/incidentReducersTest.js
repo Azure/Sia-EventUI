@@ -175,8 +175,8 @@ describe('incidentReducer', function test () {
       this.newInput = 'new input'
       this.failureError = 'testing'
 
-      this.OnUpdateInputFromDefault = creation(creationDefaultState, incidentActions.updateIncidentCreationInput(this.newInput))
-      this.OnUpdateInputFromError = creation(creationWithErrorState, incidentActions.updateIncidentCreationInput(this.newInput))
+      this.OnUpdateInputFromDefault = creation(creationDefaultState, incidentActions.updateTicketNavigationInput(this.newInput))
+      this.OnUpdateInputFromError = creation(creationWithErrorState, incidentActions.updateTicketNavigationInput(this.newInput))
       this.OnTryCreateIncidentFromDefault = creation(creationDefaultState, tryCreateIncident('', {}))
       this.OnTryCreateIncidentFromError = creation(creationWithErrorState, tryCreateIncident('', {}))
       this.OnFailureFromDefault = creation(creationDefaultState, failCreateIncident(this.failureError))
