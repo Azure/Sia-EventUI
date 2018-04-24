@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage' // default: localStorage if web,
 
 import * as timePreferencesActions from 'actions/timePreferencesActions'
 
+// FYI from timeFormattedToMultipleZones.js
 // export const defaultAvailableTimezones = [
 //   { displayName: 'Pacific Time', ianaZoneName: 'America/Los_Angeles' },
 //   { displayName: 'India Standard Time', ianaZoneName: 'Asia/Kolkata' },
@@ -14,10 +15,19 @@ const defaultDisplayTimezones = ['UTC']
 export const timePreferencesReducer = (state = defaultDisplayTimezones, action) => {
   switch (action.type) {
     case timePreferencesActions.SET_DISPLAY_TIMEZONES:
+      // Require that one timezone is always configured. Force the default
+      // timezone if the user deselects all timezones.
+      if (action.timezoneIanaNames.length <= 0) {
+        return defaultDisplayTimezones
+      }
       return action.timezoneIanaNames
     default:
       return state
   }
 }
 
-export default timePreferencesReducer
+const persistConfigs = {
+  key: 'timePreferences',
+  storage
+}
+export default persistReducer(persistConfigs, timePreferencesReducer)
