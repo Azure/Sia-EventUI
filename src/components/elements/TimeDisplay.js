@@ -4,7 +4,7 @@ import { DateTime } from 'luxon'
 
 import { timeAndDateFormat } from 'helpers/timeFormattedToMultipleZones'
 
-const TimeDisplay = ({time, timezones}) => {
+export const TimeDisplayComponent = ({time, timezones}) => {
   if (!time) {
     return null
   }
@@ -20,7 +20,8 @@ const TimeDisplay = ({time, timezones}) => {
   )
 }
 
-export const convertedTime = (time, timezone) =>
+// TODO: Test convertedTime, especially w/ invalid DateTime values
+const convertedTime = (time, timezone) =>
   parseTime(time)
     .setZone(timezone)
     .toLocaleString(timeAndDateFormat)
@@ -30,9 +31,9 @@ export const parseTime = (time) =>
     ? time
     : DateTime.fromISO(time)
 
-const mapStateToProps = (state, ownProps) => ({
-  timezones: state.timePreferences.timePreference,
+export const mapStateToProps = (state, ownProps) => ({
+  timezones: state.timePreferences.displayTimezones,
   time: ownProps.time
 })
 
-export default connect(mapStateToProps)(TimeDisplay)
+export default connect(mapStateToProps)(TimeDisplayComponent)

@@ -14,4 +14,4 @@ const dateFormat = {
   day: '2-digit'
 }
 
-export const timeAndDateformat = Object.assign(dateFormat, DateTime.TIME_24_WITH_SECONDS)
+export const timeAndDateFormat = Object.assign(dateFormat, DateTime.TIME_24_WITH_SECONDS)

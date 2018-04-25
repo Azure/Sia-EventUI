@@ -6,7 +6,7 @@ import * as timePreferencesActions from 'actions/timePreferencesActions'
 
 const defaultDisplayTimezones = ['UTC']
 
-export const timePreferencesReducer = (state = defaultDisplayTimezones, action) => {
+export const displayTimezonesReducer = (state = defaultDisplayTimezones, action) => {
   switch (action.type) {
     case timePreferencesActions.SET_DISPLAY_TIMEZONES:
       // Require that one timezone is always configured. Force the default
@@ -26,5 +26,5 @@ const persistConfigs = {
 }
 export default persistReducer(
   persistConfigs,
-  combineReducers({timePreference: timePreferencesReducer})
+  combineReducers({displayTimezones: displayTimezonesReducer})
 )
