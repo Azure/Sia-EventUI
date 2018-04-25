@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TimeDisplay snapshot should match snapshot 1`] = `
+<div>
+  <div
+    key="UTC"
+  >
+    (
+    UTC
+    ): 
+    04/25/2018, 22:39:22
+  </div>
+</div>
+`;
+
+exports[`TimeDisplay snapshot should match snapshot 2`] = `""`;

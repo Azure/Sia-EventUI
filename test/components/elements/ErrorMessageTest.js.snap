@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorMessage when inputs are valid when given a background color snapshot should match snapshot 1`] = `
+<Card
+  className="incident-card"
+  expandable={false}
+  expanded={null}
+  initiallyExpanded={false}
+  style={
+    Object {
+      "backgroundColor": "Purple",
+    }
+  }
+>
+  <AlertError />
+  <CardHeader
+    avatar={null}
+    subtitle={
+      <Connect(TimeDisplayComponent)
+        time={null}
+      />
+    }
+  />
+</Card>
+`;
+
+exports[`ErrorMessage when inputs are valid when given a message and provided an action for retry snapshot should match snapshot 1`] = `
+<Card
+  className="incident-card"
+  expandable={false}
+  expanded={null}
+  initiallyExpanded={false}
+  style={
+    Object {
+      "backgroundColor": null,
+    }
+  }
+>
+  <AlertError />
+  <CardHeader
+    avatar={null}
+    subtitle={
+      <Connect(TimeDisplayComponent)
+        time={null}
+      />
+    }
+    title="TestMessage"
+  />
+  <Connect(DisplayRetryButton)
+    actionForRetry="TestAction"
+  />
+</Card>
+`;
+
+exports[`ErrorMessage when inputs are valid when given a time snapshot should match snapshot 1`] = `
+<Card
+  className="incident-card"
+  expandable={false}
+  expanded={null}
+  initiallyExpanded={false}
+  style={
+    Object {
+      "backgroundColor": null,
+    }
+  }
+>
+  <AlertError />
+  <CardHeader
+    avatar={null}
+    subtitle={
+      <Connect(TimeDisplayComponent)
+        time={"2018-04-25T15:39:22.000-07:00"}
+      />
+    }
+  />
+</Card>
+`;
+
+exports[`ErrorMessage when inputs are valid when given only a message snapshot should match snapshot 1`] = `
+<Card
+  className="incident-card"
+  expandable={false}
+  expanded={null}
+  initiallyExpanded={false}
+  style={
+    Object {
+      "backgroundColor": null,
+    }
+  }
+>
+  <AlertError />
+  <CardHeader
+    avatar={null}
+    subtitle={
+      <Connect(TimeDisplayComponent)
+        time={null}
+      />
+    }
+    title="TestMessage"
+  />
+</Card>
+`;

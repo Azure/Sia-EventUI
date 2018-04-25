@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { DateTime } from 'luxon'
 import { Card, CardHeader, CardActions } from 'material-ui/Card'
 import * as Icons from 'material-ui/svg-icons'
 import Avatar from 'material-ui/Avatar'
 
 import Playbook from 'components/Timeline/Playbook/Playbook'
 import { LoadTextFromEvent } from 'services/playbookService'
-import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
+import TimeDisplay from 'components/elements/TimeDisplay'
 
 export const EventCard = ({
   event,
@@ -21,7 +20,7 @@ export const EventCard = ({
 >
   <CardHeader
     title={titleText}
-    subtitle={timeFormattedToMultipleZones(DateTime.fromISO(event.occurred ? event.occurred : event.Occurred))}
+    subtitle={getTimeDisplay(event)}
     iconStyle={{
       color: 'black'
     }}
@@ -42,6 +41,11 @@ EventCard.propTypes = {
   ticketId: PropTypes.string,
   IconType: PropTypes.func
 }
+
+export const getTimeDisplay = (event) =>
+  event.occurred || event.Occurred
+    ? <TimeDisplay time={event.occurred || event.Occurred} />
+    : null
 
 export const mapStateToEventCardProps = (state, ownProps) => {
   const { event, ticketId } = ownProps

@@ -61,6 +61,9 @@ describe('Preferences', function () {
         filterPreferences: {
           eventFilterType: expectedFilterType
         }
+      },
+      timePreferences: {
+        timePreference: ['UTC']
       }
     }
 

@@ -9,6 +9,7 @@ import forms from 'reducers/formReducer'
 import eventTypes from 'reducers/eventTypeReducer'
 import globalActions from 'reducers/globalActionReducer'
 import notifications from 'reducers/notificationReducer'
+import timePreferences from 'reducers/timePreferencesReducer'
 
 const rootReducer = (filters, defaultEventFilterPreference) => combineReducers({
   incidents,
@@ -19,7 +20,8 @@ const rootReducer = (filters, defaultEventFilterPreference) => combineReducers({
   signalR: signalR(defaultEventFilterPreference),
   eventTypes,
   globalActions,
-  notifications
+  notifications,
+  timePreferences
 })
 
 export default rootReducer
