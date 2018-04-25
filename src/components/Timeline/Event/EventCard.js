@@ -1,14 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { DateTime } from 'luxon'
 import { Card, CardHeader, CardActions } from 'material-ui/Card'
 import * as Icons from 'material-ui/svg-icons'
 import Avatar from 'material-ui/Avatar'
 
 import Playbook from 'components/Timeline/Playbook/Playbook'
 import { LoadTextFromEvent } from 'services/playbookService'
-import timeFormattedToMultipleZones from 'helpers/timeFormattedToMultipleZones'
 import TimeDisplay from 'components/elements/TimeDisplay'
 
 export const EventCard = ({
