@@ -50,13 +50,12 @@ const onTimezoneClick = (dispatch) => (event, value) =>
   dispatch(timePreferencesActions.setDisplayTimezones(value))
 
 const isTimezoneChecked = (ianaZoneName, selectedTimezones) =>
-    selectedTimezones.includes && selectedTimezones.includes(ianaZoneName)
+  selectedTimezones.includes(ianaZoneName)
 
 export const mapStateToEventFilterPreferencesProps = (state) => ({
   currentEventFilterObject: state.events.filter,
   currentEventFilterPreference: state.signalR.filterPreferences.eventFilterType,
-  selectedTimezones: Object.values(state.timePreferences)
-    .filter(item => typeof item === 'string')
+  selectedTimezones: state.timePreferences.timePreference
 })
 
 export const ConnectedEventFilterPreferences = connect(mapStateToEventFilterPreferencesProps)(EventFilterPreferences)

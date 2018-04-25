@@ -25,8 +25,7 @@ const TimeDisplay = ({time, timezones}) => {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  timezones: Object.values(state.timePreferences)
-    .filter(item => typeof item === 'string'),
+  timezones: state.timePreferences.timePreference,
   time: ownProps.time
 })
 

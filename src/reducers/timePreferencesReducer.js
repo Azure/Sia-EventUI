@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // default: localStorage if web, AsyncStorage if react-native
 
@@ -30,4 +31,7 @@ const persistConfigs = {
   key: 'timePreferences',
   storage
 }
-export default persistReducer(persistConfigs, timePreferencesReducer)
+export default persistReducer(
+  persistConfigs,
+  combineReducers({timePreference: timePreferencesReducer})
+)
